@@ -1,0 +1,24 @@
+{
+  "name": "ia_workspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "show:report": "npx playwright show-report",
+    "test": "npx playwright test --config=./playwright.config.ts",
+    "test:local": "BROWSERSTACK_LOCAL=true npx playwright test --config=./playwright-local.config.ts",
+    "test:codegen": "npx playwright codegen",
+    "test:chromium": "npx playwright test --project=chromium",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.32.1",
+    "browserstack-local": "^1.4.8",
+    "dotenv": "^16.0.3",
+    "playwright": "^1.32.1"
+  }
+}
