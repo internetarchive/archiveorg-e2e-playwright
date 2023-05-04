@@ -65,10 +65,10 @@ test('page load with liner-notes-player mystery sound effects', async ({ page })
 
   // select button tracks
   await trackListButtons.nth(1).click();
-  await page.goto('https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/02.+Gateway+Gecordings+-+Steps.flac');
+  await page.waitForURL('https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/02.+Gateway+Gecordings+-+Steps.flac');
 
   await trackListButtons.nth(2).click();
-  await page.goto('https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/03.+Gateway+Gecordings+-+Steps.flac');
+  await page.waitForURL('https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/03.+Gateway+Gecordings+-+Steps.flac');
 
 });
 
