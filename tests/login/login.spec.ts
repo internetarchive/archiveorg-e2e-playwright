@@ -1,8 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-test.beforeAll(async ({ page }) => {
+let page: Page;
+
+test.beforeAll(async ({ browser }) => {
+  // https://playwright.dev/docs/test-retries#reuse-single-page-between-tests
+  page = await browser.newPage();
+
   // Go to the starting url before each test.
   await page.goto('https://archive.org/account/login');
   await expect(page).toHaveURL(/login/);
@@ -18,7 +23,7 @@ test.beforeAll(async ({ page }) => {
   expect(await googleLogin.count()).toEqual(1);
 });
 
-test('login page with user privs', async ({ page }) => {
+test('login page with user privs', async () => {
   const boxRow = page.locator('.box.row');
   const loginFormElement = boxRow.locator('.login-form-element');
   const formLoginFields = loginFormElement.locator('.iaform.login-form');
@@ -61,7 +66,7 @@ test('login page with user privs', async ({ page }) => {
   expect(await btnAdminAccess.count()).toEqual(1);
 });
 
-test('login page with regular user privs', async ({ page }) => {
+test('login page with regular user privs', async () => {
   const boxRow = page.locator('.box.row');
   const loginFormElement = boxRow.locator('.login-form-element');
   const formLoginFields = loginFormElement.locator('.iaform.login-form');
