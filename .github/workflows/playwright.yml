@@ -5,6 +5,14 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
+  notify:
+    # run slack-notifier workflow
+    uses: ./.github/workflows/slack-notifier.yml
+    with:
+      message: Starting push to main branch playwright tests run...
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -19,17 +27,12 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test
-    - name: Setup Pages
-      uses: actions/configure-pages@v2
     - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-    - name: Deploy to GitHub Pages
-      id: playwright-reporting
-      uses: actions/deploy-pages@v2
 
   publish_report:
     name: Publish HTML Report
@@ -46,11 +49,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: gh-pages
-      - name: Set Git User
-        # see: https://github.com/actions/checkout/issues/13#issuecomment-724415212
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Download zipped HTML report
         uses: actions/download-artifact@v2
         with:
@@ -82,3 +80,12 @@ jobs:
           FULL_HTML_REPORT_URL=https://internetarchive.github.io/archiveorg-e2e-playwright/$HTML_REPORT_URL_PATH
 
           echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
+      - name: Publish notifications to slack channel
+        uses: act10ns/slack@v2
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#git-e2e-tests'
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: "Playwright report page: https://internetarchive.github.io/archiveorg-e2e-playwright/$HTML_REPORT_URL_PATH"
+        if: always()
