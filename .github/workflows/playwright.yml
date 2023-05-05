@@ -92,5 +92,5 @@ jobs:
           steps: ${{ toJson(steps) }}
           channel: '#git-e2e-tests'
           webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          message: "Playwright report page: https://internetarchive.github.io/archiveorg-e2e-playwright/$HTML_REPORT_URL_PATH"
+          message: Playwright report page - https://internetarchive.github.io/archiveorg-e2e-playwright/$HTML_REPORT_URL_PATH
         if: always()
