@@ -43,10 +43,9 @@ test('login page with user privs', async () => {
   await inputPassword.click();
   await inputPassword.fill(process.env.A_PASSWORD || '');
   await btnLogin.click();
-  
-  await page.waitForURL('https://archive.org/');
+
   await page.goto('https://archive.org/details/bdrc-W1PD137788?transpiled=1');
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(3000);
 
   const iaBookTheater = page.locator('ia-book-theater.focus-on-child-only');
   const iaBookWrapper = iaBookTheater.locator('#IABookReaderMessageWrapper');
@@ -86,10 +85,9 @@ test('login page with regular user privs', async () => {
   await inputPassword.click();
   await inputPassword.fill(process.env.B_PASSWORD || '');
   await btnLogin.click();
-  
-  await page.waitForURL('https://archive.org/');
+
   await page.goto('https://archive.org/details/bdrc-W1PD137788?transpiled=1');
-  await page.waitForTimeout(2500);
+  await page.waitForTimeout(3000);
 
   const iaBookTheater = page.locator('ia-book-theater.focus-on-child-only');
   const iaBookWrapper = iaBookTheater.locator('#IABookReaderMessageWrapper');
