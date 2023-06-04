@@ -1,10 +1,9 @@
-import { expect } from '@playwright/test';
-import { test } from '../../fixtures';
+import { test, expect } from '@playwright/test';
 
 test('page load', async ({ page }) => {
-  await page.goto('https://archive.org/search');
+  await page.goto('https://archive.org/search?query=cats');
 
-  await expect(page).toHaveURL(/search/);
+  await expect(page).toHaveURL(/?query=cats/);
 
   expect(await page.locator('#search-bar-container').count()).toEqual(1);
   expect(await page.locator('#search_options').count()).toEqual(1);
