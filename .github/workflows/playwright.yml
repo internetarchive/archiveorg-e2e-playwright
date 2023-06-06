@@ -14,7 +14,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   test:
-    uses: ./.github/workflows/run-tests.yml
+    uses: ./.github/workflows/call-run-tests.yml
 
   publish_report:
     name: Publish HTML Report
