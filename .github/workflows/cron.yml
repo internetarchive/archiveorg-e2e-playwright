@@ -10,7 +10,7 @@ on:
 jobs:
   notify:
     # run slack-notifier workflow
-    uses: ./.github/workflows/call-run-slack-notifier.yml
+    uses: ./.github/workflows/call-slack-notifier.yml
     with:
       message: Starting scheduled e2e tests run...
     secrets:
