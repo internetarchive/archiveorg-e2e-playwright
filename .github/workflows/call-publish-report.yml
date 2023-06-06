@@ -3,7 +3,7 @@ name: Publish test report artifact to GH Pages
 on: workflow_call
 
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
 
     env:

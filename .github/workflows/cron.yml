@@ -33,17 +33,9 @@ jobs:
       - name: Npm ci
         run: npm ci
 
-      - name: Run TestCafe workflow
-        uses: DevExpress/testcafe-action@latest
-        with:
-          args: "chrome tests"
+      - name: Run Playwright tests
+        run: npm run test
 
-      - name: Publish notifications to slack channel
-        uses: act10ns/slack@v2
-        with:
-          status: ${{ job.status }}
-          steps: ${{ toJson(steps) }}
-          channel: '#git-e2e-tests'
-          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+      - name: Publish test report
+        uses: ./.github/workflows/call-publish-report.yml
 
