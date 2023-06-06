@@ -16,13 +16,16 @@ jobs:
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-  test:
-    uses: ./.github/workflows/call-run-tests.yml
+  test_and_publish:
+    name: Run tests and publish report
+    steps:
+      - uses: ./.github/workflows/call-run-tests.yml
+      - uses: ./.github/workflows/call-publish-report.yml
 
-  publish_report:
+  # publish_report:
     # runs-on: ubuntu-latest
     # # using always() is not ideal here, because it would also run if the workflow was cancelled
     # if: "success() || needs.test.result == 'failure'"
     # needs: [test]
     # continue-on-error: true
-    uses: ./.github/workflows/call-publish-report.yml
+    # uses: ./.github/workflows/call-publish-report.yml

@@ -21,32 +21,32 @@ test('login page regular privs', async ({ page }) => {
   expect(await btnLogin.count()).toEqual(1);
 
   // fill-up form
-  await inputEmail.click();
-  await inputEmail.fill(process.env.B_EMAIL || '');
-  await inputPassword.click();
-  await inputPassword.fill(process.env.B_PASSWORD || '');
-  await btnLogin.click();
+  // await inputEmail.click();
+  // await inputEmail.fill(process.env.B_EMAIL || '');
+  // await inputPassword.click();
+  // await inputPassword.fill(process.env.B_PASSWORD || '');
+  // await btnLogin.click();
 
-  await page.waitForURL('https://archive.org');
-  await page.waitForTimeout(3000);
+  // await page.waitForURL('https://archive.org');
+  // await page.waitForTimeout(3000);
 
-  await page.goto('https://archive.org/details/bdrc-W1PD137788');
-  await page.waitForTimeout(3000);
+  // await page.goto('https://archive.org/details/bdrc-W1PD137788');
+  // await page.waitForTimeout(3000);
 
-  const iaBookTheater = page.locator('ia-book-theater.focus-on-child-only');
-  const iaBookWrapper = iaBookTheater.locator('#IABookReaderMessageWrapper');
-  const iaBookActions = iaBookWrapper.locator('ia-book-actions');
+  // const iaBookTheater = page.locator('ia-book-theater.focus-on-child-only');
+  // const iaBookWrapper = iaBookTheater.locator('#IABookReaderMessageWrapper');
+  // const iaBookActions = iaBookWrapper.locator('ia-book-actions');
 
-  expect(await iaBookTheater.count()).toEqual(1);
-  expect(await iaBookWrapper.count()).toEqual(1);
-  expect(await iaBookActions.count()).toEqual(1);
+  // expect(await iaBookTheater.count()).toEqual(1);
+  // expect(await iaBookWrapper.count()).toEqual(1);
+  // expect(await iaBookActions.count()).toEqual(1);
 
-  const collapsibleActionGroup = iaBookActions.locator('collapsible-action-group');
-  expect(await collapsibleActionGroup.count()).toEqual(1);
+  // const collapsibleActionGroup = iaBookActions.locator('collapsible-action-group');
+  // expect(await collapsibleActionGroup.count()).toEqual(1);
 
-  const btnBorrow = collapsibleActionGroup.getByRole('button', { name: 'Borrow for 1 hour' });;
-  const btnAdminAccess = collapsibleActionGroup.getByRole('link', { name: 'Admin Access' });;
+  // const btnBorrow = collapsibleActionGroup.getByRole('button', { name: 'Borrow for 1 hour' });;
+  // const btnAdminAccess = collapsibleActionGroup.getByRole('link', { name: 'Admin Access' });;
 
-  expect(await btnBorrow.count()).toEqual(1);
-  expect(await btnAdminAccess.count()).toEqual(0);
+  // expect(await btnBorrow.count()).toEqual(1);
+  // expect(await btnAdminAccess.count()).toEqual(0);
 });

@@ -5,6 +5,8 @@ on: workflow_call
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: "success() || needs.test.result == 'failure'"
+    needs: [test]
 
     env:
       # Unique URL path for each workflow run attempt
