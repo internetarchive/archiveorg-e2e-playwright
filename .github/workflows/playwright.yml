@@ -20,6 +20,7 @@ jobs:
     uses: ./.github/workflows/call-run-tests.yml
 
   publish_report:
+    runs-on: ubuntu-latest
     # using always() is not ideal here, because it would also run if the workflow was cancelled
     if: "success() || needs.test.result == 'failure'"
     needs: [test]
