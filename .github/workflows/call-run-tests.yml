@@ -11,12 +11,16 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
       - name: Run Playwright tests # run search tests for now
         run: npx playwright test tests/search #npm run test
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:
