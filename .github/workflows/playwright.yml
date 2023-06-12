@@ -10,7 +10,7 @@ on:
 jobs:
   notify:
     # run slack-notifier workflow
-    uses: ./.github/workflows/call-slack-notifier.yml
+    uses: ./.github/actions/call-slack-notifier.yml
     with:
       message: Starting push to main branch playwright tests run...
     secrets:
@@ -21,10 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: run tests
-        uses: ./.github/workflows/call-run-tests.yml
+        uses: ./.github/actions/call-run-tests.yml
 
       - name: publish report
-        uses: ./.github/workflows/call-publish-report.yml
+        uses: ./.github/actions/call-publish-report.yml
 
   # publish_report:
     # # using always() is not ideal here, because it would also run if the workflow was cancelled
