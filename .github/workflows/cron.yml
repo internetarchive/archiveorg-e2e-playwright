@@ -1,41 +1,41 @@
-name: Cron
+# name: Cron
 
-on:
-  schedule:
-    # should run every 3hrs on weekdays
-    - cron: "0 */3 * * 1-5"
-    # for testing purposes (this will run every 5mins everyday)
-    # - cron: "*/5 * * * *"
+# on:
+#   schedule:
+#     # should run every 3hrs on weekdays
+#     - cron: "0 */3 * * 1-5"
+#     # for testing purposes (this will run every 5mins everyday)
+#     # - cron: "*/5 * * * *"
 
-jobs:
-  notify:
-    # run slack-notifier workflow
-    uses: ./.github/workflows/call-slack-notifier.yml
-    with:
-      message: Starting scheduled e2e tests run...
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+# jobs:
+#   notify:
+#     # run slack-notifier workflow
+#     uses: ./.github/workflows/call-slack-notifier.yml
+#     with:
+#       message: Starting scheduled e2e tests run...
+#     secrets:
+#       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-  tests:
-    runs-on: ubuntu-latest
+#   tests:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: check out branch
-        uses: actions/checkout@v3
+#     steps:
+#       - name: check out branch
+#         uses: actions/checkout@v3
 
-      - name: Grab Node 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+#       - name: Grab Node 16.x
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '16.x'
+#           cache: 'npm'
+#           cache-dependency-path: '**/package-lock.json'
 
-      - name: Npm ci
-        run: npm ci
+#       - name: Npm ci
+#         run: npm ci
 
-      - name: Run Playwright tests
-        run: npm run test
+#       - name: Run Playwright tests
+#         run: npm run test
 
-      - name: Publish test report
-        uses: ./.github/workflows/call-publish-report.yml
+#       - name: Publish test report
+#         uses: ./.github/workflows/call-publish-report.yml
 
