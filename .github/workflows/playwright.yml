@@ -24,10 +24,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: run tests
-        uses: ./.github/workflows/call-run-tests.yml
+        uses: ./.github/workflows/run-tests
 
       - name: publish report
-        uses: ./.github/workflows/call-publish-report.yml
+        uses: ./.github/workflows/publish-report
 
   # publish_report:
     # # using always() is not ideal here, because it would also run if the workflow was cancelled
