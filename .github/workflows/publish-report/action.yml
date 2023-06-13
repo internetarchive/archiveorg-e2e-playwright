@@ -1,17 +1,17 @@
 name: Publish test report artifact to GH Pages
 
+
 runs:
   using: "composite"
-
-  env:
-    # Unique URL path for each workflow run attempt
-    HTML_REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
 
   steps:
     - name: Checkout GitHub Pages Branch
       uses: actions/checkout@v3
       with:
         ref: gh-pages
+
+    - name: Set FOO
+      run: echo "HTML_REPORT_URL_PATH=reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}" >> $HTML_REPORT_URL_PATH
 
     - name: Set Git User
       shell: bash
