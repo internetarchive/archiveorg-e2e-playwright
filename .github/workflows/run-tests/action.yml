@@ -13,6 +13,7 @@ runs:
         node-version: 16
 
     - name: Install dependencies
+      shell: bash
       run: npm ci
 
     - name: Install Playwright Browsers
@@ -23,7 +24,7 @@ runs:
       shell: bash
       run: npx playwright test tests/search #npm run test
 
-    - uses: actions/upload-artifact@v38
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: playwright-report
