@@ -1,13 +1,5 @@
 name: Publish test report artifact to GH Pages
 
-on: workflow_call
-
-# jobs:
-#   publish:
-#     runs-on: ubuntu-latest
-#     if: "success() || needs.test.result == 'failure'"
-#     needs: [test]
-
 runs:
   using: "composite"
 
