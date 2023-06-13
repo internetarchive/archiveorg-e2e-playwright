@@ -20,6 +20,9 @@ jobs:
     name: Run tests and publish report
     runs-on: ubuntu-latest
     steps:
+      - name: check out branch
+        uses: actions/checkout@v3
+
       - name: run tests
         uses: ./.github/workflows/call-run-tests.yml
 
