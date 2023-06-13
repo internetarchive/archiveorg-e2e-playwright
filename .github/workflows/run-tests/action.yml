@@ -16,12 +16,14 @@ runs:
       run: npm ci
 
     - name: Install Playwright Browsers
+      shell: bash
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests # run search tests for now
+      shell: bash
       run: npx playwright test tests/search #npm run test
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v38
       if: always()
       with:
         name: playwright-report
