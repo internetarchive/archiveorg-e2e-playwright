@@ -9,13 +9,13 @@ on:
 
 
 jobs:
-  # notify:
-  #   # run slack-notifier workflow
-  #   uses: ./.github/workflows/call-slack-notifier.yml
-  #   with:
-  #     message: Starting push to main branch playwright tests run...
-  #   secrets:
-  #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  notify:
+    # run slack-notifier workflow
+    uses: ./.github/workflows/call-slack-notifier.yml
+    with:
+      message: Starting push to main branch playwright tests run...
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   test:
     name: Run tests
@@ -80,14 +80,12 @@ jobs:
 
           echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
 
-      # - name: Publish notifications to slack channel
-      #   uses: act10ns/slack@v2
-      #   with:
-      #     status: ${{ job.status }}
-      #     steps: ${{ toJson(steps) }}
-      #     channel: '#git-e2e-tests'
-      #     webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #     message: Playwright report page - https://${{ env.REPO_URL }}
-      #   if: always()
-
-
+      - name: Publish notifications to slack channel
+        uses: act10ns/slack@v2
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#git-e2e-tests'
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: Playwright report page - https://${{ env.REPO_URL }}
+        if: always()
