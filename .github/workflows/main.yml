@@ -33,6 +33,8 @@ jobs:
       REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
     
     steps:
+      - uses: actions/checkout@v3
+
       - name: Publish GH Pages
         uses: ./.github/workflows/call-publish-ghpages.yml
         with:
