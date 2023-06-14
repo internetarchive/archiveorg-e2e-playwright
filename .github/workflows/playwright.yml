@@ -29,6 +29,8 @@ jobs:
 
       - name: publish report
         uses: ./.github/workflows/publish-report
+        with:
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   # publish_report:
     # # using always() is not ideal here, because it would also run if the workflow was cancelled
