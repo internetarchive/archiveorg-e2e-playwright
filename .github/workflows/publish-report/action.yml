@@ -1,5 +1,9 @@
 name: Publish test report artifact to GH Pages
 
+inputs:
+  webhook_url:
+    description: 'Slack webhook URL fetched from Github secrets'
+    required: true
 
 runs:
   using: "composite"
@@ -62,6 +66,6 @@ runs:
         status: ${{ job.status }}
         steps: ${{ toJson(steps) }}
         channel: '#git-e2e-tests'
-        webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        webhook-url: ${{ inputs.webhook_url }}
         message: "Playwright report page - https://internetarchive.github.io/archiveorg-e2e-playwright/$HTML_REPORT_URL_PATH"
       if: always()

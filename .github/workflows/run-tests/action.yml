@@ -19,6 +19,8 @@ runs:
 
     - name: Run Playwright tests # run search tests for now
       shell: bash
+      with:
+        webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
       run: npx playwright test tests/search #npm run test
 
     - uses: actions/upload-artifact@v3
