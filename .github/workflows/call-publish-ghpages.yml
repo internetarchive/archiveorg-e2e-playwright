@@ -1,14 +1,18 @@
 name: Publish test report artifact to GH Pages
 
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      repoURL:
+        required: true
+        type: string
+      reportURL:
+        required: true
+        type: string
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
-    env:
-      # Unique URL path for each workflow run attempt
-      HTML_REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
 
     steps:
       - name: Checkout GitHub Pages Branch
@@ -26,7 +30,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: playwright-report
-          path: ${{ env.HTML_REPORT_URL_PATH }}
+          path: ${{ inputs.reportURL }}
 
       - name: Push HTML Report
         timeout-minutes: 3
@@ -52,16 +56,6 @@ jobs:
 
       - name: Output Report URL as Worfklow Annotation
         run: |
-          FULL_HTML_REPORT_URL=https://internetarchive.github.io/archiveorg-e2e-playwright/$HTML_REPORT_URL_PATH
+          FULL_HTML_REPORT_URL=https://${{ inputs.repoURL }}/${{ inputs.reportURL }}
 
           echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
-
-      # - name: Publish notifications to slack channel
-      #   uses: act10ns/slack@v2
-      #   with:
-      #     status: ${{ job.status }}
-      #     steps: ${{ toJson(steps) }}
-      #     channel: '#git-e2e-tests'
-      #     webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #     message: "Playwright report page - https://internetarchive.github.io/archiveorg-e2e-playwright/${{ env.HTML_REPORT_URL_PATH }}"
-      #   if: always()

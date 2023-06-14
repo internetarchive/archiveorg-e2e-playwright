@@ -21,14 +21,32 @@ jobs:
     uses: ./.github/workflows/call-run-tests.yml
 
   publish_report:
+    name: Publish HTML Report
     # using always() is not ideal here, because it would also run if the workflow was cancelled
     if: "success() || needs.test.result == 'failure'"
     needs: [test]
-    uses: ./.github/workflows/call-publish-report.yml
-    # runs-on: ubuntu-latest
-    # 
-    # 
-    # continue-on-error: true
-    # steps:
-    #   - name: Publish test runtime report
-        # uses: ./.github/workflows/call-publish-report.yml
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      REPO_URL: internetarchive.github.io/archiveorg-e2e-playwright
+      # Unique URL path for each workflow run attempt
+      REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
+    
+    steps:
+      - name: Publish GH Pages
+        uses: ./.github/workflows/call-publish-ghpages.yml
+        with:
+          repoURL: ${{ env.REPO_URL }}
+          reportURL: ${{ env.REPORT_URL }}
+
+      - name: Publish notifications to slack channel
+        uses: act10ns/slack@v2
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#git-e2e-tests'
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: Playwright report page - https://${{ env.REPO_URL }}/${{ env.HTML_REPORT_URL_PATH }}
+        if: always()
+
+
