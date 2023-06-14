@@ -75,7 +75,8 @@ jobs:
 
       - name: Output Report URL as Worfklow Annotation
         run: |
-          FULL_HTML_REPORT_URL=https://${{ env.REPO_URL }}/${{ env.REPORT_URL_PATH }}
+          # FULL_HTML_REPORT_URL=https://${{ env.REPO_URL }}/${{ env.REPORT_URL_PATH }}
+          FULL_HTML_REPORT_URL=https://${{ env.REPO_URL }}
 
           echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
 
@@ -86,7 +87,7 @@ jobs:
       #     steps: ${{ toJson(steps) }}
       #     channel: '#git-e2e-tests'
       #     webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #     message: Playwright report page - https://${{ env.REPO_URL }}/${{ env.HTML_REPORT_URL_PATH }}
+      #     message: Playwright report page - https://${{ env.REPO_URL }}
       #   if: always()
 
 
