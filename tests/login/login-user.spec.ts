@@ -21,13 +21,14 @@ test('login page regular privs', async ({ page }) => {
   expect(await btnLogin.count()).toEqual(1);
 
   // fill-up form
-  // await inputEmail.click();
-  // await inputEmail.fill(process.env.B_EMAIL || '');
-  // await inputPassword.click();
-  // await inputPassword.fill(process.env.B_PASSWORD || '');
-  // await btnLogin.click();
+  await inputEmail.click();
+  await inputEmail.fill(process.env.B_EMAIL || '');
+  await inputPassword.click();
+  await inputPassword.fill(process.env.B_PASSWORD || '');
+  await btnLogin.click();
 
-  // await page.waitForURL('https://archive.org');
+  await page.waitForURL('https://archive.org');
+  // TODO: fix identify components for regular user
   // await page.waitForTimeout(3000);
 
   // await page.goto('https://archive.org/details/bdrc-W1PD137788');

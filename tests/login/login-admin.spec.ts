@@ -30,14 +30,15 @@ test('login page with admin privs', async ({ page }) => {
   expect(await btnLogin.count()).toEqual(1);
 
   // fill-up form - with admin privs
-  // await inputEmail.click();
-  // await inputEmail.fill(process.env.A_EMAIL || '');
-  // await inputPassword.click();
-  // await inputPassword.fill(process.env.A_PASSWORD || '');
-  // await btnLogin.click();
+  await inputEmail.click();
+  await inputEmail.fill(process.env.A_EMAIL || '');
+  await inputPassword.click();
+  await inputPassword.fill(process.env.A_PASSWORD || '');
+  await btnLogin.click();
 
-  // await page.waitForURL('https://archive.org');
-  // await page.waitForTimeout(3000);
+  await page.waitForURL('https://archive.org');
+  // TODO: fix identify components for admin user only
+  await page.waitForTimeout(3000);
 
   // await page.goto('https://archive.org/details/bdrc-W1PD137788');
   // await page.waitForTimeout(3000);
