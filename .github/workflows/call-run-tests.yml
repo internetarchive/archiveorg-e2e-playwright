@@ -40,7 +40,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npm run test
+        run: npm run gh:test
 
       - uses: actions/upload-artifact@v3
         if: always()
