@@ -27,10 +27,9 @@ test('login page regular privs', async ({ page }) => {
   await inputPassword.fill(process.env.B_PASSWORD || '');
   await btnLogin.click();
 
+  await page.waitForTimeout(3000);
   await page.waitForURL('https://archive.org');
   // TODO: fix identify components for regular user
-  // await page.waitForTimeout(3000);
-
   // await page.goto('https://archive.org/details/bdrc-W1PD137788');
   // await page.waitForTimeout(3000);
 

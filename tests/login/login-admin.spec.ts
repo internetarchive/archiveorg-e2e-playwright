@@ -36,10 +36,10 @@ test('login page with admin privs', async ({ page }) => {
   await inputPassword.fill(process.env.A_PASSWORD || '');
   await btnLogin.click();
 
-  await page.waitForURL('https://archive.org');
-  // TODO: fix identify components for admin user only
   await page.waitForTimeout(3000);
+  await page.waitForURL('https://archive.org');
 
+  // TODO: fix identify components for admin user only
   // await page.goto('https://archive.org/details/bdrc-W1PD137788');
   // await page.waitForTimeout(3000);
 
