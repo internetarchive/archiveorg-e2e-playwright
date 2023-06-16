@@ -29,9 +29,9 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      REPO_URL: internetarchive.github.io/archiveorg-e2e-playwright
+      REPO_URL: https://internetarchive.github.io/archiveorg-e2e-playwright
       # Unique URL path for each workflow run attempt
-      REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
+      # REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
     
     steps:
       - name: Checkout GitHub Pages Branch
@@ -75,8 +75,8 @@ jobs:
 
       - name: Output Report URL as Worfklow Annotation
         run: |
-          # FULL_HTML_REPORT_URL=https://${{ env.REPO_URL }}/${{ env.REPORT_URL_PATH }}
-          FULL_HTML_REPORT_URL=https://${{ env.REPO_URL }}
+          # FULL_HTML_REPORT_URL=${{ env.REPO_URL }}/${{ env.REPORT_URL_PATH }}
+          FULL_HTML_REPORT_URL=${{ env.REPO_URL }}
 
           echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
 
@@ -87,5 +87,5 @@ jobs:
           steps: ${{ toJson(steps) }}
           channel: '#git-e2e-tests'
           webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          message: Playwright report page - https://${{ env.REPO_URL }}
+          message: Playwright report page - ${{ env.REPO_URL }}
         if: always()
