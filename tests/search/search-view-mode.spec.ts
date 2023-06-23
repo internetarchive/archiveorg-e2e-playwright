@@ -14,6 +14,8 @@ test('page load', async ({ page }) => {
   const sortSelectorContainer = sortBarSection.locator('div#sort-selector-container');
   const displayStyleSelector = sortBarSection.locator('div#display-style-selector');
 
+  const displayStyleSelectorOptions = displayStyleSelector.locator('ul > li');
+
   expect(await sortFilterBar.count()).toEqual(1);
   expect(await sortContainer.count()).toEqual(1);
   expect(await sortBarSection.count()).toEqual(1);
@@ -22,5 +24,10 @@ test('page load', async ({ page }) => {
   expect(await sortByText.count()).toEqual(1);
   expect(await sortSelectorContainer.count()).toEqual(1);
   expect(await displayStyleSelector.count()).toEqual(1);
-  
+
+  expect(await displayStyleSelectorOptions.count()).toEqual(3);
+  // expect(displayStyleSelector.locator('ul > li > button#grid-button').count()).toEqual(1);
+  // expect(displayStyleSelectorOptions.nth(0).locator('#grid-button')).toHaveAttribute('class', 'active');
+  //*[@id="grid-button"]
+
 });

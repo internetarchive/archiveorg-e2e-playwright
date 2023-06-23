@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "gh:test": "xvfb-run npx playwright test --config=./playwright.config.ts",
     "show:report": "npx playwright show-report",
     "test": "npx playwright test --config=./playwright.config.ts",
     "test:local": "BROWSERSTACK_LOCAL=true npx playwright test --config=./playwright-local.config.ts",
