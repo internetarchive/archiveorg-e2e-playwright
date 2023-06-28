@@ -27,43 +27,39 @@ test('page load', async ({ page }) => {
 
   expect(await sortByText.innerText()).toEqual('Sort by:');
   expect(await srOnlySortDirection.innerText()).toEqual('Change to ascending sort');
-  await sortDirectionSelector.click();
-  expect(await srOnlySortDirection.innerText()).toEqual('Change to descending sort');
 
   const sortSelectorContainer = sortBarSection.locator('div#sort-selector-container');
   const mobileSort = sortSelectorContainer.locator('#mobile-sort-container');
   const desktopSort = sortSelectorContainer.locator('#desktop-sort-container');
   
   const desktopSortSelector = desktopSort.locator('#desktop-sort-selector');
-  const desktopSortList = desktopSortSelector.locator('ul > li');
-  const sortAllText = await desktopSortSelector.allTextContents();
+  const desktopSortSelectorTexts = await desktopSort.locator('ul#desktop-sort-selector').allInnerTexts();
+  const desktopSortTexts = Object.assign([], desktopSortSelectorTexts[0].split('\n'));
+
   const sortTextList = [
+    'Relevance',
     'Weekly views', 
-    'All-time views', 
+    'Title', 
     'Date published', 
-    'Date archived', 
-    'Date reviewed', 
-    'Date added'
+    'Creator'
   ];
 
-  sortAllText.forEach((text, ix) => {
-    expect(text).toContain(sortTextList[ix]);
-  })
+  await desktopSortSelector.click();
+  await expect(page).toHaveURL(/sort=title/);
+
+  await page.waitForTimeout(5000);
+  expect(await srOnlySortDirection.innerText()).toEqual('Change to descending sort');
+
+  desktopSortTexts.forEach((text: string, ix) => {
+    expect(text.includes(sortTextList[ix]));
+  });
   
   expect(await sortSelectorContainer.count()).toEqual(1);
   expect(await desktopSortSelector.count()).toEqual(1);
-  expect(await desktopSortList.count()).toEqual(6);
 
   // sort-bar
   expect(await expect(mobileSort).toHaveClass(/hidden/));
   expect(await expect(desktopSort).toHaveClass(/visible/));
-
-  // await desktopSortList.nth(0).click();
-  // console.log(await desktopSortList.nth(0).allTextContents());
-  // expect(await expect(desktopSortSelector.nth(0).locator('button')).toHaveClass(/selected/));
-
-  // await desktopSortList.nth(1).click();
-  // expect(await expect(desktopSortList.locator('ia-dropdown')).toHaveClass(/selected/));
 
   // view modes
   const displayStyleSelector = sortBarSection.locator('div#display-style-selector');
