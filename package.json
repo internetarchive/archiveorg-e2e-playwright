@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gh:test": "xvfb-run npx playwright test --config=./playwright.config.ts",
+    "gh:test": "npx playwright test --config=./playwright.config.ts",
     "show:report": "npx playwright show-report",
     "test": "npx playwright test --config=./playwright.config.ts",
     "test:local": "BROWSERSTACK_LOCAL=true npx playwright test --config=./playwright-local.config.ts",
@@ -17,9 +17,56 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.32.1",
+    "@playwright/test": "^1.35.1",
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.3",
-    "playwright": "^1.32.1"
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.3",
+    "playwright": "^1.35.1",
+    "prettier": "^3.0.0"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "@open-wc",
+      "prettier"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error"
+      ],
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": [
+        "error"
+      ],
+      "class-methods-use-this": "off",
+      "import/no-unresolved": "off",
+      "import/extensions": [
+        "off",
+        "ignorePackages",
+        {
+          "js": "never",
+          "ts": "never"
+        }
+      ],
+      "no-unsafe-optional-chaining": "warn",
+      "default-param-last": "warn"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('page load', async ({ page }) => {
   await page.goto('https://archive.org/search?query=cats');
-
+  await page.waitForTimeout(3000);
   await expect(page).toHaveURL(/query=cats/);
 
   const infiniteScroller = page.locator('infinite-scroller');
@@ -73,13 +73,22 @@ test('page load', async ({ page }) => {
 
   // view mode - default grid view
   expect(await expect(infiniteScroller).toHaveClass(/grid/));
+  await expect(infiniteScroller.locator('item-tile').first()).toBeVisible();
+  await expect(infiniteScroller.locator('tile-list').first()).not.toBeVisible();
+  await expect(infiniteScroller.locator('tile-list-compact').first()).not.toBeVisible();
 
   // view mode - click list-detail
   await displayStyleSelectorOptions.nth(1).click();
-  expect(await expect(infiniteScroller).toHaveClass(/list-detail/));
+  await expect(infiniteScroller).toHaveClass(/list-detail/);
+  await expect(infiniteScroller.locator('item-tile').first()).not.toBeVisible();
+  await expect(infiniteScroller.locator('tile-list').first()).toBeVisible();
+  await expect(infiniteScroller.locator('tile-list-compact').first()).not.toBeVisible();
 
   // view mode - click list-compact
   await displayStyleSelectorOptions.nth(2).click();
-  expect(await expect(infiniteScroller).toHaveClass(/list-compact/));
+  await expect(infiniteScroller).toHaveClass(/list-compact/);
+  await expect(infiniteScroller.locator('item-tile').first()).not.toBeVisible();
+  await expect(infiniteScroller.locator('tile-list').first()).not.toBeVisible();
+  await expect(infiniteScroller.locator('tile-list-compact').first()).toBeVisible();
 
 });

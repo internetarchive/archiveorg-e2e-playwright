@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../../fixtures';
 
-test('page load', async ({ page }) => {
+test('page load - initial load', async ({ page }) => {
   await page.goto('https://archive.org/search');
   await page.waitForTimeout(3000);
 
