@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('login page fields', async ({ page }) => {
+test('page load - check login page fields elements', async ({ page }) => {
   // Go to the starting url before each test.
   await page.goto('https://archive.org/account/login');
   await expect(page).toHaveURL(/login/);
