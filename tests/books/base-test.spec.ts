@@ -39,6 +39,10 @@ test.beforeAll(async ({ browser }) => {
   await page.goto('https://archive.org/details/theworksofplato01platiala');
 });
 
+test.afterAll(async () => {
+  await page.close();
+});
+
 test('On load, pages fit fully inside of the BookReader™', async () => {
   await page.waitForTimeout(5000);
 
