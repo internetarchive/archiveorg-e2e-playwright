@@ -12,7 +12,7 @@ const facetHeaderTitles = [
   'Language',
 ]
 
-test('Search page check facets container loading', async ({ page }) => {
+test('Search Page - facets load properly', async ({ page }) => {
 	await page.goto('https://archive.org/search?query=cats');
 	await page.waitForTimeout(3000);
 
