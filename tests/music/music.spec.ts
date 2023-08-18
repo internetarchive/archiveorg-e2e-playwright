@@ -17,7 +17,7 @@ const trackListDetails = [
     title: 'Steps',
     length: '00:03'
   },
-]
+];
 
 test('page load with liner-notes-player mystery sound effects', async ({ page }) => {
   await page.goto('https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings');
