@@ -17,39 +17,30 @@ test('search page check URL changes for sort filter menus click event', async ({
 	await page.waitForTimeout(3000);
 
 	await page.getByText('Weekly views').first().click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=-week/);
 
 	await page.getByRole('button', { name: 'Toggle options Weekly views' }).getByRole('button').click();
 	await page.getByRole('button', { name: 'All-time views' }).click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=-downloads/);
 
-
 	await page.getByRole('button', { name: 'Title' }).click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=title/);
 
 	await page.getByText('Date published').first().click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=-date/);
 
 	await page.getByRole('button', { name: 'Toggle options Date published' }).getByRole('button').click();
 	await page.getByRole('button', { name: 'Date archived' }).click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=-publicdate/);
 
 	await page.getByRole('button', { name: 'Toggle options Date archived' }).getByRole('button').click();
 	await page.getByRole('button', { name: 'Date reviewed' }).click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=-reviewdate/);
 
 	await page.getByRole('button', { name: 'Toggle options Date reviewed Date reviewed' }).getByRole('button').click();
 	await page.getByRole('button', { name: 'Date added' }).click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=-addeddate/);
 
 	await page.getByRole('button', { name: 'Creator' }).click();
-	await page.waitForTimeout(3000);
 	await expect(page).toHaveURL(/query=cats&sort=creator/);
 });
