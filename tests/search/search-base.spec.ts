@@ -13,13 +13,13 @@ test('page load - initial load', async ({ page }) => {
   expect(await page.locator('#go-button').count()).toEqual(1);
 
   expect(await page.locator('empty-placeholder').count()).toEqual(1);
-  expect(await page.getByRole('heading', { 
-    name: 'To begin searching, enter a search term in the box above and hit "Go".' 
+  expect(await page.getByRole('heading', {
+    name: 'To begin searching, enter a search term in the box above and hit "Go".'
   }).count()).toEqual(1);
   expect(await page.locator('#content-container svg').count()).toEqual(1);
 
-  const searchInput = page.getByRole('textbox', { 
-    name: 'Search the Archive. Filters and Advanced Search available below.' 
+  const searchInput = page.getByRole('textbox', {
+    name: 'Search the Archive. Filters and Advanced Search available below.'
   });
 
   await searchInput.fill('cats');
@@ -27,4 +27,3 @@ test('page load - initial load', async ({ page }) => {
 
   await page.waitForURL("https://archive.org/search?query=cats");
 });
-
