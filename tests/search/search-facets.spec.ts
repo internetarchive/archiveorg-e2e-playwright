@@ -34,6 +34,7 @@ test('Search Page - facets load properly', async ({ page }) => {
     const nthComponent = facetGroups.nth(i);
     expect(await nthTitle.textContent()).toContain(facetHeaderTitles[i]);
 
+	  await page.waitForTimeout(3000);
     // first element from the group should be the `histogram-date-range` component
     // otherwise, it's a `facets-template` component
     if (i === 0) {

@@ -35,58 +35,58 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+    // {
+    //   name: 'chromium',
+    //   use: { ...devices['Desktop Chrome'] },
+    // },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     // -- BrowserStack Projects --
     // name should be of the format browser@browser_version:os os_version@browserstack
-    // {
-    //   name: 'chrome@latest:Windows 10@browserstack',
-    //   use: {
-    //     browserName: 'chromium',
-    //     channel: 'chrome'
-    //   },
-    // },
-    // {
-    //   name: 'chrome@latest-beta:OSX Big Sur@browserstack',
-    //   use: {
-    //     browserName: 'chromium',
-    //     channel: 'chrome',
-    //   },
-    // },
-    // {
-    //   name: 'edge@90:Windows 10@browserstack',
-    //   use: {
-    //     browserName: 'chromium'
-    //   },
-    // },
-    // {
-    //   name: 'playwright-firefox@latest:OSX Catalina@browserstack',
-    //   use: {
-    //     browserName: 'firefox',
-    //     ignoreHTTPSErrors: true
-    //   },
-    // },
-    // {
-    //   name: 'playwright-webkit@latest:OSX Big Sur@browserstack',
-    //   use: {
-    //     browserName: 'webkit',
-    //     // Config to use playwright emulated devices.
-    //     // ...devices['iPhone 12 Pro Max'],
-    //   },
-    // },
+    {
+      name: 'chrome@latest:Windows 10@browserstack',
+      use: {
+        browserName: 'chromium',
+        channel: 'chrome'
+      },
+    },
+    {
+      name: 'chrome@latest-beta:OSX Big Sur@browserstack',
+      use: {
+        browserName: 'chromium',
+        channel: 'chrome',
+      },
+    },
+    {
+      name: 'edge@90:Windows 10@browserstack',
+      use: {
+        browserName: 'chromium'
+      },
+    },
+    {
+      name: 'playwright-firefox@latest:OSX Catalina@browserstack',
+      use: {
+        browserName: 'firefox',
+        ignoreHTTPSErrors: true
+      },
+    },
+    {
+      name: 'playwright-webkit@latest:OSX Big Sur@browserstack',
+      use: {
+        browserName: 'webkit',
+        // Config to use playwright emulated devices.
+        // ...devices['iPhone 12 Pro Max'],
+      },
+    },
 
     /* Test against mobile viewports. */
     // {

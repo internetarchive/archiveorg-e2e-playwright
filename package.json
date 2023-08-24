@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gh:test": "npx playwright test --config=./playwright.config.ts --trace on",
+    "gh:test": "npx playwright test --config=./playwright-local.config.ts",
     "show:report": "npx playwright show-report",
     "test": "npx playwright test --config=./playwright.config.ts",
     "test:local": "BROWSERSTACK_LOCAL=true npx playwright test --config=./playwright-local.config.ts",
     "test:codegen": "npx playwright codegen",
     "test:chromium": "npx playwright test --project=chromium",
     "test:debug": "npx playwright test --debug",
+    "test:trace": "npx playwright test --config=./playwright-local.config.ts --trace on",
     "test:ui": "npx playwright test --ui",
     "test:headed": "npx playwright test --headed"
   },
