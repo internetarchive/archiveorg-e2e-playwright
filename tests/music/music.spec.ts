@@ -19,7 +19,7 @@ const trackListDetails = [
   },
 ];
 
-test('page load with liner-notes-player mystery sound effects', async ({ page }) => {
+test('Play 3 mystery sound effects', async ({ page }) => {
   await page.goto('https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings');
 
   const iaMusicTheater = page.locator('ia-music-theater');
@@ -70,5 +70,6 @@ test('page load with liner-notes-player mystery sound effects', async ({ page })
   await trackListButtons.nth(2).click();
   await page.waitForURL('https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/03.+Gateway+Gecordings+-+Steps.flac');
 
+  await page.close();
 });
 

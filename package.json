@@ -6,14 +6,19 @@
   "scripts": {
     "gh:test": "BROWSERSTACK_LOCAL=true npx playwright test --config=./playwright-local.config.ts --trace on",
     "show:report": "npx playwright show-report",
-    "test": "npx playwright test --config=./playwright.config.ts",
+    "test": "npx playwright test",
+    "test:config": "npx playwright test --config=./playwright.config.ts",
     "test:local": "BROWSERSTACK_LOCAL=true npx playwright test --config=./playwright-local.config.ts",
     "test:codegen": "npx playwright codegen",
     "test:chromium": "npx playwright test --project=chromium",
     "test:debug": "npx playwright test --debug",
     "test:trace": "npx playwright test --config=./playwright-local.config.ts --trace on",
     "test:ui": "npx playwright test --ui",
-    "test:headed": "npx playwright test --headed"
+    "test:headed": "npx playwright test --headed",
+    "test:search": "npx playwright test tests/search",
+    "test:books": "npx playwright test tests/books",
+    "test:login": "npx playwright test tests/login",
+    "test:music": "npx playwright test tests/music"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +30,7 @@
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
-    "playwright": "^1.35.1",
+    "playwright": "^1.40.1",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {

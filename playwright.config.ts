@@ -10,10 +10,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  // globalSetup: require.resolve('./global-setup.ts')
-  timeout: 150000,
   testDir: './tests',
-  testMatch: /.*.ts/,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -21,7 +18,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 2 : 1,
+  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -30,7 +27,7 @@ export default defineConfig({
     // baseURL: 'http://127.0.0.1:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-all-retries',
+    trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
@@ -48,43 +45,6 @@ export default defineConfig({
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
-    // -- BrowserStack Projects --
-    // name should be of the format browser@browser_version:os os_version@browserstack
-    {
-      name: 'chrome@latest:Windows 10@browserstack',
-      use: {
-        browserName: 'chromium',
-        channel: 'chrome'
-      },
-    },
-    {
-      name: 'chrome@latest-beta:OSX Big Sur@browserstack',
-      use: {
-        browserName: 'chromium',
-        channel: 'chrome',
-      },
-    },
-    {
-      name: 'edge@90:Windows 10@browserstack',
-      use: {
-        browserName: 'chromium'
-      },
-    },
-    {
-      name: 'playwright-firefox@latest:OSX Catalina@browserstack',
-      use: {
-        browserName: 'firefox',
-        ignoreHTTPSErrors: true
-      },
-    },
-    {
-      name: 'playwright-webkit@latest:OSX Big Sur@browserstack',
-      use: {
-        browserName: 'webkit',
-        // Config to use playwright emulated devices.
-        // ...devices['iPhone 12 Pro Max'],
-      },
     },
 
     /* Test against mobile viewports. */
@@ -104,7 +64,7 @@ export default defineConfig({
     // },
     // {
     //   name: 'Google Chrome',
-    //   use: { ..devices['Desktop Chrome'], channel: 'chrome' },
+    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
 
