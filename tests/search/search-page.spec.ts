@@ -1,13 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
 
-import { 
-  doASearchPageQuery, 
-  navigateThruInfiniteScrollerViewModes 
-} from './search-base';
+import { SearchPage } from './search-page';
 
-let page: Page;
+import { navigateThruInfiniteScrollerViewModes } from './search-base';
 
-const startURL = 'https://archive.org/search';
+let browserPage: Page;
+let searchPage: SearchPage;
+
 const queryURL = 'https://archive.org/search?query=cats';
 
 const sortTextList = [
@@ -22,12 +21,19 @@ test.describe('Search Page - page load and URL changes', () => {
   test.describe.configure({ mode: 'serial' });
 
   test('Go to search page and do a simple query', async ({ browser }) => {
-    page = await browser.newPage();
-    await doASearchPageQuery(page, startURL, 'cats');
+    browserPage = await browser.newPage();
+    searchPage = new SearchPage(browserPage);
+  
+    const page = searchPage.page;
+    await searchPage.visit();
+    await searchPage.search('cats');
+    await page.waitForLoadState();
     expect(page.url()).toBe(queryURL);
   });
 
   test('Should display result count and different facet groups', async () => {
+    const page = searchPage.page;
+
     const facetsContainer = page.locator('div#facets-container');
     const facetGroups = facetsContainer.locator('section.facet-group');
     const headerTitles = facetsContainer.locator('h3');
@@ -49,11 +55,7 @@ test.describe('Search Page - page load and URL changes', () => {
   });
 
   test('Navigate through different search view modes', async () => {
-    await navigateThruInfiniteScrollerViewModes(page);
-  });
-
-  test.describe('Select different sort filters', () => {
-    
+    await navigateThruInfiniteScrollerViewModes(browserPage);
   });
 
   // test('select different sort filters URL changes', async () => {

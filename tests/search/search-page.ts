@@ -22,39 +22,33 @@ export class SearchPage {
 
   async search(query: string) {
     await this.searchInput.fill(query);
-    await this.searchInput.click();
+    await this.searchInput.press('Enter');
   }
 
   async navigateThruInfiniteScrollerViewModes () {
-    const sortBarSection = searchPage.sortFilterBar;
+    const sortBarSection = this.sortFilterBar;
     const displayStyleSelector = sortBarSection.locator('div#display-style-selector');
     const displayStyleSelectorOptions = displayStyleSelector.locator('ul > li');
   
-    expect(await displayStyleSelector.count()).toEqual(1);
-    expect(await displayStyleSelectorOptions.count()).toEqual(3);
-    expect(await displayStyleSelectorOptions.nth(0).locator('#grid-button').count()).toEqual(1);
-    expect(await displayStyleSelectorOptions.nth(1).locator('#list-detail-button').count()).toEqual(1);
-    expect(await displayStyleSelectorOptions.nth(2).locator('#list-compact-button').count()).toEqual(1);
-  
-    // check if default grid view mode
-    expect(await expect(searchPage.infiniteScroller).toHaveClass(/grid/));
-    await expect(searchPage.infiniteScroller.locator('item-tile').first()).toBeVisible();
-    await expect(searchPage.infiniteScroller.locator('tile-list').first()).not.toBeVisible();
-    await expect(searchPage.infiniteScroller.locator('tile-list-compact').first()).not.toBeVisible();
+    // check if default view mode is grid
+    expect(await expect(this.infiniteScroller).toHaveClass(/grid/));
+    await expect(this.infiniteScroller.locator('item-tile').first()).toBeVisible();
+    await expect(this.infiniteScroller.locator('tile-list').first()).not.toBeVisible();
+    await expect(this.infiniteScroller.locator('tile-list-compact').first()).not.toBeVisible();
   
     // switch to list-detail view mode
     await displayStyleSelectorOptions.nth(1).click();
-    await expect(searchPage.infiniteScroller).toHaveClass(/list-detail/);
-    await expect(searchPage.infiniteScroller.locator('item-tile').first()).not.toBeVisible();
-    await expect(searchPage.infiniteScroller.locator('tile-list').first()).toBeVisible();
-    await expect(searchPage.infiniteScroller.locator('tile-list-compact').first()).not.toBeVisible();
+    await expect(this.infiniteScroller).toHaveClass(/list-detail/);
+    await expect(this.infiniteScroller.locator('item-tile').first()).not.toBeVisible();
+    await expect(this.infiniteScroller.locator('tile-list').first()).toBeVisible();
+    await expect(this.infiniteScroller.locator('tile-list-compact').first()).not.toBeVisible();
   
     // switch to list-compact view mode
     await displayStyleSelectorOptions.nth(2).click();
-    await expect(searchPage.infiniteScroller).toHaveClass(/list-compact/);
-    await expect(searchPage.infiniteScroller.locator('item-tile').first()).not.toBeVisible();
-    await expect(searchPage.infiniteScroller.locator('tile-list').first()).not.toBeVisible();
-    await expect(searchPage.infiniteScroller.locator('tile-list-compact').first()).toBeVisible();
+    await expect(this.infiniteScroller).toHaveClass(/list-compact/);
+    await expect(this.infiniteScroller.locator('item-tile').first()).not.toBeVisible();
+    await expect(this.infiniteScroller.locator('tile-list').first()).not.toBeVisible();
+    await expect(this.infiniteScroller.locator('tile-list-compact').first()).toBeVisible();
   }
   
 }
