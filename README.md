@@ -23,3 +23,9 @@
 ## View tests execution result
 
 - run: `npm run show:report`
+
+
+## Reference guide for writing tests
+
+https://playwright.dev/docs/pom
+https://ray.run/blog/mastering-poms
