@@ -1,10 +1,9 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 import { SearchPage } from './search-page';
 
 import { navigateThruInfiniteScrollerViewModes } from './search-base';
 
-let browserPage: Page;
 let searchPage: SearchPage;
 
 const queryURL = 'https://archive.org/search?query=cats';
@@ -17,11 +16,11 @@ const sortTextList = [
   'Creator'
 ];
 
-test.describe('Search Page - page load and URL changes', () => {
+test.describe('Search Page', () => {
   test.describe.configure({ mode: 'serial' });
 
   test('Go to search page and do a simple query', async ({ browser }) => {
-    browserPage = await browser.newPage();
+    const browserPage = await browser.newPage();
     searchPage = new SearchPage(browserPage);
   
     const page = searchPage.page;
@@ -31,143 +30,147 @@ test.describe('Search Page - page load and URL changes', () => {
     expect(page.url()).toBe(queryURL);
   });
 
-  test('Should display result count and different facet groups', async () => {
-    const page = searchPage.page;
-
-    const facetsContainer = page.locator('div#facets-container');
-    const facetGroups = facetsContainer.locator('section.facet-group');
-    const headerTitles = facetsContainer.locator('h3');
-
-    // loading results count
-    expect(await page.innerText('#big-results-count')).toBe('Searching…');
-    expect(await page.innerText('#big-results-label')).toEqual('');
-
-    await page.waitForTimeout(3000);
+  test.describe('Facets navigation', async () => {
+    test('Should display result count and different facet groups', async () => {
+      await searchPage.loadingResultCount();
   
-    const resultCount = await page.innerText('#big-results-count');
-    const actualTotalCount = parseFloat(resultCount.replace(/,/g, ''));
-    expect(actualTotalCount).toBeGreaterThan(60000);
-    expect(await page.innerText('#big-results-label')).toEqual('Results');
-
-    // assert facet group header count
-    expect(await facetGroups.count()).toEqual(8);
-    expect(await headerTitles.count()).toEqual(8);
-  });
+      const facetsContainer = searchPage.facetsContainer;
+      const facetGroups = facetsContainer.locator('section.facet-group');
+      const headerTitles = facetsContainer.locator('h3');
+  
+      // assert facet group header count
+      expect(await facetGroups.count()).toEqual(8);
+      expect(await headerTitles.count()).toEqual(8);
+    });
+  })
 
   test('Navigate through different search view modes', async () => {
-    await navigateThruInfiniteScrollerViewModes(browserPage);
+    await navigateThruInfiniteScrollerViewModes(searchPage.page);
   });
 
-  // test('select different sort filters URL changes', async () => {
-  //   await page.waitForTimeout(5000);
-  //   expect(page.url()).toBe(queryURL);
+  test.describe('Sorting results', async() => {
+    test('Desktop sort filter texts', async () => {
+      const browserPage = searchPage.page;
+      const sortBarSection = searchPage.sortFilterBar;
+      const sortDirectionContainer = sortBarSection.locator('.sort-direction-container');
+      const sortByText = sortBarSection.locator('.sort-by-text');
+      const srOnlySortDirection = sortDirectionContainer.locator('.sr-only');
 
-  //   const infiniteScroller = page.locator('infinite-scroller');
-  //   const sortFilterBar = page.locator('sort-filter-bar');
-  //   const sortContainer = sortFilterBar.locator('#container');
-  //   const sortBarSection = sortFilterBar.locator('section#sort-bar');
-
-  //   expect(await infiniteScroller.count()).toEqual(1);
-  //   expect(await sortFilterBar.count()).toEqual(1);
-  //   expect(await sortContainer.count()).toEqual(1);
-  //   expect(await sortBarSection.count()).toEqual(1);
-
-  //   const sortDirectionContainer = sortBarSection.locator('.sort-direction-container');
-  //   const sortByText = sortBarSection.locator('.sort-by-text');
-  //   const sortDirectionSelector = sortDirectionContainer.locator('.sort-direction-selector');
-  //   const srOnlySortDirection = sortDirectionContainer.locator('.sr-only');
-
-  //   expect(await sortDirectionContainer.count()).toEqual(1);
-  //   expect(await sortByText.count()).toEqual(1);
-  //   expect(await sortDirectionSelector.count()).toEqual(1);
-  //   expect(await srOnlySortDirection.count()).toEqual(1);
-
-  //   expect(await sortByText.innerText()).toEqual('Sort by:');
-  //   expect(await srOnlySortDirection.innerText()).toEqual('Change to ascending sort');
-
-  //   const sortSelectorContainer = sortBarSection.locator('div#sort-selector-container');
-  //   const mobileSort = sortSelectorContainer.locator('#mobile-sort-container');
-  //   const desktopSort = sortSelectorContainer.locator('#desktop-sort-container');
-    
-  //   const desktopSortSelector = desktopSort.locator('#desktop-sort-selector');
-  //   const desktopSortSelectorTexts = await desktopSort.locator('ul#desktop-sort-selector').allInnerTexts();
-  //   const desktopSortTexts = Object.assign([], desktopSortSelectorTexts[0].split('\n'));
-
-  //   await desktopSortSelector.click();
-  //   await expect(page).toHaveURL(/sort=title/);
-
-  //   await page.waitForTimeout(5000);
-  //   expect(await srOnlySortDirection.innerText()).toEqual('Change to descending sort');
-
-  //   desktopSortTexts.forEach((text: string, ix) => {
-  //     expect(text.includes(sortTextList[ix]));
-  //   });
-    
-  //   expect(await sortSelectorContainer.count()).toEqual(1);
-  //   expect(await desktopSortSelector.count()).toEqual(1);
-
-  //   expect(await expect(mobileSort).toHaveClass(/hidden/));
-  //   expect(await expect(desktopSort).toHaveClass(/visible/));
-
-  //   // sort-bar-filter URL changes
-  //   await page.getByRole('button', { name: 'Relevance' }).click();
-
-  //   await page.getByText('Weekly views').first().click();
-  //   await expect(page).toHaveURL(/query=cats&sort=-week/);
-
-  //   await page.getByRole('button', { name: 'Toggle options Weekly views' }).getByRole('button').click();
-  //   await page.getByRole('button', { name: 'All-time views' }).click();
-  //   await expect(page).toHaveURL(/query=cats&sort=-downloads/);
-
-  //   await page.getByRole('button', { name: 'Title' }).click();
-  //   await expect(page).toHaveURL(/query=cats&sort=title/);
-
-  //   await page.getByText('Date published').first().click();
-  //   await expect(page).toHaveURL(/query=cats&sort=-date/);
-
-  //   await page.getByRole('button', { name: 'Toggle options Date published' }).getByRole('button').click();
-  //   await page.getByRole('button', { name: 'Date archived' }).click();
-  //   await expect(page).toHaveURL(/query=cats&sort=-publicdate/);
- 
-  //   await page.getByRole('button', { name: 'Toggle options Date archived' }).getByRole('button').click();
-  //   await page.getByRole('button', { name: 'Date reviewed' }).click();
-  //   await expect(page).toHaveURL(/query=cats&sort=-reviewdate/);
-
-  //   await page.getByRole('button', { name: 'Toggle options Date reviewed' }).getByRole('button').click();
-  //   await page.getByRole('button', { name: 'Date added' }).click();
-  //   await expect(page).toHaveURL(/query=cats&sort=-addeddate/);
-
-  //   await page.getByRole('button', { name: 'Creator' }).click();
-  //   await expect(page).toHaveURL(/query=cats&sort=creator/);
-  // });
+      const sortSelectorContainer = sortBarSection.locator('div#sort-selector-container');
+      const desktopSort = sortSelectorContainer.locator('#desktop-sort-container');
+      
+      const desktopSortSelector = desktopSort.locator('#desktop-sort-selector');
+      const desktopSortSelectorTexts = await desktopSort.locator('ul#desktop-sort-selector').allInnerTexts();
+      const desktopSortTexts = Object.assign([], desktopSortSelectorTexts[0].split('\n'));
   
-  // test('select collection-search-input options', async () => {
-  //   const collectionSearchInput = page.locator('collection-search-input');
-  //   const collectionSearchGo = collectionSearchInput.locator('#go-button');
-  //   const buttonCollapserLocator = collectionSearchInput.locator('#button-collapser');
+      expect(await sortByText.innerText()).toEqual('Sort by:');
+      expect(await srOnlySortDirection.innerText()).toEqual('Change to ascending sort');
 
-  //   expect(await collectionSearchInput.count()).toEqual(1);
-  //   expect(await collectionSearchGo.count()).toEqual(1);
+      await desktopSortSelector.click();
+      await expect(browserPage).toHaveURL(/sort=title/);
 
-  //   const searchMetadata = buttonCollapserLocator.getByText('Search metadata');
-  //   const searchTextContents = buttonCollapserLocator.getByText('Search text contents');
-  //   const searchTVCaptions = buttonCollapserLocator.getByText('Search TV news captions');
-  //   const searchRadioTranscripts = buttonCollapserLocator.getByText('Search radio transcripts');
-  //   const searchArchivedWebSites = buttonCollapserLocator.getByText('Search archived web sites');
-    
-  //   expect(await searchMetadata.count()).toEqual(1);
-  //   expect(await searchTextContents.count()).toEqual(1);
-  //   expect(await searchTVCaptions.count()).toEqual(1);
-  //   expect(await searchRadioTranscripts.count()).toEqual(1);
-  //   expect(await searchArchivedWebSites.count()).toEqual(1);
+      await browserPage.waitForLoadState();
+      expect(await srOnlySortDirection.innerText()).toEqual('Change to descending sort');
 
-  //   await searchTextContents.click();
-  //   await collectionSearchGo.click();
-  //   await expect(page).toHaveURL(/query=cats&sin=TXT/);
+      desktopSortTexts.forEach((text: string, ix) => {
+        expect(text.includes(sortTextList[ix]));
+      });
+    });
 
-  //   await searchRadioTranscripts.click();
-  //   await collectionSearchGo.click();
-  //   await expect(page).toHaveURL(/query=cats&sin=RADIO/);
-  // });
+    test('Sort filter - Relevance', async () => {
+      const page = searchPage.page;
+      await page.getByRole('button', { name: 'Relevance' }).click();
+      await searchPage.loadingResultCount();
+    });
+
+    test('Sort filter - Weekly views', async () => {
+      const page = searchPage.page;
+      await page.getByText('Weekly views').first().click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=-week/);
+    });
+
+    test('Sort filter - All-time views', async () => {
+      const page = searchPage.page;
+      await page.getByRole('button', { name: 'Toggle options Weekly views' }).getByRole('button').click();
+      await page.getByRole('button', { name: 'All-time views' }).click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=-downloads/);
+    });
+
+    test('Sort filter - Title', async () => {
+      const page = searchPage.page;
+      await page.getByRole('button', { name: 'Title' }).click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=title/);
+    });
+
+    test('Sort filter - Date Published', async () => {
+      const page = searchPage.page;
+      await page.getByText('Date published').first().click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=-date/);
+    });
+
+    test('Sort filter - Date Archived', async () => {
+      const page = searchPage.page;
+      await page.getByRole('button', { name: 'Toggle options Date published' }).getByRole('button').click();
+      await page.getByRole('button', { name: 'Date archived' }).click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=-publicdate/);
+    });
+
+    test('Sort filter - Date Reviewed', async () => {
+      const page = searchPage.page;
+      await page.getByRole('button', { name: 'Toggle options Date archived' }).getByRole('button').click();
+      await page.getByRole('button', { name: 'Date reviewed' }).click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=-reviewdate/);
+    });
+
+    test('Sort filter - Date Added', async () => {
+      const page = searchPage.page;
+      await page.getByRole('button', { name: 'Toggle options Date reviewed' }).getByRole('button').click();
+      await page.getByRole('button', { name: 'Date added' }).click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=-addeddate/);
+    });
+
+    test('Sort filter - Creator', async () => {
+      const page = searchPage.page;
+      await page.getByRole('button', { name: 'Creator' }).click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sort=creator/);
+    });
+  });
+
+  // still need to rename this
+  test.describe('Search input options', async () => {
+    test('Check different collection search input options', async () => {
+      await expect(searchPage.collectionSearchInput).toBeVisible();
+      await expect(searchPage.btnCollectionSearchInputGo).toBeVisible();
+      await expect(searchPage.btnCollectionSearchInputCollapser).toBeVisible();
+
+      const options = searchPage.btnCollectionSearchInputCollapser.locator('ul > li > label > span');
+      await expect(options).toHaveText([
+        `Search metadata`,
+        `Search text contents`,
+        `Search TV news captions`,
+        `Search radio transcripts`,
+        `Search archived web sites`,
+      ]);
+    });
+
+    test('Search text contents', async () => {
+      const page = searchPage.page;
+      const btnCollapser = searchPage.btnCollectionSearchInputCollapser;
+
+      const searchText = btnCollapser.getByText('Search text contents');
+      await searchText.click();
+      await searchPage.btnCollectionSearchInputGo.click();
+      await searchPage.loadingResultCount();
+      await expect(page).toHaveURL(/query=cats&sin=TXT/);
+    });
+  });
 
 });

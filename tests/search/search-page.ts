@@ -3,17 +3,25 @@ import { type Page, type Locator, expect } from '@playwright/test';
 export class SearchPage {
   readonly page: Page;
   readonly url: string = 'https://archive.org/search';
-  readonly searchInput: Locator;
+  readonly inputSearch: Locator;
+  readonly facetsContainer: Locator;
   readonly infiniteScroller: Locator;
   readonly sortFilterBar: Locator;
+  readonly collectionSearchInput: Locator
+  readonly btnCollectionSearchInputGo: Locator;
+  readonly btnCollectionSearchInputCollapser: Locator;
 
   public constructor(page: Page) {
     this.page = page;
-    this.searchInput = page.getByRole('textbox', {
+    this.inputSearch = page.getByRole('textbox', {
       name: 'Search the Archive. Filters and Advanced Search available below.'
     });
+    this.facetsContainer = page.locator('div#facets-container');
     this.infiniteScroller = page.locator('infinite-scroller');
     this.sortFilterBar = page.locator('sort-filter-bar section#sort-bar');
+    this.collectionSearchInput = page.locator('collection-search-input');
+    this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
+    this.btnCollectionSearchInputCollapser = page.locator('collection-search-input #button-collapser');
   }
 
   async visit() {
@@ -21,8 +29,14 @@ export class SearchPage {
   }
 
   async search(query: string) {
-    await this.searchInput.fill(query);
-    await this.searchInput.press('Enter');
+    await this.inputSearch.fill(query);
+    await this.inputSearch.press('Enter');
+  }
+
+  async loadingResultCount() {
+    await expect(this.page.getByText('Searching')).toBeVisible();
+    await this.page.waitForTimeout(5000);
+    await expect(this.page.getByText('Results')).toBeVisible();
   }
 
   async navigateThruInfiniteScrollerViewModes () {

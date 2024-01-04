@@ -27,5 +27,5 @@
 
 ## Reference guide for writing tests
 
-https://playwright.dev/docs/pom
-https://ray.run/blog/mastering-poms
+- https://playwright.dev/docs/pom
+- https://ray.run/blog/mastering-poms
