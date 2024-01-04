@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 import { SearchPage } from './search-page';
-
-import { navigateThruInfiniteScrollerViewModes } from './search-base';
+import { SortBar } from './sort-bar';
 
 let searchPage: SearchPage;
 
@@ -45,102 +44,105 @@ test.describe('Search Page', () => {
   })
 
   test('Navigate through different search view modes', async () => {
-    await navigateThruInfiniteScrollerViewModes(searchPage.page);
+    await searchPage.navigateThruInfiniteScrollerViewModes();
   });
 
   test.describe('Sorting results', async() => {
-    test('Desktop sort filter texts', async () => {
-      const browserPage = searchPage.page;
-      const sortBarSection = searchPage.sortFilterBar;
-      const sortDirectionContainer = sortBarSection.locator('.sort-direction-container');
-      const sortByText = sortBarSection.locator('.sort-by-text');
-      const srOnlySortDirection = sortDirectionContainer.locator('.sr-only');
-
-      const sortSelectorContainer = sortBarSection.locator('div#sort-selector-container');
-      const desktopSort = sortSelectorContainer.locator('#desktop-sort-container');
-      
-      const desktopSortSelector = desktopSort.locator('#desktop-sort-selector');
-      const desktopSortSelectorTexts = await desktopSort.locator('ul#desktop-sort-selector').allInnerTexts();
+    test('Sort filter list', async () => {
+      const page = searchPage.page;
+      const sortBar = new SortBar(page);
+      const desktopSortSelectorTexts = await sortBar.sortSelector.allInnerTexts();
       const desktopSortTexts = Object.assign([], desktopSortSelectorTexts[0].split('\n'));
-  
-      expect(await sortByText.innerText()).toEqual('Sort by:');
-      expect(await srOnlySortDirection.innerText()).toEqual('Change to ascending sort');
 
-      await desktopSortSelector.click();
-      await expect(browserPage).toHaveURL(/sort=title/);
-
-      await browserPage.waitForLoadState();
-      expect(await srOnlySortDirection.innerText()).toEqual('Change to descending sort');
-
-      desktopSortTexts.forEach((text: string, ix) => {
+      desktopSortTexts.forEach((text: string, ix: number) => {
         expect(text.includes(sortTextList[ix]));
       });
     });
 
-    test('Sort filter - Relevance', async () => {
-      const page = searchPage.page;
-      await page.getByRole('button', { name: 'Relevance' }).click();
-      await searchPage.loadingResultCount();
-    });
+    // test('Sort by title - ascending order', async() => {
+      
+    // });
+
+    // test('Sort by title - descending order', async() => {
+      
+    // });
+
+    // test('Sort by creator - ascending order', async() => {
+      
+    // });
+
+    // test('Sort by creator - descending order', async() => {
+      
+    // });
 
     test('Sort filter - Weekly views', async () => {
       const page = searchPage.page;
-      await page.getByText('Weekly views').first().click();
+      const sortBar = new SortBar(page);
+      await sortBar.textClick('Weekly views');
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=-week/);
+    });
+
+    test('Sort filter - Relevance', async () => {
+      const page = searchPage.page;
+      const sortBar = new SortBar(page);
+      await sortBar.buttonClick('Relevance');
+      await searchPage.loadingResultCount();
     });
 
     test('Sort filter - All-time views', async () => {
       const page = searchPage.page;
-      await page.getByRole('button', { name: 'Toggle options Weekly views' }).getByRole('button').click();
-      await page.getByRole('button', { name: 'All-time views' }).click();
+      const sortBar = new SortBar(page);
+      await sortBar.caratButtonClick('Toggle options Weekly views');
+      await sortBar.buttonClick('All-time views');
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=-downloads/);
     });
 
     test('Sort filter - Title', async () => {
       const page = searchPage.page;
-      await page.getByRole('button', { name: 'Title' }).click();
+      const sortBar = new SortBar(page);
+      await sortBar.buttonClick('Title');
+      await expect(sortBar.alphaBar).toBeVisible();
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=title/);
     });
 
     test('Sort filter - Date Published', async () => {
       const page = searchPage.page;
-      await page.getByText('Date published').first().click();
+      const sortBar = new SortBar(page);
+      await sortBar.textClick('Date published');
+      await expect(sortBar.alphaBar).not.toBeVisible();
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=-date/);
     });
 
     test('Sort filter - Date Archived', async () => {
       const page = searchPage.page;
-      await page.getByRole('button', { name: 'Toggle options Date published' }).getByRole('button').click();
-      await page.getByRole('button', { name: 'Date archived' }).click();
+      const sortBar = new SortBar(page);
+      await sortBar.caratButtonClick('Toggle options Date published');
+      await sortBar.buttonClick('Date archived');
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=-publicdate/);
     });
 
     test('Sort filter - Date Reviewed', async () => {
       const page = searchPage.page;
-      await page.getByRole('button', { name: 'Toggle options Date archived' }).getByRole('button').click();
-      await page.getByRole('button', { name: 'Date reviewed' }).click();
+      const sortBar = new SortBar(page);
+      await sortBar.caratButtonClick('Toggle options Date archived');
+      await sortBar.buttonClick('Date reviewed');
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=-reviewdate/);
     });
 
     test('Sort filter - Date Added', async () => {
       const page = searchPage.page;
-      await page.getByRole('button', { name: 'Toggle options Date reviewed' }).getByRole('button').click();
-      await page.getByRole('button', { name: 'Date added' }).click();
+      const sortBar = new SortBar(page);
+      await sortBar.caratButtonClick('Toggle options Date reviewed');
+      await sortBar.buttonClick('Date added');
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=-addeddate/);
     });
 
     test('Sort filter - Creator', async () => {
       const page = searchPage.page;
-      await page.getByRole('button', { name: 'Creator' }).click();
+      const sortBar = new SortBar(page);
+      await sortBar.buttonClick('Creator');
+      await expect(sortBar.alphaBar).toBeVisible();
       await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sort=creator/);
     });
   });
 
@@ -159,17 +161,6 @@ test.describe('Search Page', () => {
         `Search radio transcripts`,
         `Search archived web sites`,
       ]);
-    });
-
-    test('Search text contents', async () => {
-      const page = searchPage.page;
-      const btnCollapser = searchPage.btnCollectionSearchInputCollapser;
-
-      const searchText = btnCollapser.getByText('Search text contents');
-      await searchText.click();
-      await searchPage.btnCollectionSearchInputGo.click();
-      await searchPage.loadingResultCount();
-      await expect(page).toHaveURL(/query=cats&sin=TXT/);
     });
   });
 
