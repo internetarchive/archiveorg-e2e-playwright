@@ -59,26 +59,11 @@ test.describe('Search Page', () => {
       });
     });
 
-    // test('Sort by title - ascending order', async() => {
-      
-    // });
-
-    // test('Sort by title - descending order', async() => {
-      
-    // });
-
-    // test('Sort by creator - ascending order', async() => {
-      
-    // });
-
-    // test('Sort by creator - descending order', async() => {
-      
-    // });
-
     test('Sort filter - Weekly views', async () => {
       const page = searchPage.page;
       const sortBar = new SortBar(page);
       await sortBar.textClick('Weekly views');
+      await expect(sortBar.alphaBar).not.toBeVisible();
       await searchPage.loadingResultCount();
     });
 
@@ -86,6 +71,7 @@ test.describe('Search Page', () => {
       const page = searchPage.page;
       const sortBar = new SortBar(page);
       await sortBar.buttonClick('Relevance');
+      await expect(sortBar.alphaBar).not.toBeVisible();
       await searchPage.loadingResultCount();
     });
 
@@ -94,10 +80,11 @@ test.describe('Search Page', () => {
       const sortBar = new SortBar(page);
       await sortBar.caratButtonClick('Toggle options Weekly views');
       await sortBar.buttonClick('All-time views');
+      await expect(sortBar.alphaBar).not.toBeVisible();
       await searchPage.loadingResultCount();
     });
 
-    test('Sort filter - Title', async () => {
+    test('Select filter - Title', async() => {
       const page = searchPage.page;
       const sortBar = new SortBar(page);
       await sortBar.buttonClick('Title');
@@ -143,6 +130,24 @@ test.describe('Search Page', () => {
       await sortBar.buttonClick('Creator');
       await expect(sortBar.alphaBar).toBeVisible();
       await searchPage.loadingResultCount();
+    });
+
+    test.describe('Sort direction', async () => {
+      test('By ascending order', async () => {
+        const page = searchPage.page;
+        const sortBar = new SortBar(page);
+        await sortBar.clickSortDirection();
+        await expect(sortBar.srSortText).toContainText('Change to ascending sort');
+        await searchPage.loadingResultCount();
+      });
+
+      test('By descending order', async () => {
+        const page = searchPage.page;
+        const sortBar = new SortBar(page);
+        await sortBar.clickSortDirection();
+        await expect(sortBar.srSortText).toContainText('Change to descending sort');
+        await searchPage.loadingResultCount();
+      });
     });
   });
 
