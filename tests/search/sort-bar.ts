@@ -32,4 +32,21 @@ export class SortBar {
   async clickSortDirection () {
     await this.btnSortDirection.click();
   }
+
+  async clickAlphaBarLetterByPosition (pos: number) {
+    const alphabet = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+    const nthLetter = this.alphaBar.locator('#container ul > li').nth(pos);
+    const letterSelected = this.alphaBar.locator('#container ul > li.selected');
+  
+    await nthLetter.click();
+
+    const letterText = await nthLetter.innerText();
+    expect(letterText).toBe(alphabet[pos]);
+    expect(await letterSelected.count()).toEqual(1);
+  }
+
+  async clearAlphaBar () {
+    const letterSelected = this.alphaBar.locator('#container ul > li.selected');
+    expect(await letterSelected.count()).toEqual(0);
+  }
 }

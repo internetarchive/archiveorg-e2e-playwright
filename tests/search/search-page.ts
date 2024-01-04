@@ -10,6 +10,7 @@ export class SearchPage {
   readonly collectionSearchInput: Locator
   readonly btnCollectionSearchInputGo: Locator;
   readonly btnCollectionSearchInputCollapser: Locator;
+  readonly btnClearAllFilters: Locator;
 
   public constructor(page: Page) {
     this.page = page;
@@ -22,6 +23,7 @@ export class SearchPage {
     this.collectionSearchInput = page.locator('collection-search-input');
     this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
     this.btnCollectionSearchInputCollapser = page.locator('collection-search-input #button-collapser');
+    this.btnClearAllFilters = page.locator('#facets-header-container .clear-filters-btn');
   }
 
   async visit() {
@@ -63,6 +65,13 @@ export class SearchPage {
     await expect(this.infiniteScroller.locator('item-tile').first()).not.toBeVisible();
     await expect(this.infiniteScroller.locator('tile-list').first()).not.toBeVisible();
     await expect(this.infiniteScroller.locator('tile-list-compact').first()).toBeVisible();
+  }
+
+  async clearAllFilters () {
+    await expect(this.btnClearAllFilters).toBeVisible();
+    await this.btnClearAllFilters.click();
+    await this.loadingResultCount();
+    await expect(this.btnClearAllFilters).not.toBeVisible();
   }
   
 }

@@ -149,10 +149,29 @@ test.describe('Search Page', () => {
         await searchPage.loadingResultCount();
       });
     });
+
+    test('Alphabet letter sorting by position', async () => {
+      const page = searchPage.page;
+      const sortBar = new SortBar(page);
+
+      await sortBar.clickAlphaBarLetterByPosition(1);
+      await page.waitForLoadState();
+
+      await sortBar.clickAlphaBarLetterByPosition(10);
+      await page.waitForLoadState();
+      await page.waitForTimeout(3000);
+    });
+
+    test('Clear applied filters', async () => {
+      const page = searchPage.page;
+      const sortBar = new SortBar(page);
+
+      await searchPage.clearAllFilters();
+      await sortBar.clearAlphaBar();
+    });
   });
 
-  // still need to rename this
-  test.describe('Search input options', async () => {
+  test.describe('Search type options', async () => {
     test('Check different collection search input options', async () => {
       await expect(searchPage.collectionSearchInput).toBeVisible();
       await expect(searchPage.btnCollectionSearchInputGo).toBeVisible();
