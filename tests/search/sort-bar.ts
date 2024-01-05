@@ -40,8 +40,8 @@ export class SortBar {
   
     await nthLetter.click();
 
-    const letterText = await nthLetter.innerText();
-    expect(letterText).toBe(alphabet[pos]);
+    // assertion .toEqual has deep equality error in webkit
+    expect(await nthLetter.innerText()).toContain(alphabet[pos]);
     expect(await letterSelected.count()).toEqual(1);
   }
 
