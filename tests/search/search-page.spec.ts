@@ -104,11 +104,7 @@ test.describe('Search Page', () => {
     });
 
     test('Clear applied filters', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-
       await searchPage.clearAllFilters();
-      await sortBar.clearAlphaBarFilter();
     });
   });
 

@@ -85,7 +85,6 @@ export class SearchPage {
   }
 
   async clearAllFilters () {
-    // const sortBar = new SortBar(this.page);
     await expect(this.btnClearAllFilters).toBeVisible();
     await this.btnClearAllFilters.click();
     await this.sortBar.clearAlphaBarFilter();
