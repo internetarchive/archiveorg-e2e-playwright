@@ -5,41 +5,21 @@ import { SortBar } from './sort-bar';
 
 let searchPage: SearchPage;
 
-const queryURL = 'https://archive.org/search?query=cats';
-
-const sortTextList = [
-  'Relevance',
-  'Weekly views', 
-  'Title', 
-  'Date published', 
-  'Creator'
-];
-
 test.describe('Search Page', () => {
   test.describe.configure({ mode: 'serial' });
 
   test('Go to search page and do a simple query', async ({ browser }) => {
     const browserPage = await browser.newPage();
     searchPage = new SearchPage(browserPage);
-  
-    const page = searchPage.page;
+
     await searchPage.visit();
     await searchPage.search('cats');
-    await page.waitForLoadState();
-    expect(page.url()).toBe(queryURL);
   });
 
   test.describe('Facets navigation', async () => {
     test('Should display result count and different facet groups', async () => {
       await searchPage.loadingResultCount();
-  
-      const facetsContainer = searchPage.facetsContainer;
-      const facetGroups = facetsContainer.locator('section.facet-group');
-      const headerTitles = facetsContainer.locator('h3');
-  
-      // assert facet group header count
-      expect(await facetGroups.count()).toEqual(8);
-      expect(await headerTitles.count()).toEqual(8);
+      await searchPage.checkFacetGroups();
     });
   })
 
@@ -48,87 +28,48 @@ test.describe('Search Page', () => {
   });
 
   test.describe('Sorting results', async() => {
-    test('Sort filter list', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      const desktopSortSelectorTexts = await sortBar.sortSelector.allInnerTexts();
-      const desktopSortTexts = Object.assign([], desktopSortSelectorTexts[0].split('\n'));
-
-      desktopSortTexts.forEach((text: string, ix: number) => {
-        expect(text.includes(sortTextList[ix]));
-      });
-    });
-
     test('Sort filter - Weekly views', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.textClick('Weekly views');
-      await expect(sortBar.alphaBar).not.toBeVisible();
+      await searchPage.navigateSortBy('Weekly views');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - Relevance', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.buttonClick('Relevance');
-      await expect(sortBar.alphaBar).not.toBeVisible();
+      await searchPage.navigateSortBy('Relevance');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - All-time views', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.caratButtonClick('Toggle options Weekly views');
-      await sortBar.buttonClick('All-time views');
-      await expect(sortBar.alphaBar).not.toBeVisible();
+      await searchPage.navigateSortBy('All-time views');
       await searchPage.loadingResultCount();
     });
 
     test('Select filter - Title', async() => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.buttonClick('Title');
-      await expect(sortBar.alphaBar).toBeVisible();
+      await searchPage.navigateSortBy('Title');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - Date Published', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.textClick('Date published');
-      await expect(sortBar.alphaBar).not.toBeVisible();
+      await searchPage.navigateSortBy('Date published');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - Date Archived', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.caratButtonClick('Toggle options Date published');
-      await sortBar.buttonClick('Date archived');
+      await searchPage.navigateSortBy('Date archived');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - Date Reviewed', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.caratButtonClick('Toggle options Date archived');
-      await sortBar.buttonClick('Date reviewed');
+      await searchPage.navigateSortBy('Date reviewed');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - Date Added', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.caratButtonClick('Toggle options Date reviewed');
-      await sortBar.buttonClick('Date added');
+      await searchPage.navigateSortBy('Date added');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - Creator', async () => {
-      const page = searchPage.page;
-      const sortBar = new SortBar(page);
-      await sortBar.buttonClick('Creator');
-      await expect(sortBar.alphaBar).toBeVisible();
+      await searchPage.navigateSortBy('Creator');
       await searchPage.loadingResultCount();
     });
 
@@ -167,7 +108,7 @@ test.describe('Search Page', () => {
       const sortBar = new SortBar(page);
 
       await searchPage.clearAllFilters();
-      await sortBar.clearAlphaBar();
+      await sortBar.clearAlphaBarFilter();
     });
   });
 

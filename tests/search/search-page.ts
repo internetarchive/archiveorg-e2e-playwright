@@ -1,5 +1,8 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
+import { CollectionFacets } from './collection-facets';
+import { SortBar } from './sort-bar';
+
 export class SearchPage {
   readonly page: Page;
   readonly url: string = 'https://archive.org/search';
@@ -11,6 +14,8 @@ export class SearchPage {
   readonly btnCollectionSearchInputGo: Locator;
   readonly btnCollectionSearchInputCollapser: Locator;
   readonly btnClearAllFilters: Locator;
+
+  readonly sortBar: SortBar;
 
   public constructor(page: Page) {
     this.page = page;
@@ -24,6 +29,8 @@ export class SearchPage {
     this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
     this.btnCollectionSearchInputCollapser = page.locator('collection-search-input #button-collapser');
     this.btnClearAllFilters = page.locator('#facets-header-container .clear-filters-btn');
+
+    this.sortBar = new SortBar(this.page);
   }
 
   async visit() {
@@ -33,12 +40,18 @@ export class SearchPage {
   async search(query: string) {
     await this.inputSearch.fill(query);
     await this.inputSearch.press('Enter');
+    await this.page.waitForLoadState();
   }
 
-  async loadingResultCount() {
+  async loadingResultCount () {
     await expect(this.page.getByText('Searching')).toBeVisible();
     await this.page.waitForTimeout(5000);
     await expect(this.page.getByText('Results')).toBeVisible();
+  }
+
+  async checkFacetGroups() {
+    const collectionFacets = new CollectionFacets(this.page);
+    await collectionFacets.checkFacetGroups();
   }
 
   async navigateThruInfiniteScrollerViewModes () {
@@ -67,9 +80,15 @@ export class SearchPage {
     await expect(this.infiniteScroller.locator('tile-list-compact').first()).toBeVisible();
   }
 
+  async navigateSortBy (filter: string) {
+    await this.sortBar.applySortBy(filter, '');
+  }
+
   async clearAllFilters () {
+    // const sortBar = new SortBar(this.page);
     await expect(this.btnClearAllFilters).toBeVisible();
     await this.btnClearAllFilters.click();
+    await this.sortBar.clearAlphaBarFilter();
     await this.loadingResultCount();
     await expect(this.btnClearAllFilters).not.toBeVisible();
   }

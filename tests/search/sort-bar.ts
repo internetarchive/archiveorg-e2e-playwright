@@ -22,11 +22,49 @@ export class SortBar {
   }
 
   async caratButtonClick (sortName: string) {
-    await this.page.getByRole('button', { name: sortName }).getByRole('button').click();
+    await this.page.getByRole('button', { name: sortName, }).getByRole('button').click();
   }
 
   async textClick (name: string) {
     await this.page.getByText(name).first().click();
+  }
+
+  async applySortBy (filter: string, direction: string) {
+    const flatSortTextList = ['Relevance', 'Title', 'Creator'];
+
+    const viewsDropdown = this.sortSelector.locator('li #views-dropdown');
+    const dateDropdown = this.sortSelector.locator('li #date-dropdown');
+    const viewsDropdownText = await viewsDropdown.innerText();
+    const dateDropdownText = await dateDropdown.innerText();
+
+    if (!flatSortTextList.includes(filter)) {
+      const _toggleOption = filter.includes('views') ? viewsDropdownText : dateDropdownText;
+      
+      if (filter === _toggleOption) {
+        await this.textClick(filter);
+      } else {
+        await this.caratButtonClick(`Toggle options ${_toggleOption}`);
+        await this.buttonClick(filter);
+      }
+    } else {
+      await this.buttonClick(filter);
+    }
+
+    await this.page.waitForLoadState()
+    await this.checkAlphaBarVisibility(filter);
+
+    // add test for sort direction here
+    // if (direction) {
+    //   this.clickSortDirection(direction);
+    // }
+  }
+
+  async checkAlphaBarVisibility (filter: string) {
+    if (!['Title', 'Creator'].includes(filter)) {
+      await expect(this.alphaBar).not.toBeVisible();
+    } else {
+      await expect(this.alphaBar).toBeVisible();
+    }
   }
 
   async clickSortDirection () {
@@ -45,8 +83,13 @@ export class SortBar {
     expect(await letterSelected.count()).toEqual(1);
   }
 
-  async clearAlphaBar () {
+  async clearAlphaBarFilter () {
     const letterSelected = this.alphaBar.locator('#container ul > li.selected');
     expect(await letterSelected.count()).toEqual(0);
   }
+
+  async alphaSortBarNotVisibile () {
+    await expect(this.alphaBar).not.toBeVisible();
+  } 
+
 }
