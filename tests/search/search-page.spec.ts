@@ -28,67 +28,49 @@ test.describe('Search Page', () => {
   });
 
   test.describe('Sorting results', async() => {
-    test('Sort filter - Weekly views', async () => {
-      await searchPage.navigateSortBy('Weekly views');
+    test('Sort filter - Weekly views in descending order', async () => {
+      await searchPage.navigateSortBy('Weekly views', 'descending');
       await searchPage.loadingResultCount();
     });
 
-    test('Sort filter - Relevance', async () => {
-      await searchPage.navigateSortBy('Relevance');
+    test('Sort filter - Relevance in descending order', async () => {
+      await searchPage.navigateSortBy('Relevance', 'descending');
       await searchPage.loadingResultCount();
     });
 
-    test('Sort filter - All-time views', async () => {
-      await searchPage.navigateSortBy('All-time views');
+    test('Sort filter - All-time views in ascending order', async () => {
+      await searchPage.navigateSortBy('All-time views', 'ascending');
       await searchPage.loadingResultCount();
     });
 
-    test('Select filter - Title', async() => {
-      await searchPage.navigateSortBy('Title');
+    test('Select filter - Title in descending order', async() => {
+      await searchPage.navigateSortBy('Title', 'descending');
       await searchPage.loadingResultCount();
     });
 
     test('Sort filter - Date Published', async () => {
-      await searchPage.navigateSortBy('Date published');
+      await searchPage.navigateSortBy('Date published', 'ascending');
       await searchPage.loadingResultCount();
     });
 
-    test('Sort filter - Date Archived', async () => {
-      await searchPage.navigateSortBy('Date archived');
+    test('Sort filter - Date Archived in ascending order', async () => {
+      await searchPage.navigateSortBy('Date archived', 'ascending');
       await searchPage.loadingResultCount();
     });
 
-    test('Sort filter - Date Reviewed', async () => {
-      await searchPage.navigateSortBy('Date reviewed');
+    test('Sort filter - Date Reviewed in ascending order', async () => {
+      await searchPage.navigateSortBy('Date reviewed', 'ascending');
       await searchPage.loadingResultCount();
     });
 
-    test('Sort filter - Date Added', async () => {
-      await searchPage.navigateSortBy('Date added');
+    test('Sort filter - Date Added in ascending order', async () => {
+      await searchPage.navigateSortBy('Date added', 'ascending');
       await searchPage.loadingResultCount();
     });
 
-    test('Sort filter - Creator', async () => {
-      await searchPage.navigateSortBy('Creator');
+    test('Sort filter - Creator in descending order', async () => {
+      await searchPage.navigateSortBy('Creator', 'descending');
       await searchPage.loadingResultCount();
-    });
-
-    test.describe('Sort direction', async () => {
-      test('By ascending order', async () => {
-        const page = searchPage.page;
-        const sortBar = new SortBar(page);
-        await sortBar.clickSortDirection();
-        await expect(sortBar.srSortText).toContainText('Change to ascending sort');
-        await searchPage.loadingResultCount();
-      });
-
-      test('By descending order', async () => {
-        const page = searchPage.page;
-        const sortBar = new SortBar(page);
-        await sortBar.clickSortDirection();
-        await expect(sortBar.srSortText).toContainText('Change to descending sort');
-        await searchPage.loadingResultCount();
-      });
     });
 
     test('Alphabet letter sorting by position', async () => {
@@ -96,11 +78,7 @@ test.describe('Search Page', () => {
       const sortBar = new SortBar(page);
 
       await sortBar.clickAlphaBarLetterByPosition(1);
-      await page.waitForLoadState();
-
       await sortBar.clickAlphaBarLetterByPosition(10);
-      await page.waitForLoadState();
-      await page.waitForTimeout(3000);
     });
 
     test('Clear applied filters', async () => {

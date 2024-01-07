@@ -80,8 +80,8 @@ export class SearchPage {
     await expect(this.infiniteScroller.locator('tile-list-compact').first()).toBeVisible();
   }
 
-  async navigateSortBy (filter: string) {
-    await this.sortBar.applySortBy(filter, '');
+  async navigateSortBy (filter: string, direction: string) {
+    await this.sortBar.applySortBy(filter, direction);
   }
 
   async clearAllFilters () {

@@ -53,10 +53,7 @@ export class SortBar {
     await this.page.waitForLoadState()
     await this.checkAlphaBarVisibility(filter);
 
-    // add test for sort direction here
-    // if (direction) {
-    //   this.clickSortDirection(direction);
-    // }
+    this.clickSortDirection(direction);
   }
 
   async checkAlphaBarVisibility (filter: string) {
@@ -67,8 +64,17 @@ export class SortBar {
     }
   }
 
-  async clickSortDirection () {
-    await this.btnSortDirection.click();
+  async clickSortDirection (direction: string) {
+     // TODO: may still need to find better way to check sort direction
+    const currentSortText = await this.srSortText.innerText();
+    const oppositeSortText = direction === 'ascending' ? 'descending' : 'ascending';
+
+    if (currentSortText.includes(direction)) {
+      await this.btnSortDirection.click();
+      await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
+    }
+
+    await this.page.waitForLoadState();
   }
 
   async clickAlphaBarLetterByPosition (pos: number) {
@@ -81,6 +87,9 @@ export class SortBar {
     // assertion .toEqual has deep equality error in webkit
     expect(await nthLetter.innerText()).toContain(alphabet[pos]);
     expect(await letterSelected.count()).toEqual(1);
+
+    await this.page.waitForLoadState();
+    await this.page.waitForTimeout(3000);
   }
 
   async clearAlphaBarFilter () {
