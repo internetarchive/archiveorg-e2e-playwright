@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 import { SearchPage } from './search-page';
-import { SortBar } from './sort-bar';
+
+import { SortBar } from '../shared/sort-bar';
 
 let searchPage: SearchPage;
 
