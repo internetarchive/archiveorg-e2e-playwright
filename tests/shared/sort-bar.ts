@@ -10,10 +10,10 @@ export class SortBar {
 
   public constructor(page: Page) {
     this.page = page;
-    this.sortFilterBar = page.locator('sort-filter-bar');
+    this.alphaBar = page.locator('alpha-bar');
+    this.sortFilterBar = page.locator('sort-filter-bar section#sort-bar');
     this.sortSelector = this.sortFilterBar.locator('ul#desktop-sort-selector');
     this.btnSortDirection = this.sortFilterBar.locator('.sort-direction-icon');
-    this.alphaBar = page.locator('alpha-bar');
     this.srSortText = this.sortFilterBar.locator('button.sort-direction-selector span.sr-only');
   }
 
@@ -54,6 +54,8 @@ export class SortBar {
     await this.checkAlphaBarVisibility(filter);
 
     this.clickSortDirection(direction);
+
+    // TODO: add test to check the actual items loaded if it's in a correct order
   }
 
   async checkAlphaBarVisibility (filter: string) {
@@ -84,7 +86,7 @@ export class SortBar {
   
     await nthLetter.click();
 
-    // assertion .toEqual has deep equality error in webkit
+    // Note: assertion .toEqual has deep equality error in webkit
     expect(await nthLetter.innerText()).toContain(alphabet[pos]);
     expect(await letterSelected.count()).toEqual(1);
 

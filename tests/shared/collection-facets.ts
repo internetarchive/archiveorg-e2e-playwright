@@ -10,6 +10,13 @@ export class CollectionFacets {
     this.collectionFacets = page.locator('collection-facets');
   }
 
+  async checkResultCount() {
+    await expect(this.page.getByText('Searching')).toBeVisible();
+    await this.page.waitForTimeout(5000);
+    await expect(this.page.locator('#big-results-count')).toBeVisible();
+    await expect(this.page.locator('#big-results-label')).toBeVisible();
+  }
+
   async checkFacetGroups() {
     const facetsContainer = this.collectionFacets.locator('#container');
     const facetGroups = facetsContainer.locator('section.facet-group');
