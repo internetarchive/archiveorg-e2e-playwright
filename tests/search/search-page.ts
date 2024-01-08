@@ -1,7 +1,7 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { CollectionFacets } from './collection-facets';
-import { SortBar } from './sort-bar';
+import { CollectionFacets } from '../shared/collection-facets';
+import { SortBar } from '../shared/sort-bar';
 
 export class SearchPage {
   readonly page: Page;
