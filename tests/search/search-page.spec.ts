@@ -34,7 +34,7 @@ test.describe('Metadata - Search page results display', () => {
       await searchPage.navigateSortBy('Weekly views', 'descending');
     });
 
-    test('Sort by relevance, descending orderr', async () => {
+    test('Sort by relevance, descending order', async () => {
       await searchPage.navigateSortBy('Relevance', 'descending');
     });
 

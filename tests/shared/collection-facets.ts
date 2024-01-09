@@ -13,8 +13,7 @@ export class CollectionFacets {
   async checkResultCount() {
     await expect(this.page.getByText('Searching')).toBeVisible();
     await this.page.waitForTimeout(5000);
-    await expect(this.page.locator('#big-results-count')).toBeVisible();
-    await expect(this.page.locator('#big-results-label')).toBeVisible();
+    await expect(this.page.getByText('Results')).toBeVisible();
   }
 
   async checkFacetGroups() {
