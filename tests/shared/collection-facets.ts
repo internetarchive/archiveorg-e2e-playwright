@@ -21,8 +21,6 @@ export class CollectionFacets {
     const facetGroups = facetsContainer.locator('section.facet-group');
     const headerTitles = facetsContainer.locator('h3');
 
-    await this.collectionFacets.count();
-
     // assert facet group header count
     expect(await facetGroups.count()).toEqual(8);
     expect(await headerTitles.count()).toEqual(8);
