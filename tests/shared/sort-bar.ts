@@ -1,0 +1,106 @@
+import { type Page, type Locator, expect } from '@playwright/test';
+
+export class SortBar {
+  readonly page: Page;
+  readonly sortFilterBar: Locator;
+  readonly sortSelector: Locator;
+  readonly btnSortDirection: Locator;
+  readonly alphaBar: Locator;
+  readonly srSortText: Locator;
+
+  public constructor(page: Page) {
+    this.page = page;
+    this.alphaBar = page.locator('alpha-bar');
+    this.sortFilterBar = page.locator('sort-filter-bar section#sort-bar');
+    this.sortSelector = this.sortFilterBar.locator('ul#desktop-sort-selector');
+    this.btnSortDirection = this.sortFilterBar.locator('.sort-direction-icon');
+    this.srSortText = this.sortFilterBar.locator('button.sort-direction-selector span.sr-only');
+  }
+
+  async buttonClick (sortName: string) {
+    await this.page.getByRole('button', { name: sortName }).click();
+  }
+
+  async caratButtonClick (sortName: string) {
+    await this.page.getByRole('button', { name: sortName, }).getByRole('button').click();
+  }
+
+  async textClick (name: string) {
+    await this.page.getByText(name).first().click();
+  }
+
+  async applySortBy (filter: string, direction: string) {
+    const flatSortTextList = ['Relevance', 'Title', 'Creator'];
+
+    const viewsDropdown = this.sortSelector.locator('li #views-dropdown');
+    const dateDropdown = this.sortSelector.locator('li #date-dropdown');
+    const viewsDropdownText = await viewsDropdown.innerText();
+    const dateDropdownText = await dateDropdown.innerText();
+
+    if (!flatSortTextList.includes(filter)) {
+      const _toggleOption = filter.includes('views') ? viewsDropdownText : dateDropdownText;
+      
+      if (filter === _toggleOption) {
+        await this.textClick(filter);
+      } else {
+        await this.caratButtonClick(`Toggle options ${_toggleOption}`);
+        await this.buttonClick(filter);
+      }
+    } else {
+      await this.buttonClick(filter);
+    }
+
+    await this.page.waitForLoadState()
+    await this.checkAlphaBarVisibility(filter);
+
+    this.clickSortDirection(direction);
+
+    // TODO: add test to check the actual items loaded if it's in a correct order
+  }
+
+  async checkAlphaBarVisibility (filter: string) {
+    if (!['Title', 'Creator'].includes(filter)) {
+      await expect(this.alphaBar).not.toBeVisible();
+    } else {
+      await expect(this.alphaBar).toBeVisible();
+    }
+  }
+
+  async clickSortDirection (direction: string) {
+     // TODO: may still need to find better way to check sort direction
+    const currentSortText = await this.srSortText.innerText();
+    const oppositeSortText = direction === 'ascending' ? 'descending' : 'ascending';
+
+    if (currentSortText.includes(direction)) {
+      await this.btnSortDirection.click();
+      await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
+    }
+
+    await this.page.waitForLoadState();
+  }
+
+  async clickAlphaBarLetterByPosition (pos: number) {
+    const alphabet = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+    const nthLetter = this.alphaBar.locator('#container ul > li').nth(pos);
+    const letterSelected = this.alphaBar.locator('#container ul > li.selected');
+  
+    await nthLetter.click();
+
+    // Note: assertion .toEqual has deep equality error in webkit
+    expect(await nthLetter.innerText()).toContain(alphabet[pos]);
+    expect(await letterSelected.count()).toEqual(1);
+
+    await this.page.waitForLoadState();
+    await this.page.waitForTimeout(3000);
+  }
+
+  async clearAlphaBarFilter () {
+    const letterSelected = this.alphaBar.locator('#container ul > li.selected');
+    expect(await letterSelected.count()).toEqual(0);
+  }
+
+  async alphaSortBarNotVisibile () {
+    await expect(this.alphaBar).not.toBeVisible();
+  } 
+
+}
