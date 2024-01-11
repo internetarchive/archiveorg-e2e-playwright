@@ -13,7 +13,7 @@ export class CollectionFacets {
   async checkResultCount() {
     await expect(this.page.getByText('Searching')).toBeVisible();
     await this.page.waitForTimeout(5000);
-    await expect(this.page.getByText('Results')).toBeVisible();
+    await expect(this.page.getByText('Results', { exact: true })).toBeVisible();
   }
 
   async checkFacetGroups() {
