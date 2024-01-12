@@ -1,18 +1,18 @@
 import { test } from '@playwright/test';
 
-import { EmptyPlaceHolderText, SearchOption, SearchPage } from './search-page';
+import { SearchOption, SearchPage } from './search-page';
 
 let searchPage: SearchPage;
 
-test.describe('Metadata - Search page results display', () => {
+test.describe('Search page tests', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test('Display begin searching page displays prior to searching', async({ browser }) => {
+  test(`"Begin searching" page displays prior to searching`, async({ browser }) => {
     const browserPage = await browser.newPage();
     searchPage = new SearchPage(browserPage);
 
     await searchPage.visit();
-    await searchPage.checkPagePlaceholder(EmptyPlaceHolderText.BEGIN);
+    await searchPage.checkEmptyPagePlaceholder();
   });
 
   test('Verify search input options displayed', async () => {
@@ -33,25 +33,37 @@ test.describe('Metadata - Search page results display', () => {
 
   test('Do simple TV search', async () => {
     await searchPage.clickSearchInputOption(SearchOption.TV);
-    await searchPage.queryFor('cats');
-    await searchPage.checkTVPage();
+    await searchPage.queryFor('iguanas');
+    await searchPage.checkTVPage('iguanas');
+  });
+
+  test('Go back to search page from TV page', async () => {
+    await searchPage.goBackToSearchPage();
   });
 
   test('Do simple radio search', async () => {
     await searchPage.clickSearchInputOption(SearchOption.RADIO);
-    await searchPage.queryFor('rabbit');
-    await searchPage.checkRadioPage();
+    await searchPage.queryFor('rabbits');
+    await searchPage.checkRadioPage('rabbits');
+  });
+
+  test('Go back to search page from radio page', async () => {
+    await searchPage.goBackToSearchPage();
   });
 
   test('Do simple web search', async () => {
     await searchPage.clickSearchInputOption(SearchOption.WEB);
-    await searchPage.queryFor('funny cats');
-    await searchPage.checkWaybackPage();
+    await searchPage.queryFor('parrots');
+    await searchPage.checkWaybackPage('parrots');
+  });
+
+  test('Go back to search page from Wayback page', async () => {
+    await searchPage.goBackToSearchPage();
   });
 
   test('No results page displays when no results', async () => {
     await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
-    await searchPage.checkPagePlaceholder(EmptyPlaceHolderText.EMPTY);
+    await searchPage.checkEmptyPagePlaceholder();
   })
 
 });

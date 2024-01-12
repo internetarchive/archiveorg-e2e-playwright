@@ -10,12 +10,9 @@ export enum SearchOption  {
   TV = `Search TV news captions`,
   RADIO = `Search radio transcripts`,
   WEB = `Search archived web sites`,
-}
+};
 
-export enum EmptyPlaceHolderText {
-  BEGIN = `To begin searching, enter a search term in the box above and hit "Go".`,
-  EMPTY = `Your search did not match any items in the Archive. Try different keywords or a more general search.`,
-}
+const PAGE_TIMEOUT = 3000;
 
 export class SearchPage {
   readonly url: string = 'https://archive.org/search';
@@ -26,6 +23,7 @@ export class SearchPage {
   readonly btnClearAllFilters: Locator;
   readonly emptyPlaceholder: Locator;
   readonly emptyPlaceholderTitleText: Locator;
+  readonly waybackInputSearch: Locator;
 
   readonly collectionFacets: CollectionFacets;
   readonly infiniteScroller: InfiniteScroller;
@@ -43,6 +41,8 @@ export class SearchPage {
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 
+    this.waybackInputSearch = page.locator('input.rbt-input-main.form-control.rbt-input');
+
     this.collectionFacets = new CollectionFacets(this.page);
     this.infiniteScroller = new InfiniteScroller(this.page);
     this.sortBar = new SortBar(this.page);
@@ -52,10 +52,9 @@ export class SearchPage {
     await this.page.goto(this.url);
   }
 
-  async checkPagePlaceholder(text: EmptyPlaceHolderText) {
+  async checkEmptyPagePlaceholder() {
     await (expect(this.emptyPlaceholder).toBeVisible());
     await (expect(this.emptyPlaceholderTitleText).toBeVisible());
-    expect(await this.emptyPlaceholderTitleText.textContent()).toContain(text);
   }
 
   async queryFor(query: string) {
@@ -66,10 +65,6 @@ export class SearchPage {
 
   async displayResultCount() {
     await this.collectionFacets.checkResultCount();
-  }
-
-  async displaySearchOptionsView() {
-    await this.inputSearch.click();
   }
 
   async checkFacetGroups() {
@@ -118,32 +113,38 @@ export class SearchPage {
   }
 
   async clickSearchInputOption(option: SearchOption) {
+    await this.inputSearch.click();
     await expect(this.btnCollectionSearchInputCollapser.getByText(option)).toBeVisible();
     await this.btnCollectionSearchInputCollapser.getByText(option).click();
   }
 
-  async checkTVPage() {
-    await this.page.waitForTimeout(3000);
+  async checkTVPage(query: string) {
+    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    expect(await this.page.title()).toContain('Internet Archive TV NEWS');
     await expect(this.page.getByRole('link', { name: 'TV News Archive', exact: true })).toBeVisible();
     await expect(this.page.getByRole('heading', { name: 'Search' })).toBeVisible();
-    await expect(this.page.getByRole('link', { name: 'Try the new Search Beta!' })).toBeVisible();
-    expect(await this.page.title()).toContain('Internet Archive TV NEWS');
-    // go back to search beta page
-    await this.page.getByRole('link', { name: 'Try the new Search Beta!' }).click();
+    await expect(this.inputSearch).toBeVisible();
+    expect(await this.inputSearch.inputValue()).toContain(query);
   }
 
-  async checkRadioPage() {
-    await this.page.waitForTimeout(3000);
-    await expect(this.page.getByRole('link', { name: 'Try the new Search Beta!' })).toBeVisible();
-    // go back to start search page
-    await this.visit();
-    await this.displaySearchOptionsView();
+  async checkRadioPage(query: string) {
+    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await expect(this.inputSearch).toBeVisible();
+    expect(await this.inputSearch.inputValue()).toContain(query);
   }
 
-  async checkWaybackPage() {
-    await this.page.waitForTimeout(3000);
+  async checkWaybackPage(query: string) {
+    await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Wayback Machine');
-    // go back to start search page
+    await expect(this.waybackInputSearch).toBeVisible();
+    expect(await this.waybackInputSearch.inputValue()).toContain(query);
+  }
+
+  async checkInputSearchContents(inputSearch: Locator) {
+
+  }
+
+  async goBackToSearchPage() {
     await this.visit();
   }
   
