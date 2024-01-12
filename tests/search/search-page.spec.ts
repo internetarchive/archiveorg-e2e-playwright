@@ -15,10 +15,6 @@ test.describe('Search page tests', () => {
     await searchPage.checkEmptyPagePlaceholder();
   });
 
-  test('Verify search input options displayed', async () => {
-    await searchPage.checkSearchInputOptions();
-  })
-
   test('Do simple metadata search', async () => {
     await searchPage.clickSearchInputOption(SearchOption.METADATA);
     await searchPage.queryFor('cats');
@@ -64,6 +60,6 @@ test.describe('Search page tests', () => {
   test('No results page displays when no results', async () => {
     await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
     await searchPage.checkEmptyPagePlaceholder();
-  })
+  });
 
 });

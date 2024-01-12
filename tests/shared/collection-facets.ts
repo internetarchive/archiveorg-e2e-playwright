@@ -4,16 +4,17 @@ export class CollectionFacets {
   
   readonly page: Page;
   readonly collectionFacets: Locator;
+  readonly resultsTotal: Locator;
 
   public constructor(page: Page) {
     this.page = page;
     this.collectionFacets = page.locator('collection-facets');
+    this.resultsTotal = page.locator('#facets-header-container #results-total');
   }
 
   async checkResultCount() {
     await expect(this.page.getByText('Searching')).toBeVisible();
-    await this.page.waitForTimeout(5000);
-    await expect(this.page.getByText('Results', { exact: true })).toBeVisible();
+    await expect(this.resultsTotal).toBeVisible();
   }
 
   async checkFacetGroups() {

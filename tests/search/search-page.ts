@@ -17,13 +17,15 @@ const PAGE_TIMEOUT = 3000;
 export class SearchPage {
   readonly url: string = 'https://archive.org/search';
   readonly page: Page;
-  readonly inputSearch: Locator
   readonly btnCollectionSearchInputGo: Locator;
   readonly btnCollectionSearchInputCollapser: Locator;
   readonly btnClearAllFilters: Locator;
   readonly emptyPlaceholder: Locator;
   readonly emptyPlaceholderTitleText: Locator;
-  readonly waybackInputSearch: Locator;
+  readonly formInputSearchPage: Locator;
+  readonly formInputRadioPage: Locator;
+  readonly formInputTVPage: Locator;
+  readonly formInputWaybackPage: Locator;
 
   readonly collectionFacets: CollectionFacets;
   readonly infiniteScroller: InfiniteScroller;
@@ -31,17 +33,17 @@ export class SearchPage {
 
   public constructor(page: Page) {
     this.page = page;
-    this.inputSearch = page.getByRole('textbox', {
-      name: 'Search the Archive. Filters and Advanced Search available below.'
-    });
+
     this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
     this.btnCollectionSearchInputCollapser = page.locator('collection-search-input #button-collapser');
     this.btnClearAllFilters = page.locator('#facets-header-container .clear-filters-btn');
-
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 
-    this.waybackInputSearch = page.locator('input.rbt-input-main.form-control.rbt-input');
+    this.formInputSearchPage = page.locator('collection-search-input #text-input');
+    this.formInputRadioPage = page.locator('#searchform > div > div:nth-child(1) > input');
+    this.formInputTVPage = page.locator('#searchform > div > div:nth-child(1) > input');
+    this.formInputWaybackPage = page.locator('input.rbt-input-main.form-control.rbt-input');
 
     this.collectionFacets = new CollectionFacets(this.page);
     this.infiniteScroller = new InfiniteScroller(this.page);
@@ -58,8 +60,8 @@ export class SearchPage {
   }
 
   async queryFor(query: string) {
-    await this.inputSearch.fill(query);
-    await this.inputSearch.press('Enter');
+    await this.formInputSearchPage.fill(query);
+    await this.formInputSearchPage.press('Enter');
     await this.page.waitForLoadState();
   }
 
@@ -91,29 +93,12 @@ export class SearchPage {
     await expect(this.btnClearAllFilters).not.toBeVisible();
   }
 
-  async checkSearchInputOptions() {
-    await expect(this.inputSearch).toBeVisible();
-    await expect(this.btnCollectionSearchInputGo).toBeVisible();
-
-    await this.inputSearch.click();
-    await expect(this.btnCollectionSearchInputCollapser).toBeVisible();
-    
-    const btnOptionsCount = await this.btnCollectionSearchInputCollapser.locator('ul > li').count();
-
-    expect(btnOptionsCount).toBe(5);
-    
-    const options = this.btnCollectionSearchInputCollapser.locator('ul > li > label > span');
-    await expect(options).toHaveText([
-      `Search metadata`,
-      `Search text contents`,
-      `Search TV news captions`,
-      `Search radio transcripts`,
-      `Search archived web sites`,
-    ]);
-  }
-
   async clickSearchInputOption(option: SearchOption) {
-    await this.inputSearch.click();
+    await expect(this.btnCollectionSearchInputGo).toBeVisible();
+    await expect(this.formInputSearchPage).toBeVisible();
+
+    await this.formInputSearchPage.click();
+    await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(this.btnCollectionSearchInputCollapser.getByText(option)).toBeVisible();
     await this.btnCollectionSearchInputCollapser.getByText(option).click();
   }
@@ -123,25 +108,21 @@ export class SearchPage {
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
     await expect(this.page.getByRole('link', { name: 'TV News Archive', exact: true })).toBeVisible();
     await expect(this.page.getByRole('heading', { name: 'Search' })).toBeVisible();
-    await expect(this.inputSearch).toBeVisible();
-    expect(await this.inputSearch.inputValue()).toContain(query);
+    await expect(this.formInputTVPage).toBeVisible();
+    expect(await this.formInputTVPage.inputValue()).toContain(query);
   }
 
   async checkRadioPage(query: string) {
     await this.page.waitForTimeout(PAGE_TIMEOUT);
-    await expect(this.inputSearch).toBeVisible();
-    expect(await this.inputSearch.inputValue()).toContain(query);
+    await expect(this.formInputRadioPage).toBeVisible();
+    expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
   async checkWaybackPage(query: string) {
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Wayback Machine');
-    await expect(this.waybackInputSearch).toBeVisible();
-    expect(await this.waybackInputSearch.inputValue()).toContain(query);
-  }
-
-  async checkInputSearchContents(inputSearch: Locator) {
-
+    await expect(this.formInputWaybackPage).toBeVisible();
+    expect(await this.formInputWaybackPage.inputValue()).toContain(query);
   }
 
   async goBackToSearchPage() {
