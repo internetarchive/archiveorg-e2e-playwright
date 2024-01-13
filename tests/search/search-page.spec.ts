@@ -4,7 +4,7 @@ import { SearchOption, SearchPage } from './search-page';
 
 let searchPage: SearchPage;
 
-test.describe('Search page tests', () => {
+test.describe('Basic Search tests', () => {
   test.describe.configure({ mode: 'serial' });
 
   test(`"Begin searching" page displays prior to searching`, async({ browser }) => {
@@ -31,9 +31,6 @@ test.describe('Search page tests', () => {
     await searchPage.clickSearchInputOption(SearchOption.TV);
     await searchPage.queryFor('iguanas');
     await searchPage.checkTVPage('iguanas');
-  });
-
-  test('Go back to search page from TV page', async () => {
     await searchPage.goBackToSearchPage();
   });
 
@@ -41,9 +38,6 @@ test.describe('Search page tests', () => {
     await searchPage.clickSearchInputOption(SearchOption.RADIO);
     await searchPage.queryFor('rabbits');
     await searchPage.checkRadioPage('rabbits');
-  });
-
-  test('Go back to search page from radio page', async () => {
     await searchPage.goBackToSearchPage();
   });
 
@@ -51,9 +45,6 @@ test.describe('Search page tests', () => {
     await searchPage.clickSearchInputOption(SearchOption.WEB);
     await searchPage.queryFor('parrots');
     await searchPage.checkWaybackPage('parrots');
-  });
-
-  test('Go back to search page from Wayback page', async () => {
     await searchPage.goBackToSearchPage();
   });
 
