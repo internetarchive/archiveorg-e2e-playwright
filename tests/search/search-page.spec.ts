@@ -1,88 +1,56 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
-import { SearchPage } from './search-page';
-
-import { SortBar } from '../shared/sort-bar';
+import { SearchOption, SearchPage } from './search-page';
 
 let searchPage: SearchPage;
-let sortBar: SortBar;
 
-test.describe('Metadata - Search page results display', () => {
+test.describe('Basic Search tests', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test('Go to search page and do a simple query', async ({ browser }) => {
+  test(`"Begin searching" page displays prior to searching`, async({ browser }) => {
     const browserPage = await browser.newPage();
     searchPage = new SearchPage(browserPage);
-    sortBar = new SortBar(searchPage.page);
 
     await searchPage.visit();
-    await searchPage.search('cats');
+    await searchPage.checkEmptyPagePlaceholder();
   });
 
-  test.describe('Facets navigation', async () => {
-    test('Should display result count and different facet groups', async () => {
-      await searchPage.checkFacetGroups();
-    });
-  })
-
-  test('Navigate through different search view modes', async () => {
-    await searchPage.navigateThruInfiniteScrollerViewModes();
+  test('Do simple metadata search', async () => {
+    await searchPage.clickSearchInputOption(SearchOption.METADATA);
+    await searchPage.queryFor('cats');
+    await searchPage.displayResultCount();
   });
 
-  test.describe('Sorting results', async() => {
-    test('Sort by weekly views, descending order', async () => {
-      await searchPage.navigateSortBy('Weekly views', 'descending');
-    });
-
-    test('Sort by relevance, descending order', async () => {
-      await searchPage.navigateSortBy('Relevance', 'descending');
-    });
-
-    test('Sort by all-time views, ascending order', async () => {
-      await searchPage.navigateSortBy('All-time views', 'ascending');
-    });
-
-    test('Sort by title, descending order', async() => {
-      await searchPage.navigateSortBy('Title', 'descending');
-    });
-
-    test('Sort by date published, ascending order', async () => {
-      await searchPage.navigateSortBy('Date published', 'ascending');
-    });
-
-    test('Sort by date archived, ascending order', async () => {
-      await searchPage.navigateSortBy('Date archived', 'ascending');
-    });
-
-    test('Sort by date reviewed, ascending order', async () => {
-      await searchPage.navigateSortBy('Date reviewed', 'ascending');
-    });
-
-    test('Sort by date added, ascending order', async () => {
-      await searchPage.navigateSortBy('Date added', 'ascending');
-    });
-
-    test('Sort by creator, ascending order', async () => {
-      await searchPage.navigateSortBy('Creator', 'descending');
-    });
-
-    test('Sort by creator name that starts with letter B', async () => {
-      await sortBar.clickAlphaBarLetterByPosition(1);
-    });
-
-    test('Sort by creator name that starts with letter K', async () => {
-      await sortBar.clickAlphaBarLetterByPosition(10);
-    });
-
-    test('Clear applied creator name letter sort filter', async () => {
-      await searchPage.clearAllFilters();
-    });
+  test('Do simple text contents search', async () => {
+    await searchPage.clickSearchInputOption(SearchOption.TEXT);
+    await searchPage.queryFor('dogs');
+    await searchPage.displayResultCount();
   });
 
-  test.describe('Search type options', async () => {
-    test('Should display different collection search input options', async () => {
-      await searchPage.checkSearchInputOptions();
-    });
+  test('Do simple TV search', async () => {
+    await searchPage.clickSearchInputOption(SearchOption.TV);
+    await searchPage.queryFor('iguanas');
+    await searchPage.checkTVPage('iguanas');
+    await searchPage.goBackToSearchPage();
+  });
+
+  test('Do simple radio search', async () => {
+    await searchPage.clickSearchInputOption(SearchOption.RADIO);
+    await searchPage.queryFor('rabbits');
+    await searchPage.checkRadioPage('rabbits');
+    await searchPage.goBackToSearchPage();
+  });
+
+  test('Do simple web search', async () => {
+    await searchPage.clickSearchInputOption(SearchOption.WEB);
+    await searchPage.queryFor('parrots');
+    await searchPage.checkWaybackPage('parrots');
+    await searchPage.goBackToSearchPage();
+  });
+
+  test('No results page displays when no results', async () => {
+    await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
+    await searchPage.checkEmptyPagePlaceholder();
   });
 
 });
