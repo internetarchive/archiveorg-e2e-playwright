@@ -90,6 +90,7 @@ export class InfiniteScroller {
     // Check if tile-hover-pane "title" is similar to the current item "title"
     const firstResultItemText = await firstResultItem.locator('#title').first().textContent();
     const tileHoverPaneTitleText = await this.page.locator('tile-hover-pane #title > a').textContent();
+    // TODO: toContain has issues - need to fix
     expect(tileHoverPaneTitleText).toContain(firstResultItemText);
   }
 
@@ -144,6 +145,25 @@ export class InfiniteScroller {
           // console.log('innerHtml(): ', await result.innerHTML());
         }
       }
+    }
+  }
+
+  async checkDatePublishedViewsFromListViewMode() {
+    const resultsContainer = await this.infiniteScrollerContainer.all();
+    expect(resultsContainer.length).toBeGreaterThan(1);
+
+    await this.page.waitForTimeout(3000);
+
+    for (const { index, result } of resultsContainer.map((result, index) => ({ index, result }))) {
+      // The 1st child from resultsContainer is #sentinel, so get the 2nd child from it instead
+      if (index === 0) {
+        console.log('do nothing - sentinel');
+      } else {
+        console.log('get current view mode: ', this.currentViewMode);
+        const publishedSelector = '';
+        await expect(this.page.locator('tile-list #list-line #dates-line > div > span')).toBeVisible();
+      }
+      if (index === 6) break;
     }
   }
 
