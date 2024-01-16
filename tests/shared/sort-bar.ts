@@ -1,5 +1,7 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
+export type SortOrder = 'ascending' | 'descending';
+
 export class SortBar {
   readonly page: Page;
   readonly sortFilterBar: Locator;
@@ -29,7 +31,7 @@ export class SortBar {
     await this.page.getByText(name).first().click();
   }
 
-  async applySortBy (filter: string, direction: string) {
+  async applySortBy (filter: string, sortOrder: SortOrder) {
     const flatSortTextList = ['Relevance', 'Title', 'Creator'];
 
     const viewsDropdown = this.sortSelector.locator('li #views-dropdown');
@@ -53,7 +55,9 @@ export class SortBar {
     await this.page.waitForLoadState()
     await this.checkAlphaBarVisibility(filter);
 
-    this.clickSortDirection(direction);
+    if (sortOrder || sortOrder !== '') {
+      this.clickSortDirection(sortOrder);
+    }
 
     // TODO: add test to check the actual items loaded if it's in a correct order
   }
@@ -66,12 +70,12 @@ export class SortBar {
     }
   }
 
-  async clickSortDirection (direction: string) {
-     // TODO: may still need to find better way to check sort direction
+  async clickSortDirection (sortOrder: SortOrder) {
+     // TODO: may still need to find better way to check sort order
     const currentSortText = await this.srSortText.innerText();
-    const oppositeSortText = direction === 'ascending' ? 'descending' : 'ascending';
+    const oppositeSortText = sortOrder === 'ascending' ? 'descending' : 'ascending';
 
-    if (currentSortText.includes(direction)) {
+    if (currentSortText.includes(sortOrder)) {
       await this.btnSortDirection.click();
       await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
     }

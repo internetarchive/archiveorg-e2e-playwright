@@ -2,7 +2,7 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 import { CollectionFacets } from '../shared/collection-facets';
 import { InfiniteScroller } from '../shared/infiinite-scroller';
-import { SortBar } from '../shared/sort-bar';
+import { SortBar, SortOrder } from '../shared/sort-bar';
 
 export enum SearchOption  {
   METADATA = `Search metadata`,
@@ -74,14 +74,8 @@ export class SearchPage {
     await this.collectionFacets.checkFacetGroups();
   }
 
-  async navigateThruInfiniteScrollerViewModes() {
-    await this.infiniteScroller.clickGridView();
-    await this.infiniteScroller.clickListView();
-    await this.infiniteScroller.clickListCompactView();
-  }
-
-  async navigateSortBy(filter: string, direction: string) {
-    await this.sortBar.applySortBy(filter, direction);
+  async navigateSortBy(filter: string, sortOrder: SortOrder) {
+    await this.sortBar.applySortBy(filter, sortOrder);
     await this.displayResultCount();
   }
 
@@ -127,6 +121,17 @@ export class SearchPage {
 
   async goBackToSearchPage() {
     await this.visit();
+  }
+
+  async checkInfiniteScrollerItems(filter: string, sortOrder: SortOrder) {
+    console.log('checkInfiniteScrollerItems - filter: ', filter, 'sortOrder: ', sortOrder);
+
+    // todo add view mode as well
+    if (filter === 'All-time views') {
+      await this.infiniteScroller.checkAllTimeViewsFromTileViewMode();
+    } else {
+      console.log('do something else');
+    }
   }
   
 }
