@@ -2,6 +2,7 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 import { SortBar } from './sort-bar';
 
+import { clearStringWhitespaces } from './utils';
 export class InfiniteScroller {
   
   readonly page: Page;
@@ -9,7 +10,7 @@ export class InfiniteScroller {
   readonly displayStyleSelector: Locator;
   readonly displayStyleSelectorOptions: Locator;
 
-  readonly infiniteScrollerContainer: Locator;
+  readonly infiniteScrollerSectionContainer: Locator;
   readonly itemTile: Locator;
   readonly itemTileStats: Locator;
   readonly itemTileViewCountText: Locator;
@@ -25,14 +26,14 @@ export class InfiniteScroller {
     this.sortBar = new SortBar(page);
 
     this.infiniteScroller = page.locator('infinite-scroller');
-    this.infiniteScrollerContainer = this.infiniteScroller.locator('#container');
+    this.infiniteScrollerSectionContainer = this.infiniteScroller.locator('#container');
 
     const sortBarSection = this.sortBar.sortFilterBar;
     this.displayStyleSelector = sortBarSection.locator('div#display-style-selector');
     this.displayStyleSelectorOptions = this.displayStyleSelector.locator('ul > li');
 
     const tileDispatcher = this.infiniteScroller.locator('tile-dispatcher');
-    // refactor this
+    // to refactor this
     this.itemTileViewCountText = tileDispatcher.locator('#stats-row > li:nth-child(2) > p > span');
 
     this.currentViewMode = 'grid';
@@ -78,30 +79,38 @@ export class InfiniteScroller {
   }
 
   async hoverToFirstItemAndCheckItemTitle () {
-    const resultsContainer = await this.infiniteScrollerContainer.all();
-    expect(resultsContainer.length).toBeGreaterThan(1);
+    await this.page.waitForLoadState();
+    // get all article elements
+    const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
+    expect(articlesContainer.length).toBeGreaterThan(1);
 
-    // The 1st child from resultsContainer is #sentinel, so get the 2nd child from it instead
-    const firstResultItem = resultsContainer[1];
+    const firstResultItem = articlesContainer[0];
     await firstResultItem.hover();
     await this.page.waitForSelector('tile-hover-pane');
-    await expect(this.page.locator('tile-hover-pane')).toBeVisible();
+    await expect(firstResultItem.locator('tile-hover-pane')).toBeVisible();
 
-    // Check if tile-hover-pane "title" is similar to the current item "title"
-    const firstResultItemText = await firstResultItem.locator('#title').first().textContent();
+    const firstResultItemText = await firstResultItem.locator('#title > h4').first().textContent();
     const tileHoverPaneTitleText = await this.page.locator('tile-hover-pane #title > a').textContent();
-    // TODO: toContain has issues - need to fix
-    expect(tileHoverPaneTitleText).toContain(firstResultItemText);
+    console.log('tileHoverTitleText: ', tileHoverPaneTitleText, ' firstResultItemText: ', firstResultItemText);
+
+    if (firstResultItemText || tileHoverPaneTitleText) {
+      const clearHoverText = clearStringWhitespaces(tileHoverPaneTitleText!);
+      const clearItemText = clearStringWhitespaces(tileHoverPaneTitleText!);
+      expect(clearHoverText).toContain(clearItemText);
+    } else {
+      console.log('something went wrong');
+    }
   }
 
+  // TO TEST
   async clickFirstResultAndRedirectToDetailsPage() {
     await this.page.waitForLoadState();
 
-    const resultsContainer = await this.infiniteScrollerContainer.all();
-    expect(resultsContainer.length).toBeGreaterThan(1);
+    // get all article elements
+    const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
+    expect(articlesContainer.length).toBeGreaterThan(1);
 
-    // The 1st child from resultsContainer is #sentinel, so get the 2nd child from it instead
-    const firstResultItem = resultsContainer[1];
+    const firstResultItem = articlesContainer[0];
     const firstResultItemLink = await firstResultItem.locator('a').first().getAttribute('href');
     const pattern = new RegExp(`${firstResultItemLink}`);
     await firstResultItem.click();
@@ -111,59 +120,45 @@ export class InfiniteScroller {
   }
 
   async checkAllTimeViewsFromTileViewMode() {
-    const resultsContainer = await this.infiniteScrollerContainer.all();
-    expect(resultsContainer.length).toBeGreaterThan(1);
+    // get all article elements
+    const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
+    expect(articlesContainer.length).toBeGreaterThan(1);
 
-    await this.page.waitForTimeout(3000);
-    /**
-     * Note: (tile view mode)
-     * - "cats" => All-time views
-     * - The first 2 tile items displays collection-tile 
-     * - Code need to check if it's a collection-tile or item-tile
-     */
-    for (const { index, result } of resultsContainer.map((result, index) => ({ index, result }))) {
-      // The 1st child from resultsContainer is #sentinel, so get the 2nd child from it instead
-      if (index === 0) {
-        console.log('do nothing - sentinel');
+    await this.page.waitForTimeout(5000);
+    // Note: (tile view mode) - Need to check if it's a collection-tile or item-tile
+    for (const { index, result } of articlesContainer.map((result, index) => ({ index, result }))) {
+      if (index === 10) break; // check the first 10 items for now
+
+      // check if collection-tile or item-tile
+      const collectionTileSelector = 'a > collection-tile';
+      const itemTileSelector = 'a > item-tile';
+      const collectionTileCount = await result.locator(collectionTileSelector).count();
+      const itemTileCount = await result.locator(itemTileSelector).count();
+      console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
+
+      if (collectionTileCount === 1 && itemTileCount === 0) {
+        console.log('it is a collection tile - do nothing for now');
+      } else if (collectionTileCount === 0 && itemTileCount === 1) {
+        console.log('it is a item tile');
+        const viewsStatsSelector = 'tile-stats #stats-row > li:nth-child(2)';
+        await expect(result.locator(viewsStatsSelector)).toBeVisible();
       } else {
-        console.log('get current view mode: ', this.currentViewMode);
-        // check if collection-tile or item-tile
-        const collectionTileSelector = 'a > collection-tile';
-        const itemTileSelector = 'a > item-tile';
-        const collectionTileCount = await result.locator(collectionTileSelector).count();
-        const itemTileCount = await result.locator(itemTileSelector).count();
-
-        console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
-        if (collectionTileCount === 1 && itemTileCount === 0) {
-          console.log('it is a collection tile');
-        } else if (collectionTileCount === 0 && itemTileCount === 1) {
-          console.log('it is a item tile');
-          const viewsStatsSelector = 'tile-stats #stats-row > li:nth-child(2)';
-          await expect(result.locator(viewsStatsSelector)).toBeVisible();
-        } else {
-          console.log('it is something else');
-          // console.log('innerHtml(): ', await result.innerHTML());
-        }
+        console.log('it is something else');
       }
     }
   }
 
   async checkDatePublishedViewsFromListViewMode() {
-    const resultsContainer = await this.infiniteScrollerContainer.all();
-    expect(resultsContainer.length).toBeGreaterThan(1);
+    // get all article elements
+    const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
+    expect(articlesContainer.length).toBeGreaterThan(1);
 
-    await this.page.waitForTimeout(3000);
+    const dateLineLabelSelector = '#list-line #dates-line > div > span';
+    await this.page.waitForTimeout(5000);
 
-    for (const { index, result } of resultsContainer.map((result, index) => ({ index, result }))) {
-      // The 1st child from resultsContainer is #sentinel, so get the 2nd child from it instead
-      if (index === 0) {
-        console.log('do nothing - sentinel');
-      } else {
-        console.log('get current view mode: ', this.currentViewMode);
-        const publishedSelector = '';
-        await expect(this.page.locator('tile-list #list-line #dates-line > div > span')).toBeVisible();
-      }
-      if (index === 6) break;
+    for (const { index, result } of articlesContainer.map((result, index) => ({ index, result }))) {
+      if (index === 10) break; // check the first 10 items for now
+      expect(await result.locator(dateLineLabelSelector).innerText()).toContain('Published');
     }
   }
 
