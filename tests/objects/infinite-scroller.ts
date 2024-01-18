@@ -44,6 +44,7 @@ export class InfiniteScroller {
   }
 
   async clickTileView() {
+    // TODO: something to think about if all view modes are just 3
     await this.displayStyleSelectorOptions.nth(0).click();
     expect(await expect(this.infiniteScroller).toHaveClass(/grid/));
     await expect(this.infiniteScroller.locator('item-tile').first()).toBeVisible();
@@ -89,14 +90,13 @@ export class InfiniteScroller {
     await this.page.waitForSelector('tile-hover-pane');
     await expect(firstResultItem.locator('tile-hover-pane')).toBeVisible();
 
+    // still need to improve code
     const firstResultItemText = await firstResultItem.locator('#title > h4').first().textContent();
     const tileHoverPaneTitleText = await this.page.locator('tile-hover-pane #title > a').textContent();
     console.log('tileHoverTitleText: ', tileHoverPaneTitleText, ' firstResultItemText: ', firstResultItemText);
 
-    if (firstResultItemText || tileHoverPaneTitleText) {
-      const clearHoverText = clearStringWhitespaces(tileHoverPaneTitleText!);
-      const clearItemText = clearStringWhitespaces(tileHoverPaneTitleText!);
-      expect(clearHoverText).toContain(clearItemText);
+    if (firstResultItemText && tileHoverPaneTitleText) {
+      expect(clearStringWhitespaces(tileHoverPaneTitleText!)).toContain(clearStringWhitespaces(firstResultItemText!));
     } else {
       console.log('something went wrong');
     }
@@ -114,8 +114,9 @@ export class InfiniteScroller {
     const firstResultItemLink = await firstResultItem.locator('a').first().getAttribute('href');
     const pattern = new RegExp(`${firstResultItemLink}`);
     await firstResultItem.click();
-    await this.page.waitForTimeout(5000);
+    await this.page.waitForLoadState();
     await expect(this.page).toHaveURL(pattern);
+
     expect(await this.page.title()).toContain('Free Download, Borrow, and Streaming : Internet Archive');
   }
 
@@ -130,20 +131,18 @@ export class InfiniteScroller {
       if (index === 10) break; // check the first 10 items for now
 
       // check if collection-tile or item-tile
-      const collectionTileSelector = 'a > collection-tile';
-      const itemTileSelector = 'a > item-tile';
-      const collectionTileCount = await result.locator(collectionTileSelector).count();
-      const itemTileCount = await result.locator(itemTileSelector).count();
+      const collectionTileCount = await result.locator('a > collection-tile').count();
+      const itemTileCount = await result.locator('a > item-tile').count();
       console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
 
       if (collectionTileCount === 1 && itemTileCount === 0) {
         console.log('it is a collection tile - do nothing for now');
       } else if (collectionTileCount === 0 && itemTileCount === 1) {
         console.log('it is a item tile');
-        const viewsStatsSelector = 'tile-stats #stats-row > li:nth-child(2)';
-        await expect(result.locator(viewsStatsSelector)).toBeVisible();
+        await expect(result.locator('tile-stats #stats-row > li:nth-child(2)')).toBeVisible();
+        // check if title contains all time views
       } else {
-        console.log('it is something else');
+        console.log('it is not a collection-tile nor an item-tile');
       }
     }
   }

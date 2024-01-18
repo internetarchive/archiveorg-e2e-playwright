@@ -1,8 +1,8 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { CollectionFacets } from '../shared/collection-facets';
-import { InfiniteScroller } from '../shared/infiinite-scroller';
-import { SortBar, SortOrder } from '../shared/sort-bar';
+import { CollectionFacets } from '../objects/collection-facets';
+import { InfiniteScroller } from '../objects/infinite-scroller';
+import { SortBar, SortOrder } from '../objects/sort-bar';
 
 export enum SearchOption  {
   METADATA = `Search metadata`,
@@ -136,7 +136,7 @@ export class SearchPage {
       await this.page.waitForLoadState();
       await this.page.waitForTimeout(3000);
       await this.infiniteScroller.checkDatePublishedViewsFromListViewMode();
-    } else if (filter === 'Date archiveed') {
+    } else if (filter === 'Date archived') {
       // must check for Archived column
       await this.page.waitForLoadState();
       await this.page.waitForTimeout(3000);
