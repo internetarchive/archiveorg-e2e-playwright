@@ -61,7 +61,6 @@ export class InfiniteScroller {
 
   async hoverToFirstItem () {
     await this.page.waitForLoadState('networkidle');
-
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
@@ -74,24 +73,23 @@ export class InfiniteScroller {
     expect(textFirstItemTile).toEqual(textTileHoverPane);
   }
 
-  // TO REFACTOR
-  // async clickFirstResultAndRedirectToDetailsPage() {
-  //   await this.page.waitForLoadState();
+  async clickFirstResultAndCheckRedirectToDetailsPage () {
+    await this.page.waitForLoadState('networkidle');
+    expect(await this.firstItemTile.count()).toBe(1);
 
-  //   // get all article elements
-  //   const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
-  //   expect(articlesContainer.length).toBeGreaterThan(10);
+    // Get item tile link to compare with the redirect URL
+    const itemLink = await this.firstItemTile.locator('a').first().getAttribute('href');
+    const pattern = new RegExp(`${itemLink}`);
+    await this.firstItemTile.click();
+
+    await this.page.waitForLoadState();
+    await expect(this.page).toHaveURL(pattern);
+  }
+
   
-  //   const firstResultItem = articlesContainer[0];
-  //   const firstResultItemLink = await firstResultItem.locator('a').first().getAttribute('href');
-  //   const pattern = new RegExp(`${firstResultItemLink}`);
-  //   await firstResultItem.click();
-  //   await this.page.waitForLoadState();
-  //   await expect(this.page).toHaveURL(pattern);
 
-  //   expect(await this.page.title()).toContain('Free Download, Borrow, and Streaming : Internet Archive');
-  // }
 
+  // TO REFACTOR
   // async checkAllTimeViewsFromTileViewMode() {
   //   // get all article elements
   //   const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();

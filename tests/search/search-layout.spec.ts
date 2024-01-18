@@ -27,12 +27,12 @@ test('Tile hover pane appears', async ({ searchPage }) => {
   });
 });
 
-// test('Clicking on an item tile takes you to the item', async ({ searchPage }) => {
-//   await searchPage.infiniteScroller.clickFirstResultAndRedirectToDetailsPage();
-// });
+test('Clicking on an item tile takes you to the item', async ({ searchPage }) => {
+  await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
+});
 
 // test('Sort by All-time views in Tile view', async ({ searchPage }) => {
-//   await searchPage.infiniteScroller.clickTileView();
+//   await searchPage.infiniteScroller.clickViewMode('tile');
 //   await searchPage.navigateSortBy('All-time views', 'descending');
 //   await searchPage.checkInfiniteScrollerItems('All-time views', 'descending');
 // });
