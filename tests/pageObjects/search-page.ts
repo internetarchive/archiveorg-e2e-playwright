@@ -1,8 +1,8 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { CollectionFacets } from '../objects/collection-facets';
-import { InfiniteScroller } from '../objects/infinite-scroller';
-import { SortBar, SortOrder } from '../objects/sort-bar';
+import { CollectionFacets } from './collection-facets';
+import { InfiniteScroller } from './infinite-scroller';
+import { SortBar, SortOrder } from './sort-bar';
 
 export enum SearchOption  {
   METADATA = `Search metadata`,
@@ -123,28 +123,28 @@ export class SearchPage {
     await this.visit();
   }
 
-  async checkInfiniteScrollerItems(filter: string, sortOrder: SortOrder) {
-    console.log('checkInfiniteScrollerItems - filter: ', filter, 'sortOrder: ', sortOrder);
+  // async checkInfiniteScrollerItems(filter: string, sortOrder: SortOrder) {
+  //   console.log('checkInfiniteScrollerItems - filter: ', filter, 'sortOrder: ', sortOrder);
 
-    // todo add view mode as well
-    if (filter === 'All-time views') {
-      await this.page.waitForLoadState();
-      await this.page.waitForTimeout(3000);
-      await this.infiniteScroller.checkAllTimeViewsFromTileViewMode();
-    } else if (filter === 'Date published') {
-      // must check for Published row
-      await this.page.waitForLoadState();
-      await this.page.waitForTimeout(3000);
-      await this.infiniteScroller.checkDatePublishedViewsFromListViewMode();
-    } else if (filter === 'Date archived') {
-      // must check for Archived column
-      await this.page.waitForLoadState();
-      await this.page.waitForTimeout(3000);
-      const archivedColumnSelector = '#list-header #container > tile-list-compact-header #list-line-header #date';
-      await expect(this.page.locator(archivedColumnSelector)).toBeVisible();
-    } else {
-      console.log('do something else');
-    }
-  }
+  //   // todo add view mode as well
+  //   if (filter === 'All-time views') {
+  //     await this.page.waitForLoadState();
+  //     await this.page.waitForTimeout(3000);
+  //     await this.infiniteScroller.checkAllTimeViewsFromTileViewMode();
+  //   } else if (filter === 'Date published') {
+  //     // must check for Published row
+  //     await this.page.waitForLoadState();
+  //     await this.page.waitForTimeout(3000);
+  //     await this.infiniteScroller.checkDatePublishedViewsFromListViewMode();
+  //   } else if (filter === 'Date archived') {
+  //     // must check for Archived column
+  //     await this.page.waitForLoadState();
+  //     await this.page.waitForTimeout(3000);
+  //     const archivedColumnSelector = '#list-header #container > tile-list-compact-header #list-line-header #date';
+  //     await expect(this.page.locator(archivedColumnSelector)).toBeVisible();
+  //   } else {
+  //     console.log('do something else');
+  //   }
+  // }
   
 }
