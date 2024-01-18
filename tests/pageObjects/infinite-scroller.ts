@@ -2,8 +2,6 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 import { SortBar } from './sort-bar';
 
-import { clearStringWhitespaces } from './utils';
-
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
 export class InfiniteScroller {
@@ -13,29 +11,19 @@ export class InfiniteScroller {
   readonly infiniteScrollerSectionContainer: Locator;
   readonly displayStyleSelector: Locator;
   readonly displayStyleSelectorOptions: Locator;
+  readonly firstItemTile: Locator;
 
-  // readonly itemTile: Locator;
-  // readonly itemTileStats: Locator;
-  // readonly itemTileViewCountText: Locator;
-
-  // readonly selectorIdTitleName: string;
-
-  readonly sortBar: SortBar;
-  
   public constructor(page: Page) {
     this.page = page;
-    this.sortBar = new SortBar(page);
 
     this.infiniteScroller = page.locator('infinite-scroller');
     this.infiniteScrollerSectionContainer = this.infiniteScroller.locator('#container');
 
-    const sortBarSection = this.sortBar.sortFilterBar;
+    const sortBar = new SortBar(page);
+    const sortBarSection = sortBar.sortFilterBar;
     this.displayStyleSelector = sortBarSection.locator('div#display-style-selector');
     this.displayStyleSelectorOptions = this.displayStyleSelector.locator('ul > li');
-
-    // const tileDispatcher = this.infiniteScroller.locator('tile-dispatcher');
-    // to refactor this
-    // this.itemTileViewCountText = tileDispatcher.locator('#stats-row > li:nth-child(2) > p > span');
+    this.firstItemTile = this.infiniteScrollerSectionContainer.locator('article').nth(0);
   }
 
   async clickViewMode (viewMode: LayoutViewMode) {
@@ -71,47 +59,22 @@ export class InfiniteScroller {
     }
   }
 
-  async hoverToFirstItemAndCheckItemTitle () {
-    await this.page.waitForLoadState();
+  async hoverToFirstItem () {
+    await this.page.waitForLoadState('networkidle');
 
+    expect(await this.firstItemTile.count()).toBe(1);
 
-    const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
-    // const firstItemTile = this.infiniteScrollerSectionContainer.locator('article').nth(0);
-    // expect(await firstItemTile.count()).toBe(1);
-    await articlesContainer[0].hover();
-    // TO FIX: error in webkit ->  this.page.waitForSelector('tile-hover-pane') -> Error: page.waitForSelector: Target closed
-    // await this.page.waitForSelector('tile-hover-pane');
-    await expect(articlesContainer[0].locator('tile-hover-pane')).toBeVisible();
-    
-    const textFirstItemTile = await articlesContainer[0].locator('#title > h4').first().innerText();
-    const textTileHoverPane = await this.page.locator('tile-hover-pane #title > a').innerText();
+    await this.firstItemTile.hover();
+    await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible();
+  }
+
+  async assertTileHoverPaneTitleIsSameWithItemTile() {
+    const textFirstItemTile = await this.firstItemTile.locator('#title > h4').first().innerText();
+    const textTileHoverPane = await this.firstItemTile.locator('tile-hover-pane #title > a').innerText();
     expect(textFirstItemTile).toEqual(textTileHoverPane);
   }
 
-  // async hoverToFirstItemAndCheckItemTitle () {
-  //   await this.page.waitForLoadState();
-  //   // get all article elements
-  //   const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
-  //   expect(articlesContainer.length).toBeGreaterThan(1);
-
-  //   const firstResultItem = articlesContainer[0];
-  //   await firstResultItem.hover();
-  //   await this.page.waitForSelector('tile-hover-pane');
-  //   await expect(firstResultItem.locator('tile-hover-pane')).toBeVisible();
-
-  //   // still need to improve code
-  //   const firstResultItemText = await firstResultItem.locator('#title > h4').first().textContent();
-  //   const tileHoverPaneTitleText = await this.page.locator('tile-hover-pane #title > a').textContent();
-  //   console.log('tileHoverTitleText: ', tileHoverPaneTitleText, ' firstResultItemText: ', firstResultItemText);
-
-  //   if (firstResultItemText && tileHoverPaneTitleText) {
-  //     expect(clearStringWhitespaces(tileHoverPaneTitleText!)).toContain(clearStringWhitespaces(firstResultItemText!));
-  //   } else {
-  //     console.log('something went wrong');
-  //   }
-  // }
-
-  // TO TEST
+  // TO REFACTOR
   // async clickFirstResultAndRedirectToDetailsPage() {
   //   await this.page.waitForLoadState();
 

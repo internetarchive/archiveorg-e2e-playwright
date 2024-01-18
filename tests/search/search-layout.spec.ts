@@ -1,26 +1,29 @@
 import { test } from '../fixtures';
 
 test('Tile, List, and Compact layout buttons change layout', async ({ searchPage }) => {
-  await test.step('click list view mode and check if it displays correctly', async () => {
+  await test.step('Click list view mode and check if it displays correctly', async () => {
     await searchPage.infiniteScroller.clickViewMode('list');
     await searchPage.infiniteScroller.assertLayoutViewModeChange('list');
   });
 
-  await test.step('click compact view mode and check if it displays correctly', async () => {
+  await test.step('Click compact view mode and check if it displays correctly', async () => {
     await searchPage.infiniteScroller.clickViewMode('compact');
     await searchPage.infiniteScroller.assertLayoutViewModeChange('compact');
   });
 
-  await test.step('click tile view mode and check if it displays correctly', async () => {
+  await test.step('Click tile view mode and check if it displays correctly', async () => {
     await searchPage.infiniteScroller.clickViewMode('tile');
     await searchPage.infiniteScroller.assertLayoutViewModeChange('tile');
   });
 });
 
 test('Tile hover pane appears', async ({ searchPage }) => {
-  // await searchPage.infiniteScroller.hoverToFirstItemAndCheckItemTitle();
-  await test.step('hover first item tile and check for title', async () => {
-    await searchPage.infiniteScroller.hoverToFirstItemAndCheckItemTitle();
+  await test.step('Hover first item tile and check for title', async () => {
+    await searchPage.infiniteScroller.hoverToFirstItem();
+  });
+
+  await test.step('Check title text inside tile-hover-pane and item-tile', async () => {
+    await searchPage.infiniteScroller.assertTileHoverPaneTitleIsSameWithItemTile();
   });
 });
 
