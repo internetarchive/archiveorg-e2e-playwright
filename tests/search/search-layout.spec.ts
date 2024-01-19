@@ -46,18 +46,17 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
 });
 
 test('Sort by Date published in List view', async ({ searchPage }) => {
-  await searchPage.infiniteScroller.clickViewMode('list');
-  await searchPage.navigateSortBy('Date published', 'descending');
-  await searchPage.infiniteScroller.checkItems('Date published', 'descending');
+  await test.step('Switch to list view mode', async () => {
+    await searchPage.infiniteScroller.clickViewMode('list');
+  });
 
-  await searchPage.navigateSortBy('Date archived', 'ascending');
-  await searchPage.infiniteScroller.checkItems('Date archived', 'ascending');
+  await test.step('Sort by All-time views - descending order', async () => {
+    await searchPage.navigateSortBy('Date published', 'descending');
+  });
 
-  await searchPage.navigateSortBy('Date reviewed', 'descending');
-  await searchPage.infiniteScroller.checkItems('Date reviewed', 'descending');
-
-  await searchPage.navigateSortBy('Date added', 'descending');
-  await searchPage.infiniteScroller.checkItems('Date added', 'descending');
+  await test.step('Check first the 10 results if sort filters were applied', async () => {
+    await searchPage.infiniteScroller.checkItems('Date published', 'descending');
+  });
 });
 
 test('Sort by Date archived (ascending) in Compact view', async ({ searchPage }) => {

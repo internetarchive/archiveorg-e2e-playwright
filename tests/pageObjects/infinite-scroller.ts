@@ -139,7 +139,6 @@ export class InfiniteScroller {
     while (index !== COUNT_ITEMS) {
       const collectionTileCount = await allItems[index].locator('a > collection-tile').count();
       const itemTileCount = await allItems[index].locator('a > item-tile').count();
-      console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
 
       if (collectionTileCount === 1 && itemTileCount === 0) {
         console.log('it is a collection tile - do nothing for now');
@@ -170,8 +169,10 @@ export class InfiniteScroller {
       const dateLineMetadataCount = await allItems[index].locator('#dates-line > div.metadata').count();
       if (dateLineMetadataCount === 1) {
         dateSpanLabel = await allItems[index].locator('#dates-line > div.metadata').first().innerText();
-      } else {
+      } else if (dateLineMetadataCount === 2) {
         dateSpanLabel = await allItems[index].locator('#dates-line > div.metadata').nth(1).innerText();
+      } else {
+        console.log('there might be a change in the code - so this test might fail');
       }
 
       if (dateSpanLabel) arrDateLine.push(dateSpanLabel);
