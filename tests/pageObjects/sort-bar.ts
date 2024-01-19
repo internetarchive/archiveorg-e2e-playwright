@@ -28,6 +28,14 @@ export class SortBar {
     this.srSortText = this.sortFilterBar.locator('button.sort-direction-selector span.sr-only');
   }
 
+  isViewsSortedAscending(arr: Number[]) {
+    return arr.every((x, i) => i === 0 || x >= arr[i - 1]);
+  }
+
+  isViewsSortedDescending(arr: Number[]) {
+    return arr.every((x, i) => i === 0 || x <= arr[i - 1]);
+  }
+
   async buttonClick (sortName: string) {
     await this.page.getByRole('button', { name: sortName }).click();
   }
@@ -59,14 +67,6 @@ export class SortBar {
     }
   }
 
-  async checkAlphaBarVisibility (filter: string) {
-    if (!['Title', 'Creator'].includes(filter)) {
-      await expect(this.alphaBar).not.toBeVisible();
-    } else {
-      await expect(this.alphaBar).toBeVisible();
-    }
-  }
-
   async clickSortDirection (sortOrder: SortOrder) {
      // TODO: may still need to find better way to check sort order
     const currentSortText = await this.srSortText.innerText();
@@ -75,6 +75,14 @@ export class SortBar {
     if (currentSortText.includes(sortOrder)) {
       await this.btnSortDirection.click();
       await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
+    }
+  }
+
+  async checkAlphaBarVisibility (filter: string) {
+    if (!['Title', 'Creator'].includes(filter)) {
+      await expect(this.alphaBar).not.toBeVisible();
+    } else {
+      await expect(this.alphaBar).toBeVisible();
     }
   }
 
@@ -101,13 +109,5 @@ export class SortBar {
   async alphaSortBarNotVisibile () {
     await expect(this.alphaBar).not.toBeVisible();
   } 
-
-  isViewsSortedAscending(arr: Number[]) {
-    return arr.every((x, i) => i === 0 || x >= arr[i - 1]);
-  }
-
-  isViewsSortedDescending(arr: Number[]) {
-    return arr.every((x, i) => i === 0 || x <= arr[i - 1]);
-  }
 
 }
