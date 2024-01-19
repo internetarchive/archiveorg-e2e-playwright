@@ -2,7 +2,7 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
-import { SortBar, SortOrder } from './sort-bar';
+import { SortBar, SortOrder, SortFilter } from './sort-bar';
 
 export enum SearchOption  {
   METADATA = `Search metadata`,
@@ -122,6 +122,14 @@ export class SearchPage {
   async goBackToSearchPage() {
     await this.visit();
   }
+
+  async checkListHeaders (filter: SortFilter) {
+    const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
+    // console.log('header: ', await this.page.locator('tile-list-compact-header #list-line-header #date').innerText());
+    // await expect(this.page.locator('tile-list-compact-header #list-line-header #date')).toBeVisible();
+    expect(await this.page.locator('tile-list-compact-header #list-line-header #date').innerText()).toContain(checkFilterText);
+  }
+
 
   // async checkInfiniteScrollerItems(filter: string, sortOrder: SortOrder) {
   //   console.log('checkInfiniteScrollerItems - filter: ', filter, 'sortOrder: ', sortOrder);

@@ -63,5 +63,5 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
 test('Sort by Date archived (ascending) in Compact view', async ({ searchPage }) => {
   await searchPage.infiniteScroller.clickViewMode('compact');
   await searchPage.navigateSortBy('Date archived', 'ascending');
-  await searchPage.checkInfiniteScrollerItems('Date archived', 'ascending');
+  await searchPage.checkListHeaders('Date archived');
 });

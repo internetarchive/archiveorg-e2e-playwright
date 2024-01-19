@@ -4,9 +4,8 @@ import { SortBar, SortOrder, SortFilter } from './sort-bar';
 
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
+const COUNT_ITEMS: Number = 10;
 export class InfiniteScroller {
-
-  readonly COUNT_ITEMS: Number = 10;
 
   readonly page: Page;
   readonly infiniteScroller: Locator;
@@ -137,7 +136,7 @@ export class InfiniteScroller {
 
     // Load first 10 items and get tile stats views title
     let index = 0;
-    while (index !== this.COUNT_ITEMS) {
+    while (index !== COUNT_ITEMS) {
       const collectionTileCount = await allItems[index].locator('a > collection-tile').count();
       const itemTileCount = await allItems[index].locator('a > item-tile').count();
       console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
@@ -165,7 +164,7 @@ export class InfiniteScroller {
 
     // Load first 10 items and get tile stats views title
     let index = 0;
-    while (index !== this.COUNT_ITEMS) {
+    while (index !== COUNT_ITEMS) {
       // There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
       // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
       const dateLineMetadataCount = await allItems[index].locator('#dates-line > div.metadata').count();
