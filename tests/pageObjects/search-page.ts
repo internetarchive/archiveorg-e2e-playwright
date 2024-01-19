@@ -130,29 +130,4 @@ export class SearchPage {
     expect(await this.page.locator('tile-list-compact-header #list-line-header #date').innerText()).toContain(checkFilterText);
   }
 
-
-  // async checkInfiniteScrollerItems(filter: string, sortOrder: SortOrder) {
-  //   console.log('checkInfiniteScrollerItems - filter: ', filter, 'sortOrder: ', sortOrder);
-
-  //   // todo add view mode as well
-  //   if (filter === 'All-time views') {
-  //     await this.page.waitForLoadState();
-  //     await this.page.waitForTimeout(3000);
-  //     await this.infiniteScroller.checkAllTimeViewsFromTileViewMode();
-  //   } else if (filter === 'Date published') {
-  //     // must check for Published row
-  //     await this.page.waitForLoadState();
-  //     await this.page.waitForTimeout(3000);
-  //     await this.infiniteScroller.checkDatePublishedViewsFromListViewMode();
-  //   } else if (filter === 'Date archived') {
-  //     // must check for Archived column
-  //     await this.page.waitForLoadState();
-  //     await this.page.waitForTimeout(3000);
-  //     const archivedColumnSelector = '#list-header #container > tile-list-compact-header #list-line-header #date';
-  //     await expect(this.page.locator(archivedColumnSelector)).toBeVisible();
-  //   } else {
-  //     console.log('do something else');
-  //   }
-  // }
-  
 }
