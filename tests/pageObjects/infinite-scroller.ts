@@ -33,6 +33,11 @@ export class InfiniteScroller {
     this.viewMode = 'tile';
   }
 
+  async awaitLoadingState () {
+    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(3000);
+  }
+
   async clickViewMode (viewMode: LayoutViewMode) {
     switch (viewMode) {
       case 'tile':
@@ -96,12 +101,11 @@ export class InfiniteScroller {
     await expect(this.page).toHaveURL(pattern);
   }
 
+  // TODO: per sort filter and sort order + view mode???
   async checkItems (filter: SortFilter, order: SortOrder) {
-    // TODO: per sort filter and sort order + view mode
-
     // This test is only applicable in tile view mode
     if (filter === 'Weekly views' || filter === 'All-time views') {
-      await this.page.waitForLoadState('domcontentloaded');
+      await this.awaitLoadingState();
       const tileStatsViews = await this.getTileStatsViewTitles();
 
       const isAllViews = tileStatsViews.every(stat => stat.includes(filter.toLowerCase()));
@@ -116,14 +120,28 @@ export class InfiniteScroller {
 
     // This test is only applicable in list view mode for "Date" filters
     if (filter === 'Date published' || filter === 'Date archived' || filter === 'Date added' || filter === 'Date reviewed') {
-      await this.page.waitForLoadState('domcontentloaded');
-      await this.page.waitForTimeout(3000);
-      
-      const listDateLabels = await this.getDatesLine();
+      await this.awaitLoadingState();
+      const listDateLabels = await this.getDateMetadataLabels();
       // Parse date sort filter to check list of date labels from page item results
       const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
       console.log('listDateLabels: ', listDateLabels);
 
+      // TODO: Need to sort: [YYYY, MMM DD, YYYY] date format
+      /**
+       * Sample:
+        listDateLabels:  [
+          'Published: 2150',
+          'Published: Nov 21, 2067',
+          'Published: Jan 19, 2024',
+          'Published: Jan 18, 2024',
+          'Published: Jan 17, 2024',
+          'Published: Jan 17, 2024',
+          'Published: Jan 17, 2024',
+          'Published: Jan 17, 2024',
+          'Published: Jan 16, 2024',
+          'Published: Jan 16, 2024'
+        ]
+       */
       const isDateFilter = listDateLabels.every(date => date.includes(checkFilterText));
 
       expect(isDateFilter).toBeTruthy();
@@ -142,12 +160,18 @@ export class InfiniteScroller {
 
       if (collectionTileCount === 1 && itemTileCount === 0) {
         console.log('it is a collection tile - do nothing for now');
+        expect.soft(collectionTileCount).toBe(1);
+        expect.soft(itemTileCount).toBe(0);
       } else if (collectionTileCount === 0 && itemTileCount === 1) {
+        expect.soft(collectionTileCount).toBe(0);
+        expect.soft(itemTileCount).toBe(1);
         const tileStatsTitle = await allItems[index].locator('#stats-row > li:nth-child(2)').getAttribute('title');
         if (tileStatsTitle)
           arrTileStatsTitle.push(tileStatsTitle);
       } else {
         console.log('it is not a collection-tile nor an item-tile');
+        expect.soft(collectionTileCount).toBe(0);
+        expect.soft(itemTileCount).toBe(0);
       }
 
       index++;
@@ -156,7 +180,7 @@ export class InfiniteScroller {
     return arrTileStatsTitle;
   }
 
-  async getDatesLine () {
+  async getDateMetadataLabels () {
     const arrDateLine: string[] = [];
     let dateSpanLabel = '';
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
@@ -168,8 +192,10 @@ export class InfiniteScroller {
       // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
       const dateLineMetadataCount = await allItems[index].locator('#dates-line > div.metadata').count();
       if (dateLineMetadataCount === 1) {
+        expect.soft(dateLineMetadataCount).toBe(1);
         dateSpanLabel = await allItems[index].locator('#dates-line > div.metadata').first().innerText();
       } else if (dateLineMetadataCount === 2) {
+        expect.soft(dateLineMetadataCount).toBe(2);
         dateSpanLabel = await allItems[index].locator('#dates-line > div.metadata').nth(1).innerText();
       } else {
         console.log('there might be a change in the code - so this test might fail');

@@ -40,16 +40,13 @@ export class SortBar {
     await this.page.getByText(name).first().click();
   }
 
-  async applySortBy (filter: string, sortOrder: SortOrder) {
+  async applySortFilter (filter: string) {
     const flatSortTextList = ['Relevance', 'Title', 'Creator'];
 
-    const viewsDropdown = this.sortSelector.locator('li #views-dropdown');
-    const dateDropdown = this.sortSelector.locator('li #date-dropdown');
-    const viewsDropdownText = await viewsDropdown.innerText();
-    const dateDropdownText = await dateDropdown.innerText();
-
     if (!flatSortTextList.includes(filter)) {
-      const _toggleOption = filter.includes('views') ? viewsDropdownText : dateDropdownText;
+      const _toggleOption = filter.includes('views') 
+        ? await this.sortSelector.locator('li #views-dropdown').innerText() 
+        : await this.sortSelector.locator('li #date-dropdown').innerText();
       
       if (filter === _toggleOption) {
         await this.textClick(filter);
@@ -60,15 +57,6 @@ export class SortBar {
     } else {
       await this.buttonClick(filter);
     }
-
-    await this.page.waitForLoadState()
-    await this.checkAlphaBarVisibility(filter);
-
-    if (sortOrder || sortOrder !== '') {
-      this.clickSortDirection(sortOrder);
-    }
-
-    // TODO: add test to check the actual items loaded if it's in a correct order
   }
 
   async checkAlphaBarVisibility (filter: string) {
@@ -88,8 +76,6 @@ export class SortBar {
       await this.btnSortDirection.click();
       await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
     }
-
-    await this.page.waitForLoadState();
   }
 
   async clickAlphaBarLetterByPosition (pos: number) {

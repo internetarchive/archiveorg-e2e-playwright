@@ -27,7 +27,7 @@ test('Tile hover pane appears', async ({ searchPage }) => {
   });
 });
 
-test('Clicking on an item tile takes you to the item', async ({ searchPage }) => {
+test('Clicking on an item tile takes you to the item page', async ({ searchPage }) => {
   await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
 });
 
@@ -37,7 +37,8 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
   });
 
   await test.step('Sort by All-time views - descending order', async () => {
-    await searchPage.sortBar.applySortBy('All-time views', 'descending');
+    await searchPage.sortBar.applySortFilter('All-time views');
+    await searchPage.sortBar.clickSortDirection('descending');
   });
 
   await test.step('Check first the 10 results if sort filters were applied', async () => {
@@ -50,8 +51,9 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
     await searchPage.infiniteScroller.clickViewMode('list');
   });
 
-  await test.step('Sort by All-time views - descending order', async () => {
-    await searchPage.navigateSortBy('Date published', 'descending');
+  await test.step('Sort by Date published - descending order', async () => {
+    await searchPage.sortBar.applySortFilter('Date published');
+    await searchPage.sortBar.clickSortDirection('descending');
   });
 
   await test.step('Check first the 10 results if sort filters were applied', async () => {
@@ -60,7 +62,16 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
 });
 
 test('Sort by Date archived (ascending) in Compact view', async ({ searchPage }) => {
-  await searchPage.infiniteScroller.clickViewMode('compact');
-  await searchPage.navigateSortBy('Date archived', 'ascending');
-  await searchPage.checkListHeaders('Date archived');
+  await test.step('Switch to compact view mode', async () => {
+    await searchPage.infiniteScroller.clickViewMode('compact');
+  });
+
+  await test.step('Sort by Date archived - ascending order', async () => {
+    await searchPage.sortBar.applySortFilter('Date archived');
+    await searchPage.sortBar.clickSortDirection('ascending');
+  });
+
+  await test.step('Check list column headers for sort filter', async () => {
+    await searchPage.checkCompactViewModeListLineDateHeaders('Date archived');
+  });
 });

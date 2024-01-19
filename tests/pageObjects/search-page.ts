@@ -75,7 +75,8 @@ export class SearchPage {
   }
 
   async navigateSortBy(filter: string, sortOrder: SortOrder) {
-    await this.sortBar.applySortBy(filter, sortOrder);
+    await this.sortBar.applySortFilter(filter);
+    await this.sortBar.clickSortDirection(sortOrder);
     await this.displayResultCount();
   }
 
@@ -123,10 +124,8 @@ export class SearchPage {
     await this.visit();
   }
 
-  async checkListHeaders (filter: SortFilter) {
+  async checkCompactViewModeListLineDateHeaders (filter: SortFilter) {
     const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
-    // console.log('header: ', await this.page.locator('tile-list-compact-header #list-line-header #date').innerText());
-    // await expect(this.page.locator('tile-list-compact-header #list-line-header #date')).toBeVisible();
     expect(await this.page.locator('tile-list-compact-header #list-line-header #date').innerText()).toContain(checkFilterText);
   }
 
