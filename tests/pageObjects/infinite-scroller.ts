@@ -106,7 +106,7 @@ export class InfiniteScroller {
     // This test is only applicable in tile view mode
     if (filter === 'Weekly views' || filter === 'All-time views') {
       await this.awaitLoadingState();
-      const tileStatsViews = await this.getTileStatsViewTitles();
+      const tileStatsViews = await this.getTileStatsViewCountTitles();
 
       const isAllViews = tileStatsViews.every(stat => stat.includes(filter.toLowerCase()));
       const arrViewCount: Number[] = tileStatsViews.map(stat => Number(stat.split(' ')[0]));
@@ -121,15 +121,15 @@ export class InfiniteScroller {
     // This test is only applicable in list view mode for "Date" filters
     if (filter === 'Date published' || filter === 'Date archived' || filter === 'Date added' || filter === 'Date reviewed') {
       await this.awaitLoadingState();
-      const listDateLabels = await this.getDateMetadataLabels();
+      const dateMetadataLabels = await this.getDateMetadataLabels();
       // Parse date sort filter to check list of date labels from page item results
       const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
-      console.log('listDateLabels: ', listDateLabels);
+      console.log('dateMetadataLabels: ', dateMetadataLabels);
 
       // TODO: Need to sort: [YYYY, MMM DD, YYYY] date format
       /**
        * Sample:
-        listDateLabels:  [
+        dateMetadataLabels:  [
           'Published: 2150',
           'Published: Nov 21, 2067',
           'Published: Jan 19, 2024',
@@ -142,13 +142,13 @@ export class InfiniteScroller {
           'Published: Jan 16, 2024'
         ]
        */
-      const isDateFilter = listDateLabels.every(date => date.includes(checkFilterText));
+      const isDateFilter = dateMetadataLabels.every(date => date.includes(checkFilterText));
 
       expect(isDateFilter).toBeTruthy();
     }
   }
 
-  async getTileStatsViewTitles () {
+  async getTileStatsViewCountTitles () {
     const arrTileStatsTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
 
@@ -165,6 +165,7 @@ export class InfiniteScroller {
       } else if (collectionTileCount === 0 && itemTileCount === 1) {
         expect.soft(collectionTileCount).toBe(0);
         expect.soft(itemTileCount).toBe(1);
+        // Get view count from tile-stats row
         const tileStatsTitle = await allItems[index].locator('#stats-row > li:nth-child(2)').getAttribute('title');
         if (tileStatsTitle)
           arrTileStatsTitle.push(tileStatsTitle);
