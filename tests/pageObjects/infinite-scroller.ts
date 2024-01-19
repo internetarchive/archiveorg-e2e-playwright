@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { SortBar } from './sort-bar';
+import { SortBar, SortOrder, SortFilter } from './sort-bar';
 
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
@@ -86,8 +86,46 @@ export class InfiniteScroller {
     await expect(this.page).toHaveURL(pattern);
   }
 
-  
+  async checkItems (filter: SortFilter, order: SortOrder) {
+    // TODO: per sort filter and sort order
+    console.log('checkItems - filter: ', filter, ' order: ', order);
 
+    await this.page.waitForLoadState('networkidle');
+    const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
+    console.log('> allItems loaded count: ', allItems.length);
+    
+    const count = 10;
+    let index = 0;
+    const viewsCount: Number[] = [];
+    while (index !== count) {
+      const collectionTileCount = await allItems[index].locator('a > collection-tile').count();
+      const itemTileCount = await allItems[index].locator('a > item-tile').count();
+      console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
+
+      if (collectionTileCount === 1 && itemTileCount === 0) {
+        console.log('it is a collection tile - do nothing for now');
+      } else if (collectionTileCount === 0 && itemTileCount === 1) {
+        await expect(allItems[index].locator('tile-stats #stats-row > li:nth-child(2)')).toBeVisible();
+        const tileStatsTitle = await allItems[index].locator('tile-stats #stats-row > li:nth-child(2)').getAttribute('title');
+        console.log('tileStatsTitle: ', tileStatsTitle);
+        if (tileStatsTitle) {
+          const viewCount = Number(tileStatsTitle.split(' ')[0]);
+          viewsCount.push(viewCount);
+          //  ' split: ', tileStatsTitle?.match(/\d+/g).map(Number));
+          expect(tileStatsTitle).toContain(filter.toLowerCase());
+        } else {
+          console.log('no tile stats title found');
+        }
+      } else {
+        console.log('it is not a collection-tile nor an item-tile');
+      }
+
+      index++;
+    }
+
+    console.log('viewsCount: ', viewsCount);
+
+  }
 
   // TO REFACTOR
   // async checkAllTimeViewsFromTileViewMode() {

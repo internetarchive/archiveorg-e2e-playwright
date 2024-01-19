@@ -1,5 +1,14 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
+export type SortFilter = 
+  | 'weekly views' 
+  | 'all-time views' 
+  | 'Title' 
+  | 'Date published'
+  | 'Date archived'
+  | 'Date reviewed'
+  | 'Date added'
+  | 'Creator';
 export type SortOrder = 'ascending' | 'descending';
 
 export class SortBar {
