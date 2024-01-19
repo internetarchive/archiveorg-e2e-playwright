@@ -5,7 +5,9 @@ import { SortBar, SortOrder, SortFilter } from './sort-bar';
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
 export class InfiniteScroller {
-  
+
+  readonly COUNT_ITEMS: Number = 10;
+
   readonly page: Page;
   readonly infiniteScroller: Locator;
   readonly infiniteScrollerSectionContainer: Locator;
@@ -13,28 +15,37 @@ export class InfiniteScroller {
   readonly displayStyleSelectorOptions: Locator;
   readonly firstItemTile: Locator;
 
+  readonly sortBar: SortBar;
+
+  viewMode: LayoutViewMode;
+
   public constructor(page: Page) {
     this.page = page;
 
     this.infiniteScroller = page.locator('infinite-scroller');
     this.infiniteScrollerSectionContainer = this.infiniteScroller.locator('#container');
 
-    const sortBar = new SortBar(page);
-    const sortBarSection = sortBar.sortFilterBar;
+    this.sortBar = new SortBar(page);
+    const sortBarSection = this.sortBar.sortFilterBar;
     this.displayStyleSelector = sortBarSection.locator('div#display-style-selector');
     this.displayStyleSelectorOptions = this.displayStyleSelector.locator('ul > li');
     this.firstItemTile = this.infiniteScrollerSectionContainer.locator('article').nth(0);
+
+    this.viewMode = 'tile';
   }
 
   async clickViewMode (viewMode: LayoutViewMode) {
     switch (viewMode) {
       case 'tile':
+        this.viewMode = 'tile';
         await this.displayStyleSelectorOptions.locator('#grid-button').click();
         return;
       case 'list':
+        this.viewMode = 'list';
         await this.displayStyleSelectorOptions.locator('#list-detail-button').click();
         return;
       case 'compact':
+        this.viewMode = 'compact';
         await this.displayStyleSelectorOptions.locator('#list-compact-button').click();
         return;
       default: return;
@@ -87,17 +98,46 @@ export class InfiniteScroller {
   }
 
   async checkItems (filter: SortFilter, order: SortOrder) {
-    // TODO: per sort filter and sort order
-    console.log('checkItems - filter: ', filter, ' order: ', order);
+    // TODO: per sort filter and sort order + view mode
 
-    await this.page.waitForLoadState('networkidle');
+    // This test is only applicable in tile view mode
+    if (filter === 'Weekly views' || filter === 'All-time views') {
+      await this.page.waitForLoadState('domcontentloaded');
+      const tileStatsViews = await this.getTileStatsViewTitles();
+
+      const isAllViews = tileStatsViews.every(stat => stat.includes(filter.toLowerCase()));
+      const arrViewCount: Number[] = tileStatsViews.map(stat => Number(stat.split(' ')[0]));
+      const isSortedCorrectly = order === 'descending' 
+        ? this.sortBar.isViewsSortedDescending(arrViewCount) 
+        : this.sortBar.isViewsSortedAscending(arrViewCount);
+
+      expect(isAllViews).toBeTruthy();
+      expect(isSortedCorrectly).toBeTruthy();
+    }
+
+    // This test is only applicable in list view mode for "Date" filters
+    if (filter === 'Date published' || filter === 'Date archived' || filter === 'Date added' || filter === 'Date reviewed') {
+      await this.page.waitForLoadState('domcontentloaded');
+      await this.page.waitForTimeout(3000);
+      
+      const listDateLabels = await this.getDatesLine();
+      // Parse date sort filter to check list of date labels from page item results
+      const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
+      console.log('listDateLabels: ', listDateLabels);
+
+      const isDateFilter = listDateLabels.every(date => date.includes(checkFilterText));
+
+      expect(isDateFilter).toBeTruthy();
+    }
+  }
+
+  async getTileStatsViewTitles () {
+    const arrTileStatsTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
-    console.log('> allItems loaded count: ', allItems.length);
-    
-    const count = 10;
+
+    // Load first 10 items and get tile stats views title
     let index = 0;
-    const viewsCount: Number[] = [];
-    while (index !== count) {
+    while (index !== this.COUNT_ITEMS) {
       const collectionTileCount = await allItems[index].locator('a > collection-tile').count();
       const itemTileCount = await allItems[index].locator('a > item-tile').count();
       console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
@@ -105,17 +145,9 @@ export class InfiniteScroller {
       if (collectionTileCount === 1 && itemTileCount === 0) {
         console.log('it is a collection tile - do nothing for now');
       } else if (collectionTileCount === 0 && itemTileCount === 1) {
-        await expect(allItems[index].locator('tile-stats #stats-row > li:nth-child(2)')).toBeVisible();
-        const tileStatsTitle = await allItems[index].locator('tile-stats #stats-row > li:nth-child(2)').getAttribute('title');
-        console.log('tileStatsTitle: ', tileStatsTitle);
-        if (tileStatsTitle) {
-          const viewCount = Number(tileStatsTitle.split(' ')[0]);
-          viewsCount.push(viewCount);
-          //  ' split: ', tileStatsTitle?.match(/\d+/g).map(Number));
-          expect(tileStatsTitle).toContain(filter.toLowerCase());
-        } else {
-          console.log('no tile stats title found');
-        }
+        const tileStatsTitle = await allItems[index].locator('#stats-row > li:nth-child(2)').getAttribute('title');
+        if (tileStatsTitle)
+          arrTileStatsTitle.push(tileStatsTitle);
       } else {
         console.log('it is not a collection-tile nor an item-tile');
       }
@@ -123,53 +155,32 @@ export class InfiniteScroller {
       index++;
     }
 
-    console.log('viewsCount: ', viewsCount);
-
+    return arrTileStatsTitle;
   }
 
-  // TO REFACTOR
-  // async checkAllTimeViewsFromTileViewMode() {
-  //   // get all article elements
-  //   const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
-  //   expect(articlesContainer.length).toBeGreaterThan(1);
+  async getDatesLine () {
+    const arrDateLine: string[] = [];
+    let dateSpanLabel = '';
+    const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
 
-  //   await this.page.waitForTimeout(5000);
-  //   // Note: (tile view mode) - Need to check if it's a collection-tile or item-tile
-  //   for (const { index, article } of articlesContainer) {
-  //     if (index === 10) break; // check the first 10 items for now
+    // Load first 10 items and get tile stats views title
+    let index = 0;
+    while (index !== this.COUNT_ITEMS) {
+      // There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
+      // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
+      const dateLineMetadataCount = await allItems[index].locator('#dates-line > div.metadata').count();
+      if (dateLineMetadataCount === 1) {
+        dateSpanLabel = await allItems[index].locator('#dates-line > div.metadata').first().innerText();
+      } else {
+        dateSpanLabel = await allItems[index].locator('#dates-line > div.metadata').nth(1).innerText();
+      }
 
-  //     // check if collection-tile or item-tile
-  //     const collectionTileCount = await article.locator('a > collection-tile').count();
-  //     const itemTileCount = await article.locator('a > item-tile').count();
-  //     console.log('index: ', index, 'collectionTileCount: ', collectionTileCount, ' itemTileCount: ', itemTileCount);
+      if (dateSpanLabel) arrDateLine.push(dateSpanLabel);
 
-  //     if (collectionTileCount === 1 && itemTileCount === 0) {
-  //       console.log('it is a collection tile - do nothing for now');
-  //     } else if (collectionTileCount === 0 && itemTileCount === 1) {
-  //       console.log('it is a item tile');
-  //       await expect(article.locator('tile-stats #stats-row > li:nth-child(2)')).toBeVisible();
+      index++;
+    }
 
-  //       const getTitle = await article.locator('tile-stats #stats-row > li:nth-child(2)').getAttribute('title');
-  //       console.log('title: ', getTitle);
-  //       // check if title contains all time views
-  //     } else {
-  //       console.log('it is not a collection-tile nor an item-tile');
-  //     }
-  //   }
-  // }
-
-  // async checkDatePublishedViewsFromListViewMode() {
-  //   // get all article elements
-  //   const articlesContainer = await this.infiniteScrollerSectionContainer.locator('article').all();
-  //   expect(articlesContainer.length).toBeGreaterThan(1);
-
-  //   const dateLineLabelSelector = '#list-line #dates-line > div > span';
-  //   await this.page.waitForTimeout(5000);
-
-  //   for (const { index, result } of articlesContainer.map((result, index) => ({ index, result }))) {
-  //     if (index === 10) break; // check the first 10 items for now
-  //     expect(await result.locator(dateLineLabelSelector).innerText()).toContain('Published');
-  //   }
-  // }
+    return arrDateLine;
+  }
 
 }

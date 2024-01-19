@@ -32,19 +32,36 @@ test('Clicking on an item tile takes you to the item', async ({ searchPage }) =>
 });
 
 test('Sort by All-time views in Tile view', async ({ searchPage }) => {
-  await searchPage.infiniteScroller.clickViewMode('tile');
-  await searchPage.sortBar.applySortBy('All-time views', 'descending');
-  await searchPage.infiniteScroller.checkItems('All-time views', 'descending');
+  await test.step('Switch to tile view mode', async () => {
+    await searchPage.infiniteScroller.clickViewMode('tile');
+  });
+
+  await test.step('Sort by All-time views - descending order', async () => {
+    await searchPage.sortBar.applySortBy('All-time views', 'descending');
+  });
+
+  await test.step('Check first the 10 results if sort filters were applied', async () => {
+    await searchPage.infiniteScroller.checkItems('All-time views', 'descending');
+  });
 });
 
-// test('Sort by Date published in List view', async ({ searchPage }) => {
-//   await searchPage.infiniteScroller.clickListView();
-//   await searchPage.navigateSortBy('Date published', 'descending');
-//   await searchPage.checkInfiniteScrollerItems('Date published', 'descending');
-// });
+test('Sort by Date published in List view', async ({ searchPage }) => {
+  await searchPage.infiniteScroller.clickViewMode('list');
+  await searchPage.navigateSortBy('Date published', 'descending');
+  await searchPage.infiniteScroller.checkItems('Date published', 'descending');
 
-// test('Sort by Date archived (ascending) in Compact view', async ({ searchPage }) => {
-//   await searchPage.infiniteScroller.clickListCompactView();
-//   await searchPage.navigateSortBy('Date archived', 'ascending');
-//   await searchPage.checkInfiniteScrollerItems('Date archived', 'ascending');
-// });
+  await searchPage.navigateSortBy('Date archived', 'ascending');
+  await searchPage.infiniteScroller.checkItems('Date archived', 'ascending');
+
+  await searchPage.navigateSortBy('Date reviewed', 'descending');
+  await searchPage.infiniteScroller.checkItems('Date reviewed', 'descending');
+
+  await searchPage.navigateSortBy('Date added', 'descending');
+  await searchPage.infiniteScroller.checkItems('Date added', 'descending');
+});
+
+test('Sort by Date archived (ascending) in Compact view', async ({ searchPage }) => {
+  await searchPage.infiniteScroller.clickViewMode('compact');
+  await searchPage.navigateSortBy('Date archived', 'ascending');
+  await searchPage.checkInfiniteScrollerItems('Date archived', 'ascending');
+});

@@ -1,8 +1,8 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
 export type SortFilter = 
-  | 'weekly views' 
-  | 'all-time views' 
+  | 'Weekly views' 
+  | 'All-time views' 
   | 'Title' 
   | 'Date published'
   | 'Date archived'
@@ -115,5 +115,13 @@ export class SortBar {
   async alphaSortBarNotVisibile () {
     await expect(this.alphaBar).not.toBeVisible();
   } 
+
+  isViewsSortedAscending(arr: Number[]) {
+    return arr.every((x, i) => i === 0 || x >= arr[i - 1]);
+  }
+
+  isViewsSortedDescending(arr: Number[]) {
+    return arr.every((x, i) => i === 0 || x <= arr[i - 1]);
+  }
 
 }
