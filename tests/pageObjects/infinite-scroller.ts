@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { SortBar, SortOrder, SortFilter } from './sort-bar';
+import { SortBar, SortOrder, SortFilter, DateMetadataLabel } from './sort-bar';
 
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
@@ -110,9 +110,9 @@ export class InfiniteScroller {
 
       const isAllViews = tileStatsViews.every(stat => stat.includes(filter.toLowerCase()));
       const arrViewCount: Number[] = tileStatsViews.map(stat => Number(stat.split(' ')[0]));
-      const isSortedCorrectly = order === 'descending' 
-        ? this.sortBar.isViewsSortedDescending(arrViewCount) 
-        : this.sortBar.isViewsSortedAscending(arrViewCount);
+      const isSortedCorrectly = order === 'descending'
+        ? this.sortBar.viewsSorted('descending', arrViewCount)
+        : this.sortBar.viewsSorted('ascending', arrViewCount);
 
       expect(isAllViews).toBeTruthy();
       expect(isSortedCorrectly).toBeTruthy();
@@ -123,32 +123,19 @@ export class InfiniteScroller {
       await this.awaitLoadingState();
       const dateMetadataLabels = await this.getDateMetadataLabels();
       // Parse date sort filter to check list of date labels from page item results
+      // => Published, Archived, Added, Reviewed
       const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
-      console.log('dateMetadataLabels: ', dateMetadataLabels);
-
-      // TODO: Need to sort: [YYYY, MMM DD, YYYY] date format
-      /**
-       * Sample:
-        dateMetadataLabels:  [
-          'Published: 2150',
-          'Published: Nov 21, 2067',
-          'Published: Jan 19, 2024',
-          'Published: Jan 18, 2024',
-          'Published: Jan 17, 2024',
-          'Published: Jan 17, 2024',
-          'Published: Jan 17, 2024',
-          'Published: Jan 17, 2024',
-          'Published: Jan 16, 2024',
-          'Published: Jan 16, 2024'
-        ]
-       */
-      const isDateFilter = dateMetadataLabels.every(date => date.includes(checkFilterText));
+      const isDateFilter = dateMetadataLabels.every(date => date.filter === checkFilterText);
+      const isSortedCorrectly = order === 'descending'
+        ? this.sortBar.datesSorted('descending', dateMetadataLabels)
+        : this.sortBar.datesSorted('ascending', dateMetadataLabels);
 
       expect(isDateFilter).toBeTruthy();
+      expect(isSortedCorrectly).toBeTruthy();
     }
   }
 
-  async getTileStatsViewCountTitles () {
+  async getTileStatsViewCountTitles (): Promise<string[]> {
     const arrTileStatsTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
 
@@ -181,8 +168,8 @@ export class InfiniteScroller {
     return arrTileStatsTitle;
   }
 
-  async getDateMetadataLabels () {
-    const arrDateLine: string[] = [];
+  async getDateMetadataLabels (): Promise<DateMetadataLabel[]> {
+    const arrDateLine: DateMetadataLabel[] = [];
     let dateSpanLabel = '';
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
 
@@ -202,7 +189,13 @@ export class InfiniteScroller {
         console.log('there might be a change in the code - so this test might fail');
       }
 
-      if (dateSpanLabel) arrDateLine.push(dateSpanLabel);
+      if (dateSpanLabel) {
+        // Need to split date filter and date format value: Published: 2150 or Published: Nov 15, 2023
+        const strSplitColonSpace = dateSpanLabel.split(': ');
+        // Sample object: { filter: 'Published', date: '2150' }
+        const objDateLine = { filter: strSplitColonSpace[0], date: strSplitColonSpace[1] };
+        arrDateLine.push(objDateLine);
+      }
 
       index++;
     }

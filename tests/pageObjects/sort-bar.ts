@@ -10,6 +10,10 @@ export type SortFilter =
   | 'Date added'
   | 'Creator';
 export type SortOrder = 'ascending' | 'descending';
+export type DateMetadataLabel = {
+  filter: string,
+  date: string
+}
 
 export class SortBar {
   readonly page: Page;
@@ -28,12 +32,20 @@ export class SortBar {
     this.srSortText = this.sortFilterBar.locator('button.sort-direction-selector span.sr-only');
   }
 
-  isViewsSortedAscending(arr: Number[]) {
-    return arr.every((x, i) => i === 0 || x >= arr[i - 1]);
+  viewsSorted(order: SortOrder, arr: Number[]) {
+    if (order === 'ascending') {
+      return arr.every((x, i) => i === 0 || x >= arr[i - 1]);
+    } else {
+      return arr.every((x, i) => i === 0 || x <= arr[i - 1]);
+    }
   }
 
-  isViewsSortedDescending(arr: Number[]) {
-    return arr.every((x, i) => i === 0 || x <= arr[i - 1]);
+  datesSorted(order: SortOrder, arr: DateMetadataLabel[]) {
+    if (order === 'ascending') {
+      return arr.every((x, i) => i === 0 || new Date(x.date) >= new Date(arr[i - 1].date));
+    } else {
+      return arr.every((x, i) => i === 0 || new Date(x.date) <= new Date(arr[i - 1].date));
+    }
   }
 
   async buttonClick (sortName: string) {
