@@ -28,15 +28,9 @@ export class SearchPage {
   public constructor(page: Page) {
     this.page = page;
 
-    this.btnCollectionSearchInputGo = page.locator(
-      'collection-search-input #go-button',
-    );
-    this.btnCollectionSearchInputCollapser = page.locator(
-      'collection-search-input #button-collapser',
-    );
-    this.btnClearAllFilters = page.locator(
-      '#facets-header-container .clear-filters-btn',
-    );
+    this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
+    this.btnCollectionSearchInputCollapser = page.locator('collection-search-input #button-collapser');
+    this.btnClearAllFilters = page.locator('#facets-header-container div.clear-filters-btn-row button');
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 
@@ -73,26 +67,13 @@ export class SearchPage {
     await this.page.waitForLoadState();
   }
 
-  async displayResultCount() {
-    await this.collectionFacets.checkResultCount();
-  }
-
-  async checkFacetGroups() {
-    await this.displayResultCount();
-    await this.collectionFacets.checkFacetGroups();
-  }
-
-  async navigateSortBy(filter: string, sortOrder: SortOrder) {
-    await this.sortBar.applySortFilter(filter);
-    await this.sortBar.clickSortDirection(sortOrder);
-    await this.displayResultCount();
-  }
-
-  async clearAllFilters() {
+  async clickClearAllFilters() {
     await expect(this.btnClearAllFilters).toBeVisible();
     await this.btnClearAllFilters.click();
-    await this.sortBar.clearAlphaBarFilter();
-    await this.displayResultCount();
+  }
+
+  async assertClearAllFiltersNotVisible() {
+    await this.page.waitForLoadState();
     await expect(this.btnClearAllFilters).not.toBeVisible();
   }
 

@@ -29,10 +29,10 @@ test('Tile hover pane appears', async ({ searchPage }) => {
   });
 });
 
-test('Clicking on an item tile takes you to the item page', async ({
-  searchPage,
-}) => {
-  await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
+test('Clicking on an item tile takes you to the item page', async ({ searchPage }) => {
+  await test.step('Click first item result and check if it directs to details page', async () => {
+    await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
+  });
 });
 
 test('Sort by All-time views in Tile view', async ({ searchPage }) => {
@@ -46,10 +46,7 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
   });
 
   await test.step('Check first the 10 results if sort filters were applied', async () => {
-    await searchPage.infiniteScroller.checkItems(
-      'All-time views',
-      'descending',
-    );
+    await searchPage.infiniteScroller.checkSortingResults('All-time views', 'descending');
   });
 
   await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
@@ -71,10 +68,7 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
   });
 
   await test.step('Check first the 10 results if sort filters were applied', async () => {
-    await searchPage.infiniteScroller.checkItems(
-      'Date published',
-      'descending',
-    );
+    await searchPage.infiniteScroller.checkSortingResults('Date published', 'descending');
   });
 
   await test.step('Check if URL changed with correct sort filter and sort order param', async () => {

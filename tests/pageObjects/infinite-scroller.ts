@@ -80,8 +80,8 @@ export class InfiniteScroller {
     }
   }
 
-  async hoverToFirstItem() {
-    await this.page.waitForLoadState('networkidle');
+  async hoverToFirstItem () {
+    await this.awaitLoadingState();
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
@@ -116,7 +116,7 @@ export class InfiniteScroller {
   }
 
   // TODO: per sort filter and sort order + view mode???
-  async checkItems(filter: SortFilter, order: SortOrder) {
+  async checkSortingResults (filter: SortFilter, order: SortOrder) {
     // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
       await this.awaitLoadingState();
@@ -239,4 +239,32 @@ export class InfiniteScroller {
 
     return arrDateLine;
   }
+
+  async checkFacetingResults(facet: string) {
+    await this.page.waitForTimeout(3000);;
+
+    const tileIconTitles = await this.getTileIconTitle();
+    console.log('facet: ', facet, ' tileIconTitles: ', tileIconTitles);
+    const isAllFacetted = tileIconTitles.every(title => title.includes(facet));
+    expect(isAllFacetted).toBeTruthy();
+  }
+
+  async getTileIconTitle (): Promise<string[]> {
+    const arrTileIconTitle: string[] = [];
+    const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
+
+    // Load first 10 items
+    let index = 0;
+    while (index !== COUNT_ITEMS) {
+      // Get mediatype-icon title from tile-stats row
+      const tileIconTitle = await allItems[index].locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon').getAttribute('title');
+      if (tileIconTitle)
+        arrTileIconTitle.push(tileIconTitle);
+      
+      index++;
+    }
+
+    return arrTileIconTitle;
+  }
+
 }
