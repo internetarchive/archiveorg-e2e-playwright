@@ -22,8 +22,6 @@ export class InfiniteScroller {
 
   readonly sortBar: SortBar;
 
-  viewMode: LayoutViewMode;
-
   public constructor(page: Page) {
     this.page = page;
 
@@ -33,16 +31,9 @@ export class InfiniteScroller {
 
     this.sortBar = new SortBar(page);
     const sortBarSection = this.sortBar.sortFilterBar;
-    this.displayStyleSelector = sortBarSection.locator(
-      'div#display-style-selector',
-    );
-    this.displayStyleSelectorOptions =
-      this.displayStyleSelector.locator('ul > li');
-    this.firstItemTile = this.infiniteScrollerSectionContainer
-      .locator('article')
-      .nth(0);
-
-    this.viewMode = 'tile';
+    this.displayStyleSelector = sortBarSection.locator('div#display-style-selector');
+    this.displayStyleSelectorOptions = this.displayStyleSelector.locator('ul > li');
+    this.firstItemTile = this.infiniteScrollerSectionContainer.locator('article').nth(0);
   }
 
   async awaitLoadingState() {
@@ -53,22 +44,13 @@ export class InfiniteScroller {
   async clickViewMode(viewMode: LayoutViewMode) {
     switch (viewMode) {
       case 'tile':
-        this.viewMode = 'tile';
         await this.displayStyleSelectorOptions.locator('#grid-button').click();
         return;
       case 'list':
-        this.viewMode = 'list';
-        await this.displayStyleSelectorOptions
-          .locator('#list-detail-button')
-          .click();
+        await this.displayStyleSelectorOptions.locator('#list-detail-button').click();
         return;
       case 'compact':
-        this.viewMode = 'compact';
-        await this.displayStyleSelectorOptions
-          .locator('#list-compact-button')
-          .click();
-        return;
-      default:
+        await this.displayStyleSelectorOptions.locator('#list-compact-button').click();
         return;
     }
   }
@@ -140,16 +122,9 @@ export class InfiniteScroller {
       await this.awaitLoadingState();
       const tileStatsViews = await this.getTileStatsViewCountTitles();
 
-      const isAllViews = tileStatsViews.every(stat =>
-        stat.includes(filter.toLowerCase()),
-      );
-      const arrViewCount: Number[] = tileStatsViews.map(stat =>
-        Number(stat.split(' ')[0]),
-      );
-      const isSortedCorrectly =
-        order === 'descending'
-          ? viewsSorted('descending', arrViewCount)
-          : viewsSorted('ascending', arrViewCount);
+      const isAllViews = tileStatsViews.every(stat => stat.includes(filter.toLowerCase()));
+      const arrViewCount: Number[] = tileStatsViews.map(stat => Number(stat.split(' ')[0]));
+      const isSortedCorrectly = viewsSorted(order, arrViewCount);
 
       expect(isAllViews).toBeTruthy();
       expect(isSortedCorrectly).toBeTruthy();
@@ -166,16 +141,9 @@ export class InfiniteScroller {
       const dateMetadataLabels = await this.getDateMetadataLabels();
       // Parse date sort filter to check list of date labels from page item results
       // => Published, Archived, Added, Reviewed
-      const checkFilterText = filter
-        .split('Date ')[1]
-        .replace(/^./, str => str.toUpperCase());
-      const isDateFilter = dateMetadataLabels.every(
-        date => date.filter === checkFilterText,
-      );
-      const isSortedCorrectly =
-        order === 'descending'
-          ? datesSorted('descending', dateMetadataLabels)
-          : datesSorted('ascending', dateMetadataLabels);
+      const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
+      const isDateFilter = dateMetadataLabels.every(date => date.filter === checkFilterText);
+      const isSortedCorrectly = datesSorted(order, dateMetadataLabels)
 
       expect(isDateFilter).toBeTruthy();
       expect(isSortedCorrectly).toBeTruthy();
