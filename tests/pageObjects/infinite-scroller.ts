@@ -1,8 +1,15 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { SortBar, SortOrder, SortFilter, DateMetadataLabel } from './sort-bar';
+import { SortBar } from './sort-bar';
 
-export type LayoutViewMode = 'tile' | 'list' | 'compact';
+import { 
+  DateMetadataLabel,
+  LayoutViewMode,
+  SortOrder,
+  SortFilter
+} from '../models';
+
+import { datesSorted, viewsSorted } from '../utils';
 
 const COUNT_ITEMS: Number = 10;
 export class InfiniteScroller {
@@ -103,7 +110,7 @@ export class InfiniteScroller {
 
   // TODO: per sort filter and sort order + view mode???
   async checkItems (filter: SortFilter, order: SortOrder) {
-    // This test is only applicable in tile view mode
+    // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
       await this.awaitLoadingState();
       const tileStatsViews = await this.getTileStatsViewCountTitles();
@@ -111,8 +118,8 @@ export class InfiniteScroller {
       const isAllViews = tileStatsViews.every(stat => stat.includes(filter.toLowerCase()));
       const arrViewCount: Number[] = tileStatsViews.map(stat => Number(stat.split(' ')[0]));
       const isSortedCorrectly = order === 'descending'
-        ? this.sortBar.viewsSorted('descending', arrViewCount)
-        : this.sortBar.viewsSorted('ascending', arrViewCount);
+        ? viewsSorted('descending', arrViewCount)
+        : viewsSorted('ascending', arrViewCount);
 
       expect(isAllViews).toBeTruthy();
       expect(isSortedCorrectly).toBeTruthy();
@@ -127,8 +134,8 @@ export class InfiniteScroller {
       const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
       const isDateFilter = dateMetadataLabels.every(date => date.filter === checkFilterText);
       const isSortedCorrectly = order === 'descending'
-        ? this.sortBar.datesSorted('descending', dateMetadataLabels)
-        : this.sortBar.datesSorted('ascending', dateMetadataLabels);
+        ? datesSorted('descending', dateMetadataLabels)
+        : datesSorted('ascending', dateMetadataLabels);
 
       expect(isDateFilter).toBeTruthy();
       expect(isSortedCorrectly).toBeTruthy();
