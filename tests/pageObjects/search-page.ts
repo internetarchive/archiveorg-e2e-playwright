@@ -2,15 +2,9 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
-import { SortBar, SortOrder, SortFilter } from './sort-bar';
+import { SortBar } from './sort-bar';
 
-export enum SearchOption  {
-  METADATA = `Search metadata`,
-  TEXT = `Search text contents`,
-  TV = `Search TV news captions`,
-  RADIO = `Search radio transcripts`,
-  WEB = `Search archived web sites`,
-};
+import { SearchOption, SortOrder, SortFilter, SortFilterURL } from '../models'
 
 const PAGE_TIMEOUT = 3000;
 
@@ -125,8 +119,14 @@ export class SearchPage {
   }
 
   async checkCompactViewModeListLineDateHeaders (filter: SortFilter) {
-    const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
+    const checkFilterText = filter.split('Date ')[1].replace(/^./, (str: string) => str.toUpperCase());
     expect(await this.page.locator('tile-list-compact-header #list-line-header #date').innerText()).toContain(checkFilterText);
+  }
+
+  async checkURLParamsWithSortFilter (filter: SortFilter, order: SortOrder) {
+    const sortFilterURL = order === 'descending' ? `-${SortFilterURL[filter]}` : SortFilterURL[filter];
+    const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
+    await expect(this.page).toHaveURL(urlPatternCheck);
   }
 
 }
