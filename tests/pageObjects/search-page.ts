@@ -1,16 +1,10 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { CollectionFacets } from '../shared/collection-facets';
-import { InfiniteScroller } from '../shared/infiinite-scroller';
-import { SortBar } from '../shared/sort-bar';
+import { CollectionFacets } from './collection-facets';
+import { InfiniteScroller } from './infinite-scroller';
+import { SortBar } from './sort-bar';
 
-export enum SearchOption  {
-  METADATA = `Search metadata`,
-  TEXT = `Search text contents`,
-  TV = `Search TV news captions`,
-  RADIO = `Search radio transcripts`,
-  WEB = `Search archived web sites`,
-};
+import { SearchOption, SortOrder, SortFilter, SortFilterURL } from '../models'
 
 const PAGE_TIMEOUT = 3000;
 
@@ -74,14 +68,9 @@ export class SearchPage {
     await this.collectionFacets.checkFacetGroups();
   }
 
-  async navigateThruInfiniteScrollerViewModes() {
-    await this.infiniteScroller.clickGridView();
-    await this.infiniteScroller.clickListView();
-    await this.infiniteScroller.clickListCompactView();
-  }
-
-  async navigateSortBy(filter: string, direction: string) {
-    await this.sortBar.applySortBy(filter, direction);
+  async navigateSortBy(filter: string, sortOrder: SortOrder) {
+    await this.sortBar.applySortFilter(filter);
+    await this.sortBar.clickSortDirection(sortOrder);
     await this.displayResultCount();
   }
 
@@ -128,5 +117,16 @@ export class SearchPage {
   async goBackToSearchPage() {
     await this.visit();
   }
-  
+
+  async checkCompactViewModeListLineDateHeaders (filter: SortFilter) {
+    const checkFilterText = filter.split('Date ')[1].replace(/^./, (str: string) => str.toUpperCase());
+    expect(await this.page.locator('tile-list-compact-header #list-line-header #date').innerText()).toContain(checkFilterText);
+  }
+
+  async checkURLParamsWithSortFilter (filter: SortFilter, order: SortOrder) {
+    const sortFilterURL = order === 'descending' ? `-${SortFilterURL[filter]}` : SortFilterURL[filter];
+    const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
+    await expect(this.page).toHaveURL(urlPatternCheck);
+  }
+
 }

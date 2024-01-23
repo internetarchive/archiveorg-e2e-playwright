@@ -1,5 +1,7 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
+import { SortOrder } from '../models';
+
 export class SortBar {
   readonly page: Page;
   readonly sortFilterBar: Locator;
@@ -29,16 +31,13 @@ export class SortBar {
     await this.page.getByText(name).first().click();
   }
 
-  async applySortBy (filter: string, direction: string) {
+  async applySortFilter (filter: string) {
     const flatSortTextList = ['Relevance', 'Title', 'Creator'];
 
-    const viewsDropdown = this.sortSelector.locator('li #views-dropdown');
-    const dateDropdown = this.sortSelector.locator('li #date-dropdown');
-    const viewsDropdownText = await viewsDropdown.innerText();
-    const dateDropdownText = await dateDropdown.innerText();
-
     if (!flatSortTextList.includes(filter)) {
-      const _toggleOption = filter.includes('views') ? viewsDropdownText : dateDropdownText;
+      const _toggleOption = filter.includes('views') 
+        ? await this.sortSelector.locator('li #views-dropdown').innerText() 
+        : await this.sortSelector.locator('li #date-dropdown').innerText();
       
       if (filter === _toggleOption) {
         await this.textClick(filter);
@@ -49,13 +48,17 @@ export class SortBar {
     } else {
       await this.buttonClick(filter);
     }
+  }
 
-    await this.page.waitForLoadState()
-    await this.checkAlphaBarVisibility(filter);
+  async clickSortDirection (sortOrder: SortOrder) {
+     // TODO: may still need to find better way to check sort order
+    const currentSortText = await this.srSortText.innerText();
+    const oppositeSortText = sortOrder === 'ascending' ? 'descending' : 'ascending';
 
-    this.clickSortDirection(direction);
-
-    // TODO: add test to check the actual items loaded if it's in a correct order
+    if (currentSortText.includes(sortOrder)) {
+      await this.btnSortDirection.click();
+      await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
+    }
   }
 
   async checkAlphaBarVisibility (filter: string) {
@@ -64,19 +67,6 @@ export class SortBar {
     } else {
       await expect(this.alphaBar).toBeVisible();
     }
-  }
-
-  async clickSortDirection (direction: string) {
-     // TODO: may still need to find better way to check sort direction
-    const currentSortText = await this.srSortText.innerText();
-    const oppositeSortText = direction === 'ascending' ? 'descending' : 'ascending';
-
-    if (currentSortText.includes(direction)) {
-      await this.btnSortDirection.click();
-      await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
-    }
-
-    await this.page.waitForLoadState();
   }
 
   async clickAlphaBarLetterByPosition (pos: number) {
