@@ -38,9 +38,12 @@ test(`Clear facet filters`, async ({ searchPage }) => {
 
 test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
-    await searchPage.collectionFacets.selectMediaTypeNegativeFacet('audio');
+    await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
   });
-  // Results are ONLY 2014 or 2015
+
+  await test.step(`Results are ONLY 2014 or 2015`, async () => {
+    // TODO
+  });
 });
 
 test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
@@ -63,7 +66,9 @@ test(`Filter for title beginning with "X"`, async ({ searchPage }) => {
     await searchPage.sortBar.clickAlphaBarLetterByPosition(23);
   });
 
-  // Results' titles ONLY begin with "X" 
+  await test.step(`Results' titles ONLY begin with "X"`, async () => {
+    // TODO
+  });
 });
 
 test(`Facets can be selected via "Select filters" modal`, async ({ searchPage }) => {

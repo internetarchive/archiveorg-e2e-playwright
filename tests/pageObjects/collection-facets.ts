@@ -75,4 +75,19 @@ export class CollectionFacets {
     }
   }
 
+  async fillUpYearFilters (startDate: string, endDate: string) {
+    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
+    // #container > section:nth-child(1) > histogram-date-range #inputs
+    // console.log('start: ', startDate, ' endDate: ', endDate);
+    // const facetGroup = this.collectionFacets.locator('#container > section:nth-child(1)');
+    // getByRole('region', { name: 'Year Published range filter' })
+    // getByLabel('Maximum date:')
+    // getByLabel('Minimum date:')
+    // console.log('histo: ', await facetGroup.innerHTML());
+    const histogramContainer = this.page.locator('histogram-date-range');
+    console.log('histo: ', await histogramContainer.innerHTML());
+
+  }
+
 }
