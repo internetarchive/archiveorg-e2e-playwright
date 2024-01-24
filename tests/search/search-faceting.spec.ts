@@ -19,7 +19,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({ searchPage }) => 
 
 test(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
-    await searchPage.collectionFacets.clickFacetInMediaType('movies');
+    await searchPage.collectionFacets.clickFacetInMediaType('data');
   });
 
   await test.step(`Check first the 10 results for "Data" results`, async () => {
@@ -37,7 +37,9 @@ test(`Clear facet filters`, async ({ searchPage }) => {
 });
 
 test(`Select Year Published range via date picker`, async ({ searchPage }) => {
-  // Enter 2014 in start date text field (leftmost text box)
+  await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
+    await searchPage.collectionFacets.selectMediaTypeNegativeFacet('audio');
+  });
   // Results are ONLY 2014 or 2015
 });
 
@@ -69,7 +71,7 @@ test(`Facets can be selected via "Select filters" modal`, async ({ searchPage })
     await searchPage.collectionFacets.clickMoreMediaTypeFacetGroup();
   });
 
-  await test.step(`Select "image" from inside "Media Type" facet group`, async () => {
+  await test.step(`Select "audio" and "texts" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionFacets.selectFacetsInModal(['audio', 'texts']);
   });
 

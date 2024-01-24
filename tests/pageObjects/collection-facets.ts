@@ -22,7 +22,7 @@ export class CollectionFacets {
   }
 
   async assertFacetGroupCount() {
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState('networkidle');
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
@@ -33,7 +33,6 @@ export class CollectionFacets {
     const facetRow = facetContainer.getByRole('checkbox', { name: facetLabel });
 
     await facetRow.check();
-    await this.page.waitForLoadState();
   }
 
   async clickMoreMediaTypeFacetGroup() {
@@ -54,7 +53,7 @@ export class CollectionFacets {
   }
 
   async selectMediaTypeNegativeFacet(facetLabel: string) {
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
 
     console.log('facetLabel: ', facetLabel);

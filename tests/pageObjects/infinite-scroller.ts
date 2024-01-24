@@ -241,6 +241,7 @@ export class InfiniteScroller {
   }
 
   async checkIncludedFacetingResults(facetLabels: string[], toInclude: boolean) {
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
 
     const tileIconTitles = await this.getTileIconTitle();
