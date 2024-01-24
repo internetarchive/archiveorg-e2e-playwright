@@ -21,31 +21,59 @@ export class CollectionFacets {
     await expect(this.resultsTotal).toBeVisible();
   }
 
-  async checkFacetGroups() {
-    const facetsContainer = this.collectionFacets.locator('#container');
-    const facetGroups = facetsContainer.locator('section.facet-group');
-    const headerTitles = facetsContainer.locator('h3');
+  async assertFacetGroupCount() {
+    await this.page.waitForLoadState();
 
-    // assert facet group header count
-    expect(await facetGroups.count()).toEqual(8);
-    expect(await headerTitles.count()).toEqual(8);
+    const facetGroups = this.collectionFacets.locator('facets-template');
+    expect(await facetGroups.count()).toEqual(7);
   }
 
-  async clickMoreMediaTypeFacet() {
+  async clickFacetInMediaType(facetLabel: string) {
+    const facetContainer = this.collectionFacets.locator('#container > section:nth-child(2) > div.facet-group-content');
+    const facetRow = facetContainer.getByRole('checkbox', { name: facetLabel });
+
+    await facetRow.check();
+    await this.page.waitForLoadState();
+  }
+
+  async clickMoreMediaTypeFacetGroup() {
     const btnMore = this.collectionFacets.locator('#container > section:nth-child(2) > div.facet-group-content > button');
     await btnMore.click();
   }
 
-  async selectFacetTitleInMoreFacetsModal(facetLabel: string) {
+  async selectFacetsInModal(facetLabels: string[]) {
     await this.page.waitForLoadState();
 
     const btnApplyFilters = this.moreFacetsContent.locator('#more-facets > div.footer > button.btn.btn-submit');
-    const facetRow = this.moreFacetsContent.locator('#more-facets').getByRole('checkbox', { name: facetLabel });
-
-    await facetRow.check();
+    for (let i = 0; i < facetLabels.length; i++) {
+      // wait for the promise to resolve before advancing the for loop
+      const facetRow = this.moreFacetsContent.locator('#more-facets').getByRole('checkbox', { name: facetLabels[i] });
+      await facetRow.check();
+    }
     await btnApplyFilters.click();
   }
 
+  async selectMediaTypeNegativeFacet(facetLabel: string) {
+    await this.page.waitForLoadState();
+    await this.page.waitForTimeout(1000);
 
+    console.log('facetLabel: ', facetLabel);
+    const facetContainer = this.collectionFacets.locator('#container > section:nth-child(2) > div.facet-group-content');
+    const facetRows = await facetContainer.locator('facets-template > div.facets-on-page facet-row').all();
+
+    let index = 0;
+    while (index !== facetRows.length) {
+      const facetRowLabel = facetRows[index].locator('div.facet-row-container > div.facet-checkboxes > label');
+      const facetLabelTitle = await facetRowLabel.getAttribute('title');
+      console.log('row: ', facetLabelTitle);
+      if (facetLabelTitle === `Hide mediatype: ${facetLabel}`) {
+        await facetRowLabel.click();
+        console.log('click facetRow')
+        break;
+      } else {
+        index++;
+      }
+    }
+  }
 
 }

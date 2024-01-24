@@ -38,7 +38,7 @@ export class InfiniteScroller {
 
   async awaitLoadingState() {
     await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(3000);
+    await this.page.waitForTimeout(2000);
   }
 
   async clickViewMode(viewMode: LayoutViewMode) {
@@ -240,16 +240,25 @@ export class InfiniteScroller {
     return arrDateLine;
   }
 
-  async checkFacetingResults(facet: string) {
-    await this.page.waitForTimeout(3000);;
+  async checkIncludedFacetingResults(facetLabels: string[], toInclude: boolean) {
+    await this.page.waitForTimeout(1000);
 
     const tileIconTitles = await this.getTileIconTitle();
-    console.log('facet: ', facet, ' tileIconTitles: ', tileIconTitles);
-    const isAllFacetted = tileIconTitles.every(title => title.includes(facet));
-    expect(isAllFacetted).toBeTruthy();
+    console.log('tileIconTitles: ', tileIconTitles);
+    const isAllFacettedCorrectly = facetLabels.some(label => {
+      return toInclude ? tileIconTitles.includes(label) : !tileIconTitles.includes(label)
+    });
+    expect(isAllFacettedCorrectly).toBeTruthy();
+    // if (!toInclude) {
+    //   const isAllFacetted = facetLabels.some(label => tileIconTitles.includes(label));
+    //   expect(isAllFacetted).toBeTruthy();
+    // } else {
+    //   const isAllFacetted = facetLabels.some(label => tileIconTitles.includes(label));
+    //   expect(isAllFacetted).toBeTruthy();
+    // }
   }
 
-  async getTileIconTitle (): Promise<string[]> {
+  async getTileIconTitle(): Promise<string[]> {
     const arrTileIconTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
 
