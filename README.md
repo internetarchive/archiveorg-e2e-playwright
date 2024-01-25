@@ -13,12 +13,26 @@
 - run command to install Playwright browser libs: `npx install playwright`
 - run command to run all the tests: `npm run test`
 
-## Running individual tests
+
+## Running individual tests by category
 
 - run books tests: `npm run test:books`
 - run login tests: `npm run test:login`
 - run music tests: `npm run test:music`
 - run search tests: `npm run test:search`
+
+
+## Running specific test spec by file:
+
+- run command format: `npx playwright test <test-file-path>`
+- sample: `npx playwright test tests/search/search-layout.spec.ts`
+
+
+## Running specific test spec by file in debug mode:
+
+- run command format: `npx playwright test <test-file-path> --debug`
+- sample: `npx playwright test tests/search/search-layout.spec.ts --debug`
+
 
 ## View tests execution result
 
