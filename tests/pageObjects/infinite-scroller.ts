@@ -11,7 +11,6 @@ import {
 
 import { datesSorted, viewsSorted } from '../utils';
 
-const COUNT_ITEMS: Number = 10;
 export class InfiniteScroller {
   readonly page: Page;
   readonly infiniteScroller: Locator;
@@ -116,11 +115,11 @@ export class InfiniteScroller {
   }
 
   // TODO: per sort filter and sort order + view mode???
-  async checkSortingResults (filter: SortFilter, order: SortOrder) {
+  async checkSortingResults (filter: SortFilter, order: SortOrder, displayItemCount: Number) {
     // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
       await this.awaitLoadingState();
-      const tileStatsViews = await this.getTileStatsViewCountTitles();
+      const tileStatsViews = await this.getTileStatsViewCountTitles(displayItemCount);
 
       const isAllViews = tileStatsViews.every(stat => stat.includes(filter.toLowerCase()));
       const arrViewCount: Number[] = tileStatsViews.map(stat => Number(stat.split(' ')[0]));
@@ -138,7 +137,7 @@ export class InfiniteScroller {
       filter === 'Date reviewed'
     ) {
       await this.awaitLoadingState();
-      const dateMetadataLabels = await this.getDateMetadataLabels();
+      const dateMetadataLabels = await this.getDateMetadataLabels(displayItemCount);
       // Parse date sort filter to check list of date labels from page item results
       // => Published, Archived, Added, Reviewed
       const checkFilterText = filter.split('Date ')[1].replace(/^./, str => str.toUpperCase());
@@ -150,7 +149,7 @@ export class InfiniteScroller {
     }
   }
 
-  async getTileStatsViewCountTitles(): Promise<string[]> {
+  async getTileStatsViewCountTitles (displayItemCount: Number): Promise<string[]> {
     const arrTileStatsTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer
       .locator('article')
@@ -158,13 +157,9 @@ export class InfiniteScroller {
 
     // Load first 10 items and get tile stats views title
     let index = 0;
-    while (index !== COUNT_ITEMS) {
-      const collectionTileCount = await allItems[index]
-        .locator('a > collection-tile')
-        .count();
-      const itemTileCount = await allItems[index]
-        .locator('a > item-tile')
-        .count();
+    while (index !== displayItemCount) {
+      const collectionTileCount = await allItems[index].locator('a > collection-tile').count();
+      const itemTileCount = await allItems[index].locator('a > item-tile').count();
 
       if (collectionTileCount === 1 && itemTileCount === 0) {
         console.log('it is a collection tile - do nothing for now');
@@ -190,16 +185,15 @@ export class InfiniteScroller {
     return arrTileStatsTitle;
   }
 
-  async getDateMetadataLabels(): Promise<DateMetadataLabel[]> {
+  async getDateMetadataLabels (displayItemCount: Number): Promise<DateMetadataLabel[]> {
     const arrDateLine: DateMetadataLabel[] = [];
     let dateSpanLabel = '';
     const allItems = await this.infiniteScrollerSectionContainer
       .locator('article')
       .all();
 
-    // Load first 10 items and get tile stats views title
     let index = 0;
-    while (index !== COUNT_ITEMS) {
+    while (index !== displayItemCount) { // Load items and get tileStats views based on displayItemCount
       // There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
       // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
       const dateLineMetadataCount = await allItems[index]
@@ -225,12 +219,9 @@ export class InfiniteScroller {
 
       if (dateSpanLabel) {
         // Need to split date filter and date format value: Published: 2150 or Published: Nov 15, 2023
-        const strSplitColonSpace = dateSpanLabel.split(': ');
         // Sample object: { filter: 'Published', date: '2150' }
-        const objDateLine = {
-          filter: strSplitColonSpace[0],
-          date: strSplitColonSpace[1],
-        };
+        const strSplitColonSpace = dateSpanLabel.split(': ');
+        const objDateLine = { filter: strSplitColonSpace[0], date: strSplitColonSpace[1] };
         arrDateLine.push(objDateLine);
       }
 
@@ -240,34 +231,26 @@ export class InfiniteScroller {
     return arrDateLine;
   }
 
-  async checkIncludedFacetingResults(facetLabels: string[], toInclude: boolean) {
+  async checkIncludedFacetingResults(facetLabels: string[], toInclude: boolean, displayItemCount: Number) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
 
-    const tileIconTitles = await this.getTileIconTitle();
-    console.log('tileIconTitles: ', tileIconTitles);
+    const tileIconTitles = await this.getTileIconTitle(displayItemCount);
     const isAllFacettedCorrectly = facetLabels.some(label => {
       return toInclude ? tileIconTitles.includes(label) : !tileIconTitles.includes(label)
     });
     expect(isAllFacettedCorrectly).toBeTruthy();
-    // if (!toInclude) {
-    //   const isAllFacetted = facetLabels.some(label => tileIconTitles.includes(label));
-    //   expect(isAllFacetted).toBeTruthy();
-    // } else {
-    //   const isAllFacetted = facetLabels.some(label => tileIconTitles.includes(label));
-    //   expect(isAllFacetted).toBeTruthy();
-    // }
   }
 
-  async getTileIconTitle(): Promise<string[]> {
+  async getTileIconTitle(displayItemCount: Number): Promise<string[]> {
     const arrTileIconTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
 
-    // Load first 10 items
     let index = 0;
-    while (index !== COUNT_ITEMS) {
+    while (index !== displayItemCount) { // Load items based on displayItemCount
       // Get mediatype-icon title from tile-stats row
-      const tileIconTitle = await allItems[index].locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon').getAttribute('title');
+      const tileIcon = allItems[index].locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon');
+      const tileIconTitle = await tileIcon.getAttribute('title');
       if (tileIconTitle)
         arrTileIconTitle.push(tileIconTitle);
       

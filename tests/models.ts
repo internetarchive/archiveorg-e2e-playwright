@@ -33,5 +33,18 @@ export const SortFilterURL = {
   'Date archived': 'publicdate',
   'Date reviewed': 'reviewdate',
   'Date added': 'addeddate',
-  Creator: 'creator',
-};
+  'Creator': 'creator',
+}
+
+export enum FacetGroupLabel {
+  DATE = 'date-picker-label',
+  MEDIATYPE = 'facet-group-header-label-mediatype',
+  LENDING = 'facet-group-header-label-lending',
+  YEAR = 'facet-group-header-label-year',
+  SUBJECT = 'facet-group-header-label-subject',
+  COLLECTION = 'facet-group-header-label-collection',
+  CREATOR = 'facet-group-header-label-creator',
+  LANGUAGE = 'facet-group-header-label-language'
+}
+
+export type FacetType = 'positive' | 'negative';
