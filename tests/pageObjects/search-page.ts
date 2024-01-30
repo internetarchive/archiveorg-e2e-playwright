@@ -35,7 +35,7 @@ export class SearchPage {
       'collection-search-input #button-collapser',
     );
     this.btnClearAllFilters = page.locator(
-      '#facets-header-container .clear-filters-btn',
+      '#facets-header-container div.clear-filters-btn-row button',
     );
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
@@ -70,29 +70,16 @@ export class SearchPage {
   async queryFor(query: string) {
     await this.formInputSearchPage.fill(query);
     await this.formInputSearchPage.press('Enter');
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState('networkidle');
   }
 
-  async displayResultCount() {
-    await this.collectionFacets.checkResultCount();
-  }
-
-  async checkFacetGroups() {
-    await this.displayResultCount();
-    await this.collectionFacets.checkFacetGroups();
-  }
-
-  async navigateSortBy(filter: string, sortOrder: SortOrder) {
-    await this.sortBar.applySortFilter(filter);
-    await this.sortBar.clickSortDirection(sortOrder);
-    await this.displayResultCount();
-  }
-
-  async clearAllFilters() {
+  async clickClearAllFilters() {
     await expect(this.btnClearAllFilters).toBeVisible();
     await this.btnClearAllFilters.click();
-    await this.sortBar.clearAlphaBarFilter();
-    await this.displayResultCount();
+  }
+
+  async assertClearAllFiltersNotVisible() {
+    await this.page.waitForLoadState();
     await expect(this.btnClearAllFilters).not.toBeVisible();
   }
 
@@ -101,6 +88,7 @@ export class SearchPage {
     await expect(this.formInputSearchPage).toBeVisible();
 
     await this.formInputSearchPage.click();
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(
       this.btnCollectionSearchInputCollapser.getByText(option),
@@ -109,6 +97,7 @@ export class SearchPage {
   }
 
   async checkTVPage(query: string) {
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
     await expect(
@@ -122,12 +111,14 @@ export class SearchPage {
   }
 
   async checkRadioPage(query: string) {
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(this.formInputRadioPage).toBeVisible();
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
   async checkWaybackPage(query: string) {
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Wayback Machine');
     await expect(this.formInputWaybackPage).toBeVisible();

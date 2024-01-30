@@ -35,3 +35,18 @@ export const SortFilterURL = {
   'Date added': 'addeddate',
   Creator: 'creator',
 };
+
+export enum FacetGroupSelectorLabel {
+  DATE = 'date-picker-label',
+  MEDIATYPE = 'facet-group-header-label-mediatype',
+  LENDING = 'facet-group-header-label-lending',
+  YEAR = 'facet-group-header-label-year',
+  SUBJECT = 'facet-group-header-label-subject',
+  COLLECTION = 'facet-group-header-label-collection',
+  CREATOR = 'facet-group-header-label-creator',
+  LANGUAGE = 'facet-group-header-label-language',
+}
+
+export type FacetType = 'positive' | 'negative';
+
+export type ViewFacetGroup = 'tile-title' | 'list-date';

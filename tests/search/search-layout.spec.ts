@@ -32,7 +32,9 @@ test('Tile hover pane appears', async ({ searchPage }) => {
 test('Clicking on an item tile takes you to the item page', async ({
   searchPage,
 }) => {
-  await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
+  await test.step('Click first item result and check if it directs to details page', async () => {
+    await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
+  });
 });
 
 test('Sort by All-time views in Tile view', async ({ searchPage }) => {
@@ -45,10 +47,11 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
     await searchPage.sortBar.clickSortDirection('descending');
   });
 
-  await test.step('Check first the 10 results if sort filters were applied', async () => {
-    await searchPage.infiniteScroller.checkItems(
+  await test.step('Check the first 10 results if sort filters were applied', async () => {
+    await searchPage.infiniteScroller.checkSortingResults(
       'All-time views',
       'descending',
+      10,
     );
   });
 
@@ -70,10 +73,11 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
     await searchPage.sortBar.clickSortDirection('descending');
   });
 
-  await test.step('Check first the 10 results if sort filters were applied', async () => {
-    await searchPage.infiniteScroller.checkItems(
+  await test.step('Check the first 10 results if sort filters were applied', async () => {
+    await searchPage.infiniteScroller.checkSortingResults(
       'Date published',
       'descending',
+      10,
     );
   });
 

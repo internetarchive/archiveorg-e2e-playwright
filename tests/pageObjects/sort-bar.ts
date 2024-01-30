@@ -78,6 +78,9 @@ export class SortBar {
   }
 
   async clickAlphaBarLetterByPosition(pos: number) {
+    await this.page.waitForLoadState();
+    await this.page.waitForTimeout(3000);
+
     const alphabet = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
     const nthLetter = this.alphaBar.locator('#container ul > li').nth(pos);
     const letterSelected = this.alphaBar.locator('#container ul > li.selected');
@@ -87,9 +90,6 @@ export class SortBar {
     // Note: assertion .toEqual has deep equality error in webkit
     expect(await nthLetter.innerText()).toContain(alphabet[pos]);
     expect(await letterSelected.count()).toEqual(1);
-
-    await this.page.waitForLoadState();
-    await this.page.waitForTimeout(3000);
   }
 
   async clearAlphaBarFilter() {
