@@ -9,7 +9,9 @@ let searchPage: SearchPage;
 test.describe('Basic Search tests', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test(`"Begin searching" page displays prior to searching`, async({ browser }) => {
+  test(`"Begin searching" page displays prior to searching`, async ({
+    browser,
+  }) => {
     const browserPage = await browser.newPage();
     searchPage = new SearchPage(browserPage);
 
@@ -54,5 +56,4 @@ test.describe('Basic Search tests', () => {
     await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
     await searchPage.checkEmptyPagePlaceholder();
   });
-
 });
