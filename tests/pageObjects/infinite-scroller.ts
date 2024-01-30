@@ -7,6 +7,7 @@ import {
   LayoutViewMode,
   SortOrder,
   SortFilter,
+  ViewFacetGroup
 } from '../models';
 
 import { datesSorted, viewsSorted } from '../utils';
@@ -149,6 +150,20 @@ export class InfiniteScroller {
     }
   }
 
+  async checkIncludedFacetedResults(
+    viewFacetType: ViewFacetGroup, facetLabels: string[], toInclude: boolean, displayItemCount: Number
+  ) {
+    await this.awaitLoadingState();
+    const facetedResults = await this.getFacetedResultsByViewFacetGroup(viewFacetType, displayItemCount);
+    if (facetedResults) {
+      const isAllFacettedCorrectly = facetLabels.some(label => {
+        return toInclude ? facetedResults.includes(label) : !facetedResults.includes(label)
+      });
+      expect(isAllFacettedCorrectly).toBeTruthy();
+    }
+  }
+
+  // Getters
   async getTileStatsViewCountTitles (displayItemCount: Number): Promise<string[]> {
     const arrTileStatsTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer
@@ -231,17 +246,6 @@ export class InfiniteScroller {
     return arrDateLine;
   }
 
-  async checkIncludedFacetingResults(facetLabels: string[], toInclude: boolean, displayItemCount: Number) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(1000);
-
-    const tileIconTitles = await this.getTileIconTitle(displayItemCount);
-    const isAllFacettedCorrectly = facetLabels.some(label => {
-      return toInclude ? tileIconTitles.includes(label) : !tileIconTitles.includes(label)
-    });
-    expect(isAllFacettedCorrectly).toBeTruthy();
-  }
-
   async getTileIconTitle(displayItemCount: Number): Promise<string[]> {
     const arrTileIconTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
@@ -258,6 +262,22 @@ export class InfiniteScroller {
     }
 
     return arrTileIconTitle;
+  }
+
+  async getFacetedResultsByViewFacetGroup(viewFacetType: ViewFacetGroup, displayItemCount: Number): Promise<string[] | null>{
+    switch(viewFacetType) {
+      case 'tile-title':
+        return await this.getTileIconTitle(displayItemCount);
+
+      case 'list-date':
+        const dateLabels = await this.getDateMetadataLabels(displayItemCount);
+        if (dateLabels)
+          return dateLabels.map(label => label.date);
+
+        return null;
+
+      default: return null;
+    }
   }
 
 }

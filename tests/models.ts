@@ -36,7 +36,7 @@ export const SortFilterURL = {
   'Creator': 'creator',
 }
 
-export enum FacetGroupLabel {
+export enum FacetGroupSelectorLabel {
   DATE = 'date-picker-label',
   MEDIATYPE = 'facet-group-header-label-mediatype',
   LENDING = 'facet-group-header-label-lending',
@@ -48,3 +48,5 @@ export enum FacetGroupLabel {
 }
 
 export type FacetType = 'positive' | 'negative';
+
+export type ViewFacetGroup = 'tile-title' | 'list-date';

@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { FacetGroupLabel, FacetType } from '../models';
+import { FacetGroupSelectorLabel, FacetType } from '../models';
 
 export class CollectionFacets {
   readonly page: Page;
@@ -31,7 +31,7 @@ export class CollectionFacets {
     expect(await facetGroups.count()).toEqual(7);
   }
 
-  async selectFacetByGroup(group: FacetGroupLabel, facetLabel: string, facetType: FacetType) {
+  async selectFacetByGroup(group: FacetGroupSelectorLabel, facetLabel: string, facetType: FacetType) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
 
@@ -59,7 +59,7 @@ export class CollectionFacets {
     }
   }
 
-  async clickMoreInFacetGroup(group: FacetGroupLabel) {
+  async clickMoreInFacetGroup(group: FacetGroupSelectorLabel) {
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
       const btnMore = facetContent.locator('button');
@@ -81,46 +81,33 @@ export class CollectionFacets {
 
   async fillUpYearFilters (startDate: string, endDate: string) {
     await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(1000);
-    // #container > section:nth-child(1) > histogram-date-range #inputs
+    await this.page.waitForTimeout(2000);
     console.log('start: ', startDate, ' endDate: ', endDate);
-    // const facetGroup = this.collectionFacets.locator('#container > section:nth-child(1)');
-    // getByRole('region', { name: 'Year Published range filter' })
-    // getByLabel('Maximum date:')
-    // getByLabel('Minimum date:')
-    // #container 
-    // console.log('histo: ', await facetGroup.innerHTML());
-    
-    const facetContent = await this.getFacetGroupContainer(FacetGroupLabel.DATE);
-    if (facetContent) {
-      console.log('facetContent: ', facetContent);
-      const datePickerContainer = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs');
-      const min = datePickerContainer.locator('input#date-min'); // #date-min #inputs #date-min
-      const max = datePickerContainer.locator('input#date-max');
 
-      const minYear = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs > #date-min');
-      const maxYear = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs > #date-max');
-      console.log('datePickerContainer: ', await datePickerContainer.innerHTML());
-      console.log('min: ', await min.innerHTML());
-      console.log('max: ', await max.innerHTML());
-      console.log('minY: ', await minYear.innerHTML());
-      console.log('maxY: ', await maxYear.innerHTML());
+    const facetContent = await this.getFacetGroupContainer(FacetGroupSelectorLabel.DATE);
+    if (facetContent) {
+      const datePickerContainer = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs');
+      const minYear = datePickerContainer.locator('input#date-min');
+      const maxYear = datePickerContainer.locator('input#date-max');
+
+      await minYear.fill(startDate);
+      await maxYear.fill(endDate);
+      await maxYear.press('Enter');
     }
   }
 
-  async getFacetGroupContainer(group: FacetGroupLabel): Promise<Locator | null> {
+  async getFacetGroupContainer(group: FacetGroupSelectorLabel): Promise<Locator | null> {
     const facetGroups = await this.collectionFacets.locator('#container > section.facet-group').all();
 
     for(let i = 0; i < facetGroups.length; i++) {
       const facetHeader = await facetGroups[i].getAttribute('aria-labelledby');
       if (facetHeader === group) {
-        return group === FacetGroupLabel.DATE 
+        return group === FacetGroupSelectorLabel.DATE 
           ? facetGroups[i]
           : facetGroups[i].locator('div.facet-group-content');
       }
     }
     return null;
   }
-
 
 }
