@@ -54,7 +54,9 @@ test('On load, pages fit fully inside of the BookReader™', async () => {
   const brContainerBox = await brContainer.boundingBox();
 
   // images do not get cropped vertically
-  expect(brContainerBox?.height).toBeLessThanOrEqual(Number(brShellBox?.height));
+  expect(brContainerBox?.height).toBeLessThanOrEqual(
+    Number(brShellBox?.height),
+  );
   // images do not get cropped horizontally
   expect(brContainerBox?.width).toBeLessThanOrEqual(Number(brShellBox?.width));
 });
@@ -88,9 +90,13 @@ test.describe('Test bookreader navigations', () => {
     const brContainerBox = await brContainer.boundingBox();
 
     // images do not get cropped vertically
-    expect(brContainerBox?.height).toBeLessThanOrEqual(Number(brShellBox?.height));
+    expect(brContainerBox?.height).toBeLessThanOrEqual(
+      Number(brShellBox?.height),
+    );
     // images do not get cropped horizontally
-    expect(brContainerBox?.width).toBeLessThanOrEqual(Number(brShellBox?.width));
+    expect(brContainerBox?.width).toBeLessThanOrEqual(
+      Number(brShellBox?.width),
+    );
   });
 
   test('2. nav menu displays properly', async () => {
@@ -146,7 +152,7 @@ test.describe('Test bookreader navigations', () => {
     await goNext.click();
     await page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
 
-    const onLoadBrState = brContainer.nth(0);// .child(0);
+    const onLoadBrState = brContainer.nth(0); // .child(0);
     const initialImages = onLoadBrState.locator('img'); // .find('img');
     const origImg1Src = await initialImages.nth(0).getAttribute('src');
     const origImg2Src = await initialImages.nth(-1).getAttribute('src');
@@ -155,7 +161,7 @@ test.describe('Test bookreader navigations', () => {
     await page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
 
     const nextBrState = brContainer.nth(0);
-    const prevImages = nextBrState.locator('img'); 
+    const prevImages = nextBrState.locator('img');
     const prevImg1Src = await prevImages.nth(0).getAttribute('src');
     const prevImg2Src = await prevImages.nth(-1).getAttribute('src');
 
@@ -190,5 +196,4 @@ test.describe('Test bookreader navigations', () => {
     expect(await isPageInUrl()).toEqual(true);
     expect(await isModeInUrl('2up')).toEqual(true);
   });
-
 });

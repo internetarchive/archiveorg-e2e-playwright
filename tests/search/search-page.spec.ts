@@ -1,88 +1,121 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
-import { SearchPage } from './search-page';
-
-import { SortBar } from '../shared/sort-bar';
+import { SearchOption } from '../models';
+import { SearchPage } from '../pageObjects/search-page';
 
 let searchPage: SearchPage;
-let sortBar: SortBar;
 
-test.describe('Metadata - Search page results display', () => {
+test.describe('Basic Search tests', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test('Go to search page and do a simple query', async ({ browser }) => {
+  test(`"Begin searching" page displays prior to searching`, async ({
+    browser,
+  }) => {
     const browserPage = await browser.newPage();
     searchPage = new SearchPage(browserPage);
-    sortBar = new SortBar(searchPage.page);
 
-    await searchPage.visit();
-    await searchPage.search('cats');
-  });
-
-  test.describe('Facets navigation', async () => {
-    test('Should display result count and different facet groups', async () => {
-      await searchPage.checkFacetGroups();
-    });
-  })
-
-  test('Navigate through different search view modes', async () => {
-    await searchPage.navigateThruInfiniteScrollerViewModes();
-  });
-
-  test.describe('Sorting results', async() => {
-    test('Sort by weekly views, descending order', async () => {
-      await searchPage.navigateSortBy('Weekly views', 'descending');
+    await test.step(`Go to archive.org/search URL`, async () => {
+      await searchPage.visit();
     });
 
-    test('Sort by relevance, descending order', async () => {
-      await searchPage.navigateSortBy('Relevance', 'descending');
-    });
-
-    test('Sort by all-time views, ascending order', async () => {
-      await searchPage.navigateSortBy('All-time views', 'ascending');
-    });
-
-    test('Sort by title, descending order', async() => {
-      await searchPage.navigateSortBy('Title', 'descending');
-    });
-
-    test('Sort by date published, ascending order', async () => {
-      await searchPage.navigateSortBy('Date published', 'ascending');
-    });
-
-    test('Sort by date archived, ascending order', async () => {
-      await searchPage.navigateSortBy('Date archived', 'ascending');
-    });
-
-    test('Sort by date reviewed, ascending order', async () => {
-      await searchPage.navigateSortBy('Date reviewed', 'ascending');
-    });
-
-    test('Sort by date added, ascending order', async () => {
-      await searchPage.navigateSortBy('Date added', 'ascending');
-    });
-
-    test('Sort by creator, ascending order', async () => {
-      await searchPage.navigateSortBy('Creator', 'descending');
-    });
-
-    test('Sort by creator name that starts with letter B', async () => {
-      await sortBar.clickAlphaBarLetterByPosition(1);
-    });
-
-    test('Sort by creator name that starts with letter K', async () => {
-      await sortBar.clickAlphaBarLetterByPosition(10);
-    });
-
-    test('Clear applied creator name letter sort filter', async () => {
-      await searchPage.clearAllFilters();
+    await test.step(`Check if the empty page placeholder is displayed`, async () => {
+      await searchPage.checkEmptyPagePlaceholder();
     });
   });
 
-  test.describe('Search type options', async () => {
-    test('Should display different collection search input options', async () => {
-      await searchPage.checkSearchInputOptions();
+  test('Do simple metadata search', async () => {
+    await test.step(`Select search option for metadata search`, async () => {
+      await searchPage.clickSearchInputOption(SearchOption.METADATA);
+    });
+
+    await test.step(`Search for cats`, async () => {
+      await searchPage.queryFor('cats');
+    });
+
+    await test.step(`Searching and search result count should be displayed`, async () => {
+      await searchPage.collectionFacets.checkResultCount();
     });
   });
 
+  test('Do simple text contents search', async () => {
+    await test.step(`Select search option for text search`, async () => {
+      await searchPage.clickSearchInputOption(SearchOption.TEXT);
+    });
+
+    await test.step(`Search for dogs`, async () => {
+      await searchPage.queryFor('dogs');
+    });
+
+    await test.step(`Searching and search result count should be displayed`, async () => {
+      await searchPage.collectionFacets.checkResultCount();
+    });
+  });
+
+  test('Do simple TV search', async () => {
+    await test.step(`Select search option for text search`, async () => {
+      await searchPage.clickSearchInputOption(SearchOption.TV);
+    });
+
+    await test.step(`Search for iguanas`, async () => {
+      await searchPage.queryFor('iguanas');
+    });
+
+    await test.step(`Check TV page is displayed`, async () => {
+      await searchPage.checkTVPage('iguanas');
+    });
+
+    await test.step(`Go back to search page from TV search page`, async () => {
+      await searchPage.goBackToSearchPage();
+    });
+  });
+
+  test('Do simple radio search', async () => {
+    await test.step(`Select search option for text search`, async () => {
+      await searchPage.clickSearchInputOption(SearchOption.RADIO);
+    });
+
+    await test.step(`Search for iguanas`, async () => {
+      await searchPage.queryFor('rabbits');
+    });
+
+    await test.step(`Check Radio search page is displayed`, async () => {
+      await searchPage.checkRadioPage('rabbits');
+    });
+
+    await test.step(`Go back to search page from Radio search page`, async () => {
+      await searchPage.goBackToSearchPage();
+    });
+  });
+
+  test('Do simple web search', async () => {
+    await test.step(`Select search option for text search`, async () => {
+      await searchPage.clickSearchInputOption(SearchOption.WEB);
+    });
+
+    await test.step(`Search for parrots`, async () => {
+      await searchPage.queryFor('parrots');
+    });
+
+    await test.step(`Check Wayback search page is displayed`, async () => {
+      await searchPage.checkWaybackPage('parrots');
+    });
+
+    await test.step(`Go back to search page from Wayback search page`, async () => {
+      await searchPage.goBackToSearchPage();
+    });
+  });
+
+  test('No results page displays when no results', async () => {
+    await test.step(`Search for a query that we expect will return no results at all`, async () => {
+      await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
+    });
+
+    await test.step(`Check if the empty page placeholder is displayed`, async () => {
+      await searchPage.checkEmptyPagePlaceholder();
+    });
+
+    await test.step('Close page browser after running all tests', async () => {
+      await searchPage.page.close();
+    });
+  });
 });
