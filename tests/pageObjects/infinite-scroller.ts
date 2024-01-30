@@ -230,7 +230,6 @@ export class InfiniteScroller {
     displayItemCount: Number,
   ): Promise<DateMetadataLabel[]> {
     const arrDateLine: DateMetadataLabel[] = [];
-    let dateSpanLabel = '';
     const allItems = await this.infiniteScrollerSectionContainer
       .locator('article')
       .all();
@@ -240,26 +239,12 @@ export class InfiniteScroller {
       // Load items and get tileStats views based on displayItemCount
       // There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
       // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
-      const dateLineMetadataCount = await allItems[index]
+      // We always want the last one since it will correspond to the current "sort by" field
+
+      const dateSpanLabel = await allItems[index]
         .locator('#dates-line > div.metadata')
-        .count();
-      if (dateLineMetadataCount === 1) {
-        expect.soft(dateLineMetadataCount).toBe(1);
-        dateSpanLabel = await allItems[index]
-          .locator('#dates-line > div.metadata')
-          .first()
-          .innerText();
-      } else if (dateLineMetadataCount === 2) {
-        expect.soft(dateLineMetadataCount).toBe(2);
-        dateSpanLabel = await allItems[index]
-          .locator('#dates-line > div.metadata')
-          .nth(1)
-          .innerText();
-      } else {
-        console.log(
-          'there might be a change in the code - so this test might fail',
-        );
-      }
+        .last()
+        .innerText();
 
       if (dateSpanLabel) {
         // Need to split date filter and date format value: Published: 2150 or Published: Nov 15, 2023
