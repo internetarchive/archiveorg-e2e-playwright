@@ -18,7 +18,10 @@
     "test:search": "npx playwright test tests/search",
     "test:books": "npx playwright test tests/books",
     "test:login": "npx playwright test tests/login",
-    "test:music": "npx playwright test tests/music"
+    "test:music": "npx playwright test tests/music",
+    "format": "prettier --write \"tests/**/*.ts\"",
+    "lint": "prettier --check \"tests/**/*.ts\"",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit"
   },
   "keywords": [],
   "author": "",

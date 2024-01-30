@@ -13,7 +13,7 @@ export const test = base.extend<PageFixtures>({
     await searchPage.visit();
     await searchPage.queryFor('cats');
 
-    await page.route(/(analytics|fonts)/, (route) => {
+    await page.route(/(analytics|fonts)/, route => {
       route.abort();
     });
 

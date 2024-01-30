@@ -1,7 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
 export class CollectionFacets {
-  
   readonly page: Page;
   readonly collectionFacets: Locator;
   readonly resultsTotal: Locator;
@@ -26,5 +25,4 @@ export class CollectionFacets {
     expect(await facetGroups.count()).toEqual(8);
     expect(await headerTitles.count()).toEqual(8);
   }
-
 }
