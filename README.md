@@ -22,6 +22,10 @@
 - run search tests: `npm run test:search`
 
 
+## Running tests using VSCode Playwright plugin
+
+- install [VSCode Playwright plugin](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) to run specific tests using VSCode
+
 ## Running specific test spec by file:
 
 - run command format: `npx playwright test <test-file-path>`

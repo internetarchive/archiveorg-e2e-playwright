@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { FacetGroupSelectorLabel, FacetType } from '../models';
+import { FacetGroupLocatorLabel, FacetType } from '../models';
 
 export class CollectionFacets {
   readonly page: Page;
@@ -32,7 +32,7 @@ export class CollectionFacets {
   }
 
   async selectFacetByGroup(
-    group: FacetGroupSelectorLabel,
+    group: FacetGroupLocatorLabel,
     facetLabel: string,
     facetType: FacetType,
   ) {
@@ -69,7 +69,7 @@ export class CollectionFacets {
     }
   }
 
-  async clickMoreInFacetGroup(group: FacetGroupSelectorLabel) {
+  async clickMoreInFacetGroup(group: FacetGroupLocatorLabel) {
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
       const btnMore = facetContent.locator('button');
@@ -99,7 +99,7 @@ export class CollectionFacets {
     console.log('start: ', startDate, ' endDate: ', endDate);
 
     const facetContent = await this.getFacetGroupContainer(
-      FacetGroupSelectorLabel.DATE,
+      FacetGroupLocatorLabel.DATE,
     );
     if (facetContent) {
       const datePickerContainer = facetContent.locator(
@@ -115,7 +115,7 @@ export class CollectionFacets {
   }
 
   async getFacetGroupContainer(
-    group: FacetGroupSelectorLabel,
+    group: FacetGroupLocatorLabel,
   ): Promise<Locator | null> {
     const facetGroups = await this.collectionFacets
       .locator('#container > section.facet-group')
@@ -124,7 +124,7 @@ export class CollectionFacets {
     for (let i = 0; i < facetGroups.length; i++) {
       const facetHeader = await facetGroups[i].getAttribute('aria-labelledby');
       if (facetHeader === group) {
-        return group === FacetGroupSelectorLabel.DATE
+        return group === FacetGroupLocatorLabel.DATE
           ? facetGroups[i]
           : facetGroups[i].locator('div.facet-group-content');
       }

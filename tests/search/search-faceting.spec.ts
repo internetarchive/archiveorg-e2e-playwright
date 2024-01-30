@@ -1,5 +1,6 @@
 import { test } from '../fixtures';
-import { FacetGroupSelectorLabel } from '../models';
+
+import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
@@ -12,7 +13,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionFacets.selectFacetByGroup(
-      FacetGroupSelectorLabel.MEDIATYPE,
+      FacetGroupLocatorLabel.MEDIATYPE,
       'movies',
       'positive',
     );
@@ -32,7 +33,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
 test(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionFacets.selectFacetByGroup(
-      FacetGroupSelectorLabel.MEDIATYPE,
+      FacetGroupLocatorLabel.MEDIATYPE,
       'data',
       'positive',
     );
@@ -69,7 +70,7 @@ test(`Select Year Published range via date picker`, async ({ searchPage }) => {
 
   // it's easier to check dates in list view mode
   await test.step('Switch to list view mode', async () => {
-    await searchPage.infiniteScroller.clickViewMode('list');
+    await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
   });
 
   await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
@@ -85,7 +86,7 @@ test(`Select Year Published range via date picker`, async ({ searchPage }) => {
 test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionFacets.selectFacetByGroup(
-      FacetGroupSelectorLabel.MEDIATYPE,
+      FacetGroupLocatorLabel.MEDIATYPE,
       'audio',
       'negative',
     );
@@ -126,7 +127,7 @@ test(`Facets can be selected via "Select filters" modal`, async ({
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
     await searchPage.collectionFacets.clickMoreInFacetGroup(
-      FacetGroupSelectorLabel.MEDIATYPE,
+      FacetGroupLocatorLabel.MEDIATYPE,
     );
   });
 

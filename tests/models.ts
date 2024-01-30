@@ -5,6 +5,12 @@ export type DateMetadataLabel = {
 
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
+export enum LayoutViewModeLocator {
+  TILE = '#grid-button',
+  LIST = '#list-detail-button',
+  COMPACT = '#list-compact-button',
+}
+
 export enum SearchOption {
   METADATA = `Search metadata`,
   TEXT = `Search text contents`,
@@ -36,7 +42,7 @@ export const SortFilterURL = {
   Creator: 'creator',
 };
 
-export enum FacetGroupSelectorLabel {
+export enum FacetGroupLocatorLabel {
   DATE = 'date-picker-label',
   MEDIATYPE = 'facet-group-header-label-mediatype',
   LENDING = 'facet-group-header-label-lending',

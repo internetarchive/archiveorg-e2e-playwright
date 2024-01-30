@@ -8,6 +8,7 @@ import {
   SortOrder,
   SortFilter,
   ViewFacetGroup,
+  LayoutViewModeLocator,
 } from '../models';
 
 import { datesSorted, viewsSorted } from '../utils';
@@ -46,22 +47,8 @@ export class InfiniteScroller {
     await this.page.waitForTimeout(2000);
   }
 
-  async clickViewMode(viewMode: LayoutViewMode) {
-    switch (viewMode) {
-      case 'tile':
-        await this.displayStyleSelectorOptions.locator('#grid-button').click();
-        return;
-      case 'list':
-        await this.displayStyleSelectorOptions
-          .locator('#list-detail-button')
-          .click();
-        return;
-      case 'compact':
-        await this.displayStyleSelectorOptions
-          .locator('#list-compact-button')
-          .click();
-        return;
-    }
+  async clickViewMode(viewModeSelector: LayoutViewModeLocator) {
+    await this.displayStyleSelectorOptions.locator(viewModeSelector).click();
   }
 
   async assertLayoutViewModeChange(viewMode: LayoutViewMode) {
