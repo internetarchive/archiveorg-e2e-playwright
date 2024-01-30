@@ -113,5 +113,9 @@ test.describe('Basic Search tests', () => {
     await test.step(`Check if the empty page placeholder is displayed`, async () => {
       await searchPage.checkEmptyPagePlaceholder();
     });
+
+    await test.step('Close page browser after running all tests', async () => {
+      await searchPage.page.close();
+    })
   });
 });
