@@ -96,7 +96,6 @@ export class CollectionFacets {
   async fillUpYearFilters(startDate: string, endDate: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(2000);
-    console.log('start: ', startDate, ' endDate: ', endDate);
 
     const facetContent = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,

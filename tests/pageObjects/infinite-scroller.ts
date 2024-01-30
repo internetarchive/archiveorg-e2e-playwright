@@ -47,8 +47,8 @@ export class InfiniteScroller {
     await this.page.waitForTimeout(2000);
   }
 
-  async clickViewMode(viewModeSelector: LayoutViewModeLocator) {
-    await this.displayStyleSelectorOptions.locator(viewModeSelector).click();
+  async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
+    await this.displayStyleSelectorOptions.locator(viewModeLocator).click();
   }
 
   async assertLayoutViewModeChange(viewMode: LayoutViewMode) {
