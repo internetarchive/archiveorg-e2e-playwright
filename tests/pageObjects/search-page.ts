@@ -28,9 +28,15 @@ export class SearchPage {
   public constructor(page: Page) {
     this.page = page;
 
-    this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
-    this.btnCollectionSearchInputCollapser = page.locator('collection-search-input #button-collapser');
-    this.btnClearAllFilters = page.locator('#facets-header-container div.clear-filters-btn-row button');
+    this.btnCollectionSearchInputGo = page.locator(
+      'collection-search-input #go-button',
+    );
+    this.btnCollectionSearchInputCollapser = page.locator(
+      'collection-search-input #button-collapser',
+    );
+    this.btnClearAllFilters = page.locator(
+      '#facets-header-container div.clear-filters-btn-row button',
+    );
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 

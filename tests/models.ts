@@ -33,8 +33,8 @@ export const SortFilterURL = {
   'Date archived': 'publicdate',
   'Date reviewed': 'reviewdate',
   'Date added': 'addeddate',
-  'Creator': 'creator',
-}
+  Creator: 'creator',
+};
 
 export enum FacetGroupSelectorLabel {
   DATE = 'date-picker-label',
@@ -44,7 +44,7 @@ export enum FacetGroupSelectorLabel {
   SUBJECT = 'facet-group-header-label-subject',
   COLLECTION = 'facet-group-header-label-collection',
   CREATOR = 'facet-group-header-label-creator',
-  LANGUAGE = 'facet-group-header-label-language'
+  LANGUAGE = 'facet-group-header-label-language',
 }
 
 export type FacetType = 'positive' | 'negative';

@@ -77,7 +77,7 @@ export class SortBar {
     }
   }
 
-  async clickAlphaBarLetterByPosition (pos: number) {
+  async clickAlphaBarLetterByPosition(pos: number) {
     await this.page.waitForLoadState();
     await this.page.waitForTimeout(3000);
 

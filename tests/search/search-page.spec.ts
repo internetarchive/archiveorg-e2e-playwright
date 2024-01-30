@@ -116,6 +116,6 @@ test.describe('Basic Search tests', () => {
 
     await test.step('Close page browser after running all tests', async () => {
       await searchPage.page.close();
-    })
+    });
   });
 });

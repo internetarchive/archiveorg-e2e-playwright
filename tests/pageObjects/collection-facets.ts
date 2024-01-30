@@ -31,23 +31,33 @@ export class CollectionFacets {
     expect(await facetGroups.count()).toEqual(7);
   }
 
-  async selectFacetByGroup(group: FacetGroupSelectorLabel, facetLabel: string, facetType: FacetType) {
+  async selectFacetByGroup(
+    group: FacetGroupSelectorLabel,
+    facetLabel: string,
+    facetType: FacetType,
+  ) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
 
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
       if (facetType === 'positive') {
-        const facetRow = facetContent.getByRole('checkbox', { name: facetLabel });
+        const facetRow = facetContent.getByRole('checkbox', {
+          name: facetLabel,
+        });
         await facetRow.check();
         return;
       }
 
       if (facetType === 'negative') {
-        const facetRows = await facetContent.locator('facets-template > div.facets-on-page facet-row').all();
+        const facetRows = await facetContent
+          .locator('facets-template > div.facets-on-page facet-row')
+          .all();
         if (facetRows.length !== 0) {
           for (let x = 0; x < facetRows.length; x++) {
-            const facetRowLabel = facetRows[x].locator('div.facet-row-container > div.facet-checkboxes > label');
+            const facetRowLabel = facetRows[x].locator(
+              'div.facet-row-container > div.facet-checkboxes > label',
+            );
             const facetRowTitle = await facetRowLabel.getAttribute('title');
             if (facetRowTitle === `Hide mediatype: ${facetLabel}`) {
               await facetRowLabel.click();
@@ -70,23 +80,31 @@ export class CollectionFacets {
   async selectFacetsInModal(facetLabels: string[]) {
     await this.page.waitForLoadState();
 
-    const btnApplyFilters = this.moreFacetsContent.locator('#more-facets > div.footer > button.btn.btn-submit');
+    const btnApplyFilters = this.moreFacetsContent.locator(
+      '#more-facets > div.footer > button.btn.btn-submit',
+    );
     for (let i = 0; i < facetLabels.length; i++) {
       // wait for the promise to resolve before advancing the for loop
-      const facetRow = this.moreFacetsContent.locator('#more-facets').getByRole('checkbox', { name: facetLabels[i] });
+      const facetRow = this.moreFacetsContent
+        .locator('#more-facets')
+        .getByRole('checkbox', { name: facetLabels[i] });
       await facetRow.check();
     }
     await btnApplyFilters.click();
   }
 
-  async fillUpYearFilters (startDate: string, endDate: string) {
+  async fillUpYearFilters(startDate: string, endDate: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(2000);
     console.log('start: ', startDate, ' endDate: ', endDate);
 
-    const facetContent = await this.getFacetGroupContainer(FacetGroupSelectorLabel.DATE);
+    const facetContent = await this.getFacetGroupContainer(
+      FacetGroupSelectorLabel.DATE,
+    );
     if (facetContent) {
-      const datePickerContainer = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs');
+      const datePickerContainer = facetContent.locator(
+        'histogram-date-range #container > div.inner-container > #inputs',
+      );
       const minYear = datePickerContainer.locator('input#date-min');
       const maxYear = datePickerContainer.locator('input#date-max');
 
@@ -96,18 +114,21 @@ export class CollectionFacets {
     }
   }
 
-  async getFacetGroupContainer(group: FacetGroupSelectorLabel): Promise<Locator | null> {
-    const facetGroups = await this.collectionFacets.locator('#container > section.facet-group').all();
+  async getFacetGroupContainer(
+    group: FacetGroupSelectorLabel,
+  ): Promise<Locator | null> {
+    const facetGroups = await this.collectionFacets
+      .locator('#container > section.facet-group')
+      .all();
 
-    for(let i = 0; i < facetGroups.length; i++) {
+    for (let i = 0; i < facetGroups.length; i++) {
       const facetHeader = await facetGroups[i].getAttribute('aria-labelledby');
       if (facetHeader === group) {
-        return group === FacetGroupSelectorLabel.DATE 
+        return group === FacetGroupSelectorLabel.DATE
           ? facetGroups[i]
           : facetGroups[i].locator('div.facet-group-content');
       }
     }
     return null;
   }
-
 }
