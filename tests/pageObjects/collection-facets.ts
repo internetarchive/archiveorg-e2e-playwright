@@ -83,26 +83,44 @@ export class CollectionFacets {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
     // #container > section:nth-child(1) > histogram-date-range #inputs
-    // console.log('start: ', startDate, ' endDate: ', endDate);
+    console.log('start: ', startDate, ' endDate: ', endDate);
     // const facetGroup = this.collectionFacets.locator('#container > section:nth-child(1)');
     // getByRole('region', { name: 'Year Published range filter' })
     // getByLabel('Maximum date:')
     // getByLabel('Minimum date:')
+    // #container 
     // console.log('histo: ', await facetGroup.innerHTML());
-    const histogramContainer = this.page.locator('histogram-date-range');
-    console.log('histo: ', await histogramContainer.innerHTML());
+    
+    const facetContent = await this.getFacetGroupContainer(FacetGroupLabel.DATE);
+    if (facetContent) {
+      console.log('facetContent: ', facetContent);
+      const datePickerContainer = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs');
+      const min = datePickerContainer.locator('input#date-min'); // #date-min #inputs #date-min
+      const max = datePickerContainer.locator('input#date-max');
 
+      const minYear = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs > #date-min');
+      const maxYear = facetContent.locator('histogram-date-range #container > div.inner-container > #inputs > #date-max');
+      console.log('datePickerContainer: ', await datePickerContainer.innerHTML());
+      console.log('min: ', await min.innerHTML());
+      console.log('max: ', await max.innerHTML());
+      console.log('minY: ', await minYear.innerHTML());
+      console.log('maxY: ', await maxYear.innerHTML());
+    }
   }
 
-  async getFacetGroupContainer(group: FacetGroupLabel) {
+  async getFacetGroupContainer(group: FacetGroupLabel): Promise<Locator | null> {
     const facetGroups = await this.collectionFacets.locator('#container > section.facet-group').all();
-    
+
     for(let i = 0; i < facetGroups.length; i++) {
       const facetHeader = await facetGroups[i].getAttribute('aria-labelledby');
       if (facetHeader === group) {
-        return facetGroups[i].locator('div.facet-group-content');
+        return group === FacetGroupLabel.DATE 
+          ? facetGroups[i]
+          : facetGroups[i].locator('div.facet-group-content');
       }
     }
+    return null;
   }
+
 
 }

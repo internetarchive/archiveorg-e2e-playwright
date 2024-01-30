@@ -64,7 +64,7 @@ export class SearchPage {
   async queryFor(query: string) {
     await this.formInputSearchPage.fill(query);
     await this.formInputSearchPage.press('Enter');
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState('networkidle');
   }
 
   async clickClearAllFilters() {
@@ -82,6 +82,7 @@ export class SearchPage {
     await expect(this.formInputSearchPage).toBeVisible();
 
     await this.formInputSearchPage.click();
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(
       this.btnCollectionSearchInputCollapser.getByText(option),
@@ -90,6 +91,7 @@ export class SearchPage {
   }
 
   async checkTVPage(query: string) {
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
     await expect(
@@ -103,12 +105,14 @@ export class SearchPage {
   }
 
   async checkRadioPage(query: string) {
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(this.formInputRadioPage).toBeVisible();
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
   async checkWaybackPage(query: string) {
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Wayback Machine');
     await expect(this.formInputWaybackPage).toBeVisible();
