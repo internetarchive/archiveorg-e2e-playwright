@@ -1,8 +1,8 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
+import { SearchPage } from './search-page';
 import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
-import { SortBar } from './sort-bar';
 
 const PAGE_TIMEOUT = 3000;
 
@@ -14,12 +14,20 @@ export class CollectionPage {
   readonly pageSummary: Locator;
   readonly pageTabs: Locator;
 
+  readonly collectionFacets: CollectionFacets;
+  readonly infiniteScroller: InfiniteScroller;
+  readonly searchPage: SearchPage;
+
   public constructor(page: Page) {
     this.page = page;
 
     this.pageHeader = page.locator('#page-header');
     this.pageSummary = page.locator('#title-summary-container');
     this.pageTabs = page.locator('#page-container > tab-manager > div.tab-manager-container > nav.tabs-row > ul');
+
+    this.collectionFacets = new CollectionFacets(this.page);
+    this.infiniteScroller = new InfiniteScroller(this.page);
+    this.searchPage = new SearchPage(this.page);
   }
 
   async visit (collection: string) {
@@ -66,14 +74,7 @@ export class CollectionPage {
   }
 
   async clickCollectionTab(name: string) {
-    // div > nav > ul > li:nth-child(3) > a
-    // const liTabs = await this.pageTabs.locator('li').all();
-    // locator('#page-container').getByRole('link', { name: 'About' })
     await this.pageTabs.getByRole('link', { name }).click();
-
   }
-
-  
-
 
 }

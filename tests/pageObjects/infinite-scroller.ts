@@ -183,6 +183,10 @@ export class InfiniteScroller {
     }
   }
 
+  async checkFirstItemResult () {
+    await expect(this.firstItemTile).toBeVisible();
+  }
+
   // Getters
   async getTileStatsViewCountTitles(
     displayItemCount: Number,
@@ -297,4 +301,5 @@ export class InfiniteScroller {
         return null;
     }
   }
+
 }

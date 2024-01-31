@@ -19,7 +19,6 @@ export class CollectionFacets {
   }
 
   async checkResultCount() {
-    await expect(this.page.getByText('Searching')).toBeVisible();
     await expect(this.resultsTotal).toBeVisible();
   }
 

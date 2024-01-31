@@ -14,6 +14,7 @@ export class SearchPage {
   readonly btnCollectionSearchInputGo: Locator;
   readonly btnCollectionSearchInputCollapser: Locator;
   readonly btnClearAllFilters: Locator;
+  readonly btnClearInput: Locator;
   readonly emptyPlaceholder: Locator;
   readonly emptyPlaceholderTitleText: Locator;
   readonly formInputSearchPage: Locator;
@@ -37,6 +38,7 @@ export class SearchPage {
     this.btnClearAllFilters = page.locator(
       '#facets-header-container div.clear-filters-btn-row button',
     );
+    this.btnClearInput = page.locator('collection-search-input #clear-button');
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 
@@ -147,5 +149,13 @@ export class SearchPage {
         : SortFilterURL[filter];
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);
+  }
+  
+  async clickClearSearchInput() {
+    await this.btnClearInput.click();
+  }
+
+  async assertClearSearchInputNotVisible() {
+    await expect(this.btnClearInput).not.toBeVisible();
   }
 }
