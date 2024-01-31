@@ -32,17 +32,47 @@ test.describe('Collection Page - Basic display tests', () => {
     });
   });
 
-  test.skip(``, async () => {
-    await test.step(``, async () => {
-      // TODO:
+  test(`"More..." link to About tab appears below description`, async () => {
+    await test.step(`Go to "ytjdradio" collection page`, async () => {
+      await collectionPage.visit('ytjdradio');
     });
 
-    await test.step(``, async () => {
-      // TODO
+    await test.step(`Click the "More..." link (below description)`, async () => {
+      await collectionPage.clickMoreBtnFromSummary();
     });
 
-    await test.step(``, async () => {
-      // TODO
+    await test.step(`Check if page is pointing to About tab`, async () => {
+      await collectionPage.checkAboutTabPage();
+    });
+  });
+
+  test(`Tab navigation`, async () => {
+    await test.step(`Navigate to "oldtimeradio" collection page`, async () => {
+      await collectionPage.visit('oldtimeradio');
+    });
+
+    await test.step(`Click "About" tab button`, async () => {
+      await collectionPage.clickCollectionTab('About');
+    });
+
+    await test.step(`Check if page is pointing to About tab`, async () => {
+      await collectionPage.checkAboutTabPage();
+    });
+    
+    await test.step(`Click "Forum" tab button`, async () => {
+      await collectionPage.clickCollectionTab('Forum');
+    });
+
+    await test.step(`Check if page is pointing to Forum tab`, async () => {
+      await collectionPage.checkForumTabPage();
+    });
+
+    await test.step(`Click "Collection" tab button`, async () => {
+      await collectionPage.clickCollectionTab('Collection');
+    });
+
+    await test.step(`Check if page is pointing to Collection tab`, async () => {
+      await collectionPage.checkCollectionTabPage();
     });
   });
 
