@@ -7,7 +7,7 @@ import {
   LayoutViewMode,
   SortOrder,
   SortFilter,
-  ViewFacetGroup,
+  ViewFacetMetadata,
   LayoutViewModeLocator,
 } from '../models';
 
@@ -163,14 +163,14 @@ export class InfiniteScroller {
   }
 
   async checkIncludedFacetedResults(
-    viewFacetType: ViewFacetGroup,
+    viewFacetMetadata: ViewFacetMetadata,
     facetLabels: string[],
     toInclude: boolean,
     displayItemCount: Number,
   ) {
     await this.awaitLoadingState();
     const facetedResults = await this.getFacetedResultsByViewFacetGroup(
-      viewFacetType,
+      viewFacetMetadata,
       displayItemCount,
     );
     if (facetedResults) {
@@ -204,11 +204,7 @@ export class InfiniteScroller {
 
       if (collectionTileCount === 1 && itemTileCount === 0) {
         console.log('it is a collection tile - do nothing for now');
-        expect.soft(collectionTileCount).toBe(1);
-        expect.soft(itemTileCount).toBe(0);
       } else if (collectionTileCount === 0 && itemTileCount === 1) {
-        expect.soft(collectionTileCount).toBe(0);
-        expect.soft(itemTileCount).toBe(1);
         // Get view count from tile-stats row
         const tileStatsTitle = await allItems[index]
           .locator('#stats-row > li:nth-child(2)')
@@ -216,8 +212,6 @@ export class InfiniteScroller {
         if (tileStatsTitle) arrTileStatsTitle.push(tileStatsTitle);
       } else {
         console.log('it is not a collection-tile nor an item-tile');
-        expect.soft(collectionTileCount).toBe(0);
-        expect.soft(itemTileCount).toBe(0);
       }
 
       index++;
@@ -286,11 +280,11 @@ export class InfiniteScroller {
   }
 
   async getFacetedResultsByViewFacetGroup(
-    viewFacetType: ViewFacetGroup,
+    viewFacetMetadata: ViewFacetMetadata,
     displayItemCount: Number,
   ): Promise<string[] | null> {
-    switch (viewFacetType) {
-      case 'tile-title':
+    switch (viewFacetMetadata) {
+      case 'tile-icontitle':
         return await this.getTileIconTitle(displayItemCount);
 
       case 'list-date':

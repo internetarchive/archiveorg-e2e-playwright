@@ -22,7 +22,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
   await test.step(`Check the first 10 results for "Movie" results`, async () => {
     // checking the tileIcon title for now which is set in a `Title case` format
     await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
+      'tile-icontitle',
       ['Movie', 'Data'],
       true,
       10,
@@ -42,7 +42,7 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Check the first 10 results for "Data" results`, async () => {
     // checking the tileIcon title for now which is set in a `Title case` format
     await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
+      'tile-icontitle',
       ['Data'],
       true,
       10,
@@ -95,7 +95,7 @@ test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   await test.step(`Check the first 7 results for "Audio" results`, async () => {
     // checking the tileIcon title for now which is set in a `Title case` format
     await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
+      'tile-icontitle',
       ['Audio'],
       false,
       7,
@@ -138,7 +138,7 @@ test(`Facets can be selected via "Select filters" modal`, async ({
   await test.step(`Check the first 10 results for "Audio" & "Texts" results`, async () => {
     // checking the tileIcon title for now which is set in a `Title case` format
     await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
+      'tile-icontitle',
       ['Audio', 'Text'],
       true,
       10,
