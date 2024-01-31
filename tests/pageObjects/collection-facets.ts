@@ -22,12 +22,20 @@ export class CollectionFacets {
     await expect(this.resultsTotal).toBeVisible();
   }
 
-  async assertFacetGroupCount() {
+  async assertSearchFacetGroupCount() {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
+  }
+
+  async assertCollectionFacetGroupCount() {
+    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
+
+    const facetGroups = this.collectionFacets.locator('facets-template');
+    expect(await facetGroups.count()).toEqual(6);
   }
 
   async selectFacetByGroup(

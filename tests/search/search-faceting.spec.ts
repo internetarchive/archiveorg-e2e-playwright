@@ -4,7 +4,7 @@ import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
-    await searchPage.collectionFacets.assertFacetGroupCount();
+    await searchPage.collectionFacets.assertSearchFacetGroupCount();
   });
 });
 

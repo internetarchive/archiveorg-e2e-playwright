@@ -3,8 +3,7 @@ import { type Page, type Locator, expect } from '@playwright/test';
 import { SearchPage } from './search-page';
 import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
-
-const PAGE_TIMEOUT = 3000;
+import { SortBar } from './sort-bar';
 
 export class CollectionPage {
   readonly url: string = 'https://archive.org/details';
@@ -17,6 +16,7 @@ export class CollectionPage {
   readonly collectionFacets: CollectionFacets;
   readonly infiniteScroller: InfiniteScroller;
   readonly searchPage: SearchPage;
+  readonly sortBar: SortBar;
 
   public constructor(page: Page) {
     this.page = page;
@@ -30,6 +30,7 @@ export class CollectionPage {
     this.collectionFacets = new CollectionFacets(this.page);
     this.infiniteScroller = new InfiniteScroller(this.page);
     this.searchPage = new SearchPage(this.page);
+    this.sortBar = new SortBar(this.page);
   }
 
   async visit(collection: string) {
