@@ -71,7 +71,9 @@
   },
   "prettier": {
     "singleQuote": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "trailingComma": "none",
+    "printWidth": 90
   },
   "lint-staged": {
     "*.ts": [

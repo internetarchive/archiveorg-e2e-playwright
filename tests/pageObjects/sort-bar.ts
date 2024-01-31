@@ -17,7 +17,7 @@ export class SortBar {
     this.sortSelector = this.sortFilterBar.locator('ul#desktop-sort-selector');
     this.btnSortDirection = this.sortFilterBar.locator('.sort-direction-icon');
     this.srSortText = this.sortFilterBar.locator(
-      'button.sort-direction-selector span.sr-only',
+      'button.sort-direction-selector span.sr-only'
     );
   }
 
@@ -26,10 +26,7 @@ export class SortBar {
   }
 
   async caratButtonClick(sortName: string) {
-    await this.page
-      .getByRole('button', { name: sortName })
-      .getByRole('button')
-      .click();
+    await this.page.getByRole('button', { name: sortName }).getByRole('button').click();
   }
 
   async textClick(name: string) {
@@ -58,14 +55,11 @@ export class SortBar {
   async clickSortDirection(sortOrder: SortOrder) {
     // TODO: may still need to find better way to check sort order
     const currentSortText = await this.srSortText.innerText();
-    const oppositeSortText =
-      sortOrder === 'ascending' ? 'descending' : 'ascending';
+    const oppositeSortText = sortOrder === 'ascending' ? 'descending' : 'ascending';
 
     if (currentSortText.includes(sortOrder)) {
       await this.btnSortDirection.click();
-      await expect(this.srSortText).toContainText(
-        `Change to ${oppositeSortText} sort`,
-      );
+      await expect(this.srSortText).toContainText(`Change to ${oppositeSortText} sort`);
     }
   }
 

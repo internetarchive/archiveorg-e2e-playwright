@@ -2,18 +2,14 @@ import { test } from '../fixtures';
 
 import { LayoutViewModeLocator } from '../models';
 
-test('Tile, List, and Compact layout buttons change layout', async ({
-  searchPage,
-}) => {
+test('Tile, List, and Compact layout buttons change layout', async ({ searchPage }) => {
   await test.step('Click list view mode and check if it displays correctly', async () => {
     await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
     await searchPage.infiniteScroller.assertLayoutViewModeChange('list');
   });
 
   await test.step('Click compact view mode and check if it displays correctly', async () => {
-    await searchPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.COMPACT,
-    );
+    await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.COMPACT);
     await searchPage.infiniteScroller.assertLayoutViewModeChange('compact');
   });
 
@@ -33,9 +29,7 @@ test('Tile hover pane appears', async ({ searchPage }) => {
   });
 });
 
-test('Clicking on an item tile takes you to the item page', async ({
-  searchPage,
-}) => {
+test('Clicking on an item tile takes you to the item page', async ({ searchPage }) => {
   await test.step('Click first item result and check if it directs to details page', async () => {
     await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
   });
@@ -55,15 +49,12 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
     await searchPage.infiniteScroller.checkSortingResults(
       'All-time views',
       'descending',
-      10,
+      10
     );
   });
 
   await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
-    await searchPage.checkURLParamsWithSortFilter(
-      'All-time views',
-      'descending',
-    );
+    await searchPage.checkURLParamsWithSortFilter('All-time views', 'descending');
   });
 });
 
@@ -81,25 +72,18 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
     await searchPage.infiniteScroller.checkSortingResults(
       'Date published',
       'descending',
-      10,
+      10
     );
   });
 
   await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
-    await searchPage.checkURLParamsWithSortFilter(
-      'Date published',
-      'descending',
-    );
+    await searchPage.checkURLParamsWithSortFilter('Date published', 'descending');
   });
 });
 
-test('Sort by Date archived (ascending) in Compact view', async ({
-  searchPage,
-}) => {
+test('Sort by Date archived (ascending) in Compact view', async ({ searchPage }) => {
   await test.step('Switch to compact view mode', async () => {
-    await searchPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.COMPACT,
-    );
+    await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.COMPACT);
   });
 
   await test.step('Sort by Date archived - ascending order', async () => {

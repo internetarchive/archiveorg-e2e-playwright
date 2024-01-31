@@ -41,7 +41,7 @@ export class CollectionFacets {
   async selectFacetByGroup(
     group: FacetGroupLocatorLabel,
     facetLabel: string,
-    facetType: FacetType,
+    facetType: FacetType
   ) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
@@ -50,7 +50,7 @@ export class CollectionFacets {
     if (facetContent) {
       if (facetType === 'positive') {
         const facetRow = facetContent.getByRole('checkbox', {
-          name: facetLabel,
+          name: facetLabel
         });
         await facetRow.check();
         return;
@@ -63,7 +63,7 @@ export class CollectionFacets {
         if (facetRows.length !== 0) {
           for (let x = 0; x < facetRows.length; x++) {
             const facetRowLabel = facetRows[x].locator(
-              'div.facet-row-container > div.facet-checkboxes > label',
+              'div.facet-row-container > div.facet-checkboxes > label'
             );
             const facetRowTitle = await facetRowLabel.getAttribute('title');
             if (facetRowTitle === `Hide mediatype: ${facetLabel}`) {
@@ -88,7 +88,7 @@ export class CollectionFacets {
     await this.page.waitForLoadState();
 
     const btnApplyFilters = this.moreFacetsContent.locator(
-      '#more-facets > div.footer > button.btn.btn-submit',
+      '#more-facets > div.footer > button.btn.btn-submit'
     );
     for (let i = 0; i < facetLabels.length; i++) {
       // wait for the promise to resolve before advancing the for loop
@@ -104,12 +104,10 @@ export class CollectionFacets {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(2000);
 
-    const facetContent = await this.getFacetGroupContainer(
-      FacetGroupLocatorLabel.DATE,
-    );
+    const facetContent = await this.getFacetGroupContainer(FacetGroupLocatorLabel.DATE);
     if (facetContent) {
       const datePickerContainer = facetContent.locator(
-        'histogram-date-range #container > div.inner-container > #inputs',
+        'histogram-date-range #container > div.inner-container > #inputs'
       );
       const minYear = datePickerContainer.locator('input#date-min');
       const maxYear = datePickerContainer.locator('input#date-max');
@@ -120,9 +118,7 @@ export class CollectionFacets {
     }
   }
 
-  async getFacetGroupContainer(
-    group: FacetGroupLocatorLabel,
-  ): Promise<Locator | null> {
+  async getFacetGroupContainer(group: FacetGroupLocatorLabel): Promise<Locator | null> {
     const facetGroups = await this.collectionFacets
       .locator('#container > section.facet-group')
       .all();

@@ -39,7 +39,7 @@ export const test = base.extend<PageFixtures>({
 
     // Clean up the fixture.
     await page.close();
-  },
+  }
 });
 
 export { expect } from '@playwright/test';
