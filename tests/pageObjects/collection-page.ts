@@ -23,20 +23,24 @@ export class CollectionPage {
 
     this.pageHeader = page.locator('#page-header');
     this.pageSummary = page.locator('#title-summary-container');
-    this.pageTabs = page.locator('#page-container > tab-manager > div.tab-manager-container > nav.tabs-row > ul');
+    this.pageTabs = page.locator(
+      '#page-container > tab-manager > div.tab-manager-container > nav.tabs-row > ul',
+    );
 
     this.collectionFacets = new CollectionFacets(this.page);
     this.infiniteScroller = new InfiniteScroller(this.page);
     this.searchPage = new SearchPage(this.page);
   }
 
-  async visit (collection: string) {
+  async visit(collection: string) {
     await this.page.goto(`${this.url}/${collection}`);
     await this.page.waitForLoadState('load');
-  } 
+  }
 
   async checkCollectionThumbnail() {
-    await expect(this.page.locator('#top-matter > div.thumbnail-frame')).toBeVisible();
+    await expect(
+      this.page.locator('#top-matter > div.thumbnail-frame'),
+    ).toBeVisible();
   }
 
   async checkCollectionSummary() {
@@ -44,7 +48,9 @@ export class CollectionPage {
   }
 
   async checkCollectionActionBar() {
-    await expect(this.page.locator('#action-bar-spacing > action-bar')).toBeVisible();
+    await expect(
+      this.page.locator('#action-bar-spacing > action-bar'),
+    ).toBeVisible();
   }
 
   async checkCollectionPageTabs() {
@@ -63,18 +69,21 @@ export class CollectionPage {
   async checkForumTabPage() {
     await expect(this.page.locator('#forum-container')).toBeVisible();
 
-    const newPostButtonLocator = '#forum-container > div > h1 > span > a > span'
-    const rssButtonLocator = '#forum-container > div > h1 > a.label.label-success';
+    const newPostButtonLocator =
+      '#forum-container > div > h1 > span > a > span';
+    const rssButtonLocator =
+      '#forum-container > div > h1 > a.label.label-success';
     await expect(this.page.locator(newPostButtonLocator)).toBeVisible();
     await expect(this.page.locator(rssButtonLocator)).toBeVisible();
   }
 
   async checkCollectionTabPage() {
-    await expect(this.page.locator('#collection-browser-container')).toBeVisible();
+    await expect(
+      this.page.locator('#collection-browser-container'),
+    ).toBeVisible();
   }
 
   async clickCollectionTab(name: string) {
     await this.pageTabs.getByRole('link', { name }).click();
   }
-
 }

@@ -58,7 +58,7 @@ test.describe('Collection Page - Basic display tests', () => {
     await test.step(`Check if page is pointing to About tab`, async () => {
       await collectionPage.checkAboutTabPage();
     });
-    
+
     await test.step(`Click "Forum" tab button`, async () => {
       await collectionPage.clickCollectionTab('Forum');
     });
@@ -78,6 +78,5 @@ test.describe('Collection Page - Basic display tests', () => {
 
   test('Close browser after all tests', async () => {
     await collectionPage.page.close();
-  })
-
-})
+  });
+});

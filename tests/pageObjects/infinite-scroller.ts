@@ -183,7 +183,7 @@ export class InfiniteScroller {
     }
   }
 
-  async checkFirstItemResult () {
+  async checkFirstItemResult() {
     await expect(this.firstItemTile).toBeVisible();
   }
 
@@ -301,5 +301,4 @@ export class InfiniteScroller {
         return null;
     }
   }
-
 }

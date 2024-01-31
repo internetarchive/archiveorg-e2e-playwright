@@ -150,7 +150,7 @@ export class SearchPage {
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);
   }
-  
+
   async clickClearSearchInput() {
     await this.btnClearInput.click();
   }
