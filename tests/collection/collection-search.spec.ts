@@ -11,11 +11,11 @@ test('Collection search metadata', async ({ collectionPage }) => {
   });
 
   await test.step(`Total result count is displayed`, async () => {
-    await collectionPage.collectionFacets.checkResultCount();
+    await collectionPage.collectionFacets.displaysResultCount();
   });
 
   await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.validateFirstResult();
+    await collectionPage.infiniteScroller.displaysFirstResult();
   });
 });
 
@@ -29,11 +29,11 @@ test('Collection search text contents', async ({ collectionPage }) => {
   });
 
   await test.step(`Total result count is displayed`, async () => {
-    await collectionPage.collectionFacets.checkResultCount();
+    await collectionPage.collectionFacets.displaysResultCount();
   });
 
   await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.validateFirstResult();
+    await collectionPage.infiniteScroller.displaysFirstResult();
   });
 });
 
@@ -49,7 +49,7 @@ test('No results page displays when no results', async ({ collectionPage }) => {
   });
 
   await test.step(`The "No results" placeholder appears in place of the display area`, async () => {
-    await collectionPage.searchPage.checkEmptyPagePlaceholder();
+    await collectionPage.searchPage.validateEmptyPagePlaceholder();
   });
 });
 
@@ -63,11 +63,11 @@ test('Clearing collection search query', async ({ collectionPage }) => {
   });
 
   await test.step(`Total result count is displayed`, async () => {
-    await collectionPage.collectionFacets.checkResultCount();
+    await collectionPage.collectionFacets.displaysResultCount();
   });
 
   await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.validateFirstResult();
+    await collectionPage.infiniteScroller.displaysFirstResult();
   });
 
   await test.step(`Click "X" button in search input`, async () => {

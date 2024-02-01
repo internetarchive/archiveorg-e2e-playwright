@@ -19,7 +19,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({ searchPage }) => 
 
   await test.step(`Check the first 10 results for "Movie" results`, async () => {
     // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
       'tile-icontitle',
       ['Movie'],
       true,
@@ -38,8 +38,7 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 
   await test.step(`Check the first 10 results for "Data" results`, async () => {
-    // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
       'tile-icontitle',
       ['Data'],
       true,
@@ -62,7 +61,7 @@ test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   });
 
   await test.step('New results will be fetched', async () => {
-    await searchPage.collectionFacets.checkResultCount();
+    await searchPage.collectionFacets.displaysResultCount();
   });
 
   // it's easier to check dates in list view mode
@@ -71,7 +70,7 @@ test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   });
 
   await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
       'list-date',
       ['2014', '2015'],
       true,
@@ -90,8 +89,7 @@ test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   });
 
   await test.step(`Check the first 7 results for "Audio" results`, async () => {
-    // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
       'tile-icontitle',
       ['Audio'],
       false,
@@ -131,8 +129,7 @@ test(`Facets can be selected via "Select filters" modal`, async ({ searchPage })
   });
 
   await test.step(`Check the first 10 results for "Audio" & "Texts" results`, async () => {
-    // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
       'tile-icontitle',
       ['Audio', 'Text'],
       true,

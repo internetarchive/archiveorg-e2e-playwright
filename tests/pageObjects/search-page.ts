@@ -56,7 +56,7 @@ export class SearchPage {
     await this.page.goto(this.url);
   }
 
-  async checkEmptyPagePlaceholder() {
+  async validateEmptyPagePlaceholder() {
     await expect(this.emptyPlaceholder).toBeVisible();
     await expect(this.emptyPlaceholderTitleText).toBeVisible();
   }
@@ -88,7 +88,7 @@ export class SearchPage {
     await this.btnCollectionSearchInputCollapser.getByText(option).click();
   }
 
-  async checkTVPage(query: string) {
+  async validateTVPage(query: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
@@ -100,14 +100,14 @@ export class SearchPage {
     expect(await this.formInputTVPage.inputValue()).toContain(query);
   }
 
-  async checkRadioPage(query: string) {
+  async validateRadioPage(query: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(this.formInputRadioPage).toBeVisible();
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
-  async checkWaybackPage(query: string) {
+  async validateWaybackPage(query: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Wayback Machine');

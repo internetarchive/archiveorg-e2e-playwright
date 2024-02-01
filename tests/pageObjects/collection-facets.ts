@@ -18,7 +18,7 @@ export class CollectionFacets {
     this.moreFacetsContent = page.locator('more-facets-content');
   }
 
-  async checkResultCount() {
+  async displaysResultCount() {
     await expect(this.resultsTotal).toBeVisible();
   }
 

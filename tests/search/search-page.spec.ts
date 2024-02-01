@@ -17,7 +17,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check if the empty page placeholder is displayed`, async () => {
-      await searchPage.checkEmptyPagePlaceholder();
+      await searchPage.validateEmptyPagePlaceholder();
     });
   });
 
@@ -31,7 +31,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Searching and search result count should be displayed`, async () => {
-      await searchPage.collectionFacets.checkResultCount();
+      await searchPage.collectionFacets.displaysResultCount();
     });
   });
 
@@ -45,7 +45,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Searching and search result count should be displayed`, async () => {
-      await searchPage.collectionFacets.checkResultCount();
+      await searchPage.collectionFacets.displaysResultCount();
     });
   });
 
@@ -59,7 +59,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check TV page is displayed`, async () => {
-      await searchPage.checkTVPage('iguanas');
+      await searchPage.validateTVPage('iguanas');
     });
 
     await test.step(`Go back to search page from TV search page`, async () => {
@@ -77,7 +77,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check Radio search page is displayed`, async () => {
-      await searchPage.checkRadioPage('rabbits');
+      await searchPage.validateRadioPage('rabbits');
     });
 
     await test.step(`Go back to search page from Radio search page`, async () => {
@@ -95,7 +95,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check Wayback search page is displayed`, async () => {
-      await searchPage.checkWaybackPage('parrots');
+      await searchPage.validateWaybackPage('parrots');
     });
 
     await test.step(`Go back to search page from Wayback search page`, async () => {
@@ -109,7 +109,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check if the empty page placeholder is displayed`, async () => {
-      await searchPage.checkEmptyPagePlaceholder();
+      await searchPage.validateEmptyPagePlaceholder();
     });
 
     await test.step('Close page browser after running all tests', async () => {

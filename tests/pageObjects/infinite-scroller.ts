@@ -103,7 +103,7 @@ export class InfiniteScroller {
   }
 
   // TODO: per sort filter and sort order + view mode???
-  async checkSortingResults(
+  async validateSortingResults(
     filter: SortFilter,
     order: SortOrder,
     displayItemCount: Number
@@ -149,7 +149,7 @@ export class InfiniteScroller {
     }
   }
 
-  async checkIncludedFacetedResults(
+  async validateIncludedFacetedResults(
     viewFacetMetadata: ViewFacetMetadata,
     facetLabels: string[],
     toInclude: boolean,
@@ -170,7 +170,7 @@ export class InfiniteScroller {
     }
   }
 
-  async validateFirstResult() {
+  async displaysFirstResult() {
     await expect(this.firstItemTile).toBeVisible();
   }
 
