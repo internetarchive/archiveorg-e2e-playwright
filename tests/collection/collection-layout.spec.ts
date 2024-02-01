@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 
 import { LayoutViewModeLocator, SearchOption } from '../models';
 
-test.beforeEach(async ({ collectionPage }) => {
+test.beforeEach( async ({ collectionPage }) => {
   test.info().annotations.push({
     type: 'Test',
     description: 'Do collection metadata search every each test'
@@ -34,7 +34,9 @@ test('Tile, List, and Compact layout buttons change layout', async ({
 });
 
 test('Tile hover pane appears', async ({ collectionPage }) => {
-  await test.step('Hover first item tile and check for title text inside tile-hover-pane and item-tile', async () => {
+  await test.step(
+    'Hover first item tile and check for title text inside tile-hover-pane and item-tile'
+  , async () => {
     await collectionPage.infiniteScroller.hoverToFirstItem();
     await collectionPage.infiniteScroller.assertTileHoverPaneTitleIsSameWithItemTile();
   });

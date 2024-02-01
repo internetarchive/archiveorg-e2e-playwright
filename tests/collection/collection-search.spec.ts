@@ -6,7 +6,7 @@ test('Collection search metadata', async ({ collectionPage }) => {
     await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
   });
 
-  await test.step(`Query for "radio"`, async () => {
+  await test.step(`Search for "radio" in the search input text field`, async () => {
     await collectionPage.searchPage.queryFor('radio');
   });
 
@@ -21,7 +21,7 @@ test('Collection search text contents and clear filters', async ({ collectionPag
     await collectionPage.searchPage.clickSearchInputOption(SearchOption.TEXT);
   });
 
-  await test.step(`Query for "dragnet"`, async () => {
+  await test.step(`Search for "dragnet" in the search input text field`, async () => {
     await collectionPage.searchPage.queryFor('dragnet');
   });
 
@@ -41,13 +41,10 @@ test('No results page displays when no results', async ({ collectionPage }) => {
     await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
   });
 
-  await test.step(`Query for "catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda"`, async () => {
+  await test.step(`Search for "catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda" and validate that the "No results" placeholder appears in place of the display area`, async () => {
     await collectionPage.searchPage.queryFor(
       'catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda'
     );
-  });
-
-  await test.step(`The "No results" placeholder appears in place of the display area`, async () => {
     await collectionPage.searchPage.validateEmptyPagePlaceholder();
   });
 });

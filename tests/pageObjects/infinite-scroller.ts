@@ -221,7 +221,7 @@ export class InfiniteScroller {
 
       if (dateSpanLabel) {
         // Need to split date filter and date format value: Published: 2150 or Published: Nov 15, 2023
-        // Sample object: { filter: 'Published', date: '2150' }
+        // Ideal format: { filter: 'Published', date: '2150' }
         const strSplitColonSpace = dateSpanLabel.split(': ');
         const objDateLine = {
           filter: strSplitColonSpace[0],

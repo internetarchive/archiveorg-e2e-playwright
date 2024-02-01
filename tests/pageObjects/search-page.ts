@@ -74,9 +74,8 @@ export class SearchPage {
     await this.btnClearAllFilters.click();
   }
 
-  async assertClearAllFiltersNotVisible() {
-    await this.page.waitForLoadState();
-    await expect(this.btnClearAllFilters).not.toBeVisible();
+  async clickClearSearchInput() {
+    await this.btnClearInput.click();
   }
 
   async clickSearchInputOption(option: SearchOption) {
@@ -88,6 +87,15 @@ export class SearchPage {
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(this.btnCollectionSearchInputCollapser.getByText(option)).toBeVisible();
     await this.btnCollectionSearchInputCollapser.getByText(option).click();
+  }
+
+  async goBackToSearchPage() {
+    await this.visit();
+  }
+
+  async assertClearAllFiltersNotVisible() {
+    await this.page.waitForLoadState();
+    await expect(this.btnClearAllFilters).not.toBeVisible();
   }
 
   async validateTVPage(query: string) {
@@ -117,10 +125,6 @@ export class SearchPage {
     expect(await this.formInputWaybackPage.inputValue()).toContain(query);
   }
 
-  async goBackToSearchPage() {
-    await this.visit();
-  }
-
   async validateCompactViewModeListLineDateHeaders(filter: SortFilter) {
     const checkFilterText = filter
       .split('Date ')[1]
@@ -137,10 +141,6 @@ export class SearchPage {
       order === 'descending' ? `-${SortFilterURL[filter]}` : SortFilterURL[filter];
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);
-  }
-
-  async clickClearSearchInput() {
-    await this.btnClearInput.click();
   }
 
   async validateClearSearchInput() {
