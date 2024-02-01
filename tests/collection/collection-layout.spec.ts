@@ -5,19 +5,12 @@ import { LayoutViewModeLocator, SearchOption } from '../models';
 test.beforeEach(async ({ collectionPage }) => {
   test.info().annotations.push({
     type: 'Test',
-    description: 'Do Collection MDS search every each test'
+    description: 'Do collection metadata search every each test'
   });
 
-  await test.step(`Select "Search metadata"`, async () => {
+  await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
     await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
-  });
-
-  await test.step(`Query for "radio"`, async () => {
     await collectionPage.searchPage.queryFor('radio');
-  });
-
-  await test.step(`Total result count is displayed`, async () => {
-    await collectionPage.collectionFacets.displaysResultCount();
   });
 });
 
@@ -69,9 +62,6 @@ test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
       'descending',
       10
     );
-  });
-
-  await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
     await collectionPage.searchPage.validateURLParamsWithSortFilter(
       'All-time views',
       'descending'
@@ -95,9 +85,6 @@ test(`Sort by Date published in List view`, async ({ collectionPage }) => {
       'descending',
       10
     );
-  });
-
-  await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
     await collectionPage.searchPage.validateURLParamsWithSortFilter(
       'Date published',
       'descending'
@@ -119,9 +106,6 @@ test(`Sort by Date archived (ascending) in Compact view`, async ({ collectionPag
     await collectionPage.searchPage.validateCompactViewModeListLineDateHeaders(
       'Date archived'
     );
-  });
-
-  await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
     await collectionPage.searchPage.validateURLParamsWithSortFilter(
       'Date archived',
       'ascending'

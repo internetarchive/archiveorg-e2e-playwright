@@ -5,6 +5,10 @@ import { SearchPage } from '../pageObjects/search-page';
 
 let searchPage: SearchPage;
 
+test.afterAll(async () => {
+  await searchPage.page.close();
+});
+
 test.describe('Basic Search tests', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -104,16 +108,9 @@ test.describe('Basic Search tests', () => {
   });
 
   test('No results page displays when no results', async () => {
-    await test.step(`Search for a query that we expect will return no results at all`, async () => {
+    await test.step(`Search for a query that we expect will return no results at all and validate the empty page placeholder is displayed`, async () => {
       await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
-    });
-
-    await test.step(`Check if the empty page placeholder is displayed`, async () => {
       await searchPage.validateEmptyPagePlaceholder();
-    });
-
-    await test.step('Close page browser after running all tests', async () => {
-      await searchPage.page.close();
     });
   });
 });

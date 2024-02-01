@@ -5,19 +5,12 @@ import { FacetGroupLocatorLabel, LayoutViewModeLocator, SearchOption } from '../
 test.beforeEach(async ({ collectionPage }) => {
   test.info().annotations.push({
     type: 'Test',
-    description: 'Collection MDS search every each test'
+    description: 'Do collection metadata search every each test'
   });
 
-  await test.step(`Select "Search metadata"`, async () => {
+  await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
     await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
-  });
-
-  await test.step(`Query for "radio"`, async () => {
     await collectionPage.searchPage.queryFor('radio');
-  });
-
-  await test.step(`Total result count is displayed`, async () => {
-    await collectionPage.collectionFacets.displaysResultCount();
   });
 });
 
@@ -122,7 +115,9 @@ test.skip(`Filter for title beginning with "X"`, async ({ collectionPage }) => {
   });
 });
 
-test.skip(`Facets can be selected via "Select filters" modal`, async ({ collectionPage }) => {
+test.skip(`Facets can be selected via "Select filters" modal`, async ({
+  collectionPage
+}) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
     await collectionPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.MEDIATYPE

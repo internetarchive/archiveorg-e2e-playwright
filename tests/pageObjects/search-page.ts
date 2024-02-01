@@ -30,7 +30,9 @@ export class SearchPage {
     this.page = page;
 
     this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
-    this.btnCollectionSearchInputCollapser = page.locator('collection-search-input #button-collapser');
+    this.btnCollectionSearchInputCollapser = page.locator(
+      'collection-search-input #button-collapser'
+    );
     this.btnClearAllFilters = page.locator(
       '#facets-header-container div.clear-filters-btn-row button'
     );
@@ -131,7 +133,8 @@ export class SearchPage {
   }
 
   async validateURLParamsWithSortFilter(filter: SortFilter, order: SortOrder) {
-    const sortFilterURL = order === 'descending' ? `-${SortFilterURL[filter]}` : SortFilterURL[filter];
+    const sortFilterURL =
+      order === 'descending' ? `-${SortFilterURL[filter]}` : SortFilterURL[filter];
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);
   }
@@ -140,7 +143,8 @@ export class SearchPage {
     await this.btnClearInput.click();
   }
 
-  async assertClearSearchInputNotVisible() {
+  async validateClearSearchInput() {
     await expect(this.btnClearInput).not.toBeVisible();
+    expect(await this.formInputSearchPage.inputValue()).toBe('');
   }
 }

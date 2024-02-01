@@ -73,7 +73,9 @@ export class CollectionPage {
   }
 
   async validateCollectionTabPage() {
-    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain('COLLECTION');
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
+      'COLLECTION'
+    );
     await expect(this.page.locator('#collection-browser-container')).toBeVisible();
   }
 }

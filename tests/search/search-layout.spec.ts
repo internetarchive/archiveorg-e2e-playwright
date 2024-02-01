@@ -71,9 +71,6 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
       'descending',
       10
     );
-  });
-
-  await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
     await searchPage.validateURLParamsWithSortFilter('Date published', 'descending');
   });
 });
@@ -90,9 +87,6 @@ test('Sort by Date archived (ascending) in Compact view', async ({ searchPage })
 
   await test.step('Check list column headers for sort filter', async () => {
     await searchPage.validateCompactViewModeListLineDateHeaders('Date archived');
-  });
-
-  await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
     await searchPage.validateURLParamsWithSortFilter('Date archived', 'ascending');
   });
 });

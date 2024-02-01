@@ -10,16 +10,13 @@ test('Collection search metadata', async ({ collectionPage }) => {
     await collectionPage.searchPage.queryFor('radio');
   });
 
-  await test.step(`Total result count is displayed`, async () => {
+  await test.step(`Results are displayed in display area - validate first item displayed`, async () => {
     await collectionPage.collectionFacets.displaysResultCount();
-  });
-
-  await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
     await collectionPage.infiniteScroller.displaysFirstResult();
   });
 });
 
-test('Collection search text contents', async ({ collectionPage }) => {
+test('Collection search text contents and clear filters', async ({ collectionPage }) => {
   await test.step(`Select "Search text contents"`, async () => {
     await collectionPage.searchPage.clickSearchInputOption(SearchOption.TEXT);
   });
@@ -28,12 +25,14 @@ test('Collection search text contents', async ({ collectionPage }) => {
     await collectionPage.searchPage.queryFor('dragnet');
   });
 
-  await test.step(`Total result count is displayed`, async () => {
+  await test.step(`Results are displayed in display area - validate first item displayed`, async () => {
     await collectionPage.collectionFacets.displaysResultCount();
+    await collectionPage.infiniteScroller.displaysFirstResult();
   });
 
-  await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.displaysFirstResult();
+  await test.step(`Click "X" button in search input and validate search input text is cleared`, async () => {
+    await collectionPage.searchPage.clickClearSearchInput();
+    await collectionPage.searchPage.validateClearSearchInput();
   });
 });
 
@@ -50,31 +49,5 @@ test('No results page displays when no results', async ({ collectionPage }) => {
 
   await test.step(`The "No results" placeholder appears in place of the display area`, async () => {
     await collectionPage.searchPage.validateEmptyPagePlaceholder();
-  });
-});
-
-test('Clearing collection search query', async ({ collectionPage }) => {
-  await test.step(`Select "Search metadata"`, async () => {
-    await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
-  });
-
-  await test.step(`Query for "radio"`, async () => {
-    await collectionPage.searchPage.queryFor('radio');
-  });
-
-  await test.step(`Total result count is displayed`, async () => {
-    await collectionPage.collectionFacets.displaysResultCount();
-  });
-
-  await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.displaysFirstResult();
-  });
-
-  await test.step(`Click "X" button in search input`, async () => {
-    await collectionPage.searchPage.clickClearSearchInput();
-  });
-
-  await test.step(`Assert "Clear all filters" is not visible`, async () => {
-    await collectionPage.searchPage.assertClearSearchInputNotVisible();
   });
 });
