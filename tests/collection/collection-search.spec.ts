@@ -15,7 +15,7 @@ test('Collection search metadata', async ({ collectionPage }) => {
   });
 
   await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.checkFirstItemResult();
+    await collectionPage.infiniteScroller.validateFirstResult();
   });
 });
 
@@ -33,7 +33,7 @@ test('Collection search text contents', async ({ collectionPage }) => {
   });
 
   await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.checkFirstItemResult();
+    await collectionPage.infiniteScroller.validateFirstResult();
   });
 });
 
@@ -67,7 +67,7 @@ test('Clearing collection search query', async ({ collectionPage }) => {
   });
 
   await test.step(`Results are displayed in display area - checking first item displayed`, async () => {
-    await collectionPage.infiniteScroller.checkFirstItemResult();
+    await collectionPage.infiniteScroller.validateFirstResult();
   });
 
   await test.step(`Click "X" button in search input`, async () => {

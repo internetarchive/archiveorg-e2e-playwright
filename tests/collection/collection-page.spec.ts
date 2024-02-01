@@ -4,6 +4,10 @@ import { CollectionPage } from '../pageObjects/collection-page';
 
 let collectionPage: CollectionPage;
 
+test.afterAll(async () => {
+  await collectionPage.page.close();
+});
+
 test.describe('Collection Page - Basic display tests', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -15,16 +19,8 @@ test.describe('Collection Page - Basic display tests', () => {
       await collectionPage.visit('oldtimeradio');
     });
 
-    await test.step(`Check if collection thumbnail appears`, async () => {
-      await collectionPage.checkCollectionThumbnail();
-    });
-
-    await test.step(`Check if collection summary appears`, async () => {
-      await collectionPage.checkCollectionSummary();
-    });
-
-    await test.step(`Check if Action bar appears`, async () => {
-      await collectionPage.checkCollectionActionBar();
+    await test.step(`Check if collection thumbnail, summary and action bar appears`, async () => {
+      await collectionPage.validateCollectionPageHeaderElements();
     });
 
     await test.step(`Check if Collection | About | Forum tabs are displayed`, async () => {
@@ -37,12 +33,12 @@ test.describe('Collection Page - Basic display tests', () => {
       await collectionPage.visit('ytjdradio');
     });
 
-    await test.step(`Click the "More..." link (below description)`, async () => {
+    await test.step(`Click the "More..." link (below codescription)`, async () => {
       await collectionPage.clickMoreBtnFromSummary();
     });
 
     await test.step(`Check if page is pointing to About tab`, async () => {
-      await collectionPage.checkAboutTabPage();
+      await collectionPage.validateAboutTabPage();
     });
   });
 
@@ -56,7 +52,7 @@ test.describe('Collection Page - Basic display tests', () => {
     });
 
     await test.step(`Check if page is pointing to About tab`, async () => {
-      await collectionPage.checkAboutTabPage();
+      await collectionPage.validateAboutTabPage();
     });
 
     await test.step(`Click "Forum" tab button`, async () => {
@@ -64,7 +60,7 @@ test.describe('Collection Page - Basic display tests', () => {
     });
 
     await test.step(`Check if page is pointing to Forum tab`, async () => {
-      await collectionPage.checkForumTabPage();
+      await collectionPage.validateForumTabPage();
     });
 
     await test.step(`Click "Collection" tab button`, async () => {
@@ -72,11 +68,7 @@ test.describe('Collection Page - Basic display tests', () => {
     });
 
     await test.step(`Check if page is pointing to Collection tab`, async () => {
-      await collectionPage.checkCollectionTabPage();
+      await collectionPage.validateCollectionTabPage();
     });
-  });
-
-  test('Close browser after all tests', async () => {
-    await collectionPage.page.close();
   });
 });

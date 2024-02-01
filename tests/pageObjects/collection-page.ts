@@ -9,7 +9,6 @@ export class CollectionPage {
   readonly url: string = 'https://archive.org/details';
   readonly page: Page;
 
-  readonly pageHeader: Locator;
   readonly pageSummary: Locator;
   readonly pageTabs: Locator;
 
@@ -21,7 +20,6 @@ export class CollectionPage {
   public constructor(page: Page) {
     this.page = page;
 
-    this.pageHeader = page.locator('#page-header');
     this.pageSummary = page.locator('#title-summary-container');
     this.pageTabs = page.locator(
       '#page-container > tab-manager > div.tab-manager-container > nav.tabs-row > ul'
@@ -38,15 +36,10 @@ export class CollectionPage {
     await this.page.waitForLoadState('load');
   }
 
-  async checkCollectionThumbnail() {
+  async validateCollectionPageHeaderElements() {
+    await expect(this.page.locator('#page-header')).toBeVisible();
     await expect(this.page.locator('#top-matter > div.thumbnail-frame')).toBeVisible();
-  }
-
-  async checkCollectionSummary() {
     await expect(this.pageSummary).toBeVisible();
-  }
-
-  async checkCollectionActionBar() {
     await expect(this.page.locator('action-bar')).toBeVisible();
   }
 
@@ -59,11 +52,11 @@ export class CollectionPage {
     await this.pageSummary.locator('#more-btn').click();
   }
 
-  async checkAboutTabPage() {
+  async validateAboutTabPage() {
     await expect(this.page.locator('collection-about')).toBeVisible();
   }
 
-  async checkForumTabPage() {
+  async validateForumTabPage() {
     await expect(this.page.locator('#forum-container')).toBeVisible();
 
     const newPostButtonLocator = '#forum-container > div > h1 > span > a > span';
@@ -72,7 +65,7 @@ export class CollectionPage {
     await expect(this.page.locator(rssButtonLocator)).toBeVisible();
   }
 
-  async checkCollectionTabPage() {
+  async validateCollectionTabPage() {
     await expect(this.page.locator('#collection-browser-container')).toBeVisible();
   }
 

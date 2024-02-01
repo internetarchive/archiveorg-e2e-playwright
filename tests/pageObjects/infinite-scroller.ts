@@ -170,7 +170,7 @@ export class InfiniteScroller {
     }
   }
 
-  async checkFirstItemResult() {
+  async validateFirstResult() {
     await expect(this.firstItemTile).toBeVisible();
   }
 
