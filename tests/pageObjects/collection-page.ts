@@ -33,10 +33,18 @@ export class CollectionPage {
 
   async visit(collection: string) {
     await this.page.goto(`${this.url}/${collection}`);
-    await this.page.waitForLoadState('load');
+    await this.page.waitForLoadState('networkidle');
   }
 
-  async validateCollectionPageHeaderElements() {
+  async clickCollectionTab(name: string) {
+    await this.pageTabs.getByRole('link', { name }).click();
+  }
+
+  async clickMoreBtnFromSummary() {
+    await this.pageSummary.locator('#more-btn').click();
+  }
+
+  async validatePageHeaderElements() {
     await expect(this.page.locator('#page-header')).toBeVisible();
     await expect(this.page.locator('#top-matter > div.thumbnail-frame')).toBeVisible();
     await expect(this.pageSummary).toBeVisible();
@@ -48,28 +56,24 @@ export class CollectionPage {
     expect(await this.pageTabs.locator('li').count()).toBe(3);
   }
 
-  async clickMoreBtnFromSummary() {
-    await this.pageSummary.locator('#more-btn').click();
-  }
-
   async validateAboutTabPage() {
     await expect(this.page.locator('collection-about')).toBeVisible();
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain('ABOUT');
   }
 
   async validateForumTabPage() {
-    await expect(this.page.locator('#forum-container')).toBeVisible();
+    const forumContainer = this.page.locator('#forum-container');
+    const newPostButtonLocator = forumContainer.getByRole('link', { name: 'New Post' });
+    const rssButtonLocator = forumContainer.getByRole('link', { name: 'RSS' });
 
-    const newPostButtonLocator = '#forum-container > div > h1 > span > a > span';
-    const rssButtonLocator = '#forum-container > div > h1 > a.label.label-success';
-    await expect(this.page.locator(newPostButtonLocator)).toBeVisible();
-    await expect(this.page.locator(rssButtonLocator)).toBeVisible();
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain('FORUM');
+    await expect(forumContainer).toBeVisible();
+    await expect(newPostButtonLocator).toBeVisible();
+    await expect(rssButtonLocator).toBeVisible();
   }
 
   async validateCollectionTabPage() {
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain('COLLECTION');
     await expect(this.page.locator('#collection-browser-container')).toBeVisible();
-  }
-
-  async clickCollectionTab(name: string) {
-    await this.pageTabs.getByRole('link', { name }).click();
   }
 }

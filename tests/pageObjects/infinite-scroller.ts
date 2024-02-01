@@ -187,16 +187,14 @@ export class InfiniteScroller {
         .count();
       const itemTileCount = await allItems[index].locator('a > item-tile').count();
 
-      if (collectionTileCount === 1 && itemTileCount === 0) {
-        console.log('it is a collection tile - do nothing for now');
-      } else if (collectionTileCount === 0 && itemTileCount === 1) {
+      if (collectionTileCount === 0 && itemTileCount === 1) {
         // Get view count from tile-stats row
         const tileStatsTitle = await allItems[index]
           .locator('#stats-row > li:nth-child(2)')
           .getAttribute('title');
         if (tileStatsTitle) arrTileStatsTitle.push(tileStatsTitle);
       } else {
-        console.log('it is not a collection-tile nor an item-tile');
+        console.log('it maybe a collection-tile nor an item-tile');
       }
 
       index++;

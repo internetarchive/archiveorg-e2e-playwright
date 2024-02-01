@@ -20,7 +20,7 @@ test.describe('Collection Page - Basic display tests', () => {
     });
 
     await test.step(`Check if collection thumbnail, summary and action bar appears`, async () => {
-      await collectionPage.validateCollectionPageHeaderElements();
+      await collectionPage.validatePageHeaderElements();
     });
 
     await test.step(`Check if Collection | About | Forum tabs are displayed`, async () => {
@@ -33,11 +33,8 @@ test.describe('Collection Page - Basic display tests', () => {
       await collectionPage.visit('ytjdradio');
     });
 
-    await test.step(`Click the "More..." link (below codescription)`, async () => {
+    await test.step(`Click the "More..." link and check if About page is displayed`, async () => {
       await collectionPage.clickMoreBtnFromSummary();
-    });
-
-    await test.step(`Check if page is pointing to About tab`, async () => {
       await collectionPage.validateAboutTabPage();
     });
   });
@@ -47,27 +44,18 @@ test.describe('Collection Page - Basic display tests', () => {
       await collectionPage.visit('oldtimeradio');
     });
 
-    await test.step(`Click "About" tab button`, async () => {
+    await test.step(`Click "About" tab button and check if About page is displayed`, async () => {
       await collectionPage.clickCollectionTab('About');
-    });
-
-    await test.step(`Check if page is pointing to About tab`, async () => {
       await collectionPage.validateAboutTabPage();
     });
 
-    await test.step(`Click "Forum" tab button`, async () => {
+    await test.step(`Click "Forum" tab button and check if Forum page is displayed`, async () => {
       await collectionPage.clickCollectionTab('Forum');
-    });
-
-    await test.step(`Check if page is pointing to Forum tab`, async () => {
       await collectionPage.validateForumTabPage();
     });
 
-    await test.step(`Click "Collection" tab button`, async () => {
+    await test.step(`Click "Collection" tab button and check if Collections page is displayed`, async () => {
       await collectionPage.clickCollectionTab('Collection');
-    });
-
-    await test.step(`Check if page is pointing to Collection tab`, async () => {
       await collectionPage.validateCollectionTabPage();
     });
   });
