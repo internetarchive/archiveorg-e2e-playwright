@@ -119,7 +119,7 @@ export class SearchPage {
     await this.visit();
   }
 
-  async checkCompactViewModeListLineDateHeaders(filter: SortFilter) {
+  async validateCompactViewModeListLineDateHeaders(filter: SortFilter) {
     const checkFilterText = filter
       .split('Date ')[1]
       .replace(/^./, (str: string) => str.toUpperCase());
@@ -130,7 +130,7 @@ export class SearchPage {
     ).toContain(checkFilterText);
   }
 
-  async checkURLParamsWithSortFilter(filter: SortFilter, order: SortOrder) {
+  async validateURLParamsWithSortFilter(filter: SortFilter, order: SortOrder) {
     const sortFilterURL = order === 'descending' ? `-${SortFilterURL[filter]}` : SortFilterURL[filter];
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);

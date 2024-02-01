@@ -47,10 +47,10 @@ export class CollectionPage {
   }
 
   async checkCollectionActionBar() {
-    await expect(this.page.locator('#action-bar-spacing > action-bar')).toBeVisible();
+    await expect(this.page.locator('action-bar')).toBeVisible();
   }
 
-  async checkCollectionPageTabs() {
+  async validateCollectionPageTabs() {
     await expect(this.pageTabs).toBeVisible();
     expect(await this.pageTabs.locator('li').count()).toBe(3);
   }

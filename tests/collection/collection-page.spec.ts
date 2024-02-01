@@ -28,7 +28,7 @@ test.describe('Collection Page - Basic display tests', () => {
     });
 
     await test.step(`Check if Collection | About | Forum tabs are displayed`, async () => {
-      await collectionPage.checkCollectionPageTabs();
+      await collectionPage.validateCollectionPageTabs();
     });
   });
 

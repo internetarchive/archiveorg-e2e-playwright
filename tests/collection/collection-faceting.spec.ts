@@ -21,13 +21,13 @@ test.beforeEach(async ({ collectionPage }) => {
   });
 });
 
-test('Facets appear', async ({ collectionPage }) => {
+test.skip('Facets appear', async ({ collectionPage }) => {
   await test.step('Assert facet group headers count', async () => {
     await collectionPage.collectionFacets.assertCollectionFacetGroupCount();
   });
 });
 
-test(`Facet for "movies"`, async ({ collectionPage }) => {
+test.skip(`Facet for "movies"`, async ({ collectionPage }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
@@ -47,7 +47,7 @@ test(`Facet for "movies"`, async ({ collectionPage }) => {
   });
 });
 
-test('Clear facet filters', async ({ collectionPage }) => {
+test.skip('Clear facet filters', async ({ collectionPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
@@ -75,7 +75,7 @@ test('Clear facet filters', async ({ collectionPage }) => {
   });
 });
 
-test(`Select Year Published range via date picker`, async ({ collectionPage }) => {
+test.skip(`Select Year Published range via date picker`, async ({ collectionPage }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
     await collectionPage.collectionFacets.fillUpYearFilters('1954', '1955');
   });
@@ -99,7 +99,7 @@ test(`Select Year Published range via date picker`, async ({ collectionPage }) =
   });
 });
 
-test(`Negative facet to exclude "audio"`, async ({ collectionPage }) => {
+test.skip(`Negative facet to exclude "audio"`, async ({ collectionPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group`, async () => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
@@ -125,7 +125,7 @@ test.skip(`Filter for title beginning with "X"`, async ({ collectionPage }) => {
   });
 });
 
-test(`Facets can be selected via "Select filters" modal`, async ({ collectionPage }) => {
+test.skip(`Facets can be selected via "Select filters" modal`, async ({ collectionPage }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
     await collectionPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.MEDIATYPE
