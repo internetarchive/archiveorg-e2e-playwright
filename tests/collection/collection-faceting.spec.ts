@@ -10,7 +10,6 @@ test.afterAll(async () => {
   await collectionPage.page.close();
 });
 
-
 test.describe('Collection Page - Basic display tests', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -58,7 +57,6 @@ test.describe('Collection Page - Basic display tests', () => {
       await collectionPage.collectionFacets.displaysResultCount();
     });
 
-
     await test.step(`Switch to list view mode to check the first 10 item results Published texts are ONLY 2014 or 2015`, async () => {
       await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
@@ -99,21 +97,20 @@ test.describe('Collection Page - Basic display tests', () => {
   });
 
   test(`Facets can be selected via "Select filters" modal`, async () => {
-  await test.step(`Click "More" button under Media type facet group`, async () => {
-    await collectionPage.collectionFacets.clickMoreInFacetGroup(
-      FacetGroupLocatorLabel.MEDIATYPE
-    );
-  });
+    await test.step(`Click "More" button under Media type facet group`, async () => {
+      await collectionPage.collectionFacets.clickMoreInFacetGroup(
+        FacetGroupLocatorLabel.MEDIATYPE
+      );
+    });
 
-  await test.step(`Select "audio" and "texts" from inside "Media Type" facet group`, async () => {
-    await collectionPage.collectionFacets.selectFacetsInModal(['audio', 'texts']);
-    await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-icontitle',
-      ['Audio', 'Text'],
-      true,
-      10
-    );
+    await test.step(`Select "audio" and "texts" from inside "Media Type" facet group`, async () => {
+      await collectionPage.collectionFacets.selectFacetsInModal(['audio', 'texts']);
+      await collectionPage.infiniteScroller.validateIncludedFacetedResults(
+        'tile-icontitle',
+        ['Audio', 'Text'],
+        true,
+        10
+      );
+    });
   });
-});
-
 });
