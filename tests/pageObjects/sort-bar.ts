@@ -17,7 +17,7 @@ export class SortBar {
     this.sortSelector = this.sortFilterBar.locator('ul#desktop-sort-selector');
     this.btnSortDirection = this.sortFilterBar.locator('.sort-direction-icon');
     this.srSortText = this.sortFilterBar.locator(
-      'button.sort-direction-selector span.sr-only'
+      'button.sort-direction-selector span.sr-only',
     );
   }
 

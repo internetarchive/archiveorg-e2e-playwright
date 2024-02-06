@@ -43,7 +43,7 @@ test('No results page displays when no results', async ({ collectionPage }) => {
 
   await test.step(`Search for "catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda" and validate that the "No results" placeholder appears in place of the display area`, async () => {
     await collectionPage.searchPage.queryFor(
-      'catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda'
+      'catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda',
     );
     await collectionPage.searchPage.validateEmptyPagePlaceholder();
   });

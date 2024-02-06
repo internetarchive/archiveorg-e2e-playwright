@@ -72,7 +72,7 @@
   "prettier": {
     "singleQuote": true,
     "arrowParens": "avoid",
-    "trailingComma": "none",
+    "trailingComma": "all",
     "printWidth": 90
   },
   "lint-staged": {

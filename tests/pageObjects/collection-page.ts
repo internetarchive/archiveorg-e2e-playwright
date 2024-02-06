@@ -22,7 +22,7 @@ export class CollectionPage {
 
     this.pageSummary = page.locator('#title-summary-container');
     this.pageTabs = page.locator(
-      '#page-container > tab-manager > div.tab-manager-container > nav.tabs-row > ul'
+      '#page-container > tab-manager > div.tab-manager-container > nav.tabs-row > ul',
     );
 
     this.collectionFacets = new CollectionFacets(this.page);
@@ -74,7 +74,7 @@ export class CollectionPage {
 
   async validateCollectionTabPage() {
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
-      'COLLECTION'
+      'COLLECTION',
     );
     await expect(this.page.locator('#collection-browser-container')).toBeVisible();
   }

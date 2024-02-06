@@ -11,7 +11,7 @@ test('page load - check login page fields elements', async ({ page }) => {
   const inputEmail = loginFormElement.locator('.form-element.input-email');
   const inputPassword = loginFormElement.locator('.form-element.input-password');
   const btnLogin = loginFormElement.locator(
-    '.btn.btn-primary.btn-submit.input-submit.js-submit-login'
+    '.btn.btn-primary.btn-submit.input-submit.js-submit-login',
   );
 
   expect(await loginFormElement.count()).toEqual(1);

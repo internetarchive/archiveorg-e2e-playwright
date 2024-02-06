@@ -46,7 +46,7 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
     await searchPage.infiniteScroller.validateSortingResults(
       'All-time views',
       'descending',
-      10
+      10,
     );
   });
 
@@ -69,7 +69,7 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
     await searchPage.infiniteScroller.validateSortingResults(
       'Date published',
       'descending',
-      10
+      10,
     );
     await searchPage.validateURLParamsWithSortFilter('Date published', 'descending');
   });

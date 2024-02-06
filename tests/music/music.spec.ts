@@ -5,23 +5,23 @@ const trackListDetails = [
   {
     number: '1',
     title: 'Squeaking Door',
-    length: '00:06'
+    length: '00:06',
   },
   {
     number: '2',
     title: 'Steps',
-    length: '00:03'
+    length: '00:03',
   },
   {
     number: '3',
     title: 'Steps',
-    length: '00:03'
-  }
+    length: '00:03',
+  },
 ];
 
 test('Play 3 mystery sound effects', async ({ page }) => {
   await page.goto(
-    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings'
+    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings',
   );
 
   const iaMusicTheater = page.locator('ia-music-theater');
@@ -68,12 +68,12 @@ test('Play 3 mystery sound effects', async ({ page }) => {
   // select button tracks
   await trackListButtons.nth(1).click();
   await page.waitForURL(
-    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/02.+Gateway+Gecordings+-+Steps.flac'
+    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/02.+Gateway+Gecordings+-+Steps.flac',
   );
 
   await trackListButtons.nth(2).click();
   await page.waitForURL(
-    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/03.+Gateway+Gecordings+-+Steps.flac'
+    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/03.+Gateway+Gecordings+-+Steps.flac',
   );
 
   await page.close();

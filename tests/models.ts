@@ -8,7 +8,7 @@ export type LayoutViewMode = 'tile' | 'list' | 'compact';
 export enum LayoutViewModeLocator {
   TILE = '#grid-button',
   LIST = '#list-detail-button',
-  COMPACT = '#list-compact-button'
+  COMPACT = '#list-compact-button',
 }
 
 export enum SearchOption {
@@ -16,7 +16,7 @@ export enum SearchOption {
   TEXT = `Search text contents`,
   TV = `Search TV news captions`,
   RADIO = `Search radio transcripts`,
-  WEB = `Search archived web sites`
+  WEB = `Search archived web sites`,
 }
 
 export type SortFilter =
@@ -39,7 +39,7 @@ export const SortFilterURL = {
   'Date archived': 'publicdate',
   'Date reviewed': 'reviewdate',
   'Date added': 'addeddate',
-  Creator: 'creator'
+  Creator: 'creator',
 };
 
 export enum FacetGroupLocatorLabel {
@@ -50,7 +50,7 @@ export enum FacetGroupLocatorLabel {
   SUBJECT = 'facet-group-header-label-subject',
   COLLECTION = 'facet-group-header-label-collection',
   CREATOR = 'facet-group-header-label-creator',
-  LANGUAGE = 'facet-group-header-label-language'
+  LANGUAGE = 'facet-group-header-label-language',
 }
 
 export type FacetType = 'positive' | 'negative';

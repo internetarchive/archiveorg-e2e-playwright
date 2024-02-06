@@ -8,7 +8,7 @@ import {
   SortOrder,
   SortFilter,
   ViewFacetMetadata,
-  LayoutViewModeLocator
+  LayoutViewModeLocator,
 } from '../models';
 
 import { datesSorted, viewsSorted } from '../utils';
@@ -49,19 +49,19 @@ export class InfiniteScroller {
     switch (viewMode) {
       case 'tile':
         await expect(this.displayStyleSelector.locator('#grid-button')).toHaveClass(
-          'active'
+          'active',
         );
         expect(await expect(this.infiniteScroller).toHaveClass(/grid/));
         return;
       case 'list':
         await expect(
-          this.displayStyleSelector.locator('#list-detail-button')
+          this.displayStyleSelector.locator('#list-detail-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/list-detail/));
         return;
       case 'compact':
         await expect(
-          this.displayStyleSelector.locator('#list-compact-button')
+          this.displayStyleSelector.locator('#list-compact-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/list-compact/));
         return;
@@ -106,7 +106,7 @@ export class InfiniteScroller {
   async validateSortingResults(
     filter: SortFilter,
     order: SortOrder,
-    displayItemCount: Number
+    displayItemCount: Number,
   ) {
     // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
@@ -114,10 +114,10 @@ export class InfiniteScroller {
       const tileStatsViews = await this.getTileStatsViewCountTitles(displayItemCount);
 
       const isAllViews = tileStatsViews.every(stat =>
-        stat.includes(filter.toLowerCase())
+        stat.includes(filter.toLowerCase()),
       );
       const arrViewCount: Number[] = tileStatsViews.map(stat =>
-        Number(stat.split(' ')[0])
+        Number(stat.split(' ')[0]),
       );
       const isSortedCorrectly = viewsSorted(order, arrViewCount);
 
@@ -140,7 +140,7 @@ export class InfiniteScroller {
         .split('Date ')[1]
         .replace(/^./, str => str.toUpperCase());
       const isDateFilter = dateMetadataLabels.every(
-        date => date.filter === checkFilterText
+        date => date.filter === checkFilterText,
       );
       const isSortedCorrectly = datesSorted(order, dateMetadataLabels);
 
@@ -153,12 +153,12 @@ export class InfiniteScroller {
     viewFacetMetadata: ViewFacetMetadata,
     facetLabels: string[],
     toInclude: boolean,
-    displayItemCount: Number
+    displayItemCount: Number,
   ) {
     await this.awaitLoadingState();
     const facetedResults = await this.getFacetedResultsByViewFacetGroup(
       viewFacetMetadata,
-      displayItemCount
+      displayItemCount,
     );
     if (facetedResults) {
       const isAllFacettedCorrectly = facetLabels.some(label => {
@@ -225,7 +225,7 @@ export class InfiniteScroller {
         const strSplitColonSpace = dateSpanLabel.split(': ');
         const objDateLine = {
           filter: strSplitColonSpace[0],
-          date: strSplitColonSpace[1]
+          date: strSplitColonSpace[1],
         };
         arrDateLine.push(objDateLine);
       }
@@ -245,7 +245,7 @@ export class InfiniteScroller {
       // Load items based on displayItemCount
       // Get mediatype-icon title from tile-stats row
       const tileIcon = allItems[index].locator(
-        '#stats-row > li:nth-child(1) > mediatype-icon > #icon'
+        '#stats-row > li:nth-child(1) > mediatype-icon > #icon',
       );
       const tileIconTitle = await tileIcon.getAttribute('title');
       if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
@@ -258,7 +258,7 @@ export class InfiniteScroller {
 
   async getFacetedResultsByViewFacetGroup(
     viewFacetMetadata: ViewFacetMetadata,
-    displayItemCount: Number
+    displayItemCount: Number,
   ): Promise<string[] | null> {
     switch (viewFacetMetadata) {
       case 'tile-icontitle':

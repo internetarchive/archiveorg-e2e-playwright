@@ -2,10 +2,10 @@ import { test } from '../fixtures';
 
 import { LayoutViewModeLocator, SearchOption } from '../models';
 
-test.beforeEach( async ({ collectionPage }) => {
+test.beforeEach(async ({ collectionPage }) => {
   test.info().annotations.push({
     type: 'Test',
-    description: 'Do collection metadata search every each test'
+    description: 'Do collection metadata search every each test',
   });
 
   await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
@@ -15,7 +15,7 @@ test.beforeEach( async ({ collectionPage }) => {
 });
 
 test('Tile, List, and Compact layout buttons change layout', async ({
-  collectionPage
+  collectionPage,
 }) => {
   await test.step('Display List View', async () => {
     await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
@@ -34,9 +34,7 @@ test('Tile, List, and Compact layout buttons change layout', async ({
 });
 
 test('Tile hover pane appears', async ({ collectionPage }) => {
-  await test.step(
-    'Hover first item tile and check for title text inside tile-hover-pane and item-tile'
-  , async () => {
+  await test.step('Hover first item tile and check for title text inside tile-hover-pane and item-tile', async () => {
     await collectionPage.infiniteScroller.hoverToFirstItem();
     await collectionPage.infiniteScroller.assertTileHoverPaneTitleIsSameWithItemTile();
   });
@@ -62,11 +60,11 @@ test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
     await collectionPage.infiniteScroller.validateSortingResults(
       'All-time views',
       'descending',
-      10
+      10,
     );
     await collectionPage.searchPage.validateURLParamsWithSortFilter(
       'All-time views',
-      'descending'
+      'descending',
     );
   });
 });
@@ -85,11 +83,11 @@ test(`Sort by Date published in List view`, async ({ collectionPage }) => {
     await collectionPage.infiniteScroller.validateSortingResults(
       'Date published',
       'descending',
-      10
+      10,
     );
     await collectionPage.searchPage.validateURLParamsWithSortFilter(
       'Date published',
-      'descending'
+      'descending',
     );
   });
 });
@@ -106,11 +104,11 @@ test(`Sort by Date archived (ascending) in Compact view`, async ({ collectionPag
 
   await test.step('Check list column headers for sort filter', async () => {
     await collectionPage.searchPage.validateCompactViewModeListLineDateHeaders(
-      'Date archived'
+      'Date archived',
     );
     await collectionPage.searchPage.validateURLParamsWithSortFilter(
       'Date archived',
-      'ascending'
+      'ascending',
     );
   });
 });

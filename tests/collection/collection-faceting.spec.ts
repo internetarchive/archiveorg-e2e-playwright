@@ -5,7 +5,7 @@ import { FacetGroupLocatorLabel, LayoutViewModeLocator, SearchOption } from '../
 test.beforeEach(async ({ collectionPage }) => {
   test.info().annotations.push({
     type: 'Test',
-    description: 'Do collection metadata search every each test'
+    description: 'Do collection metadata search every each test',
   });
 
   await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
@@ -25,7 +25,7 @@ test.skip(`Facet for "movies"`, async ({ collectionPage }) => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
       'movies',
-      'positive'
+      'positive',
     );
   });
 
@@ -34,7 +34,7 @@ test.skip(`Facet for "movies"`, async ({ collectionPage }) => {
       'tile-icontitle',
       ['Movie'],
       true,
-      10
+      10,
     );
   });
 });
@@ -44,7 +44,7 @@ test.skip('Clear facet filters', async ({ collectionPage }) => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
       'data',
-      'positive'
+      'positive',
     );
   });
 
@@ -53,7 +53,7 @@ test.skip('Clear facet filters', async ({ collectionPage }) => {
       'tile-icontitle',
       ['Data'],
       true,
-      10
+      10,
     );
   });
 
@@ -85,7 +85,7 @@ test.skip(`Select Year Published range via date picker`, async ({ collectionPage
       'list-date',
       ['1954', '1955'],
       true,
-      10
+      10,
     );
   });
 });
@@ -95,7 +95,7 @@ test.skip(`Negative facet to exclude "audio"`, async ({ collectionPage }) => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
       'audio',
-      'negative'
+      'negative',
     );
   });
 
@@ -104,7 +104,7 @@ test.skip(`Negative facet to exclude "audio"`, async ({ collectionPage }) => {
       'tile-icontitle',
       ['Audio'],
       false,
-      7
+      7,
     );
   });
 });
@@ -116,11 +116,11 @@ test.skip(`Filter for title beginning with "X"`, async ({ collectionPage }) => {
 });
 
 test.skip(`Facets can be selected via "Select filters" modal`, async ({
-  collectionPage
+  collectionPage,
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
     await collectionPage.collectionFacets.clickMoreInFacetGroup(
-      FacetGroupLocatorLabel.MEDIATYPE
+      FacetGroupLocatorLabel.MEDIATYPE,
     );
   });
 
@@ -133,7 +133,7 @@ test.skip(`Facets can be selected via "Select filters" modal`, async ({
       'tile-icontitle',
       ['Audio', 'Text'],
       true,
-      10
+      10,
     );
   });
 });
