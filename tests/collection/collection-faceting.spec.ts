@@ -1,6 +1,10 @@
 import { test } from '../fixtures';
 
-import { FacetGroupLocatorLabel, LayoutViewModeLocator, SearchOption } from '../models';
+import {
+  FacetGroupLocatorLabel,
+  LayoutViewModeLocator,
+  SearchOption,
+} from '../models';
 
 test.beforeEach(async ({ collectionPage }) => {
   test.info().annotations.push({
@@ -9,7 +13,9 @@ test.beforeEach(async ({ collectionPage }) => {
   });
 
   await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
-    await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
+    await collectionPage.searchPage.clickSearchInputOption(
+      SearchOption.METADATA,
+    );
     await collectionPage.searchPage.queryFor('radio');
   });
 });
@@ -66,7 +72,9 @@ test.skip('Clear facet filters', async ({ collectionPage }) => {
   });
 });
 
-test.skip(`Select Year Published range via date picker`, async ({ collectionPage }) => {
+test.skip(`Select Year Published range via date picker`, async ({
+  collectionPage,
+}) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
     await collectionPage.collectionFacets.fillUpYearFilters('1954', '1955');
   });
@@ -77,7 +85,9 @@ test.skip(`Select Year Published range via date picker`, async ({ collectionPage
 
   // it's easier to check dates in list view mode
   await test.step('Switch to list view mode', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.LIST,
+    );
   });
 
   await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
@@ -125,7 +135,10 @@ test.skip(`Facets can be selected via "Select filters" modal`, async ({
   });
 
   await test.step(`Select "audio" and "texts" from inside "Media Type" facet group`, async () => {
-    await collectionPage.collectionFacets.selectFacetsInModal(['audio', 'texts']);
+    await collectionPage.collectionFacets.selectFacetsInModal([
+      'audio',
+      'texts',
+    ]);
   });
 
   await test.step(`Check the first 10 results for "Audio" & "Texts" results`, async () => {

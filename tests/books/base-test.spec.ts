@@ -54,7 +54,9 @@ test('On load, pages fit fully inside of the BookReader™', async () => {
   const brContainerBox = await brContainer.boundingBox();
 
   // images do not get cropped vertically
-  expect(brContainerBox?.height).toBeLessThanOrEqual(Number(brShellBox?.height));
+  expect(brContainerBox?.height).toBeLessThanOrEqual(
+    Number(brShellBox?.height),
+  );
   // images do not get cropped horizontally
   expect(brContainerBox?.width).toBeLessThanOrEqual(Number(brShellBox?.width));
 });
@@ -88,9 +90,13 @@ test.describe('Test bookreader navigations', () => {
     const brContainerBox = await brContainer.boundingBox();
 
     // images do not get cropped vertically
-    expect(brContainerBox?.height).toBeLessThanOrEqual(Number(brShellBox?.height));
+    expect(brContainerBox?.height).toBeLessThanOrEqual(
+      Number(brShellBox?.height),
+    );
     // images do not get cropped horizontally
-    expect(brContainerBox?.width).toBeLessThanOrEqual(Number(brShellBox?.width));
+    expect(brContainerBox?.width).toBeLessThanOrEqual(
+      Number(brShellBox?.width),
+    );
   });
 
   test('2. nav menu displays properly', async () => {

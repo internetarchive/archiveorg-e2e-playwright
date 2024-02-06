@@ -8,7 +8,9 @@ test('Facets appear', async ({ searchPage }) => {
   });
 });
 
-test(`Facets for "movies" in Media Type facet group`, async ({ searchPage }) => {
+test(`Facets for "movies" in Media Type facet group`, async ({
+  searchPage,
+}) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
@@ -117,7 +119,9 @@ test.skip(`Filter for title beginning with "X"`, async ({ searchPage }) => {
   });
 });
 
-test(`Facets can be selected via "Select filters" modal`, async ({ searchPage }) => {
+test(`Facets can be selected via "Select filters" modal`, async ({
+  searchPage,
+}) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
     await searchPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.MEDIATYPE,

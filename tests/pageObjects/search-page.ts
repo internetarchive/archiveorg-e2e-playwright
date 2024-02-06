@@ -29,7 +29,9 @@ export class SearchPage {
   public constructor(page: Page) {
     this.page = page;
 
-    this.btnCollectionSearchInputGo = page.locator('collection-search-input #go-button');
+    this.btnCollectionSearchInputGo = page.locator(
+      'collection-search-input #go-button',
+    );
     this.btnCollectionSearchInputCollapser = page.locator(
       'collection-search-input #button-collapser',
     );
@@ -40,11 +42,15 @@ export class SearchPage {
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 
-    this.formInputSearchPage = page.locator('collection-search-input #text-input');
+    this.formInputSearchPage = page.locator(
+      'collection-search-input #text-input',
+    );
     this.formInputRadioPage = page.locator(
       '#searchform > div > div:nth-child(1) > input',
     );
-    this.formInputTVPage = page.locator('#searchform > div > div:nth-child(1) > input');
+    this.formInputTVPage = page.locator(
+      '#searchform > div > div:nth-child(1) > input',
+    );
     this.formInputWaybackPage = page.locator(
       'input.rbt-input-main.form-control.rbt-input',
     );
@@ -85,7 +91,9 @@ export class SearchPage {
     await this.formInputSearchPage.click();
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
-    await expect(this.btnCollectionSearchInputCollapser.getByText(option)).toBeVisible();
+    await expect(
+      this.btnCollectionSearchInputCollapser.getByText(option),
+    ).toBeVisible();
     await this.btnCollectionSearchInputCollapser.getByText(option).click();
   }
 
@@ -105,7 +113,9 @@ export class SearchPage {
     await expect(
       this.page.getByRole('link', { name: 'TV News Archive', exact: true }),
     ).toBeVisible();
-    await expect(this.page.getByRole('heading', { name: 'Search' })).toBeVisible();
+    await expect(
+      this.page.getByRole('heading', { name: 'Search' }),
+    ).toBeVisible();
     await expect(this.formInputTVPage).toBeVisible();
     expect(await this.formInputTVPage.inputValue()).toContain(query);
   }
@@ -138,7 +148,9 @@ export class SearchPage {
 
   async validateURLParamsWithSortFilter(filter: SortFilter, order: SortOrder) {
     const sortFilterURL =
-      order === 'descending' ? `-${SortFilterURL[filter]}` : SortFilterURL[filter];
+      order === 'descending'
+        ? `-${SortFilterURL[filter]}`
+        : SortFilterURL[filter];
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);
   }

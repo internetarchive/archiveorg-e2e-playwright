@@ -3,7 +3,9 @@ import { SearchOption } from '../models';
 
 test('Collection search metadata', async ({ collectionPage }) => {
   await test.step(`Select "Search metadata"`, async () => {
-    await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
+    await collectionPage.searchPage.clickSearchInputOption(
+      SearchOption.METADATA,
+    );
   });
 
   await test.step(`Search for "radio" in the search input text field`, async () => {
@@ -16,7 +18,9 @@ test('Collection search metadata', async ({ collectionPage }) => {
   });
 });
 
-test('Collection search text contents and clear filters', async ({ collectionPage }) => {
+test('Collection search text contents and clear filters', async ({
+  collectionPage,
+}) => {
   await test.step(`Select "Search text contents"`, async () => {
     await collectionPage.searchPage.clickSearchInputOption(SearchOption.TEXT);
   });
@@ -38,7 +42,9 @@ test('Collection search text contents and clear filters', async ({ collectionPag
 
 test('No results page displays when no results', async ({ collectionPage }) => {
   await test.step(`Select "Search metadata"`, async () => {
-    await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
+    await collectionPage.searchPage.clickSearchInputOption(
+      SearchOption.METADATA,
+    );
   });
 
   await test.step(`Search for "catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda" and validate that the "No results" placeholder appears in place of the display area`, async () => {

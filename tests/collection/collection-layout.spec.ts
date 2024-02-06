@@ -9,7 +9,9 @@ test.beforeEach(async ({ collectionPage }) => {
   });
 
   await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
-    await collectionPage.searchPage.clickSearchInputOption(SearchOption.METADATA);
+    await collectionPage.searchPage.clickSearchInputOption(
+      SearchOption.METADATA,
+    );
     await collectionPage.searchPage.queryFor('radio');
   });
 });
@@ -18,17 +20,23 @@ test('Tile, List, and Compact layout buttons change layout', async ({
   collectionPage,
 }) => {
   await test.step('Display List View', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.LIST,
+    );
     await collectionPage.infiniteScroller.assertLayoutViewModeChange('list');
   });
 
   await test.step('Display List Compact View', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.COMPACT);
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.COMPACT,
+    );
     await collectionPage.infiniteScroller.assertLayoutViewModeChange('compact');
   });
 
   await test.step('Display Tile View', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.TILE,
+    );
     await collectionPage.infiniteScroller.assertLayoutViewModeChange('tile');
   });
 });
@@ -40,7 +48,9 @@ test('Tile hover pane appears', async ({ collectionPage }) => {
   });
 });
 
-test(`Clicking on an item tile takes you to the item`, async ({ collectionPage }) => {
+test(`Clicking on an item tile takes you to the item`, async ({
+  collectionPage,
+}) => {
   await test.step('Click first item result and check if it directs to details page', async () => {
     await collectionPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
   });
@@ -48,7 +58,9 @@ test(`Clicking on an item tile takes you to the item`, async ({ collectionPage }
 
 test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
   await test.step('Switch to tile view mode', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.TILE,
+    );
   });
 
   await test.step('Sort by All-time views - descending order', async () => {
@@ -71,7 +83,9 @@ test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
 
 test(`Sort by Date published in List view`, async ({ collectionPage }) => {
   await test.step('Switch to list view mode', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.LIST,
+    );
   });
 
   await test.step('Sort by Date published - descending order', async () => {
@@ -92,9 +106,13 @@ test(`Sort by Date published in List view`, async ({ collectionPage }) => {
   });
 });
 
-test(`Sort by Date archived (ascending) in Compact view`, async ({ collectionPage }) => {
+test(`Sort by Date archived (ascending) in Compact view`, async ({
+  collectionPage,
+}) => {
   await test.step('Switch to compact view mode', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.COMPACT);
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.COMPACT,
+    );
   });
 
   await test.step('Sort by Date archived - ascending order', async () => {

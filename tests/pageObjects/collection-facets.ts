@@ -104,7 +104,9 @@ export class CollectionFacets {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(2000);
 
-    const facetContent = await this.getFacetGroupContainer(FacetGroupLocatorLabel.DATE);
+    const facetContent = await this.getFacetGroupContainer(
+      FacetGroupLocatorLabel.DATE,
+    );
     if (facetContent) {
       const datePickerContainer = facetContent.locator(
         'histogram-date-range #container > div.inner-container > #inputs',
@@ -118,7 +120,9 @@ export class CollectionFacets {
     }
   }
 
-  async getFacetGroupContainer(group: FacetGroupLocatorLabel): Promise<Locator | null> {
+  async getFacetGroupContainer(
+    group: FacetGroupLocatorLabel,
+  ): Promise<Locator | null> {
     const facetGroups = await this.collectionFacets
       .locator('#container > section.facet-group')
       .all();

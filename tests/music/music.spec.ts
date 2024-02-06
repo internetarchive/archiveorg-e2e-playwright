@@ -34,7 +34,9 @@ test('Play 3 mystery sound effects', async ({ page }) => {
   const channelSelectorRadio = channelSelector.locator('#radio');
   expect(await channelSelector.count()).toEqual(1);
   expect(await channelSelectorRadio.count()).toEqual(1);
-  expect(await channelSelectorRadio.locator('#selector-title').count()).toEqual(1);
+  expect(await channelSelectorRadio.locator('#selector-title').count()).toEqual(
+    1,
+  );
   const rows = channelSelectorRadio.getByRole('listitem');
   expect(await rows.count()).toEqual(2);
   await expect(rows).toHaveText(['Player', 'Webamp']);
@@ -60,9 +62,13 @@ test('Play 3 mystery sound effects', async ({ page }) => {
     const trackTitle = trackListButtons.nth(i).locator('.track-title');
     const trackLength = trackListButtons.nth(i).locator('.track-length');
 
-    expect(await trackNumber.textContent()).toContain(trackListDetails[i].number);
+    expect(await trackNumber.textContent()).toContain(
+      trackListDetails[i].number,
+    );
     expect(await trackTitle.textContent()).toContain(trackListDetails[i].title);
-    expect(await trackLength.textContent()).toContain(trackListDetails[i].length);
+    expect(await trackLength.textContent()).toContain(
+      trackListDetails[i].length,
+    );
   }
 
   // select button tracks

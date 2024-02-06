@@ -27,13 +27,19 @@ export class InfiniteScroller {
     this.page = page;
 
     this.infiniteScroller = page.locator('infinite-scroller');
-    this.infiniteScrollerSectionContainer = this.infiniteScroller.locator('#container');
+    this.infiniteScrollerSectionContainer =
+      this.infiniteScroller.locator('#container');
 
     this.sortBar = new SortBar(page);
     const sortBarSection = this.sortBar.sortFilterBar;
-    this.displayStyleSelector = sortBarSection.locator('div#display-style-selector');
-    this.displayStyleSelectorOptions = this.displayStyleSelector.locator('ul > li');
-    this.firstItemTile = this.infiniteScrollerSectionContainer.locator('article').nth(0);
+    this.displayStyleSelector = sortBarSection.locator(
+      'div#display-style-selector',
+    );
+    this.displayStyleSelectorOptions =
+      this.displayStyleSelector.locator('ul > li');
+    this.firstItemTile = this.infiniteScrollerSectionContainer
+      .locator('article')
+      .nth(0);
   }
 
   async awaitLoadingState() {
@@ -48,9 +54,9 @@ export class InfiniteScroller {
   async assertLayoutViewModeChange(viewMode: LayoutViewMode) {
     switch (viewMode) {
       case 'tile':
-        await expect(this.displayStyleSelector.locator('#grid-button')).toHaveClass(
-          'active',
-        );
+        await expect(
+          this.displayStyleSelector.locator('#grid-button'),
+        ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/grid/));
         return;
       case 'list':
@@ -94,7 +100,10 @@ export class InfiniteScroller {
     expect(await this.firstItemTile.count()).toBe(1);
 
     // Get item tile link to compare with the redirect URL
-    const itemLink = await this.firstItemTile.locator('a').first().getAttribute('href');
+    const itemLink = await this.firstItemTile
+      .locator('a')
+      .first()
+      .getAttribute('href');
     const pattern = new RegExp(`${itemLink}`);
     await this.firstItemTile.click();
 
@@ -111,7 +120,9 @@ export class InfiniteScroller {
     // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
       await this.awaitLoadingState();
-      const tileStatsViews = await this.getTileStatsViewCountTitles(displayItemCount);
+      const tileStatsViews = await this.getTileStatsViewCountTitles(
+        displayItemCount,
+      );
 
       const isAllViews = tileStatsViews.every(stat =>
         stat.includes(filter.toLowerCase()),
@@ -133,7 +144,9 @@ export class InfiniteScroller {
       filter === 'Date reviewed'
     ) {
       await this.awaitLoadingState();
-      const dateMetadataLabels = await this.getDateMetadataLabels(displayItemCount);
+      const dateMetadataLabels = await this.getDateMetadataLabels(
+        displayItemCount,
+      );
       // Parse date sort filter to check list of date labels from page item results
       // => Published, Archived, Added, Reviewed
       const checkFilterText = filter
@@ -175,9 +188,13 @@ export class InfiniteScroller {
   }
 
   // Getters
-  async getTileStatsViewCountTitles(displayItemCount: Number): Promise<string[]> {
+  async getTileStatsViewCountTitles(
+    displayItemCount: Number,
+  ): Promise<string[]> {
     const arrTileStatsTitle: string[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
+    const allItems = await this.infiniteScrollerSectionContainer
+      .locator('article')
+      .all();
 
     // Load first 10 items and get tile stats views title
     let index = 0;
@@ -185,7 +202,9 @@ export class InfiniteScroller {
       const collectionTileCount = await allItems[index]
         .locator('a > collection-tile')
         .count();
-      const itemTileCount = await allItems[index].locator('a > item-tile').count();
+      const itemTileCount = await allItems[index]
+        .locator('a > item-tile')
+        .count();
 
       if (collectionTileCount === 0 && itemTileCount === 1) {
         // Get view count from tile-stats row
@@ -203,9 +222,13 @@ export class InfiniteScroller {
     return arrTileStatsTitle;
   }
 
-  async getDateMetadataLabels(displayItemCount: Number): Promise<DateMetadataLabel[]> {
+  async getDateMetadataLabels(
+    displayItemCount: Number,
+  ): Promise<DateMetadataLabel[]> {
     const arrDateLine: DateMetadataLabel[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
+    const allItems = await this.infiniteScrollerSectionContainer
+      .locator('article')
+      .all();
 
     let index = 0;
     while (index !== displayItemCount) {
@@ -238,7 +261,9 @@ export class InfiniteScroller {
 
   async getTileIconTitle(displayItemCount: Number): Promise<string[]> {
     const arrTileIconTitle: string[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
+    const allItems = await this.infiniteScrollerSectionContainer
+      .locator('article')
+      .all();
 
     let index = 0;
     while (index !== displayItemCount) {

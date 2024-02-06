@@ -46,7 +46,9 @@ export class CollectionPage {
 
   async validatePageHeaderElements() {
     await expect(this.page.locator('#page-header')).toBeVisible();
-    await expect(this.page.locator('#top-matter > div.thumbnail-frame')).toBeVisible();
+    await expect(
+      this.page.locator('#top-matter > div.thumbnail-frame'),
+    ).toBeVisible();
     await expect(this.pageSummary).toBeVisible();
     await expect(this.page.locator('action-bar')).toBeVisible();
   }
@@ -58,15 +60,21 @@ export class CollectionPage {
 
   async validateAboutTabPage() {
     await expect(this.page.locator('collection-about')).toBeVisible();
-    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain('ABOUT');
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
+      'ABOUT',
+    );
   }
 
   async validateForumTabPage() {
     const forumContainer = this.page.locator('#forum-container');
-    const newPostButtonLocator = forumContainer.getByRole('link', { name: 'New Post' });
+    const newPostButtonLocator = forumContainer.getByRole('link', {
+      name: 'New Post',
+    });
     const rssButtonLocator = forumContainer.getByRole('link', { name: 'RSS' });
 
-    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain('FORUM');
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
+      'FORUM',
+    );
     await expect(forumContainer).toBeVisible();
     await expect(newPostButtonLocator).toBeVisible();
     await expect(rssButtonLocator).toBeVisible();
@@ -76,6 +84,8 @@ export class CollectionPage {
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'COLLECTION',
     );
-    await expect(this.page.locator('#collection-browser-container')).toBeVisible();
+    await expect(
+      this.page.locator('#collection-browser-container'),
+    ).toBeVisible();
   }
 }
