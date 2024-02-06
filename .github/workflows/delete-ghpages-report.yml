@@ -2,7 +2,7 @@ name: Delete
 
 on:
   delete:
-    branches-ignore: [main, gh-pages]
+    branches-ignore: [main]
 
 # ensures that currently running Playwright workflow of deleted branch gets cancelled
 concurrency:
