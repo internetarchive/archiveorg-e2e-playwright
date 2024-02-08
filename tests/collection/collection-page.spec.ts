@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 
-import { CollectionPage } from '../pageObjects/collection-page';
+import { CollectionPage } from '../page-objects/collection-page';
 
 let collectionPage: CollectionPage;
 

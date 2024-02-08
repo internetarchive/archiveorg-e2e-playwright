@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 
 import { SearchOption } from '../models';
-import { SearchPage } from '../pageObjects/search-page';
+import { SearchPage } from '../page-objects/search-page';
 
 let searchPage: SearchPage;
 

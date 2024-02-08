@@ -1,7 +1,7 @@
 import { test as base } from '@playwright/test';
 
-import { CollectionPage } from './pageObjects/collection-page';
-import { SearchPage } from './pageObjects/search-page';
+import { CollectionPage } from './page-objects/collection-page';
+import { SearchPage } from './page-objects/search-page';
 
 type PageFixtures = {
   collectionPage: CollectionPage;
