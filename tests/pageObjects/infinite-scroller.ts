@@ -179,7 +179,6 @@ export class InfiniteScroller {
     const arrTileStatsTitle: string[] = [];
     const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
 
-    // Load first 10 items and get tile stats views title
     let index = 0;
     while (index !== displayItemCount) {
       const collectionTileCount = await allItems[index]
@@ -247,8 +246,43 @@ export class InfiniteScroller {
       const tileIcon = allItems[index].locator(
         '#stats-row > li:nth-child(1) > mediatype-icon > #icon'
       );
+
       const tileIconTitle = await tileIcon.getAttribute('title');
       if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
+
+      index++;
+    }
+
+    return arrTileIconTitle;
+  }
+
+  async getTileCollectionIconTitle(displayItemCount: Number): Promise<string[]> {
+    const arrTileIconTitle: string[] = [];
+    const allItems = await this.infiniteScrollerSectionContainer.locator('article').all();
+
+    let index = 0;
+    while (index !== displayItemCount) {
+      const collectionTileCount = await allItems[index]
+        .locator('a > collection-tile')
+        .count();
+      const itemTileCount = await allItems[index].locator('a > item-tile').count();
+
+      if (collectionTileCount === 1 && itemTileCount === 0) {
+        console.log('it is a collection-tile');
+        arrTileIconTitle.push('collection');
+      } else if (collectionTileCount === 0 && itemTileCount === 1) {
+        console.log('it is an item-tile');
+        // Load items based on displayItemCount
+        // Get mediatype-icon title from tile-stats row
+        const tileIcon = allItems[index].locator(
+          '#stats-row > li:nth-child(1) > mediatype-icon > #icon'
+        );
+
+        const tileIconTitle = await tileIcon.getAttribute('title');
+        if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
+      } else {
+        console.log('it maybe a collection-tile nor an item-tile');
+      }
 
       index++;
     }
@@ -261,6 +295,9 @@ export class InfiniteScroller {
     displayItemCount: Number
   ): Promise<string[] | null> {
     switch (viewFacetMetadata) {
+      case 'tile-collection-icontitle':
+        return await this.getTileCollectionIconTitle(displayItemCount);
+
       case 'tile-icontitle':
         return await this.getTileIconTitle(displayItemCount);
 

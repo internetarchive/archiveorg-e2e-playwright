@@ -36,7 +36,7 @@ test.describe('Collection Page - Basic display tests', () => {
         'positive'
       );
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-        'tile-icontitle',
+        'tile-collection-icontitle',
         ['Movie'],
         true,
         5
@@ -68,15 +68,12 @@ test.describe('Collection Page - Basic display tests', () => {
     });
   });
 
-  test('Clear facet filters and switch to Tile view mode', async () => {
-    await test.step(`Click "Clear all filters" and switch to Tile view mode`, async () => {
-      await collectionPage.page.waitForFunction('load');
-      await collectionPage.searchPage.clickClearAllFilters();
-      await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
-    });
-  });
-
   test(`Negative facet to exclude "audio"`, async () => {
+    await test.step(`Click "Clear all filters" and switch to Tile view mode`, async () => {
+      await collectionPage.searchPage.clickClearAllFilters();
+      await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
+    });
+
     await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
       await collectionPage.collectionFacets.selectFacetByGroup(
         FacetGroupLocatorLabel.MEDIATYPE,
@@ -84,10 +81,10 @@ test.describe('Collection Page - Basic display tests', () => {
         'negative'
       );
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-        'tile-icontitle',
+        'tile-collection-icontitle',
         ['Audio'],
         false,
-        7
+        20
       );
     });
   });
@@ -97,19 +94,23 @@ test.describe('Collection Page - Basic display tests', () => {
   });
 
   test(`Facets can be selected via "Select filters" modal`, async () => {
-    await test.step(`Click "More" button under Media type facet group`, async () => {
+    await test.step(`Click "Clear all filters"`, async () => {
+      await collectionPage.searchPage.clickClearAllFilters();
+    });
+
+    await test.step(`Click "More" button under Subject facet group`, async () => {
       await collectionPage.collectionFacets.clickMoreInFacetGroup(
-        FacetGroupLocatorLabel.MEDIATYPE
+        FacetGroupLocatorLabel.SUBJECT
       );
     });
 
-    await test.step(`Select "audio" and "texts" from inside "Media Type" facet group`, async () => {
-      await collectionPage.collectionFacets.selectFacetsInModal(['audio', 'texts']);
+    await test.step(`Select "Comedy" and "Mystery" from inside "Subject" facet group`, async () => {
+      await collectionPage.collectionFacets.selectFacetsInModal(['Comedy', 'Mystery']);
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-        'tile-icontitle',
-        ['Audio', 'Text'],
+        'tile-collection-icontitle',
+        ['Audio', 'Movie'],
         true,
-        10
+        20
       );
     });
   });
