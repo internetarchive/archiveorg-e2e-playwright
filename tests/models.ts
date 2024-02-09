@@ -55,4 +55,4 @@ export enum FacetGroupLocatorLabel {
 
 export type FacetType = 'positive' | 'negative';
 
-export type ViewFacetMetadata = 'tile-icontitle' | 'list-date';
+export type ViewFacetMetadata = 'tile-collection-icontitle' | 'tile-icontitle' | 'list-date';
