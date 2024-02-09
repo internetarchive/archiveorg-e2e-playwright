@@ -1,0 +1,41 @@
+# Source: https://blog.martioli.com/publish-your-playwright-reports-to-github-pages/
+
+name: Delete old folders from github pages
+
+on:
+  workflow_dispatch:
+    inputs:
+        n_days:
+            description: 'Number of days to determine which folders to delete. Example: 10 will delete all folders older than 10 days'
+            required: true
+            default: 10
+        folder_name:
+            description: 'Name of the folder where you store the reports. Default is root'
+            required: true
+            default: '.'
+
+jobs:
+  delete_old_folders:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with: 
+          ref: gh-pages
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Pray then Run the script
+        run: python rm_old_folders.py --n-days ${{ github.event.inputs.n_days }} --folder-name ${{ github.event.inputs.folder_name }}
+
+      - name: Commit all changed files back to the repository
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: gh-pages
+          commit_message: Delete folders older than ${{ github.event.inputs.n_days }} days
