@@ -13,7 +13,9 @@ test.afterAll(async () => {
 test.describe('Collection Page - Faceting tests', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test(`Search and go to "oldtimeradio" collection page`, async ({ browser }) => {
+  test(`Search and go to "oldtimeradio" collection page`, async ({
+    browser,
+  }) => {
     const browserPage = await browser.newPage();
     collectionPage = new CollectionPage(browserPage);
 
@@ -33,13 +35,13 @@ test.describe('Collection Page - Faceting tests', () => {
       await collectionPage.collectionFacets.selectFacetByGroup(
         FacetGroupLocatorLabel.MEDIATYPE,
         'movies',
-        'positive'
+        'positive',
       );
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
         'tile-collection-icontitle',
         ['Movie'],
         true,
-        5
+        5,
       );
     });
   });
@@ -58,12 +60,14 @@ test.describe('Collection Page - Faceting tests', () => {
     });
 
     await test.step(`Switch to list view mode to check the first 10 item results Published texts are ONLY 2014 or 2015`, async () => {
-      await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
+      await collectionPage.infiniteScroller.clickViewMode(
+        LayoutViewModeLocator.LIST,
+      );
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
         'list-date',
         ['1954', '1955'],
         true,
-        10
+        10,
       );
     });
   });
@@ -71,20 +75,22 @@ test.describe('Collection Page - Faceting tests', () => {
   test(`Negative facet to exclude "audio"`, async () => {
     await test.step(`Click "Clear all filters" and switch to Tile view mode`, async () => {
       await collectionPage.searchPage.clickClearAllFilters();
-      await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
+      await collectionPage.infiniteScroller.clickViewMode(
+        LayoutViewModeLocator.TILE,
+      );
     });
 
     await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
       await collectionPage.collectionFacets.selectFacetByGroup(
         FacetGroupLocatorLabel.MEDIATYPE,
         'audio',
-        'negative'
+        'negative',
       );
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
         'tile-collection-icontitle',
         ['Audio'],
         false,
-        20
+        20,
       );
     });
   });
@@ -99,16 +105,21 @@ test.describe('Collection Page - Faceting tests', () => {
     });
 
     await test.step(`Click "More" button under Subject facet group`, async () => {
-      await collectionPage.collectionFacets.clickMoreInFacetGroup(FacetGroupLocatorLabel.SUBJECT);
+      await collectionPage.collectionFacets.clickMoreInFacetGroup(
+        FacetGroupLocatorLabel.SUBJECT,
+      );
     });
 
     await test.step(`Select "Comedy" and "Mystery" from inside "Subject" facet group`, async () => {
-      await collectionPage.collectionFacets.selectFacetsInModal(['Comedy', 'Mystery']);
+      await collectionPage.collectionFacets.selectFacetsInModal([
+        'Comedy',
+        'Mystery',
+      ]);
       await collectionPage.infiniteScroller.validateIncludedFacetedResults(
         'tile-collection-icontitle',
         ['Audio', 'Movie'],
         true,
-        20
+        20,
       );
     });
   });
