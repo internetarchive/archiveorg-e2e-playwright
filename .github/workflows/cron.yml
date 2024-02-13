@@ -3,7 +3,7 @@ name: Cron
 on:
   schedule:
     # should run every 3hrs on weekdays
-    - cron: "0 */3 * * 1-5"
+    # - cron: "0 */3 * * 1-5"
     # for testing purposes (this will run every 5mins everyday)
     # - cron: "*/5 * * * *"
 
