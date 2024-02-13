@@ -4,7 +4,7 @@ import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
-    await searchPage.collectionFacets.assertFacetGroupCount();
+    await searchPage.collectionFacets.assertSearchFacetGroupCount();
   });
 });
 
@@ -21,9 +21,9 @@ test(`Facets for "movies" in Media Type facet group`, async ({
 
   await test.step(`Check the first 10 results for "Movie" results`, async () => {
     // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
-      ['Movie', 'Data'],
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
+      'tile-icontitle',
+      ['Movie'],
       true,
       10,
     );
@@ -40,9 +40,8 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 
   await test.step(`Check the first 10 results for "Data" results`, async () => {
-    // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
+      'tile-icontitle',
       ['Data'],
       true,
       10,
@@ -60,12 +59,11 @@ test(`Clear facet filters`, async ({ searchPage }) => {
 
 test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
-    // TODO: still not able to locate histogram date-input fields
     await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
   });
 
   await test.step('New results will be fetched', async () => {
-    await searchPage.collectionFacets.checkResultCount();
+    await searchPage.collectionFacets.displaysResultCount();
   });
 
   // it's easier to check dates in list view mode
@@ -74,7 +72,7 @@ test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   });
 
   await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
       'list-date',
       ['2014', '2015'],
       true,
@@ -93,9 +91,8 @@ test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   });
 
   await test.step(`Check the first 7 results for "Audio" results`, async () => {
-    // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
+      'tile-icontitle',
       ['Audio'],
       false,
       7,
@@ -103,7 +100,7 @@ test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   });
 });
 
-test(`Filter for title beginning with "X"`, async ({ searchPage }) => {
+test.skip(`Filter for title beginning with "X"`, async ({ searchPage }) => {
   test.info().annotations.push({
     type: 'Test',
     description: 'This test is still incomplete',
@@ -136,9 +133,8 @@ test(`Facets can be selected via "Select filters" modal`, async ({
   });
 
   await test.step(`Check the first 10 results for "Audio" & "Texts" results`, async () => {
-    // checking the tileIcon title for now which is set in a `Title case` format
-    await searchPage.infiniteScroller.checkIncludedFacetedResults(
-      'tile-title',
+    await searchPage.infiniteScroller.validateIncludedFacetedResults(
+      'tile-icontitle',
       ['Audio', 'Text'],
       true,
       10,

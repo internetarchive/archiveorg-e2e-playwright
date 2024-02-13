@@ -14,6 +14,7 @@ export class SearchPage {
   readonly btnCollectionSearchInputGo: Locator;
   readonly btnCollectionSearchInputCollapser: Locator;
   readonly btnClearAllFilters: Locator;
+  readonly btnClearInput: Locator;
   readonly emptyPlaceholder: Locator;
   readonly emptyPlaceholderTitleText: Locator;
   readonly formInputSearchPage: Locator;
@@ -37,6 +38,7 @@ export class SearchPage {
     this.btnClearAllFilters = page.locator(
       '#facets-header-container div.clear-filters-btn-row button',
     );
+    this.btnClearInput = page.locator('collection-search-input #clear-button');
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 
@@ -44,10 +46,10 @@ export class SearchPage {
       'collection-search-input #text-input',
     );
     this.formInputRadioPage = page.locator(
-      '#searchform > div > div:nth-child(1) > input',
+      '#searchform > div > div:nth-child(1) > input.js-search-bar',
     );
     this.formInputTVPage = page.locator(
-      '#searchform > div > div:nth-child(1) > input',
+      '#searchform > div > div:nth-child(1) > input.js-search-bar',
     );
     this.formInputWaybackPage = page.locator(
       'input.rbt-input-main.form-control.rbt-input',
@@ -62,7 +64,7 @@ export class SearchPage {
     await this.page.goto(this.url);
   }
 
-  async checkEmptyPagePlaceholder() {
+  async validateEmptyPagePlaceholder() {
     await expect(this.emptyPlaceholder).toBeVisible();
     await expect(this.emptyPlaceholderTitleText).toBeVisible();
   }
@@ -78,9 +80,8 @@ export class SearchPage {
     await this.btnClearAllFilters.click();
   }
 
-  async assertClearAllFiltersNotVisible() {
-    await this.page.waitForLoadState();
-    await expect(this.btnClearAllFilters).not.toBeVisible();
+  async clickClearSearchInput() {
+    await this.btnClearInput.click();
   }
 
   async clickSearchInputOption(option: SearchOption) {
@@ -96,7 +97,16 @@ export class SearchPage {
     await this.btnCollectionSearchInputCollapser.getByText(option).click();
   }
 
-  async checkTVPage(query: string) {
+  async goBackToSearchPage() {
+    await this.visit();
+  }
+
+  async assertClearAllFiltersNotVisible() {
+    await this.page.waitForLoadState();
+    await expect(this.btnClearAllFilters).not.toBeVisible();
+  }
+
+  async validateTVPage(query: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
@@ -110,14 +120,14 @@ export class SearchPage {
     expect(await this.formInputTVPage.inputValue()).toContain(query);
   }
 
-  async checkRadioPage(query: string) {
+  async validateRadioPage(query: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(this.formInputRadioPage).toBeVisible();
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
-  async checkWaybackPage(query: string) {
+  async validateWaybackPage(query: string) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     expect(await this.page.title()).toContain('Wayback Machine');
@@ -125,11 +135,7 @@ export class SearchPage {
     expect(await this.formInputWaybackPage.inputValue()).toContain(query);
   }
 
-  async goBackToSearchPage() {
-    await this.visit();
-  }
-
-  async checkCompactViewModeListLineDateHeaders(filter: SortFilter) {
+  async validateCompactViewModeListLineDateHeaders(filter: SortFilter) {
     const checkFilterText = filter
       .split('Date ')[1]
       .replace(/^./, (str: string) => str.toUpperCase());
@@ -140,12 +146,17 @@ export class SearchPage {
     ).toContain(checkFilterText);
   }
 
-  async checkURLParamsWithSortFilter(filter: SortFilter, order: SortOrder) {
+  async validateURLParamsWithSortFilter(filter: SortFilter, order: SortOrder) {
     const sortFilterURL =
       order === 'descending'
         ? `-${SortFilterURL[filter]}`
         : SortFilterURL[filter];
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);
+  }
+
+  async validateClearSearchInput() {
+    await expect(this.btnClearInput).not.toBeVisible();
+    expect(await this.formInputSearchPage.inputValue()).toBe('');
   }
 }

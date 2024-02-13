@@ -17,6 +17,7 @@
 ## Running individual tests by category
 
 - run books tests: `npm run test:books`
+- run collection tests: `npm run test:collection`
 - run login tests: `npm run test:login`
 - run music tests: `npm run test:music`
 - run search tests: `npm run test:search`

@@ -1,9 +1,13 @@
 import { test } from '@playwright/test';
 
 import { SearchOption } from '../models';
-import { SearchPage } from '../pageObjects/search-page';
+import { SearchPage } from '../page-objects/search-page';
 
 let searchPage: SearchPage;
+
+test.afterAll(async () => {
+  await searchPage.page.close();
+});
 
 test.describe('Basic Search tests', () => {
   test.describe.configure({ mode: 'serial' });
@@ -19,7 +23,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check if the empty page placeholder is displayed`, async () => {
-      await searchPage.checkEmptyPagePlaceholder();
+      await searchPage.validateEmptyPagePlaceholder();
     });
   });
 
@@ -33,7 +37,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Searching and search result count should be displayed`, async () => {
-      await searchPage.collectionFacets.checkResultCount();
+      await searchPage.collectionFacets.displaysResultCount();
     });
   });
 
@@ -47,7 +51,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Searching and search result count should be displayed`, async () => {
-      await searchPage.collectionFacets.checkResultCount();
+      await searchPage.collectionFacets.displaysResultCount();
     });
   });
 
@@ -61,7 +65,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check TV page is displayed`, async () => {
-      await searchPage.checkTVPage('iguanas');
+      await searchPage.validateTVPage('iguanas');
     });
 
     await test.step(`Go back to search page from TV search page`, async () => {
@@ -79,7 +83,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check Radio search page is displayed`, async () => {
-      await searchPage.checkRadioPage('rabbits');
+      await searchPage.validateRadioPage('rabbits');
     });
 
     await test.step(`Go back to search page from Radio search page`, async () => {
@@ -97,7 +101,7 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check Wayback search page is displayed`, async () => {
-      await searchPage.checkWaybackPage('parrots');
+      await searchPage.validateWaybackPage('parrots');
     });
 
     await test.step(`Go back to search page from Wayback search page`, async () => {
@@ -106,16 +110,9 @@ test.describe('Basic Search tests', () => {
   });
 
   test('No results page displays when no results', async () => {
-    await test.step(`Search for a query that we expect will return no results at all`, async () => {
+    await test.step(`Search for a query that we expect will return no results at all and validate the empty page placeholder is displayed`, async () => {
       await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
-    });
-
-    await test.step(`Check if the empty page placeholder is displayed`, async () => {
-      await searchPage.checkEmptyPagePlaceholder();
-    });
-
-    await test.step('Close page browser after running all tests', async () => {
-      await searchPage.page.close();
+      await searchPage.validateEmptyPagePlaceholder();
     });
   });
 });

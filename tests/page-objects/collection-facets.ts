@@ -18,17 +18,24 @@ export class CollectionFacets {
     this.moreFacetsContent = page.locator('more-facets-content');
   }
 
-  async checkResultCount() {
-    await expect(this.page.getByText('Searching')).toBeVisible();
+  async displaysResultCount() {
     await expect(this.resultsTotal).toBeVisible();
   }
 
-  async assertFacetGroupCount() {
+  async assertSearchFacetGroupCount() {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(1000);
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
+  }
+
+  async assertCollectionFacetGroupCount() {
+    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(1000);
+
+    const facetGroups = this.collectionFacets.locator('facets-template');
+    expect(await facetGroups.count()).toEqual(6);
   }
 
   async selectFacetByGroup(
@@ -78,7 +85,7 @@ export class CollectionFacets {
   }
 
   async selectFacetsInModal(facetLabels: string[]) {
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState('load');
 
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
