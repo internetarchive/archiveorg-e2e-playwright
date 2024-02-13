@@ -46,10 +46,10 @@ export class SearchPage {
       'collection-search-input #text-input',
     );
     this.formInputRadioPage = page.locator(
-      '#searchform > div > div:nth-child(1) > input',
+      '#searchform > div > div:nth-child(1) > input.js-search-bar',
     );
     this.formInputTVPage = page.locator(
-      '#searchform > div > div:nth-child(1) > input',
+      '#searchform > div > div:nth-child(1) > input.js-search-bar',
     );
     this.formInputWaybackPage = page.locator(
       'input.rbt-input-main.form-control.rbt-input',
