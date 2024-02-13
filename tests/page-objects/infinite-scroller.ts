@@ -7,7 +7,7 @@ import {
   LayoutViewMode,
   SortOrder,
   SortFilter,
-  ViewFacetGroup,
+  ViewFacetMetadata,
   LayoutViewModeLocator,
 } from '../models';
 
@@ -112,7 +112,7 @@ export class InfiniteScroller {
   }
 
   // TODO: per sort filter and sort order + view mode???
-  async checkSortingResults(
+  async validateSortingResults(
     filter: SortFilter,
     order: SortOrder,
     displayItemCount: Number,
@@ -162,15 +162,15 @@ export class InfiniteScroller {
     }
   }
 
-  async checkIncludedFacetedResults(
-    viewFacetType: ViewFacetGroup,
+  async validateIncludedFacetedResults(
+    viewFacetMetadata: ViewFacetMetadata,
     facetLabels: string[],
     toInclude: boolean,
     displayItemCount: Number,
   ) {
     await this.awaitLoadingState();
     const facetedResults = await this.getFacetedResultsByViewFacetGroup(
-      viewFacetType,
+      viewFacetMetadata,
       displayItemCount,
     );
     if (facetedResults) {
@@ -183,6 +183,10 @@ export class InfiniteScroller {
     }
   }
 
+  async displaysFirstResult() {
+    await expect(this.firstItemTile).toBeVisible();
+  }
+
   // Getters
   async getTileStatsViewCountTitles(
     displayItemCount: Number,
@@ -192,32 +196,18 @@ export class InfiniteScroller {
       .locator('article')
       .all();
 
-    // Load first 10 items and get tile stats views title
     let index = 0;
     while (index !== displayItemCount) {
-      const collectionTileCount = await allItems[index]
-        .locator('a > collection-tile')
-        .count();
       const itemTileCount = await allItems[index]
         .locator('a > item-tile')
         .count();
 
-      if (collectionTileCount === 1 && itemTileCount === 0) {
-        console.log('it is a collection tile - do nothing for now');
-        expect.soft(collectionTileCount).toBe(1);
-        expect.soft(itemTileCount).toBe(0);
-      } else if (collectionTileCount === 0 && itemTileCount === 1) {
-        expect.soft(collectionTileCount).toBe(0);
-        expect.soft(itemTileCount).toBe(1);
+      if (itemTileCount === 1) {
         // Get view count from tile-stats row
         const tileStatsTitle = await allItems[index]
           .locator('#stats-row > li:nth-child(2)')
           .getAttribute('title');
         if (tileStatsTitle) arrTileStatsTitle.push(tileStatsTitle);
-      } else {
-        console.log('it is not a collection-tile nor an item-tile');
-        expect.soft(collectionTileCount).toBe(0);
-        expect.soft(itemTileCount).toBe(0);
       }
 
       index++;
@@ -248,7 +238,7 @@ export class InfiniteScroller {
 
       if (dateSpanLabel) {
         // Need to split date filter and date format value: Published: 2150 or Published: Nov 15, 2023
-        // Sample object: { filter: 'Published', date: '2150' }
+        // Ideal format: { filter: 'Published', date: '2150' }
         const strSplitColonSpace = dateSpanLabel.split(': ');
         const objDateLine = {
           filter: strSplitColonSpace[0],
@@ -276,6 +266,7 @@ export class InfiniteScroller {
       const tileIcon = allItems[index].locator(
         '#stats-row > li:nth-child(1) > mediatype-icon > #icon',
       );
+
       const tileIconTitle = await tileIcon.getAttribute('title');
       if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
 
@@ -285,12 +276,55 @@ export class InfiniteScroller {
     return arrTileIconTitle;
   }
 
+  async getTileCollectionIconTitle(
+    displayItemCount: Number,
+  ): Promise<string[]> {
+    const arrTileIconTitle: string[] = [];
+    const allItems = await this.infiniteScrollerSectionContainer
+      .locator('article')
+      .all();
+
+    let index = 0;
+    while (index !== displayItemCount) {
+      const collectionTileCount = await allItems[index]
+        .locator('a > collection-tile')
+        .count();
+      const itemTileCount = await allItems[index]
+        .locator('a > item-tile')
+        .count();
+
+      if (collectionTileCount === 1 && itemTileCount === 0) {
+        console.log('it is a collection-tile');
+        arrTileIconTitle.push('collection');
+      } else if (collectionTileCount === 0 && itemTileCount === 1) {
+        console.log('it is an item-tile');
+        // Load items based on displayItemCount
+        // Get mediatype-icon title from tile-stats row
+        const tileIcon = allItems[index].locator(
+          '#stats-row > li:nth-child(1) > mediatype-icon > #icon',
+        );
+
+        const tileIconTitle = await tileIcon.getAttribute('title');
+        if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
+      } else {
+        console.log('it maybe a collection-tile nor an item-tile');
+      }
+
+      index++;
+    }
+
+    return arrTileIconTitle;
+  }
+
   async getFacetedResultsByViewFacetGroup(
-    viewFacetType: ViewFacetGroup,
+    viewFacetMetadata: ViewFacetMetadata,
     displayItemCount: Number,
   ): Promise<string[] | null> {
-    switch (viewFacetType) {
-      case 'tile-title':
+    switch (viewFacetMetadata) {
+      case 'tile-collection-icontitle':
+        return await this.getTileCollectionIconTitle(displayItemCount);
+
+      case 'tile-icontitle':
         return await this.getTileIconTitle(displayItemCount);
 
       case 'list-date':
