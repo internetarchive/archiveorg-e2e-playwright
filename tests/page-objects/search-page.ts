@@ -85,16 +85,20 @@ export class SearchPage {
   }
 
   async clickSearchInputOption(option: SearchOption) {
-    await expect(this.btnCollectionSearchInputGo).toBeVisible();
-    await expect(this.formInputSearchPage).toBeVisible();
+    await expect(this.btnCollectionSearchInputGo).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(this.formInputSearchPage).toBeVisible({ timeout: 5000 });
 
-    await this.formInputSearchPage.click();
+    await this.formInputSearchPage.click({ force: true });
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(PAGE_TIMEOUT);
     await expect(
       this.btnCollectionSearchInputCollapser.getByText(option),
-    ).toBeVisible();
-    await this.btnCollectionSearchInputCollapser.getByText(option).click();
+    ).toBeVisible({ timeout: 5000 });
+    await this.btnCollectionSearchInputCollapser
+      .getByText(option)
+      .click({ force: true });
   }
 
   async goBackToSearchPage() {

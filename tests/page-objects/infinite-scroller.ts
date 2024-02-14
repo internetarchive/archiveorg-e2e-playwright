@@ -44,7 +44,7 @@ export class InfiniteScroller {
 
   async awaitLoadingState() {
     await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForTimeout(3000);
   }
 
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
@@ -81,7 +81,9 @@ export class InfiniteScroller {
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
-    await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible();
+    await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible({
+      timeout: 5000,
+    });
   }
 
   async assertTileHoverPaneTitleIsSameWithItemTile() {

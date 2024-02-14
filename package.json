@@ -22,19 +22,20 @@
     "test:search": "npx playwright test tests/search",
     "format": "prettier --write \"tests/**/*.ts\"",
     "lint": "prettier --check \"tests/**/*.ts\"",
-    "typecheck": "node node_modules/typescript/bin/tsc --noEmit"
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
+    "test:debugbrowser": "DEBUG=pw:browser npx playwright test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.35.1",
+    "@playwright/test": "^1.41.2",
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
-    "playwright": "^1.40.1",
+    "playwright": "^1.41.2",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {

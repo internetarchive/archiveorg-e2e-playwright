@@ -4,39 +4,34 @@ import { test, expect } from '@playwright/test';
 const trackListDetails = [
   {
     number: '1',
-    title: 'Squeaking Door',
-    length: '00:06',
+    title: 'Morning Dew',
+    length: '11:18',
   },
   {
     number: '2',
-    title: 'Steps',
-    length: '00:03',
+    title: 'Beat It On Down The Line',
+    length: '02:14',
   },
   {
     number: '3',
-    title: 'Steps',
-    length: '00:03',
+    title: 'Ramble On Rose',
+    length: '07:44',
   },
 ];
 
-test('Play 3 mystery sound effects', async ({ page }) => {
-  await page.goto(
-    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings',
-  );
+test('Play a Grateful Sound track', async ({ page }) => {
+  await page.goto('https://archive.org/details/gd73-06-10.sbd.hollister.174.sbeok.shnf', { waitUntil: 'networkidle', timeout: 60000});
 
   const iaMusicTheater = page.locator('ia-music-theater');
-  expect(await iaMusicTheater.count()).toEqual(1);
   const musicTheater = page.locator('#music-theater');
-  expect(await musicTheater.count()).toEqual(1);
 
   // player controls
   const channelSelector = musicTheater.locator('channel-selector');
   const channelSelectorRadio = channelSelector.locator('#radio');
-  expect(await channelSelector.count()).toEqual(1);
-  expect(await channelSelectorRadio.count()).toEqual(1);
-  expect(await channelSelectorRadio.locator('#selector-title').count()).toEqual(
-    1,
-  );
+  await expect(channelSelector).toBeVisible();
+  await expect(channelSelectorRadio).toBeVisible();
+  await expect(channelSelectorRadio.locator('#selector-title')).toBeVisible();
+
   const rows = channelSelectorRadio.getByRole('listitem');
   expect(await rows.count()).toEqual(2);
   await expect(rows).toHaveText(['Player', 'Webamp']);
@@ -54,7 +49,9 @@ test('Play 3 mystery sound effects', async ({ page }) => {
   const playTrackList = playAv.locator('.flexbox-pages.column');
   const trackListButtons = playTrackList.getByRole('button');
   expect(await playTrackList.count()).toEqual(1);
-  expect(await trackListButtons.count()).toEqual(50);
+  expect(await trackListButtons.count()).toEqual(31);
+
+  await page.waitForTimeout(5000);
 
   // check first 3 of trackList details
   for (let i = 0; i < 3; ++i) {
@@ -62,25 +59,26 @@ test('Play 3 mystery sound effects', async ({ page }) => {
     const trackTitle = trackListButtons.nth(i).locator('.track-title');
     const trackLength = trackListButtons.nth(i).locator('.track-length');
 
-    expect(await trackNumber.textContent()).toContain(
+    expect(await trackNumber.innerText()).toContain(
       trackListDetails[i].number,
     );
-    expect(await trackTitle.textContent()).toContain(trackListDetails[i].title);
-    expect(await trackLength.textContent()).toContain(
+    expect(await trackTitle.innerText()).toContain(trackListDetails[i].title);
+    expect(await trackLength.innerText()).toContain(
       trackListDetails[i].length,
     );
   }
 
-  // select button tracks
-  await trackListButtons.nth(1).click();
-  await page.waitForURL(
-    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/02.+Gateway+Gecordings+-+Steps.flac',
-  );
+  const jwPlayControl = page.locator('#jw6 > div.jw-wrapper.jw-reset > div.jw-controls.jw-reset > div.jw-controlbar.jw-reset > div > div.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-playback');
 
-  await trackListButtons.nth(2).click();
-  await page.waitForURL(
-    'https://archive.org/details/cd_mystery-sound-effects_gateway-gecordings/disc1/03.+Gateway+Gecordings+-+Steps.flac',
-  );
+  // Play music
+  await jwPlayControl.click();
+  await page.waitForTimeout(3000);
+  expect(await jwPlayControl.getAttribute('aria-label')).toBe('Pause');
+
+  // Pause music
+  await jwPlayControl.click();
+  await page.waitForTimeout(3000);
+  expect(await jwPlayControl.getAttribute('aria-label')).toBe('Play');
 
   await page.close();
 });

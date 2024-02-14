@@ -4,10 +4,6 @@ import { CollectionPage } from '../page-objects/collection-page';
 
 let collectionPage: CollectionPage;
 
-test.afterAll(async () => {
-  await collectionPage.page.close();
-});
-
 test.describe('Collection Page - Basic display tests', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -59,4 +55,8 @@ test.describe('Collection Page - Basic display tests', () => {
       await collectionPage.validateCollectionTabPage();
     });
   });
+});
+
+test.afterAll(async () => {
+  await collectionPage.page.close();
 });

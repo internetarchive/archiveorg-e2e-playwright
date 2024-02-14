@@ -33,7 +33,7 @@ export class CollectionPage {
 
   async visit(collection: string) {
     await this.page.goto(`${this.url}/${collection}`);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState();
   }
 
   async clickCollectionTab(name: string) {

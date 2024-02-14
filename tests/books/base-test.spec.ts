@@ -31,18 +31,6 @@ const isModeInUrl = async (mode: string) => {
   }
 };
 
-test.beforeAll(async ({ browser }) => {
-  // https://playwright.dev/docs/test-retries#reuse-single-page-between-tests
-  page = await browser.newPage();
-
-  // Go to the starting url before each test.
-  await page.goto('https://archive.org/details/theworksofplato01platiala');
-});
-
-test.afterAll(async () => {
-  await page.close();
-});
-
 test('On load, pages fit fully inside of the BookReader™', async () => {
   await page.waitForTimeout(5000);
 
@@ -196,4 +184,16 @@ test.describe('Test bookreader navigations', () => {
     expect(await isPageInUrl()).toEqual(true);
     expect(await isModeInUrl('2up')).toEqual(true);
   });
+});
+
+test.beforeAll(async ({ browser }) => {
+  // https://playwright.dev/docs/test-retries#reuse-single-page-between-tests
+  page = await browser.newPage();
+
+  // Go to the starting url before each test.
+  await page.goto('https://archive.org/details/theworksofplato01platiala');
+});
+
+test.afterAll(async () => {
+  await page.close();
 });
