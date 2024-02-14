@@ -11,7 +11,7 @@
 
 - run command to install dependencies: `npm i`
 - run command to install Playwright browser libs: `npx install playwright`
-- run command to run all the tests: `npm run test`
+- run command to run all the tests: `npm run test` or `./run-tests.sh`
 
 
 ## Running individual tests by category

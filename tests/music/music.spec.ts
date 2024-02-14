@@ -20,7 +20,10 @@ const trackListDetails = [
 ];
 
 test('Play a Grateful Sound track', async ({ page }) => {
-  await page.goto('https://archive.org/details/gd73-06-10.sbd.hollister.174.sbeok.shnf', { waitUntil: 'networkidle', timeout: 60000});
+  await page.goto(
+    'https://archive.org/details/gd73-06-10.sbd.hollister.174.sbeok.shnf',
+    { waitUntil: 'networkidle', timeout: 60000 },
+  );
 
   const iaMusicTheater = page.locator('ia-music-theater');
   const musicTheater = page.locator('#music-theater');
@@ -59,16 +62,14 @@ test('Play a Grateful Sound track', async ({ page }) => {
     const trackTitle = trackListButtons.nth(i).locator('.track-title');
     const trackLength = trackListButtons.nth(i).locator('.track-length');
 
-    expect(await trackNumber.innerText()).toContain(
-      trackListDetails[i].number,
-    );
+    expect(await trackNumber.innerText()).toContain(trackListDetails[i].number);
     expect(await trackTitle.innerText()).toContain(trackListDetails[i].title);
-    expect(await trackLength.innerText()).toContain(
-      trackListDetails[i].length,
-    );
+    expect(await trackLength.innerText()).toContain(trackListDetails[i].length);
   }
 
-  const jwPlayControl = page.locator('#jw6 > div.jw-wrapper.jw-reset > div.jw-controls.jw-reset > div.jw-controlbar.jw-reset > div > div.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-playback');
+  const jwPlayControl = page.locator(
+    '#jw6 > div.jw-wrapper.jw-reset > div.jw-controls.jw-reset > div.jw-controlbar.jw-reset > div > div.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-playback',
+  );
 
   // Play music
   await jwPlayControl.click();

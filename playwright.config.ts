@@ -10,7 +10,10 @@ export default defineConfig({
   testDir: './tests',
   reporter: [
     [
-      'html', { outputFolder: 'playwright-report/' + (new Date()).toISOString() }
+      'html', { 
+        outputFolder: `playwright-report/${process.env.CATEGORY}/${(new Date()).toISOString()}`, 
+        open: 'never'
+      }
     ] 
   ],
   use: {
