@@ -6,7 +6,6 @@ import { InfiniteScroller } from './infinite-scroller';
 import { SortBar } from './sort-bar';
 
 export class CollectionPage {
-  readonly url: string = 'https://archive.org/details';
   readonly page: Page;
 
   readonly pageSummary: Locator;
@@ -32,7 +31,7 @@ export class CollectionPage {
   }
 
   async visit(collection: string) {
-    await this.page.goto(`${this.url}/${collection}`);
+    await this.page.goto(`/details/${collection}`);
     await this.page.waitForLoadState();
   }
 

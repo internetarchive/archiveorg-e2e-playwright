@@ -9,7 +9,6 @@ import { SearchOption, SortOrder, SortFilter, SortFilterURL } from '../models';
 const PAGE_TIMEOUT = 3000;
 
 export class SearchPage {
-  readonly url: string = 'https://archive.org/search';
   readonly page: Page;
   readonly btnCollectionSearchInputGo: Locator;
   readonly btnCollectionSearchInputCollapser: Locator;
@@ -61,7 +60,7 @@ export class SearchPage {
   }
 
   async visit() {
-    await this.page.goto(this.url);
+    await this.page.goto('/search');
   }
 
   async validateEmptyPagePlaceholder() {

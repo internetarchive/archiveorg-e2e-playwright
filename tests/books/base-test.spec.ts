@@ -50,9 +50,6 @@ test('On load, pages fit fully inside of the BookReader™', async () => {
 });
 
 test('Canonical URL has no initial parameters', async () => {
-  // Go to the starting url before each test.
-  // await page.goto('https://archive.org/details/theworksofplato01platiala');
-  // const pageUrl = new URL(page.url())
   const pageHash = await page.evaluate(() => window.location.hash);
   const pageUrl = await page.evaluate(() => window.location.href);
 
@@ -191,7 +188,7 @@ test.beforeAll(async ({ browser }) => {
   page = await browser.newPage();
 
   // Go to the starting url before each test.
-  await page.goto('https://archive.org/details/theworksofplato01platiala');
+  await page.goto('/details/theworksofplato01platiala');
 });
 
 test.afterAll(async () => {
