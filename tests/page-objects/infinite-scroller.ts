@@ -296,10 +296,8 @@ export class InfiniteScroller {
         .count();
 
       if (collectionTileCount === 1 && itemTileCount === 0) {
-        console.log('it is a collection-tile');
         arrTileIconTitle.push('collection');
       } else if (collectionTileCount === 0 && itemTileCount === 1) {
-        console.log('it is an item-tile');
         // Load items based on displayItemCount
         // Get mediatype-icon title from tile-stats row
         const tileIcon = allItems[index].locator(
@@ -308,8 +306,6 @@ export class InfiniteScroller {
 
         const tileIconTitle = await tileIcon.getAttribute('title');
         if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
-      } else {
-        console.log('it maybe a collection-tile nor an item-tile');
       }
 
       index++;

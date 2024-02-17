@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test('Play a Grateful Sound track', async ({ page }) => {
+  test.setTimeout(60000);
   await page.goto('/details/gd73-06-10.sbd.hollister.174.sbeok.shnf', {
-    waitUntil: 'networkidle',
-    timeout: 60000,
+    waitUntil: 'networkidle'
   });
 
   // player controls

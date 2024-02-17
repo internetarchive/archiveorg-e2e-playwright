@@ -70,8 +70,7 @@ export class SearchPage {
 
   async queryFor(query: string) {
     await this.formInputSearchPage.fill(query);
-    await this.formInputSearchPage.press('Enter');
-    await this.page.waitForLoadState('networkidle');
+    await this.formInputSearchPage.press('Enter', { timeout: 5000 });
   }
 
   async clickClearAllFilters() {
