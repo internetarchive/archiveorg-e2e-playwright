@@ -2,6 +2,14 @@ import { defineConfig, devices } from '@playwright/test';
 
 require('dotenv').config();
 
+const formattedDateTime = () => {
+  const d = new Date();
+  const date = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  const time = `${d.getHours()}${d.getMinutes()}${d.getSeconds()}`;
+
+  return `${date}T${time}`;
+}
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -11,7 +19,7 @@ export default defineConfig({
   reporter: [
     [
       'html', { 
-        outputFolder: `playwright-report/${process.env.CATEGORY}/${(new Date()).toISOString()}`, 
+        outputFolder: `playwright-report/${process.env.CATEGORY}/${(formattedDateTime())}`, 
         open: 'never'
       }
     ] 
