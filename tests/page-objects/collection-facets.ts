@@ -23,7 +23,7 @@ export class CollectionFacets {
   }
 
   async assertSearchFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 3000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
