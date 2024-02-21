@@ -9,12 +9,28 @@
 
 ## Running tests locally
 
-- run command to install dependencies: `npm i`
-- run command to install Playwright browser libs: `npx install playwright`
-- run command to run all the tests: `npm run test`
+- install dependencies:
+
+    `npm i`
+
+- install Playwright browser libs:
+
+    `npx playwright install`
+
+- run all the tests in headless mode and generate 1 whole test report: 
+    
+    `npm run test`
+
+- run all the tests in headless mode by each category and generate test report by category:
+
+    `./run-tests.sh`
+
+- run all the tests in headed mode (this will load multiple browsers):
+
+    `npm run test:headed`
 
 
-## Running individual tests by category
+## Running individual tests by category (headless mode)
 
 - run books tests: `npm run test:books`
 - run collection tests: `npm run test:collection`
@@ -23,9 +39,19 @@
 - run search tests: `npm run test:search`
 
 
+## Running individual tests by category (headed mode)
+
+- run books tests: `npm run test:books:headed`
+- run collection tests: `npm run test:collection:headed`
+- run login tests: `npm run test:logi:headed`
+- run music tests: `npm run test:music:headed`
+- run search tests: `npm run test:search:headed`
+
+
 ## Running tests using VSCode Playwright plugin
 
 - install [VSCode Playwright plugin](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) to run specific tests using VSCode
+
 
 ## Running specific test spec by file:
 

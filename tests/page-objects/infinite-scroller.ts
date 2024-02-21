@@ -43,8 +43,7 @@ export class InfiniteScroller {
   }
 
   async awaitLoadingState() {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
   }
 
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
@@ -81,7 +80,9 @@ export class InfiniteScroller {
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
-    await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible();
+    await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible({
+      timeout: 60000,
+    });
   }
 
   async assertTileHoverPaneTitleIsSameWithItemTile() {
@@ -96,7 +97,7 @@ export class InfiniteScroller {
   }
 
   async clickFirstResultAndCheckRedirectToDetailsPage() {
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
     expect(await this.firstItemTile.count()).toBe(1);
 
     // Get item tile link to compare with the redirect URL
@@ -107,7 +108,7 @@ export class InfiniteScroller {
     const pattern = new RegExp(`${itemLink}`);
     await this.firstItemTile.click();
 
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState('load', { timeout: 60000 });
     await expect(this.page).toHaveURL(pattern);
   }
 
@@ -184,7 +185,7 @@ export class InfiniteScroller {
   }
 
   async displaysFirstResult() {
-    await expect(this.firstItemTile).toBeVisible();
+    await expect(this.firstItemTile).toBeVisible({ timeout: 60000 });
   }
 
   // Getters
@@ -294,10 +295,8 @@ export class InfiniteScroller {
         .count();
 
       if (collectionTileCount === 1 && itemTileCount === 0) {
-        console.log('it is a collection-tile');
         arrTileIconTitle.push('collection');
       } else if (collectionTileCount === 0 && itemTileCount === 1) {
-        console.log('it is an item-tile');
         // Load items based on displayItemCount
         // Get mediatype-icon title from tile-stats row
         const tileIcon = allItems[index].locator(
@@ -306,8 +305,6 @@ export class InfiniteScroller {
 
         const tileIconTitle = await tileIcon.getAttribute('title');
         if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
-      } else {
-        console.log('it maybe a collection-tile nor an item-tile');
       }
 
       index++;

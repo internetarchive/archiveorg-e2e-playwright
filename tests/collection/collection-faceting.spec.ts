@@ -6,10 +6,6 @@ import { CollectionPage } from '../page-objects/collection-page';
 
 let collectionPage: CollectionPage;
 
-test.afterAll(async () => {
-  await collectionPage.page.close();
-});
-
 test.describe('Collection Page - Faceting tests', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -123,4 +119,8 @@ test.describe('Collection Page - Faceting tests', () => {
       );
     });
   });
+});
+
+test.afterAll(async () => {
+  await collectionPage.page.close();
 });

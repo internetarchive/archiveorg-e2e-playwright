@@ -2,20 +2,6 @@ import { test } from '../fixtures';
 
 import { LayoutViewModeLocator, SearchOption } from '../models';
 
-test.beforeEach(async ({ collectionPage }) => {
-  test.info().annotations.push({
-    type: 'Test',
-    description: 'Do collection metadata search every each test',
-  });
-
-  await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
-    await collectionPage.searchPage.clickSearchInputOption(
-      SearchOption.METADATA,
-    );
-    await collectionPage.searchPage.queryFor('radio');
-  });
-});
-
 test('Tile, List, and Compact layout buttons change layout', async ({
   collectionPage,
 }) => {
@@ -128,5 +114,19 @@ test(`Sort by Date archived (ascending) in Compact view`, async ({
       'Date archived',
       'ascending',
     );
+  });
+});
+
+test.beforeEach(async ({ collectionPage }) => {
+  test.info().annotations.push({
+    type: 'Test',
+    description: 'Do collection metadata search every each test',
+  });
+
+  await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
+    await collectionPage.searchPage.clickSearchInputOption(
+      SearchOption.METADATA,
+    );
+    await collectionPage.searchPage.queryFor('radio');
   });
 });

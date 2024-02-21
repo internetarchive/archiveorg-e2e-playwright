@@ -6,10 +6,7 @@ import { SortBar } from './sort-bar';
 
 import { SearchOption, SortOrder, SortFilter, SortFilterURL } from '../models';
 
-const PAGE_TIMEOUT = 3000;
-
 export class SearchPage {
-  readonly url: string = 'https://archive.org/search';
   readonly page: Page;
   readonly btnCollectionSearchInputGo: Locator;
   readonly btnCollectionSearchInputCollapser: Locator;
@@ -61,22 +58,21 @@ export class SearchPage {
   }
 
   async visit() {
-    await this.page.goto(this.url);
+    await this.page.goto('/search');
   }
 
   async validateEmptyPagePlaceholder() {
-    await expect(this.emptyPlaceholder).toBeVisible();
-    await expect(this.emptyPlaceholderTitleText).toBeVisible();
+    await expect(this.emptyPlaceholder).toBeVisible({ timeout: 60000 });
+    await expect(this.emptyPlaceholderTitleText).toBeVisible({ timeout: 60000 });
   }
 
   async queryFor(query: string) {
     await this.formInputSearchPage.fill(query);
-    await this.formInputSearchPage.press('Enter');
-    await this.page.waitForLoadState('networkidle');
+    await this.formInputSearchPage.press('Enter', { timeout: 60000 });
   }
 
   async clickClearAllFilters() {
-    await expect(this.btnClearAllFilters).toBeVisible();
+    await expect(this.btnClearAllFilters).toBeVisible({ timeout: 60000 });
     await this.btnClearAllFilters.click();
   }
 
@@ -85,16 +81,19 @@ export class SearchPage {
   }
 
   async clickSearchInputOption(option: SearchOption) {
-    await expect(this.btnCollectionSearchInputGo).toBeVisible();
-    await expect(this.formInputSearchPage).toBeVisible();
+    await expect(this.btnCollectionSearchInputGo).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(this.formInputSearchPage).toBeVisible({ timeout: 60000 });
 
-    await this.formInputSearchPage.click();
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await this.formInputSearchPage.click({ force: true });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
     await expect(
       this.btnCollectionSearchInputCollapser.getByText(option),
-    ).toBeVisible();
-    await this.btnCollectionSearchInputCollapser.getByText(option).click();
+    ).toBeVisible({ timeout: 60000 });
+    await this.btnCollectionSearchInputCollapser
+      .getByText(option)
+      .click({ force: true });
   }
 
   async goBackToSearchPage() {
@@ -103,35 +102,32 @@ export class SearchPage {
 
   async assertClearAllFiltersNotVisible() {
     await this.page.waitForLoadState();
-    await expect(this.btnClearAllFilters).not.toBeVisible();
+    await expect(this.btnClearAllFilters).not.toBeVisible({ timeout: 60000 });
   }
 
   async validateTVPage(query: string) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
     await expect(
       this.page.getByRole('link', { name: 'TV News Archive', exact: true }),
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 60000 });
     await expect(
       this.page.getByRole('heading', { name: 'Search' }),
-    ).toBeVisible();
-    await expect(this.formInputTVPage).toBeVisible();
+    ).toBeVisible({ timeout: 60000 });
+    await expect(this.formInputTVPage).toBeVisible({ timeout: 60000 });
     expect(await this.formInputTVPage.inputValue()).toContain(query);
   }
 
   async validateRadioPage(query: string) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
-    await expect(this.formInputRadioPage).toBeVisible();
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await expect(this.formInputRadioPage).toBeVisible({ timeout: 60000 });
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
   async validateWaybackPage(query: string) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
     expect(await this.page.title()).toContain('Wayback Machine');
-    await expect(this.formInputWaybackPage).toBeVisible();
+    await expect(this.formInputWaybackPage).toBeVisible({ timeout: 60000 });
     expect(await this.formInputWaybackPage.inputValue()).toContain(query);
   }
 
@@ -156,7 +152,7 @@ export class SearchPage {
   }
 
   async validateClearSearchInput() {
-    await expect(this.btnClearInput).not.toBeVisible();
+    await expect(this.btnClearInput).not.toBeVisible({ timeout: 60000 });
     expect(await this.formInputSearchPage.inputValue()).toBe('');
   }
 }

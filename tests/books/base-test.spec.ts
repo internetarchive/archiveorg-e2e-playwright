@@ -31,18 +31,6 @@ const isModeInUrl = async (mode: string) => {
   }
 };
 
-test.beforeAll(async ({ browser }) => {
-  // https://playwright.dev/docs/test-retries#reuse-single-page-between-tests
-  page = await browser.newPage();
-
-  // Go to the starting url before each test.
-  await page.goto('https://archive.org/details/theworksofplato01platiala');
-});
-
-test.afterAll(async () => {
-  await page.close();
-});
-
 test('On load, pages fit fully inside of the BookReader™', async () => {
   await page.waitForTimeout(5000);
 
@@ -62,9 +50,6 @@ test('On load, pages fit fully inside of the BookReader™', async () => {
 });
 
 test('Canonical URL has no initial parameters', async () => {
-  // Go to the starting url before each test.
-  // await page.goto('https://archive.org/details/theworksofplato01platiala');
-  // const pageUrl = new URL(page.url())
   const pageHash = await page.evaluate(() => window.location.hash);
   const pageUrl = await page.evaluate(() => window.location.href);
 
@@ -196,4 +181,16 @@ test.describe('Test bookreader navigations', () => {
     expect(await isPageInUrl()).toEqual(true);
     expect(await isModeInUrl('2up')).toEqual(true);
   });
+});
+
+test.beforeAll(async ({ browser }) => {
+  // https://playwright.dev/docs/test-retries#reuse-single-page-between-tests
+  page = await browser.newPage();
+
+  // Go to the starting url before each test.
+  await page.goto('/details/theworksofplato01platiala');
+});
+
+test.afterAll(async () => {
+  await page.close();
 });

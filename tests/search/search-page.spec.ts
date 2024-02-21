@@ -5,10 +5,6 @@ import { SearchPage } from '../page-objects/search-page';
 
 let searchPage: SearchPage;
 
-test.afterAll(async () => {
-  await searchPage.page.close();
-});
-
 test.describe('Basic Search tests', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -115,4 +111,8 @@ test.describe('Basic Search tests', () => {
       await searchPage.validateEmptyPagePlaceholder();
     });
   });
+});
+
+test.afterAll(async () => {
+  await searchPage.page.close();
 });

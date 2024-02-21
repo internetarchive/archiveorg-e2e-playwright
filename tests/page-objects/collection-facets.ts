@@ -19,20 +19,18 @@ export class CollectionFacets {
   }
 
   async displaysResultCount() {
-    await expect(this.resultsTotal).toBeVisible();
+    await expect(this.resultsTotal).toBeVisible({ timeout: 60000 });
   }
 
   async assertSearchFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
   }
 
   async assertCollectionFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(6);
@@ -43,8 +41,7 @@ export class CollectionFacets {
     facetLabel: string,
     facetType: FacetType,
   ) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
@@ -85,7 +82,7 @@ export class CollectionFacets {
   }
 
   async selectFacetsInModal(facetLabels: string[]) {
-    await this.page.waitForLoadState('load');
+    await this.page.waitForLoadState('load', { timeout: 60000 });
 
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
@@ -95,14 +92,13 @@ export class CollectionFacets {
       const facetRow = this.moreFacetsContent
         .locator('#more-facets')
         .getByRole('checkbox', { name: facetLabels[i] });
-      await facetRow.check();
+      await facetRow.check({ timeout: 5000 });
     }
     await btnApplyFilters.click();
   }
 
   async fillUpYearFilters(startDate: string, endDate: string) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetContent = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,
