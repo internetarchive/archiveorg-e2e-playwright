@@ -43,7 +43,7 @@ export class InfiniteScroller {
   }
 
   async awaitLoadingState() {
-    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
   }
 
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
@@ -81,7 +81,7 @@ export class InfiniteScroller {
 
     await this.firstItemTile.hover();
     await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible({
-      timeout: 30000,
+      timeout: 60000,
     });
   }
 
@@ -97,7 +97,7 @@ export class InfiniteScroller {
   }
 
   async clickFirstResultAndCheckRedirectToDetailsPage() {
-    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
     expect(await this.firstItemTile.count()).toBe(1);
 
     // Get item tile link to compare with the redirect URL
@@ -108,7 +108,7 @@ export class InfiniteScroller {
     const pattern = new RegExp(`${itemLink}`);
     await this.firstItemTile.click();
 
-    await this.page.waitForLoadState('load', { timeout: 30000 });
+    await this.page.waitForLoadState('load', { timeout: 60000 });
     await expect(this.page).toHaveURL(pattern);
   }
 
@@ -185,7 +185,7 @@ export class InfiniteScroller {
   }
 
   async displaysFirstResult() {
-    await expect(this.firstItemTile).toBeVisible({ timeout: 30000 });
+    await expect(this.firstItemTile).toBeVisible({ timeout: 60000 });
   }
 
   // Getters

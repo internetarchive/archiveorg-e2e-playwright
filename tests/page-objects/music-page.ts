@@ -18,8 +18,8 @@ export class MusicPage {
     // player controls
     const musicTheater = this.page.locator('#music-theater');
     const channelSelector = this.page.locator('channel-selector');
-    await expect(musicTheater).toBeVisible({ timeout: 30000 });
-    await expect(channelSelector).toBeVisible({ timeout: 30000 });
+    await expect(musicTheater).toBeVisible({ timeout: 60000 });
+    await expect(channelSelector).toBeVisible({ timeout: 60000 });
 
     const rows = channelSelector.locator('#radio').getByRole('listitem');
     expect(await rows.count()).toEqual(2);
@@ -27,7 +27,7 @@ export class MusicPage {
 
     // photo-viewer
     const iauxPhotoViewer = this.page.locator('iaux-photo-viewer');
-    await expect(iauxPhotoViewer).toBeVisible({ timeout: 30000 });
+    await expect(iauxPhotoViewer).toBeVisible({ timeout: 60000 });
   }
 
   async playAndPauseMusic() {

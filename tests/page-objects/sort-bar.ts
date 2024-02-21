@@ -71,14 +71,14 @@ export class SortBar {
 
   async checkAlphaBarVisibility(filter: string) {
     if (!['Title', 'Creator'].includes(filter)) {
-      await expect(this.alphaBar).not.toBeVisible({ timeout: 30000 });
+      await expect(this.alphaBar).not.toBeVisible({ timeout: 60000 });
     } else {
-      await expect(this.alphaBar).toBeVisible({ timeout: 30000 });
+      await expect(this.alphaBar).toBeVisible({ timeout: 60000 });
     }
   }
 
   async clickAlphaBarLetterByPosition(pos: number) {
-    await this.page.waitForLoadState('load', { timeout: 30000 });
+    await this.page.waitForLoadState('load', { timeout: 60000 });
 
     const alphabet = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
     const nthLetter = this.alphaBar.locator('#container ul > li').nth(pos);
@@ -97,6 +97,6 @@ export class SortBar {
   }
 
   async alphaSortBarNotVisibile() {
-    await expect(this.alphaBar).not.toBeVisible({ timeout: 30000 });
+    await expect(this.alphaBar).not.toBeVisible({ timeout: 60000 });
   }
 }

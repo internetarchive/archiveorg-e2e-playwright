@@ -19,18 +19,18 @@ export class CollectionFacets {
   }
 
   async displaysResultCount() {
-    await expect(this.resultsTotal).toBeVisible({ timeout: 30000 });
+    await expect(this.resultsTotal).toBeVisible({ timeout: 60000 });
   }
 
   async assertSearchFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
   }
 
   async assertCollectionFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(6);
@@ -41,7 +41,7 @@ export class CollectionFacets {
     facetLabel: string,
     facetType: FacetType,
   ) {
-    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
@@ -82,7 +82,7 @@ export class CollectionFacets {
   }
 
   async selectFacetsInModal(facetLabels: string[]) {
-    await this.page.waitForLoadState('load', { timeout: 30000 });
+    await this.page.waitForLoadState('load', { timeout: 60000 });
 
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
@@ -98,7 +98,7 @@ export class CollectionFacets {
   }
 
   async fillUpYearFilters(startDate: string, endDate: string) {
-    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetContent = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,

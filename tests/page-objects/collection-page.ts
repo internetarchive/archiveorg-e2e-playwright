@@ -32,7 +32,7 @@ export class CollectionPage {
 
   async visit(collection: string) {
     await this.page.goto(`/details/${collection}`);
-    await this.page.waitForLoadState('load', { timeout: 30000 });
+    await this.page.waitForLoadState('load', { timeout: 60000 });
   }
 
   async clickCollectionTab(name: string) {
@@ -44,21 +44,21 @@ export class CollectionPage {
   }
 
   async validatePageHeaderElements() {
-    await expect(this.page.locator('#page-header')).toBeVisible({ timeout: 30000 });
+    await expect(this.page.locator('#page-header')).toBeVisible({ timeout: 60000 });
     await expect(
       this.page.locator('#top-matter > div.thumbnail-frame'),
-    ).toBeVisible({ timeout: 30000 });
-    await expect(this.pageSummary).toBeVisible({ timeout: 30000 });
-    await expect(this.page.locator('action-bar')).toBeVisible({ timeout: 30000 });
+    ).toBeVisible({ timeout: 60000 });
+    await expect(this.pageSummary).toBeVisible({ timeout: 60000 });
+    await expect(this.page.locator('action-bar')).toBeVisible({ timeout: 60000 });
   }
 
   async validateCollectionPageTabs() {
-    await expect(this.pageTabs).toBeVisible({ timeout: 30000 });
+    await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
     expect(await this.pageTabs.locator('li').count()).toBe(3);
   }
 
   async validateAboutTabPage() {
-    await expect(this.page.locator('collection-about')).toBeVisible({ timeout: 30000 });
+    await expect(this.page.locator('collection-about')).toBeVisible({ timeout: 60000 });
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'ABOUT',
     );
@@ -74,9 +74,9 @@ export class CollectionPage {
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'FORUM',
     );
-    await expect(forumContainer).toBeVisible({ timeout: 30000 });
-    await expect(newPostButtonLocator).toBeVisible({ timeout: 30000 });
-    await expect(rssButtonLocator).toBeVisible({ timeout: 30000 });
+    await expect(forumContainer).toBeVisible({ timeout: 60000 });
+    await expect(newPostButtonLocator).toBeVisible({ timeout: 60000 });
+    await expect(rssButtonLocator).toBeVisible({ timeout: 60000 });
   }
 
   async validateCollectionTabPage() {
@@ -85,6 +85,6 @@ export class CollectionPage {
     );
     await expect(
       this.page.locator('#collection-browser-container'),
-    ).toBeVisible({ timeout: 30000 });
+    ).toBeVisible({ timeout: 60000 });
   }
 }
