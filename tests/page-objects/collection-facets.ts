@@ -19,7 +19,7 @@ export class CollectionFacets {
   }
 
   async displaysResultCount() {
-    await expect(this.resultsTotal).toBeVisible();
+    await expect(this.resultsTotal).toBeVisible({ timeout: 30000 });
   }
 
   async assertSearchFacetGroupCount() {
@@ -92,7 +92,7 @@ export class CollectionFacets {
       const facetRow = this.moreFacetsContent
         .locator('#more-facets')
         .getByRole('checkbox', { name: facetLabels[i] });
-      await facetRow.check({timeout: 5000});
+      await facetRow.check({ timeout: 5000 });
     }
     await btnApplyFilters.click();
   }

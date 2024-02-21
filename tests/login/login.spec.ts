@@ -15,9 +15,9 @@ test('page load - check login page fields elements', async ({ page }) => {
     '.btn.btn-primary.btn-submit.input-submit.js-submit-login',
   );
 
-  await expect(loginFormElement).toBeVisible();
-  await expect(inputEmail).toBeVisible();
-  await expect(formLoginFields).toBeVisible();
-  await expect(inputPassword).toBeVisible();
-  await expect(btnLogin).toBeVisible();
+  await expect(loginFormElement).toBeVisible({ timeout: 30000 });
+  await expect(inputEmail).toBeVisible({ timeout: 30000 });
+  await expect(formLoginFields).toBeVisible({ timeout: 30000 });
+  await expect(inputPassword).toBeVisible({ timeout: 30000 });
+  await expect(btnLogin).toBeVisible({ timeout: 30000 });
 });

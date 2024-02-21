@@ -4,11 +4,18 @@ require('dotenv').config();
 
 const formattedDateTime = () => {
   const d = new Date();
-  const date = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-  const time = `${d.getHours()}${d.getMinutes()}${d.getSeconds()}`;
+  const month = `${String(d.getMonth() + 1).padStart(2, '0')}`;
+  const day = `${String(d.getDate() + 1).padStart(2, '0')}`;
+  const hour = `${String(d.getHours()).padStart(2, '0')}`;
+  const min = `${String(d.getMinutes()).padStart(2, '0')}`;
+
+  const date = `${d.getFullYear()}-${month}-${day}`;
+  const time = `${hour}.${min}.${d.getSeconds()}`;
 
   return `${date}T${time}`;
-}
+};
+
+const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -18,11 +25,12 @@ export default defineConfig({
   testDir: './tests',
   reporter: [
     [
-      'html', { 
-        outputFolder: `playwright-report/${process.env.CATEGORY}/${(formattedDateTime())}`, 
-        open: 'never'
-      }
-    ] 
+      'html',
+      {
+        outputFolder: `playwright-report/${reportName()}`,
+        open: 'never',
+      },
+    ],
   ],
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
