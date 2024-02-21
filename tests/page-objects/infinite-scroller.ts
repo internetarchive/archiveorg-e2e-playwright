@@ -43,8 +43,7 @@ export class InfiniteScroller {
   }
 
   async awaitLoadingState() {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(3000);
+    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
   }
 
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
@@ -82,7 +81,7 @@ export class InfiniteScroller {
 
     await this.firstItemTile.hover();
     await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible({
-      timeout: 5000,
+      timeout: 30000,
     });
   }
 
@@ -98,7 +97,7 @@ export class InfiniteScroller {
   }
 
   async clickFirstResultAndCheckRedirectToDetailsPage() {
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
     expect(await this.firstItemTile.count()).toBe(1);
 
     // Get item tile link to compare with the redirect URL

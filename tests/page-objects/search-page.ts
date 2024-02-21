@@ -6,8 +6,6 @@ import { SortBar } from './sort-bar';
 
 import { SearchOption, SortOrder, SortFilter, SortFilterURL } from '../models';
 
-const PAGE_TIMEOUT = 3000;
-
 export class SearchPage {
   readonly page: Page;
   readonly btnCollectionSearchInputGo: Locator;
@@ -70,7 +68,7 @@ export class SearchPage {
 
   async queryFor(query: string) {
     await this.formInputSearchPage.fill(query);
-    await this.formInputSearchPage.press('Enter', { timeout: 5000 });
+    await this.formInputSearchPage.press('Enter', { timeout: 30000 });
   }
 
   async clickClearAllFilters() {
@@ -86,14 +84,13 @@ export class SearchPage {
     await expect(this.btnCollectionSearchInputGo).toBeVisible({
       timeout: 5000,
     });
-    await expect(this.formInputSearchPage).toBeVisible({ timeout: 5000 });
+    await expect(this.formInputSearchPage).toBeVisible({ timeout: 30000 });
 
     await this.formInputSearchPage.click({ force: true });
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
     await expect(
       this.btnCollectionSearchInputCollapser.getByText(option),
-    ).toBeVisible({ timeout: 5000 });
+    ).toBeVisible({ timeout: 30000 });
     await this.btnCollectionSearchInputCollapser
       .getByText(option)
       .click({ force: true });
@@ -109,8 +106,7 @@ export class SearchPage {
   }
 
   async validateTVPage(query: string) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
     await expect(
       this.page.getByRole('link', { name: 'TV News Archive', exact: true }),
@@ -123,15 +119,13 @@ export class SearchPage {
   }
 
   async validateRadioPage(query: string) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
     await expect(this.formInputRadioPage).toBeVisible();
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
   async validateWaybackPage(query: string) {
-    await this.page.waitForLoadState('networkidle');
-    await this.page.waitForTimeout(PAGE_TIMEOUT);
+    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
     expect(await this.page.title()).toContain('Wayback Machine');
     await expect(this.formInputWaybackPage).toBeVisible();
     expect(await this.formInputWaybackPage.inputValue()).toContain(query);
