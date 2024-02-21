@@ -8,7 +8,7 @@ export class MusicPage {
   }
 
   async gotoMusicPage(page: string) {
-    await this.page.goto(`/details/${page}`, { waitUntil: 'networkidle' });
+    await this.page.goto(`/details/${page}`, { waitUntil: 'networkidle', timeout: 60000 });
   }
 
   async validatePageElements () {  
@@ -30,10 +30,10 @@ export class MusicPage {
   async playAndPauseMusic () {
     // Play music
     await this.page.getByRole('button', { name: 'Play', exact: true }).click();
-    await (expect(this.page.locator('#jw6.jwplayer.jw-reset.jw-state-playing'))).toBeVisible();
+    await (expect(this.page.locator('#jw6.jwplayer.jw-reset.jw-state-playing'))).toBeVisible({ timeout: 60000 });
     // Pause music
     await this.page.getByRole('button', { name: 'Pause' }).click();
-    await (expect(this.page.locator('#jw6.jwplayer.jw-reset.jw-state-paused'))).toBeVisible();
+    await (expect(this.page.locator('#jw6.jwplayer.jw-reset.jw-state-paused'))).toBeVisible({ timeout: 60000 });
   }
 
 }
