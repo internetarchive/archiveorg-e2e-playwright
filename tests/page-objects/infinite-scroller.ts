@@ -39,7 +39,7 @@ export class InfiniteScroller {
       this.displayStyleSelector.locator('ul > li');
     this.firstItemTile = this.infiniteScrollerSectionContainer
       .locator('article')
-      .nth(0);
+      .first();
   }
 
   async awaitLoadingState() {

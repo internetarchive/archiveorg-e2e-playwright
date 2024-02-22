@@ -71,6 +71,10 @@ export class SearchPage {
     await this.formInputSearchPage.press('Enter', { timeout: 60000 });
   }
 
+  async validateSearchInput(query: string) {
+    expect(await this.formInputSearchPage.inputValue()).toBe(query);
+  }
+
   async clickClearAllFilters() {
     await expect(this.btnClearAllFilters).toBeVisible({ timeout: 60000 });
     await this.btnClearAllFilters.click();
