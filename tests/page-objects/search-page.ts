@@ -63,7 +63,9 @@ export class SearchPage {
 
   async validateEmptyPagePlaceholder() {
     await expect(this.emptyPlaceholder).toBeVisible({ timeout: 60000 });
-    await expect(this.emptyPlaceholderTitleText).toBeVisible({ timeout: 60000 });
+    await expect(this.emptyPlaceholderTitleText).toBeVisible({
+      timeout: 60000,
+    });
   }
 
   async queryFor(query: string) {

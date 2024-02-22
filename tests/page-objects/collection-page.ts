@@ -44,12 +44,16 @@ export class CollectionPage {
   }
 
   async validatePageHeaderElements() {
-    await expect(this.page.locator('#page-header')).toBeVisible({ timeout: 60000 });
+    await expect(this.page.locator('#page-header')).toBeVisible({
+      timeout: 60000,
+    });
     await expect(
       this.page.locator('#top-matter > div.thumbnail-frame'),
     ).toBeVisible({ timeout: 60000 });
     await expect(this.pageSummary).toBeVisible({ timeout: 60000 });
-    await expect(this.page.locator('action-bar')).toBeVisible({ timeout: 60000 });
+    await expect(this.page.locator('action-bar')).toBeVisible({
+      timeout: 60000,
+    });
   }
 
   async validateCollectionPageTabs() {
@@ -58,7 +62,9 @@ export class CollectionPage {
   }
 
   async validateAboutTabPage() {
-    await expect(this.page.locator('collection-about')).toBeVisible({ timeout: 60000 });
+    await expect(this.page.locator('collection-about')).toBeVisible({
+      timeout: 60000,
+    });
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'ABOUT',
     );
