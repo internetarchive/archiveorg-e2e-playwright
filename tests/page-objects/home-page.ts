@@ -38,6 +38,7 @@ export class HomePage {
     await expect(this.page.locator('home-page-onboarding')).toBeVisible();
 
     // Top Collections section is present and populated
+    await this.page.waitForLoadState('load', { timeout: 5000 });
     const infiniteScroller = this.page.locator('infinite-scroller');
     await expect(infiniteScroller).toBeVisible();
     expect(
