@@ -63,12 +63,18 @@ export class SearchPage {
 
   async validateEmptyPagePlaceholder() {
     await expect(this.emptyPlaceholder).toBeVisible({ timeout: 60000 });
-    await expect(this.emptyPlaceholderTitleText).toBeVisible({ timeout: 60000 });
+    await expect(this.emptyPlaceholderTitleText).toBeVisible({
+      timeout: 60000,
+    });
   }
 
   async queryFor(query: string) {
     await this.formInputSearchPage.fill(query);
     await this.formInputSearchPage.press('Enter', { timeout: 60000 });
+  }
+
+  async validateSearchInput(query: string) {
+    expect(await this.formInputSearchPage.inputValue()).toBe(query);
   }
 
   async clickClearAllFilters() {
