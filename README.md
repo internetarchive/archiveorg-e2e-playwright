@@ -34,6 +34,7 @@
 
 - run books tests: `npm run test:books`
 - run collection tests: `npm run test:collection`
+- run home tests: `npm run test:home`
 - run login tests: `npm run test:login`
 - run music tests: `npm run test:music`
 - run search tests: `npm run test:search`
@@ -43,7 +44,8 @@
 
 - run books tests: `npm run test:books:headed`
 - run collection tests: `npm run test:collection:headed`
-- run login tests: `npm run test:logi:headed`
+- run home tests: `npm run test:home:headed`
+- run login tests: `npm run test:login:headed`
 - run music tests: `npm run test:music:headed`
 - run search tests: `npm run test:search:headed`
 
