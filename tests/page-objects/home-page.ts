@@ -34,8 +34,20 @@ export class HomePage {
       ),
     ).toBeVisible();
 
+    const mediatypeHeroIconBar = this.page
+      .locator('home-page-hero-block-icon-bar')
+      .locator('#mediacount-icon-container > a')
+      .all();
+    expect((await mediatypeHeroIconBar).length).toBe(9);
+
     // New to the Archive carousel is present
-    await expect(this.page.locator('home-page-onboarding')).toBeVisible();
+    const homePageOnBoarding = this.page.locator('home-page-onboarding');
+    await expect(homePageOnBoarding).toBeVisible();
+    const onboardingCarousel = this.page
+      .locator('#onboarding-carousel')
+      .locator('#onboarding-content > a')
+      .all();
+    expect((await onboardingCarousel).length).toBe(9);
 
     // Top Collections section is present and populated
     await this.page.waitForLoadState('load', { timeout: 5000 });
@@ -44,20 +56,17 @@ export class HomePage {
     expect(
       (await infiniteScroller.locator('#container > .cell-container').all())
         .length,
-    ).toBeGreaterThan(1);
+    ).toBeGreaterThan(10);
 
     // Terms of Service footer is present
     await expect(this.page.locator('footer > app-footer')).toBeVisible();
   }
 
   async waybackSearchFor(query: string) {
-    await this.page
+    const wbSearchInput = this.page
       .locator('#wayback-search-container')
-      .locator('#url')
-      .fill(query);
-    await this.page
-      .locator('#wayback-search-container')
-      .locator('#url')
-      .press('Enter');
+      .locator('#url');
+    await wbSearchInput.fill(query);
+    await wbSearchInput.press('Enter');
   }
 }
