@@ -22,6 +22,8 @@ const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
  */
 export default defineConfig({
   workers: 1,
+  timeout: 240000,
+  globalTimeout: 360000,
   testDir: './tests',
   reporter: [
     [
