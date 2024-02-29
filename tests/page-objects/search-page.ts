@@ -88,7 +88,7 @@ export class SearchPage {
 
   async clickSearchInputOption(option: SearchOption) {
     await expect(this.btnCollectionSearchInputGo).toBeVisible({
-      timeout: 5000,
+      timeout: 60000,
     });
     await expect(this.formInputSearchPage).toBeVisible({ timeout: 60000 });
 

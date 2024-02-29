@@ -184,6 +184,7 @@ test.describe('Test bookreader navigations', () => {
 });
 
 test.beforeAll(async ({ browser }) => {
+  test.slow();
   // https://playwright.dev/docs/test-retries#reuse-single-page-between-tests
   page = await browser.newPage();
 

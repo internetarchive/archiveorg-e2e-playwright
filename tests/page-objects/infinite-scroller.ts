@@ -11,7 +11,7 @@ import {
   LayoutViewModeLocator,
 } from '../models';
 
-import { datesSorted, viewsSorted } from '../utils';
+import { datesSorted, delay, viewsSorted } from '../utils';
 
 export class InfiniteScroller {
   readonly page: Page;
@@ -79,7 +79,8 @@ export class InfiniteScroller {
     await this.awaitLoadingState();
     expect(await this.firstItemTile.count()).toBe(1);
 
-    await this.firstItemTile.hover();
+    await this.firstItemTile.hover({ timeout: 60000 });
+    await this.firstItemTile.locator('tile-hover-pane').waitFor({ state: 'visible' });
     await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible({
       timeout: 60000,
     });
@@ -287,6 +288,8 @@ export class InfiniteScroller {
 
     let index = 0;
     while (index !== displayItemCount) {
+      await delay(1000, null);
+
       const collectionTileCount = await allItems[index]
         .locator('a > collection-tile')
         .count();

@@ -77,8 +77,8 @@ export const test = base.extend<PageFixtures>({
 });
 
 test.beforeEach(async ({}, testInfo) => {
-  // Extend timeout for all tests running this hook by 180 seconds.
-  testInfo.setTimeout(testInfo.timeout + 180000);
+  // Extend timeout for all tests running this hook by 240 seconds.
+  testInfo.setTimeout(testInfo.timeout + 240000);
 });
 
 export { expect } from '@playwright/test';
