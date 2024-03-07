@@ -86,8 +86,6 @@ export class MusicPage {
   }
 
   async interactWithBookReader() {
-    console.log('interact with bookreader')
-
     const oneUpClass = 'BRmode1up';
     const thumbViewModeClass = 'BRmodeThumb';
     const fullScreenClass = 'fullscreenActive';
