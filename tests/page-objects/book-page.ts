@@ -71,19 +71,19 @@ export class BookPage {
 
   async assertNavigationElements() {
     // flipping
-    await expect(this.brFooter.locator('.BRicon.book_left')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.book_right')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.book_flip_next')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.book_flip_prev')).toBeVisible({ timeout: 10000 });
+    await expect(this.brFooter.locator('.BRicon.book_left')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.book_right')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.book_flip_next')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.book_flip_prev')).toBeVisible();
     // zoom elements
-    await expect(this.brFooter.locator('.BRicon.zoom_in')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.zoom_out')).toBeVisible({ timeout: 10000 });
+    await expect(this.brFooter.locator('.BRicon.zoom_in')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.zoom_out')).toBeVisible();
     // view modes
-    await expect(this.brFooter.locator('.BRicon.onepg')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.twopg')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.thumb')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.full')).toBeVisible({ timeout: 10000 });
-    await expect(this.brFooter.locator('.BRicon.read')).toBeVisible({ timeout: 10000 });
+    await expect(this.brFooter.locator('.BRicon.onepg')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.twopg')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.thumb')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.full')).toBeVisible();
+    await expect(this.brFooter.locator('.BRicon.read')).toBeVisible();
   }
 
   async assertBookPageChange() {
@@ -98,8 +98,8 @@ export class BookPage {
     await goNext.click();
     await this.page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
 
-    const onLoadBrState = this.brContainer.nth(0); // .child(0);
-    const initialImages = onLoadBrState.locator('img'); // .find('img');
+    const onLoadBrState = this.brContainer.nth(0);
+    const initialImages = onLoadBrState.locator('img');
     const origImg1Src = await initialImages.nth(0).getAttribute('src');
     const origImg2Src = await initialImages.nth(-1).getAttribute('src');
 
@@ -127,7 +127,6 @@ export class BookPage {
   async assertPageFlipUpdateUrlLocation () {
     await this.page.waitForLoadState('networkidle', { timeout: 30000 });
 
-    // #BookReader > div.BRfooter > div > nav > ul.controls > li:nth-child(3) > button
     const goNext = this.brFooter.locator('.BRicon.book_flip_next');
     const goPrev = this.brFooter.locator('.BRicon.book_flip_prev');
 
