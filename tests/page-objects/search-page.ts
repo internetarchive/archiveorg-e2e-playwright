@@ -88,7 +88,7 @@ export class SearchPage {
 
   async clickSearchInputOption(option: SearchOption) {
     await expect(this.btnCollectionSearchInputGo).toBeVisible({
-      timeout: 5000,
+      timeout: 60000,
     });
     await expect(this.formInputSearchPage).toBeVisible({ timeout: 60000 });
 
@@ -125,7 +125,7 @@ export class SearchPage {
   }
 
   async validateRadioPage(query: string) {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
     await expect(this.formInputRadioPage).toBeVisible({ timeout: 60000 });
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }

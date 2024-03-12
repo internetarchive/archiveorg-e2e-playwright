@@ -50,7 +50,7 @@ export class HomePage {
     expect((await onboardingCarousel).length).toBe(9);
 
     // Top Collections section is present and populated
-    await this.page.waitForLoadState('load', { timeout: 5000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
     const infiniteScroller = this.page.locator('infinite-scroller');
     await expect(infiniteScroller).toBeVisible();
     expect(

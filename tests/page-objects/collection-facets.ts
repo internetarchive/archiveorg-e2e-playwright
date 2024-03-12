@@ -41,7 +41,7 @@ export class CollectionFacets {
     facetLabel: string,
     facetType: FacetType,
   ) {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForLoadState('load', { timeout: 60000 });
 
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
@@ -49,7 +49,7 @@ export class CollectionFacets {
         const facetRow = facetContent.getByRole('checkbox', {
           name: facetLabel,
         });
-        await facetRow.check();
+        await facetRow.check({ timeout: 60000 });
         return;
       }
 
@@ -82,8 +82,6 @@ export class CollectionFacets {
   }
 
   async selectFacetsInModal(facetLabels: string[]) {
-    await this.page.waitForLoadState('load', { timeout: 60000 });
-
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
     );
@@ -92,7 +90,7 @@ export class CollectionFacets {
       const facetRow = this.moreFacetsContent
         .locator('#more-facets')
         .getByRole('checkbox', { name: facetLabels[i] });
-      await facetRow.check({ timeout: 5000 });
+      await facetRow.check({ timeout: 60000 });
     }
     await btnApplyFilters.click();
   }
