@@ -19,11 +19,15 @@ const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
+ * 
+ * Timeouts were set by `ms`
  */
 export default defineConfig({
   workers: 1,
+  // Timeout for each test
   timeout: 240000,
-  globalTimeout: 360000,
+  // Maximum time the whole test suite can run
+  globalTimeout: 1200000,
   testDir: './tests',
   reporter: [
     [
@@ -34,10 +38,17 @@ export default defineConfig({
       },
     ],
   ],
+
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL || 'https://archive.org',
+
+    // actionTimeout: 20000,  // For browser actions (goto, click, etc...)
   },
+
+	// expect: {
+  //   timeout: 10000,  // For expect assertion calls
+  // },
 
   /* Configure projects for major browsers */
   projects: [
