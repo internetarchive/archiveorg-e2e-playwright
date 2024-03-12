@@ -1,6 +1,5 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { BookPage } from './book-page';
 export class MusicPage {
   readonly page: Page;
 
@@ -11,8 +10,6 @@ export class MusicPage {
   readonly brSlot: Locator;
   readonly bookReaderShell: Locator;
 
-  readonly bookPage: BookPage;
-
   public constructor(page: Page) {
     this.page = page;
 
@@ -22,14 +19,15 @@ export class MusicPage {
     );
     this.playAv = this.page.locator('play-av');
     this.seeMoreCta = this.iauxPhotoViewer.locator('#see-more-cta');
-    this.brSlot = this.page.locator('#theatre-ia > div.row > div > ia-music-theater > div.bookreader-slot');
+    this.brSlot = this.page.locator(
+      '#theatre-ia > div.row > div > ia-music-theater > div.bookreader-slot',
+    );
     this.bookReaderShell = this.brSlot.locator('#BookReader');
   }
 
   async gotoMusicPage(uri: string) {
     await this.page.goto(`/details/${uri}`, {
-      waitUntil: 'networkidle',
-      timeout: 120000,
+      waitUntil: 'networkidle'
     });
     await this.page.waitForTimeout(5000);
   }
@@ -38,51 +36,45 @@ export class MusicPage {
     // player controls
     const musicTheater = this.iauxMusicTheater.locator('#music-theater');
     const channelSelector = this.iauxMusicTheater.locator('channel-selector');
-    await expect(musicTheater).toBeVisible({ timeout: 60000 });
-    await expect(channelSelector).toBeVisible({ timeout: 60000 });
+    await expect(musicTheater).toBeVisible();
+    await expect(channelSelector).toBeVisible();
 
     const rows = channelSelector.locator('#radio').getByRole('listitem');
     expect(await rows.count()).toEqual(2);
     await expect(rows).toHaveText(['Player', 'Webamp']);
 
-    await expect(this.iauxPhotoViewer).toBeVisible({ timeout: 60000 });
-    await expect(this.playAv).toBeVisible({ timeout: 60000 });
+    await expect(this.iauxPhotoViewer).toBeVisible();
+    await expect(this.playAv).toBeVisible();
 
     await expect(
       this.playAv.locator('div.playlist > div.track-list'),
-    ).toBeVisible({ timeout: 60000 });
+    ).toBeVisible();
   }
 
   async validateNoImageAvailableInPhotoViewerDisplay(noPlaceholder: boolean) {
-    console.log('noPlaceholder: ', noPlaceholder)
-    
     if (noPlaceholder) {
       expect(await this.iauxPhotoViewer.getAttribute('noimageavailable')).toBe(
         '',
       );
-      await expect(this.iauxPhotoViewer.locator('iamusic-noimage')).toBeVisible(
-        { timeout: 60000 },
-      );
+      await expect(
+        this.iauxPhotoViewer.locator('iamusic-noimage'),
+      ).toBeVisible();
       await expect(
         this.iauxMusicTheater.locator('#BookReader'),
-      ).not.toBeVisible({ timeout: 60000 });
+      ).not.toBeVisible();
     } else {
       expect(await this.iauxPhotoViewer.getAttribute('noimageavailable')).toBe(
         null,
       );
-      await expect(this.seeMoreCta).toBeVisible({
-        timeout: 60000,
-      });
-      await expect(this.iauxMusicTheater.locator('#BookReader')).toBeVisible({
-        timeout: 60000,
-      });
+      await expect(this.seeMoreCta).toBeVisible();
+      await expect(this.iauxMusicTheater.locator('#BookReader')).toBeVisible();
 
       await this.interactWithBookReader();
     }
   }
 
   async getBookReaderClass() {
-    return await this.bookReaderShell.getAttribute('class', { timeout: 3000 });
+    return await this.bookReaderShell.getAttribute('class');
   }
 
   async interactWithBookReader() {
@@ -91,19 +83,27 @@ export class MusicPage {
     const fullScreenClass = 'fullscreenActive';
     const brFooter = this.bookReaderShell.locator('.BRfooter');
 
-    await this.seeMoreCta.click({ timeout: 30000 });
+    await this.seeMoreCta.click({ timeout: 10000 });
     expect(await this.iauxPhotoViewer.getAttribute('showallphotos')).toBe('');
 
-    // initial load
+    // default load
+    expect(await this.getBookReaderClass()).toContain(oneUpClass);
+
+    // click thumbnail mode
+    await brFooter.locator('.BRicon.thumb').click();
+    expect(await this.getBookReaderClass()).toContain(thumbViewModeClass);
+
+    // click 1up mode
+    await brFooter.locator('.BRicon.onepg').click();
     expect(await this.getBookReaderClass()).toContain(oneUpClass);
 
     // click fullscreen
     await brFooter.locator('.BRicon.full').click();
     expect(await this.getBookReaderClass()).toContain(fullScreenClass);
 
-    // click thumbnail mode
-    await brFooter.locator('.BRicon.thumb').click();
-    expect(await this.getBookReaderClass()).toContain(thumbViewModeClass);
+    // click fullscreen again
+    await brFooter.locator('.BRicon.full').click();
+    expect(await this.getBookReaderClass()).not.toContain(fullScreenClass);
 
     // close BookReader photoViewer
     await this.iauxPhotoViewer.locator('#close-photo-viewer').click();
@@ -128,11 +128,11 @@ export class MusicPage {
     await this.page.getByRole('button', { name: 'Play', exact: true }).click();
     await expect(
       this.page.locator('#jw6.jwplayer.jw-reset.jw-state-playing'),
-    ).toBeVisible({ timeout: 60000 });
+    ).toBeVisible();
     // Pause music
     await this.page.getByRole('button', { name: 'Pause' }).click();
     await expect(
       this.page.locator('#jw6.jwplayer.jw-reset.jw-state-paused'),
-    ).toBeVisible({ timeout: 60000 });
+    ).toBeVisible();
   }
 }
