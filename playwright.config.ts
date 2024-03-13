@@ -19,9 +19,15 @@ const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
+ * 
+ * Timeouts were set by `ms`
  */
 export default defineConfig({
-  workers: 1,
+  workers: 2,
+  // Timeout for each test
+  timeout: 2 * 60 * 1000,  
+  // Maximum time the whole test suite can run
+  globalTimeout: 20 * 60 * 1000,
   testDir: './tests',
   reporter: [
     [
