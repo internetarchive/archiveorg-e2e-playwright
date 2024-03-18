@@ -8,7 +8,6 @@ const PAGE_FLIP_WAIT_TIME = 1000;
 export class BookPage {
   readonly page: Page;
 
-  readonly iaBookTheater: Locator;
   readonly bookReaderShell: Locator;
   readonly brContainer: Locator;
   readonly brFooter: Locator;
@@ -17,8 +16,6 @@ export class BookPage {
 
   public constructor(page: Page) {
     this.page = page;
-
-    this.iaBookTheater = this.page.locator('ia-book-theater');
 
     this.bookReader = new BookReader(this.page);
     this.bookReaderShell = this.bookReader.bookReaderShell;
@@ -76,33 +73,13 @@ export class BookPage {
     );
   }
 
-  async assertNavigationElements() {
-    // flipping
-    await expect(this.brFooter.locator('.BRicon.book_left')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.book_right')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.book_flip_next')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.book_flip_prev')).toBeVisible();
-    // zoom elements
-    await expect(this.brFooter.locator('.BRicon.zoom_in')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.zoom_out')).toBeVisible();
-    // view modes
-    await expect(this.brFooter.locator('.BRicon.onepg')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.twopg')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.thumb')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.full')).toBeVisible();
-    await expect(this.brFooter.locator('.BRicon.read')).toBeVisible();
-  }
-
   async assertBookPageChange() {
     await this.page.waitForLoadState('networkidle', { timeout: 30000 });
 
-    const goNext = this.brFooter.locator('.BRicon.book_flip_next');
-    const goPrev = this.brFooter.locator('.BRicon.book_flip_prev');
-
     // Go to next page, so we can go previous if at front cover
-    await goNext.click();
+    await this.bookReader.brFlipNext.click();
     await this.page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
-    await goNext.click();
+    await this.bookReader.brFlipNext.click();
     await this.page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
 
     const onLoadBrState = this.brContainer.nth(0);
@@ -110,7 +87,7 @@ export class BookPage {
     const origImg1Src = await initialImages.nth(0).getAttribute('src');
     const origImg2Src = await initialImages.nth(-1).getAttribute('src');
 
-    await goPrev.click();
+    await this.bookReader.brFlipPrev.click();
     await this.page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
 
     const nextBrState = this.brContainer.nth(0);
@@ -134,16 +111,13 @@ export class BookPage {
   async assertPageFlipUpdateUrlLocation() {
     await this.page.waitForLoadState('networkidle', { timeout: 30000 });
 
-    const goNext = this.brFooter.locator('.BRicon.book_flip_next');
-    const goPrev = this.brFooter.locator('.BRicon.book_flip_prev');
-
     // Page navigation creates params
-    await goNext.click();
+    await this.bookReader.brFlipNext.click();
     await this.page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
     expect(await this.isPageInUrl()).toEqual(true);
     expect(await this.isModeInUrl('2up')).toEqual(true);
 
-    await goPrev.click();
+    await this.bookReader.brFlipPrev.click();
     await this.page.waitForTimeout(PAGE_FLIP_WAIT_TIME);
     expect(await this.isPageInUrl()).toEqual(false);
     expect(await this.isModeInUrl('2up')).toEqual(true);

@@ -13,7 +13,7 @@ test(`BookReader navigations - On load, pages fit fully inside of the BookReader
 test(`BookReader navigations - Nav menu displays properly`, async ({
   bookPage,
 }) => {
-  await bookPage.assertNavigationElements();
+  await bookPage.bookReader.assertNavigationElements();
 });
 
 test(`BookReader navigations - 2up mode - Clicking "Previous page" changes the page`, async ({

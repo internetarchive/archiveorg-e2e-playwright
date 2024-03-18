@@ -29,10 +29,10 @@ export class BookReader {
     this.brContainer = this.bookReaderShell.locator('.BRcontainer');
     this.brFooter = this.bookReaderShell.locator('.BRfooter');
 
-    this.brLeft = this.brFooter.locator('.BRicon.book_left');
-    this.brRight = this.brFooter.locator('.BRicon.book_right');
-    this.brFlipNext = this.brFooter.locator('.BRicon.book_flip_next');
-    this.brFlipPrev = this.brFooter.locator('.BRicon.book_flip_right');
+    this.brFlipPrev = this.brFooter.locator('.BRicon.book_left.book_flip_prev');
+    this.brFlipNext = this.brFooter.locator(
+      '.BRicon.book_right.book_flip_next',
+    );
 
     this.brZoomIn = this.brFooter.locator('.BRicon.zoom_in');
     this.brZoomOut = this.brFooter.locator('.BRicon.zoom_out');
@@ -46,10 +46,8 @@ export class BookReader {
 
   async assertNavigationElements() {
     // flipping
-    await expect(this.brLeft).toBeVisible();
-    await expect(this.brRight).toBeVisible();
-    await expect(this.brFlipNext).toBeVisible();
     await expect(this.brFlipPrev).toBeVisible();
+    await expect(this.brFlipNext).toBeVisible();
     // zoom elements
     await expect(this.brZoomIn).toBeVisible();
     await expect(this.brZoomOut).toBeVisible();
