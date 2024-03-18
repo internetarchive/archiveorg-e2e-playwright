@@ -1,5 +1,7 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
+import { BookReader } from './book-reader';
+
 export class MusicPage {
   readonly page: Page;
 
@@ -7,8 +9,8 @@ export class MusicPage {
   readonly iauxMusicTheater: Locator;
   readonly playAv: Locator;
   readonly seeMoreCta: Locator;
-  readonly brSlot: Locator;
-  readonly bookReaderShell: Locator;
+
+  readonly bookReader: BookReader;
 
   public constructor(page: Page) {
     this.page = page;
@@ -19,16 +21,12 @@ export class MusicPage {
     );
     this.playAv = this.page.locator('play-av');
     this.seeMoreCta = this.iauxPhotoViewer.locator('#see-more-cta');
-    this.brSlot = this.page.locator(
-      '#theatre-ia > div.row > div > ia-music-theater > div.bookreader-slot',
-    );
-    this.bookReaderShell = this.brSlot.locator('#BookReader');
+
+    this.bookReader = new BookReader(page);
   }
 
   async gotoMusicPage(uri: string) {
-    await this.page.goto(`/details/${uri}`, {
-      waitUntil: 'networkidle',
-    });
+    await this.page.goto(`/details/${uri}`, { waitUntil: 'networkidle' });
     await this.page.waitForTimeout(5000);
   }
 
@@ -59,27 +57,24 @@ export class MusicPage {
       await expect(
         this.iauxPhotoViewer.locator('iamusic-noimage'),
       ).toBeVisible();
-      await expect(
-        this.iauxMusicTheater.locator('#BookReader'),
-      ).not.toBeVisible();
+      await expect(this.bookReader.bookReaderShell).not.toBeVisible();
     } else {
       expect(await this.iauxPhotoViewer.getAttribute('noimageavailable')).toBe(
         null,
       );
       await expect(this.seeMoreCta).toBeVisible();
-      await expect(this.iauxMusicTheater.locator('#BookReader')).toBeVisible();
+      await expect(this.bookReader.bookReaderShell).toBeVisible();
     }
   }
 
   async getBookReaderClass() {
-    return await this.bookReaderShell.getAttribute('class');
+    return await this.bookReader.bookReaderShell.getAttribute('class');
   }
 
   async interactWithBookReader() {
     const oneUpClass = 'BRmode1up';
     const thumbViewModeClass = 'BRmodeThumb';
     const fullScreenClass = 'fullscreenActive';
-    const brFooter = this.bookReaderShell.locator('.BRfooter');
 
     await this.seeMoreCta.click({ timeout: 10000 });
     expect(await this.iauxPhotoViewer.getAttribute('showallphotos')).toBe('');
@@ -88,19 +83,19 @@ export class MusicPage {
     expect(await this.getBookReaderClass()).toContain(oneUpClass);
 
     // click thumbnail mode
-    await brFooter.locator('.BRicon.thumb').click();
+    await this.bookReader.brThumb.click();
     expect(await this.getBookReaderClass()).toContain(thumbViewModeClass);
 
     // click 1up mode
-    await brFooter.locator('.BRicon.onepg').click();
+    await this.bookReader.brOnePage.click();
     expect(await this.getBookReaderClass()).toContain(oneUpClass);
 
     // click fullscreen
-    await brFooter.locator('.BRicon.full').click();
+    await this.bookReader.brFullScreen.click();
     expect(await this.getBookReaderClass()).toContain(fullScreenClass);
 
     // click fullscreen again
-    await brFooter.locator('.BRicon.full').click();
+    await this.bookReader.brFullScreen.click();
     expect(await this.getBookReaderClass()).not.toContain(fullScreenClass);
 
     // close BookReader photoViewer

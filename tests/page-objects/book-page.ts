@@ -35,7 +35,7 @@ export class BookPage {
     } else {
       return href.indexOf('/page/') > -1;
     }
-  };
+  }
 
   // Check URL mode parameter in # and path
   async isModeInUrl(mode: BookPageViewMode) {
@@ -46,9 +46,9 @@ export class BookPage {
     } else {
       return href.indexOf('/mode/' + mode) > -1;
     }
-  };
+  }
 
-  async assertUrlInitialParameters () {
+  async assertUrlInitialParameters() {
     const pageHash = await this.page.evaluate(() => window.location.hash);
     const pageUrl = await this.page.evaluate(() => window.location.href);
 
@@ -60,18 +60,20 @@ export class BookPage {
     expect(pageUrl).not.toContain('/mode/');
   }
 
-  async assertPageBoundingBox () {
+  async assertPageBoundingBox() {
     await this.page.waitForLoadState('networkidle', { timeout: 30000 });
 
     const brShellBox = await this.bookReaderShell.boundingBox();
     const brContainerBox = await this.brContainer.boundingBox();
-  
+
     // images do not get cropped vertically
     expect(brContainerBox?.height).toBeLessThanOrEqual(
       Number(brShellBox?.height),
     );
     // images do not get cropped horizontally
-    expect(brContainerBox?.width).toBeLessThanOrEqual(Number(brShellBox?.width));
+    expect(brContainerBox?.width).toBeLessThanOrEqual(
+      Number(brShellBox?.width),
+    );
   }
 
   async assertNavigationElements() {
@@ -129,7 +131,7 @@ export class BookPage {
     expect(prevImg1Src).not.toEqual(prevImg2Src);
   }
 
-  async assertPageFlipUpdateUrlLocation () {
+  async assertPageFlipUpdateUrlLocation() {
     await this.page.waitForLoadState('networkidle', { timeout: 30000 });
 
     const goNext = this.brFooter.locator('.BRicon.book_flip_next');
@@ -146,5 +148,4 @@ export class BookPage {
     expect(await this.isPageInUrl()).toEqual(false);
     expect(await this.isModeInUrl('2up')).toEqual(true);
   }
-
 }

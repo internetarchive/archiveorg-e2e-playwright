@@ -1,6 +1,8 @@
 import { test } from '../fixtures';
 
-test('Load and Play a Grateful Dead Soundtrack', async ({ musicPage }) => {
+test('Load Grateful Dead Soundtrack page to check page elements', async ({
+  musicPage,
+}) => {
   await musicPage.gotoMusicPage('gd73-06-10.sbd.hollister.174.sbeok.shnf');
   await musicPage.validateMusicPageElements();
 });
@@ -8,19 +10,29 @@ test('Load and Play a Grateful Dead Soundtrack', async ({ musicPage }) => {
 test(`Special case: Audio item without image - with waveform`, async ({
   musicPage,
 }) => {
-  await musicPage.gotoMusicPage('gd77-05-08.sbd.hicks.4982.sbeok.shnf');
-  await musicPage.validateMusicPageElements();
-  await musicPage.validateNoImageAvailableInPhotoViewerDisplay(true);
-  await musicPage.validateNoWaveformDisplay(false);
+  await test.step(`Load the page and check page elements`, async () => {
+    await musicPage.gotoMusicPage('gd77-05-08.sbd.hicks.4982.sbeok.shnf');
+    await musicPage.validateMusicPageElements();
+  });
+
+  await test.step(`Placeholder image and waveform should be displayed`, async () => {
+    await musicPage.validateNoImageAvailableInPhotoViewerDisplay(true);
+    await musicPage.validateNoWaveformDisplay(false);
+  });
 });
 
 test(`Special case: Load a single track - no waveform`, async ({
   musicPage,
 }) => {
-  await musicPage.gotoMusicPage('berceuse00benj');
-  await musicPage.validateMusicPageElements();
-  await musicPage.validateNoImageAvailableInPhotoViewerDisplay(false);
-  await musicPage.validateNoWaveformDisplay(true);
+  await test.step(`Load the page and check page elements`, async () => {
+    await musicPage.gotoMusicPage('berceuse00benj');
+    await musicPage.validateMusicPageElements();
+  });
+
+  await test.step(`Placeholder image and waveform should not be displayed`, async () => {
+    await musicPage.validateNoImageAvailableInPhotoViewerDisplay(false);
+    await musicPage.validateNoWaveformDisplay(true);
+  });
 });
 
 test(`Play a Grateful Dead track`, async ({ musicPage }) => {

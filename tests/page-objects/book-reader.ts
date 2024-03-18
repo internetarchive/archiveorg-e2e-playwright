@@ -60,5 +60,4 @@ export class BookReader {
     await expect(this.brFullScreen).toBeVisible();
     await expect(this.brReadAloud).toBeVisible();
   }
-
 }
