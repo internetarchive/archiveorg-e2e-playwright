@@ -85,8 +85,7 @@ export class DetailsPage {
     await expect(this.bookReader.bookReaderShell).toBeVisible();
   }
 
-  async verifyLendingBarDisplay(){
+  async verifyLendingBarDisplay() {
     await expect(this.lendingBar.iaBookActions).toBeVisible();
   }
-
 }

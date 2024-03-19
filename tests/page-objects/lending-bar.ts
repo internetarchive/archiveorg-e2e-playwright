@@ -10,5 +10,4 @@ export class LendingBar {
 
     this.iaBookActions = this.page.locator('ia-book-actions');
   }
-
 }
