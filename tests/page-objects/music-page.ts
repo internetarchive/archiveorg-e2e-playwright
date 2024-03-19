@@ -40,21 +40,17 @@ export class MusicPage {
 
   async validateNoImageAvailableInPhotoViewerDisplay(noPlaceholder: boolean) {
     if (noPlaceholder) {
-      expect(
-        await this.iaMusicTheater.iauxPhotoViewer.getAttribute(
-          'noimageavailable',
-        ),
-      ).toBe('');
+      await expect(this.iaMusicTheater.iauxPhotoViewer).toHaveAttribute(
+        'noimageavailable',
+      );
       await expect(
         this.iaMusicTheater.iauxPhotoViewer.locator('iamusic-noimage'),
       ).toBeVisible();
       await expect(this.bookReader.bookReaderShell).not.toBeVisible();
     } else {
-      expect(
-        await this.iaMusicTheater.iauxPhotoViewer.getAttribute(
-          'noimageavailable',
-        ),
-      ).toBe(null);
+      await expect(this.iaMusicTheater.iauxPhotoViewer).not.toHaveAttribute(
+        'noimageavailable',
+      );
       await expect(this.iaMusicTheater.seeMoreCta).toBeVisible();
       await expect(this.bookReader.bookReaderShell).toBeVisible();
     }
@@ -70,9 +66,9 @@ export class MusicPage {
     const fullScreenClass = 'fullscreenActive';
 
     await this.iaMusicTheater.seeMoreCta.click({ timeout: 10000 });
-    expect(
-      await this.iaMusicTheater.iauxPhotoViewer.getAttribute('showallphotos'),
-    ).toBe('');
+    await expect(this.iaMusicTheater.iauxPhotoViewer).toHaveAttribute(
+      'showallphotos',
+    );
 
     // default load
     expect(await this.getBookReaderClass()).toContain(oneUpClass);
@@ -97,9 +93,10 @@ export class MusicPage {
     await this.iaMusicTheater.iauxPhotoViewer
       .locator('#close-photo-viewer')
       .click();
-    expect(
-      await this.iaMusicTheater.iauxPhotoViewer.getAttribute('showallphotos'),
-    ).toBe(null);
+
+    await expect(this.iaMusicTheater.iauxPhotoViewer).not.toHaveAttribute(
+      'showallphotos',
+    );
   }
 
   async validateNoWaveformDisplay(noWaveform: boolean) {
