@@ -1,4 +1,4 @@
-import { type Page, type Locator, expect } from '@playwright/test';
+import { type Page, expect } from '@playwright/test';
 
 import { BookReader } from './book-reader';
 import { DetailsPage } from './details-page';
@@ -40,18 +40,10 @@ export class MusicPage {
 
   async validateNoImageAvailableInPhotoViewerDisplay(noPlaceholder: boolean) {
     if (noPlaceholder) {
-      await expect(this.iaMusicTheater.iauxPhotoViewer).toHaveAttribute(
-        'noimageavailable',
-      );
-      await expect(
-        this.iaMusicTheater.iauxPhotoViewer.locator('iamusic-noimage'),
-      ).toBeVisible();
+      await this.iaMusicTheater.placeholderImageDisplay(true);
       await expect(this.bookReader.bookReaderShell).not.toBeVisible();
     } else {
-      await expect(this.iaMusicTheater.iauxPhotoViewer).not.toHaveAttribute(
-        'noimageavailable',
-      );
-      await expect(this.iaMusicTheater.seeMoreCta).toBeVisible();
+      await this.iaMusicTheater.placeholderImageDisplay(false);
       await expect(this.bookReader.bookReaderShell).toBeVisible();
     }
   }

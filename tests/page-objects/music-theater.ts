@@ -1,4 +1,4 @@
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator, expect } from '@playwright/test';
 
 export class IAMusicTheater {
   readonly page: Page;
@@ -32,5 +32,21 @@ export class IAMusicTheater {
       name: 'Pause',
       exact: true,
     });
+  }
+
+  async placeholderImageDisplay(noPlaceholder: boolean) {
+    if (noPlaceholder) {
+      await expect(this.iauxPhotoViewer).toHaveAttribute(
+        'noimageavailable',
+      );
+      await expect(
+        this.iauxPhotoViewer.locator('iamusic-noimage'),
+      ).toBeVisible();
+    } else {
+      await expect(this.iauxPhotoViewer).not.toHaveAttribute(
+        'noimageavailable',
+      );
+      await expect(this.seeMoreCta).toBeVisible();
+    }
   }
 }

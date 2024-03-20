@@ -2,17 +2,20 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 import { BookReader } from './book-reader';
 import { LendingBar } from './lending-bar';
+import { IAMusicTheater } from './music-theater';
 
 export class DetailsPage {
   readonly page: Page;
 
   readonly bookReader: BookReader;
+  readonly iaMusicTheater: IAMusicTheater;
   readonly lendingBar: LendingBar;
 
   public constructor(page: Page) {
     this.page = page;
 
     this.bookReader = new BookReader(page);
+    this.iaMusicTheater = new IAMusicTheater(page);
     this.lendingBar = new LendingBar(page);
   }
 
@@ -22,7 +25,6 @@ export class DetailsPage {
   }
 
   async assertPageElements() {
-    await this.page.waitForTimeout(5000);
     await this.verifyPageMetadataElements();
     await this.verifyPageActionButtons();
 
@@ -87,5 +89,15 @@ export class DetailsPage {
 
   async verifyLendingBarDisplay() {
     await expect(this.lendingBar.iaBookActions).toBeVisible();
+  }
+
+  async verifyMusicTheaterDisplayWithPlaceholder() {
+    await expect(this.iaMusicTheater.musicTheater).toBeVisible();
+    await expect(this.iaMusicTheater.seeMoreCta).toBeVisible();
+  }
+
+  async verifyMusicTheaterDisplayWithCoverArt() {
+    await expect(this.iaMusicTheater.musicTheater).toBeVisible();
+    await expect(this.iaMusicTheater.seeMoreCta).toBeVisible();
   }
 }
