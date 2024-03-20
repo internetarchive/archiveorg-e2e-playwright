@@ -35,9 +35,10 @@ export class DetailsPage {
     await this.verifyPageActionButtons();
 
     await expect(this.page.locator('.terms-of-service')).toBeVisible();
+    await this.page.waitForTimeout(3000);
     // await expect(this.page.getByText('SIMILAR ITEMS (based on metadata)')).toBeVisible();
     // await expect(this.page.getByRole('heading', { name: 'SIMILAR ITEMS (based on metadata)' })).toBeVisible();
-    // await expect(this.page.locator('#also-found')).toBeVisible();
+    await expect(this.page.locator('#also-found')).toBeVisible();
   }
 
   async verifyPageMetadataElements() {
@@ -85,41 +86,41 @@ export class DetailsPage {
     await expect(this.page.locator('div.topinblock.flag-button')).toBeVisible();
   }
 
-  async verify3dTheaterDisplay() {
+  async container3dDisplay() {
     await expect(this.page.locator('#container3D')).toBeVisible();
   }
 
-  async verifyBookreaderDisplay() {
+  async bookreaderDisplay() {
     await expect(this.bookReader.bookReaderShell).toBeVisible();
   }
 
-  async verifyLendingBarDisplay() {
+  async lendingBarDisplay() {
     await expect(this.lendingBar.iaBookActions).toBeVisible();
   }
 
-  async verifyMusicTheaterDisplayWithPlaceholder() {
+  async musicTheaterDisplayWithPlaceholder() {
     await expect(this.iaMusicTheater.musicTheater).toBeVisible();
     await expect(this.iaMusicTheater.seeMoreCta).toBeVisible();
   }
 
-  async verifyMusicTheaterDisplayWithCoverArt() {
+  async musicTheaterDisplayWithCoverArt() {
     await expect(this.iaMusicTheater.musicTheater).toBeVisible();
     await expect(this.iaMusicTheater.seeMoreCta).toBeVisible();
   }
 
-  async verifyMusicTheaterDisplaySingleImage() {
+  async musicTheaterDisplaySingleImage() {
     await expect(this.iaMusicTheater.musicTheater).toBeVisible();
     await expect(this.iaMusicTheater.seeMoreCta).not.toBeVisible();
   }
 
-  async verifyDataTheaterDisplay() {
+  async dataTheaterDisplay() {
     await expect(this.iaTheater.locator('.no-preview')).toBeVisible();
     await expect(
       this.iaTheater.getByText('There Is No Preview Available'),
     ).toBeVisible();
   }
 
-  async verifyImageCarouselTheaterDisplay(multiple: boolean) {
+  async imageCarouselMultipleImageDisplay(multiple: boolean) {
     await expect(this.iaTheater.locator('#ia-carousel')).toBeVisible();
 
     const innerCarousel = this.iaTheater.locator('#ia-carousel > div');
@@ -139,13 +140,25 @@ export class DetailsPage {
     }
   }
 
-  async verifyRadioPlayerTheaterDisplay() {
+  async radioPlayerTheaterDisplay() {
     await expect(this.iaTheater.locator('radio-player')).toBeVisible();
     // borrow program appears only if loggedIn privUser
   }
 
-  async verifyVideoPlayerTheaterDisplay() {
+  async videoPlayerTheaterDisplay() {
     await expect(this.iaTheater.locator('#jw6')).toBeVisible();
+  }
+
+  async softwareEmulationTheaterDisplay() {
+    const emulator = this.page.locator('#emulate');
+    await expect(emulator).toBeVisible();
+    await expect(this.iaTheater.locator('#emulate')).toBeVisible();
+    // console.log('e: ', await emulator.innerHTML());
+    // await expect(emulator.locator('#canvasholder')).toBeVisible();
+    // await expect(emulator.locator('#jsmessSS > img.ghost')).toBeVisible();
+    // // await expect(this.iaTheater.getByRole('link', { name: '[screenshot] Click to Begin' })).toBeVisible();
+    // await emulator.locator('a.#jsmessSS > img.ghost').click();
+    // await expect(this.iaTheater.getByText('Launching EmulatorGame')).toBeVisible();
   }
 
   async interactWithImageCarousel() {
@@ -172,4 +185,32 @@ export class DetailsPage {
       'active',
     );
   }
+
+  async searchRadioTranscript(str: string){
+    const expandableSearchBar = this.page.locator('expandable-search-bar');
+    await expect(expandableSearchBar.locator('#search-input')).toBeVisible();
+    await expandableSearchBar.locator('#search-input').fill(str);
+    await expandableSearchBar.locator('#search-input').press('Enter');
+    await this.page.waitForTimeout(3000);
+
+    // interact with search results range
+    const searchResultsSwitcher = this.page.locator('search-results-switcher');
+    const transcriptView = this.page.locator('transcript-view');
+    const prevButton = searchResultsSwitcher.locator('#previous-button');
+    const nextButton = searchResultsSwitcher.locator('#next-button');
+    await expect(searchResultsSwitcher).toBeVisible();
+ 
+    expect(await searchResultsSwitcher.locator('div > span.results-range #current-result').innerText()).toBe('1');
+    expect(await searchResultsSwitcher.locator('div > span.results-range #number-of-results').innerText()).toBe('127');
+
+    // #scroll-container > div:nth-child(2) > transcript-entry:nth-child(4) => issearchresult isselected
+    // TODO: search results indexing 
+    const entries = ((await transcriptView.locator('transcript-entry').all())
+      .map(async entry => {
+        const attr = await entry.getAttribute('issearchresult');
+        return attr !== null
+      }));
+    console.log('entries: ', entries)
+  }
+
 }
