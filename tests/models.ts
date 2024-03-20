@@ -61,3 +61,5 @@ export type ViewFacetMetadata =
   | 'list-date';
 
 export type BookPageViewMode = '1up' | '2up' | 'thumb';
+
+export type ChannelSelector = 'Player' | 'Webamp';

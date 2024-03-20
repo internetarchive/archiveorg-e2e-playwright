@@ -1,4 +1,5 @@
 import { type Page, type Locator, expect } from '@playwright/test';
+import { ChannelSelector } from '../models';
 
 export class IAMusicTheater {
   readonly page: Page;
@@ -36,9 +37,7 @@ export class IAMusicTheater {
 
   async placeholderImageDisplay(noPlaceholder: boolean) {
     if (noPlaceholder) {
-      await expect(this.iauxPhotoViewer).toHaveAttribute(
-        'noimageavailable',
-      );
+      await expect(this.iauxPhotoViewer).toHaveAttribute('noimageavailable');
       await expect(
         this.iauxPhotoViewer.locator('iamusic-noimage'),
       ).toBeVisible();
@@ -48,5 +47,33 @@ export class IAMusicTheater {
       );
       await expect(this.seeMoreCta).toBeVisible();
     }
+  }
+
+  async selectChannelSelector(channel: ChannelSelector) {
+    const channelSelectorRow = await this.channelSelector.locator('#radio')
+    .getByRole('listitem');
+    const channelSelectorRowCount = await this.channelSelector
+      .locator('#radio')
+      .getByRole('listitem').count();
+
+    // just Player | Webamp
+    if (channelSelectorRowCount === 2) { 
+      if (channel === 'Player') await channelSelectorRow.nth(0).click();
+      if (channel === 'Webamp') await channelSelectorRow.nth(1).click();
+    }
+  }
+
+  async verifyWebampDisplay() {
+    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(3000);
+    
+    const urlPatternCheck = new RegExp(`webamp=default`);
+    await expect(this.page).toHaveURL(urlPatternCheck);
+    await expect(this.page.locator('#webamp')).toBeVisible();
+  }
+
+  async verifyWebampSkin() {
+    // <#theatre-controls > a > div
+    // js-webamp-skin-item
   }
 }

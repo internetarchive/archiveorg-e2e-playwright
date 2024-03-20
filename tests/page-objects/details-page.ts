@@ -112,21 +112,40 @@ export class DetailsPage {
 
   async verifyDataTheaterDisplay() {
     await expect(this.iaTheater.locator('.no-preview')).toBeVisible();
-    await expect(this.iaTheater.getByText('There Is No Preview Available')).toBeVisible();
+    await expect(
+      this.iaTheater.getByText('There Is No Preview Available'),
+    ).toBeVisible();
   }
 
   async verifyImageCarouselTheaterDisplay(multiple: boolean) {
     await expect(this.iaTheater.locator('#ia-carousel')).toBeVisible();
 
     const innerCarousel = this.iaTheater.locator('#ia-carousel > div');
-    const innerCarouselItem = this.iaTheater.locator('#ia-carousel > div > div.item');
-    if(multiple) {
-      expect(await innerCarousel.getAttribute('class')).toContain('carousel-inner multiple-images');
+    const innerCarouselItem = this.iaTheater.locator(
+      '#ia-carousel > div > div.item',
+    );
+    if (multiple) {
+      expect(await innerCarousel.getAttribute('class')).toContain(
+        'carousel-inner multiple-images',
+      );
       expect((await innerCarouselItem.all()).length).toBeGreaterThan(1);
     } else {
-      expect(await innerCarousel.getAttribute('class')).toContain('carousel-inner');
+      expect(await innerCarousel.getAttribute('class')).toContain(
+        'carousel-inner',
+      );
       expect((await innerCarouselItem.all()).length).toEqual(1);
     }
   }
+
+  async verifyRadioPlayerTheaterDisplay() {
+    await expect(this.iaTheater.locator('radio-player')).toBeVisible();
+    // borrow program appears only if loggedIn privUser
+  }
+
+  async verifyVideoPlayerTheaterDisplay() {
+    await expect(this.iaTheater.locator('#jw6')).toBeVisible();
+  }
+
+  
 
 }
