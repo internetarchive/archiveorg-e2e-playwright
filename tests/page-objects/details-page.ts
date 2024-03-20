@@ -7,12 +7,16 @@ import { IAMusicTheater } from './music-theater';
 export class DetailsPage {
   readonly page: Page;
 
+  readonly iaTheater: Locator;
+
   readonly bookReader: BookReader;
   readonly iaMusicTheater: IAMusicTheater;
   readonly lendingBar: LendingBar;
 
   public constructor(page: Page) {
     this.page = page;
+
+    this.iaTheater = this.page.locator('#theatre-ia');
 
     this.bookReader = new BookReader(page);
     this.iaMusicTheater = new IAMusicTheater(page);
@@ -100,4 +104,29 @@ export class DetailsPage {
     await expect(this.iaMusicTheater.musicTheater).toBeVisible();
     await expect(this.iaMusicTheater.seeMoreCta).toBeVisible();
   }
+
+  async verifyMusicTheaterDisplaySingleImage() {
+    await expect(this.iaMusicTheater.musicTheater).toBeVisible();
+    await expect(this.iaMusicTheater.seeMoreCta).not.toBeVisible();
+  }
+
+  async verifyDataTheaterDisplay() {
+    await expect(this.iaTheater.locator('.no-preview')).toBeVisible();
+    await expect(this.iaTheater.getByText('There Is No Preview Available')).toBeVisible();
+  }
+
+  async verifyImageCarouselTheaterDisplay(multiple: boolean) {
+    await expect(this.iaTheater.locator('#ia-carousel')).toBeVisible();
+
+    const innerCarousel = this.iaTheater.locator('#ia-carousel > div');
+    const innerCarouselItem = this.iaTheater.locator('#ia-carousel > div > div.item');
+    if(multiple) {
+      expect(await innerCarousel.getAttribute('class')).toContain('carousel-inner multiple-images');
+      expect((await innerCarouselItem.all()).length).toBeGreaterThan(1);
+    } else {
+      expect(await innerCarousel.getAttribute('class')).toContain('carousel-inner');
+      expect((await innerCarouselItem.all()).length).toEqual(1);
+    }
+  }
+
 }
