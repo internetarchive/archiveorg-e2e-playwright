@@ -72,7 +72,9 @@ test(`Load theater: radio`, async ({ detailsPage }) => {
 });
 
 test(`Load theater: tv`, async ({ detailsPage }) => {
-  await detailsPage.gotoPage('CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism');
+  await detailsPage.gotoPage(
+    'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
+  );
 });
 
 test(`Load theater: video`, async ({ detailsPage }) => {
@@ -89,7 +91,9 @@ test(`Load theater: webamp with skin`, async ({ detailsPage }) => {
   await detailsPage.gotoPage('winampskin_Tundra_Winamp_Skin_Actualized');
 });
 
-test(`Functionality: Image (carousel) - Navigate images`, async ({ detailsPage }) => {
+test(`Functionality: Image (carousel) - Navigate images`, async ({
+  detailsPage,
+}) => {
   await detailsPage.gotoPage('img-0855_202106');
   await detailsPage.interactWithImageCarousel();
 });

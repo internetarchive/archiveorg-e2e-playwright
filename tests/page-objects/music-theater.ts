@@ -50,14 +50,16 @@ export class IAMusicTheater {
   }
 
   async selectChannelSelector(channel: ChannelSelector) {
-    const channelSelectorRow = await this.channelSelector.locator('#radio')
-    .getByRole('listitem');
+    const channelSelectorRow = await this.channelSelector
+      .locator('#radio')
+      .getByRole('listitem');
     const channelSelectorRowCount = await this.channelSelector
       .locator('#radio')
-      .getByRole('listitem').count();
+      .getByRole('listitem')
+      .count();
 
     // just Player | Webamp
-    if (channelSelectorRowCount === 2) { 
+    if (channelSelectorRowCount === 2) {
       if (channel === 'Player') await channelSelectorRow.nth(0).click();
       if (channel === 'Webamp') await channelSelectorRow.nth(1).click();
     }
@@ -66,7 +68,7 @@ export class IAMusicTheater {
   async verifyWebampDisplay() {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(3000);
-    
+
     const urlPatternCheck = new RegExp(`webamp=default`);
     await expect(this.page).toHaveURL(urlPatternCheck);
     await expect(this.page.locator('#webamp')).toBeVisible();

@@ -147,22 +147,29 @@ export class DetailsPage {
   async verifyVideoPlayerTheaterDisplay() {
     await expect(this.iaTheater.locator('#jw6')).toBeVisible();
   }
-  
-  async interactWithImageCarousel(){
+
+  async interactWithImageCarousel() {
     // This test assume the image carousel item index always starts at 0
     const leftArrowControl = this.iaCarousel.locator('a.left.carousel-control');
-    const rightArrowControl = this.iaCarousel.locator('a.right.carousel-control');
-    const carouselItems = this.iaCarousel.locator('div.carousel-inner > div.item');
+    const rightArrowControl = this.iaCarousel.locator(
+      'a.right.carousel-control',
+    );
+    const carouselItems = this.iaCarousel.locator(
+      'div.carousel-inner > div.item',
+    );
 
     // load next image
     await rightArrowControl.click();
     await this.page.waitForTimeout(3000);
-    expect(await carouselItems.nth(1).getAttribute('class')).toContain('active');
+    expect(await carouselItems.nth(1).getAttribute('class')).toContain(
+      'active',
+    );
 
     // load prev image
     await leftArrowControl.click();
     await this.page.waitForTimeout(3000);
-    expect(await carouselItems.first().getAttribute('class')).toContain('active');
+    expect(await carouselItems.first().getAttribute('class')).toContain(
+      'active',
+    );
   }
-
 }
