@@ -65,17 +65,22 @@ export class IAMusicTheater {
     }
   }
 
-  async verifyWebampDisplay() {
+  async webAmpDisplayFromChannelSelector(fromChannelSelector: boolean) {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(3000);
 
-    const urlPatternCheck = new RegExp(`webamp=default`);
-    await expect(this.page).toHaveURL(urlPatternCheck);
-    await expect(this.page.locator('#webamp')).toBeVisible();
+    if (fromChannelSelector) {
+      const urlPatternCheck = new RegExp(`webamp=default`);
+      await expect(this.page).toHaveURL(urlPatternCheck);
+      await expect(this.page.locator('#webamp')).toBeVisible();
+    } else {
+      await expect(this.page.locator('#theatre-ia')).toBeVisible();
+      await expect(this.page.locator('#jw6')).toBeVisible();
+      await expect(this.page.locator('#main-window')).toBeVisible();
+      await expect(this.page.locator('#equalizer-window')).toBeVisible();
+    }
   }
 
-  async verifyWebampSkin() {
-    // <#theatre-controls > a > div
-    // js-webamp-skin-item
-  }
+  // TODO
+  async verifyWebampSkin() {}
 }

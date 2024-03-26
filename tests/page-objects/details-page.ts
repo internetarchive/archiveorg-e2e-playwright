@@ -179,11 +179,11 @@ export class DetailsPage {
     );
   }
 
-  async webAmpSkin() {
-    // navia ia-module tiles responsive jwaudio editable
+  async activateWebAmpSkin() {
+    await this.iaTheater.locator('.js-webamp-use_skin_for_audio_items').click();
   }
 
-  async searchRadioTranscriptAndVerifySearchEntryPositions(str: string){
+  async searchRadioTranscriptAndVerifySearchEntryPositions(str: string) {
     const expandableSearchBar = this.page.locator('expandable-search-bar');
     await expect(expandableSearchBar.locator('#search-input')).toBeVisible();
     await expandableSearchBar.locator('#search-input').fill(str);
@@ -195,9 +195,17 @@ export class DetailsPage {
     const prevButton = searchResultsSwitcher.locator('#previous-button');
     const nextButton = searchResultsSwitcher.locator('#next-button');
     await expect(searchResultsSwitcher).toBeVisible();
- 
-    expect(await searchResultsSwitcher.locator('div > span.results-range #current-result').innerText()).toBe('1');
-    expect(await searchResultsSwitcher.locator('div > span.results-range #number-of-results').innerText()).toBe('127');
+
+    expect(
+      await searchResultsSwitcher
+        .locator('div > span.results-range #current-result')
+        .innerText(),
+    ).toBe('1');
+    expect(
+      await searchResultsSwitcher
+        .locator('div > span.results-range #number-of-results')
+        .innerText(),
+    ).toBe('127');
 
     // check default search entry index
     expect(await this.searchResultEntryIndex()).toBe(2);
@@ -211,7 +219,6 @@ export class DetailsPage {
     await prevButton.click();
     await this.page.waitForTimeout(3000);
     expect(await this.searchResultEntryIndex()).toBe(2);
-
   }
 
   async searchResultEntryIndex(): Promise<Number> {
@@ -232,5 +239,4 @@ export class DetailsPage {
 
     return 0;
   }
-
 }

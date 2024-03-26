@@ -1,6 +1,8 @@
 import { test } from '../fixtures';
 
-test('Basic display: Items display item details page', async ({ detailsPage }) => {
+test('Basic display: Items display item details page', async ({
+  detailsPage,
+}) => {
   await detailsPage.gotoPage('goody');
   await detailsPage.assertPageElements();
 });
@@ -92,10 +94,22 @@ test(`Load theater: video`, async ({ detailsPage }) => {
 test(`Load theater: webamp`, async ({ detailsPage }) => {
   await detailsPage.gotoPage('OTRR_Philip_Marlowe_Singles');
   await detailsPage.iaMusicTheater.selectChannelSelector('Webamp');
+  await detailsPage.iaMusicTheater.webAmpDisplayFromChannelSelector(true);
 });
 
 test(`Load theater: webamp with skin`, async ({ detailsPage }) => {
-  await detailsPage.gotoPage('winampskin_Tundra_Winamp_Skin_Actualized');
+  await test.step('Load webAmp skin - llama feature', async () => {
+    // goto a webamp skin page
+    await detailsPage.gotoPage('winampskin_Tundra_Winamp_Skin_Actualized');
+    // activate webamp skin - llama
+    await detailsPage.activateWebAmpSkin();
+  });
+
+  await test.step('Check webamp displayed directly after webamp skin activated', async () => {
+    // then go to a track page to check if it loads the webamp view is loaded
+    await detailsPage.gotoPage('OTRR_Philip_Marlowe_Singles');
+    await detailsPage.iaMusicTheater.webAmpDisplayFromChannelSelector(false);
+  });
 });
 
 test(`Functionality: Image (carousel) - Navigate images`, async ({
@@ -105,9 +119,7 @@ test(`Functionality: Image (carousel) - Navigate images`, async ({
   await detailsPage.interactWithImageCarousel();
 });
 
-test(`Functionality: Radio - Search transcript`, async ({
-  detailsPage,
-}) => {
+test(`Functionality: Radio - Search transcript`, async ({ detailsPage }) => {
   await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
   await detailsPage.searchRadioTranscriptAndVerifySearchEntryPositions('and');
 });
