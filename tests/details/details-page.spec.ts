@@ -2,14 +2,12 @@ import { test } from '../fixtures';
 
 test('Basic display: Items display item details page', async ({ detailsPage }) => {
   await detailsPage.gotoPage('goody');
-
   await detailsPage.assertPageElements();
 });
 
-//
 test('Load theater: 3d viewer', async ({ detailsPage }) => {
   await detailsPage.gotoPage('smarthouseplus-v1.0');
-  await detailsPage.verify3dTheaterDisplay();
+  await detailsPage.container3dDisplay();
 });
 
 test(`Load theater: audio (image carousel / bookreader)`, async ({
@@ -38,13 +36,13 @@ test(`Load theater: audio single image`, async ({ detailsPage }) => {
 test(`Load theater: bookreader`, async ({ detailsPage }) => {
   await test.step('Load a book page', async () => {
     await detailsPage.gotoPage('goody');
-    await detailsPage.verifyBookreaderDisplay();
+    await detailsPage.bookreaderDisplay();
   });
 
   await test.step('Load a book page with lending bar', async () => {
     await detailsPage.gotoPage('coleridgesublime0000char');
-    await detailsPage.verifyBookreaderDisplay();
-    await detailsPage.verifyLendingBarDisplay();
+    await detailsPage.bookreaderDisplay();
+    await detailsPage.lendingBarDisplay();
   });
 });
 
@@ -61,7 +59,6 @@ test(`Load theater: software emulation`, async ({ detailsPage }) => {
 });
 
 test(`Load theater: image (carousel)`, async ({ detailsPage }) => {
-  // await detailsPage.gotoPage('ChannelLogos'); -> not working in playwright browser
   await detailsPage.gotoPage('img-0855_202106');
   await detailsPage.imageCarouselMultipleImageDisplay(true);
 });
@@ -77,6 +74,11 @@ test(`Load theater: radio`, async ({ detailsPage }) => {
 });
 
 test(`Load theater: tv`, async ({ detailsPage }) => {
+  test.info().annotations.push({
+    type: 'Test',
+    description: 'This is deferred for now',
+  });
+
   await detailsPage.gotoPage(
     'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
   );
@@ -107,5 +109,5 @@ test(`Functionality: Radio - Search transcript`, async ({
   detailsPage,
 }) => {
   await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
-  await detailsPage.searchRadioTranscript('and');
+  await detailsPage.searchRadioTranscriptAndVerifySearchEntryPositions('and');
 });
