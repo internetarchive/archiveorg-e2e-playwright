@@ -109,13 +109,22 @@ export class MusicPage {
   }
 
   async playAndPauseMusic() {
+    const elapsedTimer = this.page
+      .locator('#jw6')
+      .locator('div.jw-icon.jw-icon-inline.jw-text.jw-reset.jw-text-elapsed');
+
     // Play music
     await this.iaMusicTheater.musicPlayerPlayButton.click();
     await expect(
       this.page.locator('#jw6.jwplayer.jw-reset.jw-state-playing'),
     ).toBeVisible();
+    expect(await elapsedTimer.innerText()).toBe('00:00');
+
+    await this.page.waitForTimeout(30000);
+
     // Pause music
     await this.iaMusicTheater.musicPlayerPauseButton.click();
+    expect(await elapsedTimer.innerText()).toBe('00:30');
     await expect(
       this.page.locator('#jw6.jwplayer.jw-reset.jw-state-paused'),
     ).toBeVisible();
