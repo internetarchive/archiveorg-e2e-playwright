@@ -72,13 +72,11 @@ export class IAMusicTheater {
     if (fromChannelSelector) {
       const urlPatternCheck = new RegExp(`webamp=default`);
       await expect(this.page).toHaveURL(urlPatternCheck);
-      await expect(this.page.locator('#webamp')).toBeVisible();
-    } else {
-      await expect(this.page.locator('#theatre-ia')).toBeVisible();
-      await expect(this.page.locator('#jw6')).toBeVisible();
-      await expect(this.page.locator('#main-window')).toBeVisible();
-      await expect(this.page.locator('#equalizer-window')).toBeVisible();
     }
+    await expect(this.page.locator('#theatre-ia')).toBeVisible();
+    await expect(this.page.locator('#jw6')).toBeVisible();
+    await expect(this.page.locator('#main-window')).toBeVisible();
+    await expect(this.page.locator('#equalizer-window')).toBeVisible();
   }
 
   // TODO

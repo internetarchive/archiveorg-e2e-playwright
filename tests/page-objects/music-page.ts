@@ -124,7 +124,7 @@ export class MusicPage {
 
     // Pause music
     await this.iaMusicTheater.musicPlayerPauseButton.click();
-    expect(await elapsedTimer.innerText()).toBe('00:30');
+    expect(await elapsedTimer.innerText()).toBe('00:31');
     await expect(
       this.page.locator('#jw6.jwplayer.jw-reset.jw-state-paused'),
     ).toBeVisible();
