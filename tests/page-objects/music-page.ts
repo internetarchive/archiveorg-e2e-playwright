@@ -108,23 +108,35 @@ export class MusicPage {
     }
   }
 
-  async playAndPauseMusic() {
+  async getElapsedTimeValue() {
     const elapsedTimer = this.page
       .locator('#jw6')
       .locator('div.jw-icon.jw-icon-inline.jw-text.jw-reset.jw-text-elapsed');
 
+    return await elapsedTimer.innerText();
+  }
+
+  async playAndPauseMusic() {
     // Play music
     await this.iaMusicTheater.musicPlayerPlayButton.click();
     await expect(
       this.page.locator('#jw6.jwplayer.jw-reset.jw-state-playing'),
     ).toBeVisible();
-    expect(await elapsedTimer.innerText()).toBe('00:00');
+    expect(await this.getElapsedTimeValue()).toBe('00:00');
 
-    await this.page.waitForTimeout(30000);
+    // Check if the elapsedTime if it's within the expectedTimes
+    // after 10 seconds of playback time.
+    // The elapsedTime is based on how long the test will take to click play-pause button
+    // plus the waiting time for timeout, so we need to check for multiple values.
+    // Might as well check for late playback time because of gapless playback feature.
+    const expectedTimes = ['00:09', '00:10', '00:11'];
+
+    await this.page.waitForTimeout(10000);
 
     // Pause music
     await this.iaMusicTheater.musicPlayerPauseButton.click();
-    expect(await elapsedTimer.innerText()).toBe('00:31');
+
+    expect(expectedTimes).toContain(await this.getElapsedTimeValue());
     await expect(
       this.page.locator('#jw6.jwplayer.jw-reset.jw-state-paused'),
     ).toBeVisible();
