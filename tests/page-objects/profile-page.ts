@@ -54,13 +54,37 @@ export class ProfilePage {
 
   async validateUnownedProfilePageTabs() {
     await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
-    // Only 6 tabs when viewing another patron's profile.
-    expect(await this.pageTabs.locator('li').count()).toBe(6);
+    // Only the six basic tabs when viewing another patron's profile.
+    await Promise.all([
+      expect(this.pageTabs.locator('a[data-tab-id="uploads"]')).toBeVisible({
+        timeout: 60000,
+      }),
+      expect(this.pageTabs.locator('a[data-tab-id="lists"]')).toBeVisible({
+        timeout: 60000,
+      }),
+      expect(this.pageTabs.locator('a[data-tab-id="posts"]')).toBeVisible({
+        timeout: 60000,
+      }),
+      expect(this.pageTabs.locator('a[data-tab-id="reviews"]')).toBeVisible({
+        timeout: 60000,
+      }),
+      expect(this.pageTabs.locator('a[data-tab-id="collections"]')).toBeVisible({
+        timeout: 60000,
+      }),
+      expect(this.pageTabs.locator('a[data-tab-id="web-archive"]')).toBeVisible({
+        timeout: 60000,
+      }),
+    ]);
   }
 
   async validateOwnProfilePageTabs() {
     await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
-    // If viewing *your own* profile, the Loans tab appears too making 7.
-    expect(await this.pageTabs.locator('li').count()).toBe(7);
+    // If viewing *your own* profile, the Loans tab appears too, in addition to all the others.
+    await Promise.all([
+      this.validateUnownedProfilePageTabs(),
+      expect(this.pageTabs.locator('a[data-tab-id="loans"]')).toBeVisible({
+        timeout: 60000,
+      }),
+    ]);
   }
 }
