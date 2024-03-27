@@ -4,12 +4,14 @@ import { CollectionPage } from './page-objects/collection-page';
 import { MusicPage } from './page-objects/music-page';
 import { SearchPage } from './page-objects/search-page';
 import { HomePage } from './page-objects/home-page';
+import { ProfilePage } from './page-objects/profile-page';
 
 type PageFixtures = {
   homePage: HomePage;
   musicPage: MusicPage;
   collectionPage: CollectionPage;
   searchPage: SearchPage;
+  profilePage: ProfilePage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -70,6 +72,21 @@ export const test = base.extend<PageFixtures>({
 
     // Use the fixture value in the test.
     await use(searchPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  profilePage: async ({ page }, use) => {
+    // Set up the fixture.
+    const profilePage = new ProfilePage(page);
+    await profilePage.visit('brewster');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(profilePage);
 
     // Clean up the fixture.
     await page.close();
