@@ -6,4 +6,5 @@ time {
   npm run test:login
   npm run test:music
   npm run test:search
+  npm run test:profile
 }
