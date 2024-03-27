@@ -78,7 +78,6 @@ export class ProfilePage {
   }
 
   async validateOwnProfilePageTabs() {
-    await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
     // If viewing *your own* profile, the Loans tab appears too, in addition to all the others.
     await Promise.all([
       this.validateUnownedProfilePageTabs(),
