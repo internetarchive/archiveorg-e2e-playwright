@@ -5,6 +5,8 @@ import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
 import { SortBar } from './sort-bar';
 
+import { FacetGroupLocatorLabel } from '../models';
+
 export class ProfilePage {
   readonly page: Page;
 
@@ -85,5 +87,16 @@ export class ProfilePage {
         timeout: 60000,
       }),
     ]);
+  }
+
+  async validateDatePickerIsVisible() {
+
+    const facetContainer = await this.collectionFacets.getFacetGroupContainer(
+      FacetGroupLocatorLabel.DATE
+    );
+
+    await facetContainer.locator(
+      'histogram-date-range #container'
+    ).waitFor({state: "visible", timeout: 60000});
   }
 }

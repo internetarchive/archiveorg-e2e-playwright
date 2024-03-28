@@ -36,6 +36,13 @@ export class CollectionFacets {
     expect(await facetGroups.count()).toEqual(6);
   }
 
+  async assertListFacetGroupCount() {
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+
+    const facetGroups = this.collectionFacets.locator('facets-template');
+    expect(await facetGroups.count()).toEqual(7);
+  }
+
   async selectFacetByGroup(
     group: FacetGroupLocatorLabel,
     facetLabel: string,
