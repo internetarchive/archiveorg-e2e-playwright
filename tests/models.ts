@@ -59,3 +59,7 @@ export type ViewFacetMetadata =
   | 'tile-collection-icontitle'
   | 'tile-icontitle'
   | 'list-date';
+
+export type BookPageViewMode = '1up' | '2up' | 'thumb';
+
+export type ChannelSelector = 'Player' | 'Webamp';
