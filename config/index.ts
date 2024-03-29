@@ -11,8 +11,4 @@ export const config = {
     email: process.env.A_EMAIL || '',
     password: process.env.A_PASSWORD || '',
   },
-  authFile: {
-    patron: 'playwright/.auth/patron-user.json',
-    privs: 'playwright/.auth/priv-user.json',
-  }
 }

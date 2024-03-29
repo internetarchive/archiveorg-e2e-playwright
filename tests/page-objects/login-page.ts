@@ -24,8 +24,6 @@ export class LoginPage {
       asUser.password,
     );
     await this.page.locator('input.btn.btn-primary.btn-submit').click();
-
-    await this.page.context().storageState({ path: config.authFile[user] });
   }
 
   async assertAccountSettingsDisplayed() {
