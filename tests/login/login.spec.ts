@@ -1,23 +1,17 @@
-import { test, expect } from '@playwright/test';
+import { test } from '../fixtures';
 
-test('page load - check login page fields elements', async ({ page }) => {
-  await page.goto('/account/login');
-  await expect(page).toHaveURL(/login/);
+test('Login as a patron', async ({ patronLoginPage }) => {
+  await test.step('Check account settings page after logging in, and verify Account Settings page displayed', async () => {
+    await patronLoginPage.assertAccountSettingsDisplayed();
+  });
+});
 
-  const boxRow = page.locator('.box.row');
-  const loginFormElement = boxRow.locator('.login-form-element');
-  const formLoginFields = loginFormElement.locator('.iaform.login-form');
-  const inputEmail = loginFormElement.locator('.form-element.input-email');
-  const inputPassword = loginFormElement.locator(
-    '.form-element.input-password',
-  );
-  const btnLogin = loginFormElement.locator(
-    '.btn.btn-primary.btn-submit.input-submit.js-submit-login',
-  );
+test('Login as a admin', async ({ privsLoginPage }) => {
+  await test.step('Check account settings page after logging in, and verify Account Settings page displayed', async () => {
+    await privsLoginPage.assertAccountSettingsDisplayed();
+  });
+});
 
-  await expect(loginFormElement).toBeVisible({ timeout: 60000 });
-  await expect(inputEmail).toBeVisible({ timeout: 60000 });
-  await expect(formLoginFields).toBeVisible({ timeout: 60000 });
-  await expect(inputPassword).toBeVisible({ timeout: 60000 });
-  await expect(btnLogin).toBeVisible({ timeout: 60000 });
+test('Not logged in', async ({ loginPage }) => {
+  await loginPage.notLoggedIn();
 });
