@@ -32,6 +32,7 @@
 
 ## Running individual tests by category (headless mode)
 
+- run about tests: `npm run test:about`
 - run books tests: `npm run test:books`
 - run collection tests: `npm run test:collection`
 - run details tests: `npm run test:details`
@@ -43,6 +44,7 @@
 
 ## Running individual tests by category (headed mode)
 
+- run about tests: `npm run test:about:headed`
 - run books tests: `npm run test:books:headed`
 - run collection tests: `npm run test:collection:headed`
 - run details tests: `npm run test:details:headed`
@@ -61,6 +63,7 @@
 
 - run command format: `npx playwright test <test-file-path>`
 - sample: `npx playwright test tests/search/search-layout.spec.ts`
+- headed: `npx playwright test tests/search/search-layout.spec.ts --headed`
 
 
 ## Running specific test spec by file in debug mode:
