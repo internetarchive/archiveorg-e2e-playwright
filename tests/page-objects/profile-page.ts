@@ -86,4 +86,30 @@ export class ProfilePage {
       }),
     ]);
   }
+
+  async validateClickedTabAppeared(tabName: string) {
+    const pageTabsText = {
+      uploads: 'UPLOADS',
+      lists: 'LISTS',
+      posts: 'POSTS',
+      reviews: 'REVIEWS',
+      collections: 'COLLECTIONS',
+      'web-archive': 'WEB ARCHIVES',
+    };
+
+    await expect(this.page.locator(`div[slot="${tabName}"]`)).toBeVisible({ timeout: 1000 });
+    await expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
+      pageTabsText[tabName],
+    );
+  }
+
+  async validateResultCountElement(tabName: string) {
+    const resultCountElement = this.page.locator(`div[slot="${tabName}"] collection-browser #results-total`);
+    await expect(resultCountElement).toBeVisible({ timeout: 100 });
+  }
+
+  async validateResultForPostsTab() {
+    const resultElement = this.page.locator('div[slot="posts"] user-forum-posts h2');
+    expect(await resultElement.innerText()).toContain('Posts by')
+  }
 }
