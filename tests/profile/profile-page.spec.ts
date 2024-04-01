@@ -11,17 +11,17 @@ test.describe('Profile Page - Basic display tests', () => {
     const browserPage = await browser.newPage();
     profilePage = new ProfilePage(browserPage);
 
-    // await test.step(`Go to @brewster's profile`, async () => {
-    //   await profilePage.visit('brewster');
-    // });
+    await test.step(`Go to @brewster's profile`, async () => {
+      await profilePage.visit('brewster');
+    });
 
-    // await test.step(`Check if profile avatar, summary and action bar appear`, async () => {
-    //   await profilePage.validatePageHeaderElements();
-    // });
+    await test.step(`Check if profile avatar, summary and action bar appear`, async () => {
+      await profilePage.validatePageHeaderElements();
+    });
 
-    // await test.step(`Check if profile tabs are displayed`, async () => {
-    //   await profilePage.validateUnownedProfilePageTabs();
-    // });
+    await test.step(`Check if profile tabs are displayed`, async () => {
+      await profilePage.validateUnownedProfilePageTabs();
+    });
   });
 
   test(`Tab navigation: Click the different tabs on profile page`, async () => {
