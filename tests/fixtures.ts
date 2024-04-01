@@ -6,6 +6,7 @@ import { SearchPage } from './page-objects/search-page';
 import { HomePage } from './page-objects/home-page';
 import { BookPage } from './page-objects/book-page';
 import { DetailsPage } from './page-objects/details-page';
+import { LoginPage } from './page-objects/login-page';
 
 type PageFixtures = {
   detailsPage: DetailsPage;
@@ -14,6 +15,9 @@ type PageFixtures = {
   musicPage: MusicPage;
   collectionPage: CollectionPage;
   searchPage: SearchPage;
+  guestLoginPage: LoginPage;
+  privsLoginPage: LoginPage;
+  loginPage: LoginPage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -104,6 +108,50 @@ export const test = base.extend<PageFixtures>({
 
     // Use the fixture value in the test.
     await use(searchPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  patronLoginPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const loginPage = new LoginPage(page);
+    await loginPage.loginAs('patron');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(loginPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  privsLoginPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const loginPage = new LoginPage(page);
+    await loginPage.loginAs('privs');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(loginPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  loginPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const loginPage = new LoginPage(page);
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(loginPage);
 
     // Clean up the fixture.
     await page.close();
