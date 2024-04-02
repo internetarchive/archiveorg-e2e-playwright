@@ -42,6 +42,7 @@
 - run login tests: `npm run test:login`
 - run music tests: `npm run test:music`
 - run search tests: `npm run test:search`
+- run profile tests: `npm run test:profile`
 
 
 ## Running individual tests by category (headed mode)
@@ -54,6 +55,7 @@
 - run login tests: `npm run test:login:headed`
 - run music tests: `npm run test:music:headed`
 - run search tests: `npm run test:search:headed`
+- run profile tests: `npm run test:profile:headed`
 
 
 ## Running tests using VSCode Playwright plugin
