@@ -20,6 +20,7 @@ type PageFixtures = {
   guestLoginPage: LoginPage;
   privsLoginPage: LoginPage;
   loginPage: LoginPage;
+  profilePageUploads: ProfilePage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -168,6 +169,21 @@ export const test = base.extend<PageFixtures>({
 
     // Use the fixture value in the test.
     await use(loginPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  profilePageUploads: async ({ page }, use) => {
+    // Set up the fixture.
+    const profilePage = new ProfilePage(page);
+    await profilePage.visit('brewster/uploads');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(profilePage);
 
     // Clean up the fixture.
     await page.close();

@@ -68,12 +68,16 @@ export class ProfilePage {
       expect(this.pageTabs.locator('a[data-tab-id="reviews"]')).toBeVisible({
         timeout: 60000,
       }),
-      expect(this.pageTabs.locator('a[data-tab-id="collections"]')).toBeVisible({
-        timeout: 60000,
-      }),
-      expect(this.pageTabs.locator('a[data-tab-id="web-archive"]')).toBeVisible({
-        timeout: 60000,
-      }),
+      expect(this.pageTabs.locator('a[data-tab-id="collections"]')).toBeVisible(
+        {
+          timeout: 60000,
+        },
+      ),
+      expect(this.pageTabs.locator('a[data-tab-id="web-archive"]')).toBeVisible(
+        {
+          timeout: 60000,
+        },
+      ),
     ]);
   }
 
