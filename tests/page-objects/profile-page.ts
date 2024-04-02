@@ -56,8 +56,12 @@ export class ProfilePage {
       expect(this.pageTabs.locator('a[data-tab-id="lists"]')).toBeVisible(),
       expect(this.pageTabs.locator('a[data-tab-id="posts"]')).toBeVisible(),
       expect(this.pageTabs.locator('a[data-tab-id="reviews"]')).toBeVisible(),
-      expect(this.pageTabs.locator('a[data-tab-id="collections"]')).toBeVisible(),
-      expect(this.pageTabs.locator('a[data-tab-id="web-archive"]')).toBeVisible(),
+      expect(
+        this.pageTabs.locator('a[data-tab-id="collections"]'),
+      ).toBeVisible(),
+      expect(
+        this.pageTabs.locator('a[data-tab-id="web-archive"]'),
+      ).toBeVisible(),
     ]);
   }
 
@@ -79,19 +83,25 @@ export class ProfilePage {
       'web-archive': 'WEB ARCHIVES',
     };
 
-    await expect(this.page.locator(`div[slot="${tabName}"]`)).toBeVisible({ timeout: 1000 });
-    await expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
-      pageTabsText[tabName],
-    );
+    await expect(this.page.locator(`div[slot="${tabName}"]`)).toBeVisible({
+      timeout: 1000,
+    });
+    await expect(
+      await this.pageTabs.locator('li.tab.active').innerText(),
+    ).toContain(pageTabsText[tabName]);
   }
 
   async validateResultCountElement(tabName: string) {
-    const resultCountElement = this.page.locator(`div[slot="${tabName}"] collection-browser #results-total`);
+    const resultCountElement = this.page.locator(
+      `div[slot="${tabName}"] collection-browser #results-total`,
+    );
     await expect(resultCountElement).toBeVisible({ timeout: 100 });
   }
 
   async validateResultForPostsTab() {
-    const resultElement = this.page.locator('div[slot="posts"] user-forum-posts h2');
-    expect(await resultElement.innerText()).toContain('Posts by')
+    const resultElement = this.page.locator(
+      'div[slot="posts"] user-forum-posts h2',
+    );
+    expect(await resultElement.innerText()).toContain('Posts by');
   }
 }

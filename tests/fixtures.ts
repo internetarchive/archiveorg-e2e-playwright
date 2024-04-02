@@ -125,7 +125,7 @@ export const test = base.extend<PageFixtures>({
     });
 
     await use(profilePage);
-    
+
     // Clean up the fixture.
     await page.close();
   },
