@@ -20,6 +20,7 @@ type PageFixtures = {
   patronLoginPage: LoginPage;
   privsLoginPage: LoginPage;
   loginPage: LoginPage;
+  useLoginPage: LoginPage;
   profilePageUploads: ProfilePage;
 };
 
@@ -172,6 +173,17 @@ export const test = base.extend<PageFixtures>({
 
     // Clean up the fixture.
     await page.close();
+  },
+  useLoginPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const loginPage = new LoginPage(page);
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(loginPage);
   },
   profilePageUploads: async ({ page }, use) => {
     // Set up the fixture.
