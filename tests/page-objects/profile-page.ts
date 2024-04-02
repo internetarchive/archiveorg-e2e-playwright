@@ -86,7 +86,7 @@ export class ProfilePage {
     await expect(this.page.locator(`div[slot="${tabName}"]`)).toBeVisible({
       timeout: 1000,
     });
-    await expect(
+    expect(
       await this.pageTabs.locator('li.tab.active').innerText(),
     ).toContain(pageTabsText[tabName]);
   }

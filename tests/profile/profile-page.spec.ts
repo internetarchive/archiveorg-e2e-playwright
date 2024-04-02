@@ -19,7 +19,7 @@ test.describe('Profile Page - Basic display tests', () => {
       await profilePage.validatePageHeaderElements();
     });
 
-    await test.step(`Check if profile tabs are displayed`, async () => {
+    await test.step(`Check if correct profile tabs are displayed for guest user`, async () => {
       await profilePage.validateUnownedProfilePageTabs();
     });
   });
