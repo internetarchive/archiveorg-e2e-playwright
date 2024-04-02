@@ -29,6 +29,8 @@
 
     `npm run test:headed`
 
+- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing 
+
 
 ## Running individual tests by category (headless mode)
 
