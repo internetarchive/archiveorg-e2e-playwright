@@ -17,7 +17,7 @@ type PageFixtures = {
   collectionPage: CollectionPage;
   searchPage: SearchPage;
   profilePage: ProfilePage;
-  guestLoginPage: LoginPage;
+  patronLoginPage: LoginPage;
   privsLoginPage: LoginPage;
   loginPage: LoginPage;
   profilePageUploads: ProfilePage;
