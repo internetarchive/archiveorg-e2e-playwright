@@ -42,6 +42,15 @@ export class CollectionFacets {
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
   }
+  
+  async assertDatePickerVisible() {
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+
+    const datePicker = await this.getFacetGroupContainer(
+      FacetGroupLocatorLabel.DATE,
+    );
+    expect(await datePicker?.innerText()).toContain('Year');
+  }
 
   async selectFacetByGroup(
     group: FacetGroupLocatorLabel,

@@ -29,25 +29,33 @@
 
     `npm run test:headed`
 
+- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing 
+
 
 ## Running individual tests by category (headless mode)
 
+- run about tests: `npm run test:about`
 - run books tests: `npm run test:books`
 - run collection tests: `npm run test:collection`
+- run details tests: `npm run test:details`
 - run home tests: `npm run test:home`
 - run login tests: `npm run test:login`
 - run music tests: `npm run test:music`
 - run search tests: `npm run test:search`
+- run profile tests: `npm run test:profile`
 
 
 ## Running individual tests by category (headed mode)
 
+- run about tests: `npm run test:about:headed`
 - run books tests: `npm run test:books:headed`
 - run collection tests: `npm run test:collection:headed`
+- run details tests: `npm run test:details:headed`
 - run home tests: `npm run test:home:headed`
 - run login tests: `npm run test:login:headed`
 - run music tests: `npm run test:music:headed`
 - run search tests: `npm run test:search:headed`
+- run profile tests: `npm run test:profile:headed`
 
 
 ## Running tests using VSCode Playwright plugin
@@ -59,6 +67,7 @@
 
 - run command format: `npx playwright test <test-file-path>`
 - sample: `npx playwright test tests/search/search-layout.spec.ts`
+- headed: `npx playwright test tests/search/search-layout.spec.ts --headed`
 
 
 ## Running specific test spec by file in debug mode:

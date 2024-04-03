@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-require('dotenv').config();
+import { config } from './config';
 
 const formattedDateTime = () => {
   const d = new Date();
@@ -40,7 +40,8 @@ export default defineConfig({
   ],
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.BASE_URL || 'https://archive.org',
+    // This is set in config/index.ts
+    baseURL: config.baseURL,
   },
 
   /* Configure projects for major browsers */

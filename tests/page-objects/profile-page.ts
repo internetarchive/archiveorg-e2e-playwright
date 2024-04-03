@@ -42,40 +42,28 @@ export class ProfilePage {
   }
 
   async validatePageHeaderElements() {
-    await expect(this.page.locator('#profile-header')).toBeVisible({
-      timeout: 60000,
-    });
+    await expect(this.page.locator('#profile-header')).toBeVisible();
     await expect(
       this.page.locator('#top-matter > div.thumbnail-frame'),
-    ).toBeVisible({ timeout: 60000 });
-    await expect(this.pageSummary).toBeVisible({ timeout: 60000 });
-    await expect(this.page.locator('action-bar')).toBeVisible({
-      timeout: 60000,
-    });
+    ).toBeVisible();
+    await expect(this.pageSummary).toBeVisible();
+    await expect(this.page.locator('action-bar')).toBeVisible();
   }
 
   async validateUnownedProfilePageTabs() {
     await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
     // Only the six basic tabs when viewing another patron's profile.
     await Promise.all([
-      expect(this.pageTabs.locator('a[data-tab-id="uploads"]')).toBeVisible({
-        timeout: 60000,
-      }),
-      expect(this.pageTabs.locator('a[data-tab-id="lists"]')).toBeVisible({
-        timeout: 60000,
-      }),
-      expect(this.pageTabs.locator('a[data-tab-id="posts"]')).toBeVisible({
-        timeout: 60000,
-      }),
-      expect(this.pageTabs.locator('a[data-tab-id="reviews"]')).toBeVisible({
-        timeout: 60000,
-      }),
-      expect(this.pageTabs.locator('a[data-tab-id="collections"]')).toBeVisible({
-        timeout: 60000,
-      }),
-      expect(this.pageTabs.locator('a[data-tab-id="web-archive"]')).toBeVisible({
-        timeout: 60000,
-      }),
+      expect(this.pageTabs.locator('a[data-tab-id="uploads"]')).toBeVisible(),
+      expect(this.pageTabs.locator('a[data-tab-id="lists"]')).toBeVisible(),
+      expect(this.pageTabs.locator('a[data-tab-id="posts"]')).toBeVisible(),
+      expect(this.pageTabs.locator('a[data-tab-id="reviews"]')).toBeVisible(),
+      expect(
+        this.pageTabs.locator('a[data-tab-id="collections"]'),
+      ).toBeVisible(),
+      expect(
+        this.pageTabs.locator('a[data-tab-id="web-archive"]'),
+      ).toBeVisible(),
     ]);
   }
 
@@ -83,9 +71,8 @@ export class ProfilePage {
     // If viewing *your own* profile, the Loans tab appears too, in addition to all the others.
     await Promise.all([
       this.validateUnownedProfilePageTabs(),
-      expect(this.pageTabs.locator('a[data-tab-id="loans"]')).toBeVisible({
-        timeout: 60000,
-      }),
+
+      expect(this.pageTabs.locator('a[data-tab-id="loans"]')).toBeVisible(),
     ]);
   }
 
@@ -98,5 +85,38 @@ export class ProfilePage {
     await facetContainer.locator(
       'histogram-date-range #container'
     ).waitFor({state: "visible", timeout: 60000});
+  }
+
+  async validateClickedTabAppeared(tabName: string) {
+    const pageTabsText = {
+      uploads: 'UPLOADS',
+      lists: 'LISTS',
+      posts: 'POSTS',
+      reviews: 'REVIEWS',
+      collections: 'COLLECTIONS',
+      'web-archive': 'WEB ARCHIVES',
+    };
+
+    await expect(this.page.locator(`div[slot="${tabName}"]`)).toBeVisible({
+      timeout: 1000,
+    });
+    
+    expect(
+      await this.pageTabs.locator('li.tab.active').innerText(),
+    ).toContain(pageTabsText[tabName]);
+  }
+
+  async validateResultCountElement(tabName: string) {
+    const resultCountElement = this.page.locator(
+      `div[slot="${tabName}"] collection-browser #results-total`,
+    );
+    await expect(resultCountElement).toBeVisible({ timeout: 100 });
+  }
+
+  async validateResultForPostsTab() {
+    const resultElement = this.page.locator(
+      'div[slot="posts"] user-forum-posts h2',
+    );
+    expect(await resultElement.innerText()).toContain('Posts by');
   }
 }

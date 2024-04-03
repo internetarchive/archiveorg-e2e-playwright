@@ -5,16 +5,55 @@ import { MusicPage } from './page-objects/music-page';
 import { SearchPage } from './page-objects/search-page';
 import { HomePage } from './page-objects/home-page';
 import { ProfilePage } from './page-objects/profile-page';
+import { BookPage } from './page-objects/book-page';
+import { DetailsPage } from './page-objects/details-page';
+import { LoginPage } from './page-objects/login-page';
 
 type PageFixtures = {
+  detailsPage: DetailsPage;
+  bookPage: BookPage;
   homePage: HomePage;
   musicPage: MusicPage;
   collectionPage: CollectionPage;
   searchPage: SearchPage;
   profilePage: ProfilePage;
+  patronLoginPage: LoginPage;
+  privsLoginPage: LoginPage;
+  loginPage: LoginPage;
+  profilePageUploads: ProfilePage;
 };
 
 export const test = base.extend<PageFixtures>({
+  detailsPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const detailsPage = new DetailsPage(page);
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(detailsPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  bookPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const bookPage = new BookPage(page);
+
+    await page.goto('/details/theworksofplato01platiala');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(bookPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
   homePage: async ({ page }, use) => {
     // Set up the fixture.
     const homePage = new HomePage(page);
@@ -80,6 +119,65 @@ export const test = base.extend<PageFixtures>({
     // Set up the fixture.
     const profilePage = new ProfilePage(page);
     await profilePage.visit('brewster');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+
+    await use(profilePage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  patronLoginPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const loginPage = new LoginPage(page);
+    await loginPage.loginAs('patron');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(loginPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  privsLoginPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const loginPage = new LoginPage(page);
+    await loginPage.loginAs('privs');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(loginPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  loginPage: async ({ page }, use) => {
+    // Set up the fixture.
+    const loginPage = new LoginPage(page);
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(loginPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  profilePageUploads: async ({ page }, use) => {
+    // Set up the fixture.
+    const profilePage = new ProfilePage(page);
+    await profilePage.visit('brewster/uploads');
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
