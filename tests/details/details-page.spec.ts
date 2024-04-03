@@ -71,11 +71,11 @@ test(`Load theater: image (single)`, async ({ detailsPage }) => {
 });
 
 test(`Load theater: radio as priv'd user`, async ({
-  useLoginPage,
+  loginPage,
   detailsPage,
 }) => {
   await test.step(`Do login as priv'd user`, async () => {
-    await useLoginPage.loginAs('privs');
+    await loginPage.loginAs('privs');
   });
   await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
     await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
@@ -85,11 +85,11 @@ test(`Load theater: radio as priv'd user`, async ({
 });
 
 test(`Load theater: tv as priv'd user`, async ({
-  useLoginPage,
+  loginPage,
   detailsPage,
 }) => {
   await test.step(`Do login as priv'd user`, async () => {
-    await useLoginPage.loginAs('privs');
+    await loginPage.loginAs('privs');
   });
   await test.step(`Go to tv details page and verify priv'd user borrow program`, async () => {
     await detailsPage.gotoPage(
