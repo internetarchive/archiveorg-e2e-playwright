@@ -35,7 +35,7 @@
 ## Running individual tests by category (headless mode)
 
 - run about tests: `npm run test:about`
-- run about tests: `npm run test:av`
+- run av tests: `npm run test:av`
 - run books tests: `npm run test:books`
 - run collection tests: `npm run test:collection`
 - run details tests: `npm run test:details`
@@ -48,7 +48,7 @@
 ## Running individual tests by category (headed mode)
 
 - run about tests: `npm run test:about:headed`
-- run about tests: `npm run test:av:headed`
+- run av tests: `npm run test:av:headed`
 - run books tests: `npm run test:books:headed`
 - run collection tests: `npm run test:collection:headed`
 - run details tests: `npm run test:details:headed`
