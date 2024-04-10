@@ -17,8 +17,8 @@
 
     `npx playwright install`
 
-- run all the tests in headless mode and generate 1 whole test report: 
-    
+- run all the tests in headless mode and generate 1 whole test report:
+
     `npm run test`
 
 - run all the tests in headless mode by each category and generate test report by category:
@@ -29,12 +29,13 @@
 
     `npm run test:headed`
 
-- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing 
+- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing
 
 
 ## Running individual tests by category (headless mode)
 
 - run about tests: `npm run test:about`
+- run about tests: `npm run test:av`
 - run books tests: `npm run test:books`
 - run collection tests: `npm run test:collection`
 - run details tests: `npm run test:details`
@@ -47,6 +48,7 @@
 ## Running individual tests by category (headed mode)
 
 - run about tests: `npm run test:about:headed`
+- run about tests: `npm run test:av:headed`
 - run books tests: `npm run test:books:headed`
 - run collection tests: `npm run test:collection:headed`
 - run details tests: `npm run test:details:headed`
