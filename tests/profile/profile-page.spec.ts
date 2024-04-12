@@ -18,7 +18,6 @@ test.describe('Profile Page - Basic display tests', () => {
     await test.step(`Check if profile avatar, summary and action bar appear`, async () => {
       await profilePage.validatePageHeaderElements();
     });
-
     await test.step(`Check if correct profile tabs are displayed for guest user`, async () => {
       await profilePage.validateUnownedProfilePageTabs();
     });
@@ -63,7 +62,37 @@ test.describe('Profile Page - Basic display tests', () => {
       await profilePage.validateClickedTabAppeared('web-archive');
       await profilePage.validateResultCountElement('web-archive');
     });
+  
+    await test.step(`Check if profile tabs are displayed`, async () => {
+      await profilePage.validateUnownedProfilePageTabs();
+    });
+  
+});
+
+test.describe('Profile Page - Lists', () => {
+  test.describe.configure({ mode: 'serial' });
+
+  test(`Facets appear`, async ({ browser }) => {
+    const browserPage = await browser.newPage();
+    profilePage = new ProfilePage(browserPage);
+
+    await test.step(`Go to @robertkeizer profile`, async () => {
+      await profilePage.visit('robertkeizer');
+    });
+
+    await test.step(`Navigate to lists tab`, async () => {
+      await profilePage.clickProfileTab('lists');
+    });
+
+    await test.step(`7 facet groups appear`, async () => {
+      await profilePage.collectionFacets.assertListFacetGroupCount();
+    });
+
+    await test.step(`Date picker appears`, async () => {
+      await profilePage.validateDatePickerIsVisible();
+    });
   });
+
 });
 
 test.afterAll(async () => {
