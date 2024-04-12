@@ -124,7 +124,6 @@ export const test = base.extend<PageFixtures>({
       route.abort();
     });
 
-
     await use(profilePage);
 
     // Clean up the fixture.

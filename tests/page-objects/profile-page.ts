@@ -77,14 +77,13 @@ export class ProfilePage {
   }
 
   async validateDatePickerIsVisible() {
-
     const facetContainer = await this.collectionFacets.getFacetGroupContainer(
-      FacetGroupLocatorLabel.DATE
+      FacetGroupLocatorLabel.DATE,
     );
 
-    await facetContainer.locator(
-      'histogram-date-range #container'
-    ).waitFor({state: "visible", timeout: 60000});
+    await facetContainer
+      .locator('histogram-date-range #container')
+      .waitFor({ state: 'visible', timeout: 60000 });
   }
 
   async validateClickedTabAppeared(tabName: string) {
@@ -100,10 +99,10 @@ export class ProfilePage {
     await expect(this.page.locator(`div[slot="${tabName}"]`)).toBeVisible({
       timeout: 1000,
     });
-    
-    expect(
-      await this.pageTabs.locator('li.tab.active').innerText(),
-    ).toContain(pageTabsText[tabName]);
+
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
+      pageTabsText[tabName],
+    );
   }
 
   async validateResultCountElement(tabName: string) {

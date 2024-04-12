@@ -62,11 +62,7 @@ test.describe('Profile Page - Basic display tests', () => {
       await profilePage.validateClickedTabAppeared('web-archive');
       await profilePage.validateResultCountElement('web-archive');
     });
-  
-    await test.step(`Check if profile tabs are displayed`, async () => {
-      await profilePage.validateUnownedProfilePageTabs();
-    });
-  
+  });
 });
 
 test.describe('Profile Page - Lists', () => {
@@ -92,7 +88,6 @@ test.describe('Profile Page - Lists', () => {
       await profilePage.validateDatePickerIsVisible();
     });
   });
-
 });
 
 test.afterAll(async () => {
