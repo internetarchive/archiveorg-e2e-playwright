@@ -4,6 +4,7 @@ import { CollectionPage } from './page-objects/collection-page';
 import { MusicPage } from './page-objects/music-page';
 import { SearchPage } from './page-objects/search-page';
 import { HomePage } from './page-objects/home-page';
+import { ProfilePage } from './page-objects/profile-page';
 import { BookPage } from './page-objects/book-page';
 import { DetailsPage } from './page-objects/details-page';
 import { LoginPage } from './page-objects/login-page';
@@ -15,9 +16,11 @@ type PageFixtures = {
   musicPage: MusicPage;
   collectionPage: CollectionPage;
   searchPage: SearchPage;
-  guestLoginPage: LoginPage;
+  profilePage: ProfilePage;
+  patronLoginPage: LoginPage;
   privsLoginPage: LoginPage;
   loginPage: LoginPage;
+  profilePageUploads: ProfilePage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -112,6 +115,20 @@ export const test = base.extend<PageFixtures>({
     // Clean up the fixture.
     await page.close();
   },
+  profilePage: async ({ page }, use) => {
+    // Set up the fixture.
+    const profilePage = new ProfilePage(page);
+    await profilePage.visit('brewster');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    await use(profilePage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
   patronLoginPage: async ({ page }, use) => {
     // Set up the fixture.
     const loginPage = new LoginPage(page);
@@ -152,6 +169,21 @@ export const test = base.extend<PageFixtures>({
 
     // Use the fixture value in the test.
     await use(loginPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  profilePageUploads: async ({ page }, use) => {
+    // Set up the fixture.
+    const profilePage = new ProfilePage(page);
+    await profilePage.visit('brewster/uploads');
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(profilePage);
 
     // Clean up the fixture.
     await page.close();
