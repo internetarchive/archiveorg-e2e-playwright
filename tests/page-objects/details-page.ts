@@ -3,7 +3,6 @@ import { type Page, type Locator, expect } from '@playwright/test';
 import { BookReader } from './book-reader';
 import { LendingBar } from './lending-bar';
 import { IAMusicTheater } from './music-theater';
-import { PageType } from '../models';
 
 export class DetailsPage {
   readonly page: Page;
@@ -149,19 +148,29 @@ export class DetailsPage {
     await expect(this.page.locator('#cols')).toBeVisible();
   }
 
-  async verifyBorrowProgram(page: PageType) {
-    if (page === 'radio') {
-      await expect(
-        this.page.locator('div.topinblock.borrow-program-btn'),
-      ).toBeVisible();
-      await expect(this.page.locator('#radio-borrow-button')).toBeVisible();
-    } else {
-      // TV details page borrow program check
-      await expect(
-        this.page.locator('div.topinblock.borrow-dvd-btn'),
-      ).toBeVisible();
-      await expect(this.page.locator('#tvborrow')).toBeVisible();
-    }
+  async verifyBorrowProgramUnavailable() {
+    await expect(
+      this.page.locator('span:has-text("Borrow Program")'),
+    ).not.toBeVisible();
+  }
+
+  async verifyRadioBorrowProgramAvailable() {
+    await expect(
+      this.page.locator('div.topinblock.borrow-program-btn'),
+    ).toBeVisible();
+    await expect(this.page.locator('#radio-borrow-button')).toBeVisible();
+
+    await expect(
+      this.page.locator('span:has-text("Borrow Program")'),
+    ).toBeVisible();
+  }
+
+  async verifyTVBorrowProgramAvailable() {
+    await expect(
+      this.page.locator('div.topinblock.borrow-dvd-btn'),
+    ).toBeVisible();
+    await expect(this.page.locator('#tvborrow')).toBeVisible();
+
     await expect(
       this.page.locator('span:has-text("Borrow Program")'),
     ).toBeVisible();

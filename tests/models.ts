@@ -64,6 +64,6 @@ export type BookPageViewMode = '1up' | '2up' | 'thumb';
 
 export type ChannelSelector = 'Player' | 'Webamp';
 
-export type UserType = 'privs' | 'patron';
+export type UserType = 'privs' | 'patron' | 'guest';
 
 export type PageType = 'radio' | 'tv';
