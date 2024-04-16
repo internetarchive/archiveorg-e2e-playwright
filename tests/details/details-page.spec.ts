@@ -94,7 +94,7 @@ test(`Load theater: radio as regular patron user`, async ({
   await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
     await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
     await detailsPage.radioPlayerTheaterDisplay();
-    await detailsPage.verifyBorrowProgramUnavailable();
+    await detailsPage.verifyRadioBorrowProgramUnavailable();
   });
 });
 
@@ -102,7 +102,7 @@ test(`Load theater: radio as guest/not logged in user`, async ({ detailsPage }) 
   await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
     await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
     await detailsPage.radioPlayerTheaterDisplay();
-    await detailsPage.verifyBorrowProgramUnavailable();
+    await detailsPage.verifyRadioBorrowProgramUnavailable();
   });
 });
 

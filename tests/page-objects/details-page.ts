@@ -148,12 +148,6 @@ export class DetailsPage {
     await expect(this.page.locator('#cols')).toBeVisible();
   }
 
-  async verifyBorrowProgramUnavailable() {
-    await expect(
-      this.page.locator('span:has-text("Borrow Program")'),
-    ).not.toBeVisible();
-  }
-
   async verifyRadioBorrowProgramAvailable() {
     await expect(
       this.page.locator('div.topinblock.borrow-program-btn'),
@@ -165,6 +159,17 @@ export class DetailsPage {
     ).toBeVisible();
   }
 
+  async verifyRadioBorrowProgramUnavailable() {
+    await expect(
+      this.page.locator('div.topinblock.borrow-program-btn'),
+    ).not.toBeVisible();
+    await expect(this.page.locator('#radio-borrow-button')).not.toBeVisible();
+
+    await expect(
+      this.page.locator('span:has-text("Borrow Program")'),
+    ).not.toBeVisible();
+  }
+
   async verifyTVBorrowProgramAvailable() {
     await expect(
       this.page.locator('div.topinblock.borrow-dvd-btn'),
@@ -174,6 +179,17 @@ export class DetailsPage {
     await expect(
       this.page.locator('span:has-text("Borrow Program")'),
     ).toBeVisible();
+  }
+
+  async verifyTVBorrowProgramUnavailable() {
+    await expect(
+      this.page.locator('div.topinblock.borrow-dvd-btn'),
+    ).not.toBeVisible();
+    await expect(this.page.locator('#tvborrow')).not.toBeVisible();
+
+    await expect(
+      this.page.locator('span:has-text("Borrow Program")'),
+    ).not.toBeVisible();
   }
 
   async videoPlayerTheaterDisplay() {
