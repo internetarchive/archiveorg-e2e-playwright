@@ -171,6 +171,7 @@ export class DetailsPage {
   }
 
   async verifyTVBorrowProgramAvailable() {
+    // Borrow Program is always visible for everyone
     await expect(
       this.page.locator('div.topinblock.borrow-dvd-btn'),
     ).toBeVisible();
@@ -179,17 +180,6 @@ export class DetailsPage {
     await expect(
       this.page.locator('span:has-text("Borrow Program")'),
     ).toBeVisible();
-  }
-
-  async verifyTVBorrowProgramUnavailable() {
-    await expect(
-      this.page.locator('div.topinblock.borrow-dvd-btn'),
-    ).not.toBeVisible();
-    await expect(this.page.locator('#tvborrow')).not.toBeVisible();
-
-    await expect(
-      this.page.locator('span:has-text("Borrow Program")'),
-    ).not.toBeVisible();
   }
 
   async videoPlayerTheaterDisplay() {
