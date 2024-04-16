@@ -28,7 +28,8 @@ export class LoginPage {
     );
     await this.page.locator('input.btn.btn-primary.btn-submit').click();
 
-    await this.page.waitForURL('https://archive.org/');
+    // should go back to baseUrl
+    await this.page.waitForURL('/');
   }
 
   async assertAccountSettingsDisplayed() {
