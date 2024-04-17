@@ -141,7 +141,45 @@ export class DetailsPage {
 
   async radioPlayerTheaterDisplay() {
     await expect(this.iaTheater.locator('radio-player')).toBeVisible();
-    // borrow program appears only if loggedIn privUser
+  }
+
+  async tvTheaterDisplay() {
+    await expect(this.page.locator('#tvbanner')).toBeVisible();
+    await expect(this.page.locator('#cols')).toBeVisible();
+  }
+
+  async verifyRadioBorrowProgramAvailable() {
+    await expect(
+      this.page.locator('div.topinblock.borrow-program-btn'),
+    ).toBeVisible();
+    await expect(this.page.locator('#radio-borrow-button')).toBeVisible();
+
+    await expect(
+      this.page.locator('span:has-text("Borrow Program")'),
+    ).toBeVisible();
+  }
+
+  async verifyRadioBorrowProgramUnavailable() {
+    await expect(
+      this.page.locator('div.topinblock.borrow-program-btn'),
+    ).not.toBeVisible();
+    await expect(this.page.locator('#radio-borrow-button')).not.toBeVisible();
+
+    await expect(
+      this.page.locator('span:has-text("Borrow Program")'),
+    ).not.toBeVisible();
+  }
+
+  async verifyTVBorrowProgramAvailable() {
+    // Borrow Program is always visible for everyone
+    await expect(
+      this.page.locator('div.topinblock.borrow-dvd-btn'),
+    ).toBeVisible();
+    await expect(this.page.locator('#tvborrow')).toBeVisible();
+
+    await expect(
+      this.page.locator('span:has-text("Borrow Program")'),
+    ).toBeVisible();
   }
 
   async videoPlayerTheaterDisplay() {

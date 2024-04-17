@@ -1,9 +1,12 @@
 import { type Page, Locator, expect } from '@playwright/test';
 
 import { config } from '../../config';
+import { UserType } from '../models';
 
 export class LoginPage {
   readonly authTemplate: Locator;
+
+  readonly page: Page;
 
   public constructor(page: Page) {
     this.page = page;
@@ -24,6 +27,9 @@ export class LoginPage {
       asUser.password,
     );
     await this.page.locator('input.btn.btn-primary.btn-submit').click();
+
+    // should go back to baseUrl
+    await this.page.waitForURL('/');
   }
 
   async assertAccountSettingsDisplayed() {
