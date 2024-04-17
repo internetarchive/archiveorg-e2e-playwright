@@ -37,7 +37,9 @@ export class InfiniteScroller {
     );
     this.displayStyleSelectorOptions =
       this.displayStyleSelector.locator('ul > li');
-    this.firstItemTile = this.infiniteScrollerSectionContainer.locator('article').nth(2); // page.locator('#container > article:nth-child(2)');
+    this.firstItemTile = this.infiniteScrollerSectionContainer
+      .locator('article')
+      .nth(2); // page.locator('#container > article:nth-child(2)');
   }
 
   async awaitLoadingState() {

@@ -24,12 +24,12 @@ test.describe('Collection Page - Basic display tests', () => {
     });
   });
 
-test(`Collections page - "More..." link to About tab appears below description`, async ({
-  collectionPage,
-}) => {
-  await test.step(`Go to "ytjdradio" collection page`, async () => {
-    await collectionPage.visit('ytjdradio');
-  });
+  test(`Collections page - "More..." link to About tab appears below description`, async ({
+    collectionPage,
+  }) => {
+    await test.step(`Go to "ytjdradio" collection page`, async () => {
+      await collectionPage.visit('ytjdradio');
+    });
 
     await test.step(`Click the "More..." link and check if About page is displayed`, async () => {
       await collectionPage.clickMoreBtnFromSummary();

@@ -1,4 +1,4 @@
-import { test } from '../fixtures';
+import { test } from '../../tests/fixtures';
 
 import {
   FacetGroupLocatorLabel,
@@ -28,12 +28,11 @@ test(`Select a facet for "videos" and clear facet filters`, async ({
     );
   });
 
-  test('Clear facet filters', async () => {
-    await test.step(`Click "Clear all filters"`, async () => {
-      await collectionPage.searchPage.clickClearAllFilters();
-      await collectionPage.searchPage.assertClearAllFiltersNotVisible();
-    });
+  await test.step(`Click "Clear all filters"`, async () => {
+    await collectionPage.searchPage.clickClearAllFilters();
+    await collectionPage.searchPage.assertClearAllFiltersNotVisible();
   });
+});
 
 test(`Select Year Published range via date picker`, async ({
   collectionPage,
@@ -43,41 +42,34 @@ test(`Select Year Published range via date picker`, async ({
     await collectionPage.collectionFacets.displaysResultCount();
   });
 
-    await test.step(`Switch to list view mode to check the first 10 item results Published texts are ONLY 2014 or 2015`, async () => {
-      await collectionPage.infiniteScroller.clickViewMode(
-        LayoutViewModeLocator.LIST,
-      );
-      await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-        'list-date',
-        ['1954', '1955'],
-        true,
-        10,
-      );
-    });
+  await test.step(`Switch to list view mode to check the first 10 item results Published texts are ONLY 2014 or 2015`, async () => {
+    await collectionPage.infiniteScroller.clickViewMode(
+      LayoutViewModeLocator.LIST,
+    );
+    await collectionPage.infiniteScroller.validateIncludedFacetedResults(
+      'list-date',
+      ['1954', '1955'],
+      true,
+      10,
+    );
   });
+});
 
-  test(`Negative facet to exclude "audio"`, async () => {
-    await test.step(`Click "Clear all filters" and switch to Tile view mode`, async () => {
-      await collectionPage.searchPage.clickClearAllFilters();
-      await collectionPage.infiniteScroller.clickViewMode(
-        LayoutViewModeLocator.TILE,
-      );
-    });
-
-    await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
-      await collectionPage.collectionFacets.selectFacetByGroup(
-        FacetGroupLocatorLabel.MEDIATYPE,
-        'audio',
-        'negative',
-      );
-      await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-        'tile-collection-icontitle',
-        ['Audio'],
-        false,
-        20,
-      );
-    });
+test(`Negative facet to exclude "audio"`, async ({ collectionPage }) => {
+  await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
+    await collectionPage.collectionFacets.selectFacetByGroup(
+      FacetGroupLocatorLabel.MEDIATYPE,
+      'audio',
+      'negative',
+    );
+    await collectionPage.infiniteScroller.validateIncludedFacetedResults(
+      'tile-collection-icontitle',
+      ['Audio'],
+      false,
+      20,
+    );
   });
+});
 
 test(`Facets can be selected via "Select filters" modal`, async ({
   collectionPage,
