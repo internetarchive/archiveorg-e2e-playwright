@@ -37,13 +37,12 @@ export class InfiniteScroller {
     );
     this.displayStyleSelectorOptions =
       this.displayStyleSelector.locator('ul > li');
-    this.firstItemTile = this.infiniteScrollerSectionContainer
-      .locator('article')
-      .first();
+    this.firstItemTile = this.infiniteScrollerSectionContainer.locator('article').nth(2); // page.locator('#container > article:nth-child(2)');
   }
 
   async awaitLoadingState() {
     await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForTimeout(5000);
   }
 
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
@@ -77,9 +76,11 @@ export class InfiniteScroller {
 
   async hoverToFirstItem() {
     await this.awaitLoadingState();
+
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
+    await this.firstItemTile.locator('tile-hover-pane').waitFor();
     await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible({
       timeout: 60000,
     });
