@@ -23,28 +23,28 @@ export class CollectionFacets {
   }
 
   async assertSearchFacetGroupCount() {
-    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
   }
 
   async assertCollectionFacetGroupCount() {
-    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(6);
   }
 
   async assertListFacetGroupCount() {
-    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
   }
 
   async assertDatePickerVisible() {
-    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const datePicker = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,
@@ -114,7 +114,7 @@ export class CollectionFacets {
   }
 
   async fillUpYearFilters(startDate: string, endDate: string) {
-    await this.page.waitForLoadState('domcontentloaded', { timeout: 60000 });
+    await this.page.waitForLoadState('load', { timeout: 60000 });
 
     const facetContent = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,

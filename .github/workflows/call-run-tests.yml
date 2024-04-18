@@ -14,14 +14,20 @@ jobs:
           node-version: 20
           cache: 'npm'
 
+      - name: Install jq
+        run: sudo apt-get install jq -y
+
       - name: Install dependencies
         run: npm ci
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
-        run: ./run-tests.sh
+      - name: Run Playwright short tests
+        run: ./run-tests.sh -t short
+
+      - name: Run Playwright long tests
+        run: ./run-tests.sh -t long
 
       - uses: actions/upload-artifact@v3
         if: always()

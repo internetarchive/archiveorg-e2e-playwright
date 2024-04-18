@@ -17,13 +17,19 @@
 
     `npx playwright install`
 
+- install jq for json reporter summary reading:
+
+    `brew install jq`
+
 - run all the tests in headless mode and generate 1 whole test report:
 
     `npm run test`
 
-- run all the tests in headless mode by each category and generate test report by category:
+- run all the tests in headless mode by each category and generate test report:
 
-    `./run-tests.sh`
+    - short tests category: `./run-tests.sh -t short`
+
+    - long tests category: `./run-tests.sh -t long`
 
 - run all the tests in headed mode (this will load multiple browsers):
 

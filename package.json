@@ -50,7 +50,9 @@
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
+    "jq": "^1.7.2",
     "playwright": "^1.41.2",
+    "playwright-ctrf-json-reporter": "^0.0.9",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {

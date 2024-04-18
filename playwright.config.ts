@@ -16,6 +16,7 @@ const formattedDateTime = () => {
 };
 
 const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
+const summaryName = () => `${process.env.CATEGORY}-summary.json`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -23,7 +24,7 @@ const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
  * Timeouts were set by `ms`
  */
 export default defineConfig({
-  workers: 1,
+  workers: 2,
   // Timeout for each test
   timeout: 2 * 60 * 1000,  
   // Maximum time the whole test suite can run
@@ -37,6 +38,13 @@ export default defineConfig({
         open: 'never',
       },
     ],
+    [
+      'playwright-ctrf-json-reporter', 
+      {
+        outputFile: `${summaryName()}`,
+        open: 'never',
+      }
+    ]
   ],
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

@@ -68,6 +68,8 @@ export class CollectionPage {
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'ABOUT',
     );
+
+    this.page.getByLabel('About')
   }
 
   async validateForumTabPage() {
