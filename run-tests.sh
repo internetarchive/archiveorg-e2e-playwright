@@ -1,5 +1,7 @@
 TIMEFORMAT='It took %0R seconds.' 
 time {
+  npm run test:about
+  npm run test:av
   npm run test:books
   npm run test:collection
   npm run test:details
