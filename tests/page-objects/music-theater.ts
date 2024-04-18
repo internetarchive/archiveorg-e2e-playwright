@@ -50,34 +50,25 @@ export class IAMusicTheater {
   }
 
   async selectChannelSelector(channel: ChannelSelector) {
-    const channelSelectorRow = this.channelSelector
-      .locator('#radio')
-      .getByRole('listitem');
-    const channelSelectorRowCount = await this.channelSelector
+    this.channelSelector
       .locator('#radio')
       .getByRole('listitem')
-      .count();
-
-    // console.log('channelSelectorRow: ', await channelSelectorRow.allinnerHTML())
-
-    // just Player | Webamp
-    if (channelSelectorRowCount === 2) {
-      if (channel === 'Player') await channelSelectorRow.nth(0).click();
-      if (channel === 'Webamp') await channelSelectorRow.nth(1).click();
-    }
+      .filter({ hasText: channel })
+      .click();
   }
 
   async webAmpDisplayFromChannelSelector(fromChannelSelector: boolean) {
-    await this.page.waitForLoadState('load');
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 15000 });
 
     const urlPatternCheck = new RegExp(`webamp=default`);
     if (fromChannelSelector) {
-      await expect(this.page).toHaveURL(urlPatternCheck, { timeout: 10000 });
+      await expect(this.page).toHaveURL(urlPatternCheck);
     } else {
-      await expect(this.page).not.toHaveURL(urlPatternCheck, { timeout: 10000 });
+      await expect(this.page).not.toHaveURL(urlPatternCheck);
     }
-    await expect(this.page.locator('#theatre-ia')).toBeVisible();
-    await expect(this.page.locator('#jw6')).toBeVisible();
+
+    await expect(this.page.locator('#theatre-ia')).toBeVisible({ timeout: 10000 });
+    await expect(this.page.locator('#theatre-ia').locator('#jw6')).toBeVisible();
     await expect(this.page.locator('#main-window')).toBeVisible();
     await expect(this.page.locator('#equalizer-window')).toBeVisible();
   }

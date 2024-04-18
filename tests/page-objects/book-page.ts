@@ -109,7 +109,7 @@ export class BookPage {
   }
 
   async assertPageFlipUpdateUrlLocation() {
-    await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 30000 });
 
     // Page navigation creates params
     await this.bookReader.brFlipNext.click();

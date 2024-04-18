@@ -30,16 +30,6 @@ export class DetailsPage {
   }
 
   async assertPageElements() {
-    await this.verifyPageMetadataElements();
-    await this.verifyPageActionButtons();
-
-    await expect(this.page.locator('.terms-of-service')).toBeVisible();
-    await this.page.waitForTimeout(3000);
-    // TODO: add test to check Similar Items - this is currently not working
-    // await expect(this.page.locator('#also-found')).toBeVisible();
-  }
-
-  async verifyPageMetadataElements() {
     const divInfoTopDetails = this.page
       .locator('div.container.info-top')
       .locator('div.thats-left.item-details-metadata');
@@ -50,38 +40,21 @@ export class DetailsPage {
       divInfoTopDetails.locator('.metadata-definition'),
     ).toBeVisible();
 
-    const divItemDetails = this.page
-      .locator(
-        '#maincontent > div.container.container-ia.width-max.relative-row-wrap',
-      )
-      .last();
-    await expect(
-      divItemDetails.locator('.boxy.item-stats-summary'),
-    ).toBeVisible();
-    await expect(
-      divItemDetails.locator('.boxy.item-download-options'),
-    ).toBeVisible();
-    await expect(
-      divItemDetails.locator('.boxy.white-bg.collection-list'),
-    ).toBeVisible();
-    await expect(
-      divItemDetails.locator('.boxy.white-bg.item-upload-info'),
-    ).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: 'Download Options' })).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: 'In Collections' })).toBeVisible();
+
+    // menu buttons section
+    await expect(this.page.getByRole('button', { name: 'Favorite' })).toBeVisible();
+    await expect(this.page.getByRole('button', { name: 'Share' })).toBeVisible();
+    await expect(this.page.getByRole('button', { name: 'Flag' })).toBeVisible();
 
     // reviews section
-    await expect(divItemDetails.locator('#reviews')).toBeVisible();
-  }
+    await expect(this.page.getByRole('heading', { name: 'Reviews' })).toBeVisible();
+    await expect(this.page.getByRole('link', { name: 'plus-circle Add Review' })).toBeVisible();
 
-  async verifyPageActionButtons() {
-    // TODO: this is only visible if loggedIn as priv user
-    // await expect(this.page.locator('#item-user-lists')).toBeVisible();
-    await expect(
-      this.page.locator('div.topinblock.favorite-btn'),
-    ).toBeVisible();
-    await expect(
-      this.page.locator('div.topinblock.share-button'),
-    ).toBeVisible();
-    await expect(this.page.locator('div.topinblock.flag-button')).toBeVisible();
+    await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await expect(this.page.getByRole('heading', { name: 'Similar Items' })).toBeVisible();
+    await expect(this.page.locator('.terms-of-service')).toBeVisible();
   }
 
   async container3dDisplay() {
@@ -225,7 +198,6 @@ export class DetailsPage {
     await expect(expandableSearchBar.locator('#search-input')).toBeVisible();
     await expandableSearchBar.locator('#search-input').fill(str);
     await expandableSearchBar.locator('#search-input').press('Enter');
-    await this.page.waitForTimeout(3000);
 
     // interact with search results range
     const searchResultsSwitcher = this.page.locator('search-results-switcher');
@@ -249,12 +221,10 @@ export class DetailsPage {
 
     // click next and check next search entry index
     await nextButton.click();
-    await this.page.waitForTimeout(3000);
     expect(await this.searchResultEntryIndex()).toBe(5);
 
     // click previous and check next search entry index
     await prevButton.click();
-    await this.page.waitForTimeout(3000);
     expect(await this.searchResultEntryIndex()).toBe(2);
   }
 

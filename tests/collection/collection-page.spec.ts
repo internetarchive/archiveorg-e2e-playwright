@@ -1,6 +1,8 @@
 import { test } from '../../tests/fixtures';
 
-test(`Collections basic display - use collection page layout`, async ({ collectionPage }) => {
+test(`Collections basic display - use collection page layout`, async ({
+  collectionPage,
+}) => {
   await test.step(`Check if collection thumbnail, summary and action bar appears`, async () => {
     await collectionPage.validatePageHeaderElements();
   });
