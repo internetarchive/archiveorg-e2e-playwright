@@ -71,3 +71,13 @@ elif [ $type = 'long' ]; then
 else
 	echo "should run all"
 fi
+
+if [ $browser = 'chrome' ]; then
+    npm run test:chromium
+elif [ $browser = 'firefox' ]; then
+    npm run test:firefox
+elif [ $browser = 'webkit' ]; then
+    npm run test:webkit
+else
+	echo "should run all"
+fi

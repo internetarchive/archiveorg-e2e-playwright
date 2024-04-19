@@ -39,7 +39,7 @@ export default defineConfig({
       },
     ],
     [
-      'playwright-ctrf-json-reporter', 
+      'json', 
       {
         outputFile: `${summaryName()}`,
         open: 'never',
