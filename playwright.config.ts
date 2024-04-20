@@ -24,10 +24,10 @@ const summaryName = () => `${process.env.CATEGORY}-summary.json`;
  * Timeouts were set by `ms`
  */
 export default defineConfig({
-  workers: 2,
-  // Timeout for each test
-  timeout: 2 * 60 * 1000,  
-  // Maximum time the whole test suite can run
+  workers: 3,
+  // Set timeout for each test
+  timeout: 2 * 60 * 1000, 
+  // Set maximum time the whole test suite can run
   globalTimeout: 30 * 60 * 1000,
   testDir: './tests',
   reporter: [
@@ -41,7 +41,7 @@ export default defineConfig({
     [
       'json', 
       {
-        outputFile: `${summaryName()}`,
+        outputFile: `playwright-summary/${summaryName()}`,
         open: 'never',
       }
     ]

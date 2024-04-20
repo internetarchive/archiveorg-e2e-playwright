@@ -13,12 +13,12 @@ run_short_tests() {
     npm run test:login
     npm run test:profile
 
-    aboutFailed=`cat ctrf/about-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    avFailed=`cat ctrf/av-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    booksFailed=`cat ctrf/books-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    homeFailed=`cat ctrf/home-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    loginFailed=`cat ctrf/login-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    profileFailed=`cat ctrf/profile-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
+    aboutFailed=`cat playwright-summary/about-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    avFailed=`cat playwright-summary/av-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    booksFailed=`cat playwright-summary/books-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    homeFailed=`cat playwright-summary/home-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    loginFailed=`cat playwright-summary/login-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    profileFailed=`cat playwright-summary/profile-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
 
     echo "about tests failed: $aboutFailed"
     echo "av tests failed: $avFailed"
@@ -40,10 +40,10 @@ run_long_tests() {
     npm run test:music
     npm run test:search
 
-    collectionFailed=`cat ctrf/collection-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    detailsFailed=`cat ctrf/details-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    musicFailed=`cat ctrf/music-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
-    searchFailed=`cat ctrf/search-summary.json | jq -r '.results.summary.failed' |  tr '\n' ' '`
+    collectionFailed=`cat playwright-summary/collection-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    detailsFailed=`cat playwright-summary/details-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    musicFailed=`cat playwright-summary/music-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
+    searchFailed=`cat playwright-summary/search-summary.json | jq -r '.errors[]' |  tr '\n' ' '`
 
     echo "collection tests failed: $collectionFailed"
     echo "details tests failed: $detailsFailed"
