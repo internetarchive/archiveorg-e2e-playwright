@@ -13,10 +13,10 @@ test(`Collections basic display - use collection page layout`, async ({
 });
 
 test(`Collections page - "More..." link to About tab appears below description`, async ({
-  collectionPage,
+  page, collectionPage,
 }) => {
   await test.step(`Go to "ytjdradio" collection page`, async () => {
-    await collectionPage.visit('ytjdradio');
+    await page.goto('/details/ytjdradio');
   });
 
   await test.step(`Click the "More..." link and check if About page is displayed`, async () => {
@@ -26,11 +26,7 @@ test(`Collections page - "More..." link to About tab appears below description`,
 });
 
 test(`Tab navigation`, async ({ collectionPage }) => {
-  await test.step(`Navigate to "oldtimeradio" collection page`, async () => {
-    await collectionPage.visit('oldtimeradio');
-  });
-
-  await test.step(`Click "About" tab button and check if About page is displayed`, async () => {
+  await test.step(`Click "About" tab button and check if About page is displayed in "oldtimeradio" collection page`, async () => {
     await collectionPage.clickCollectionTab('About');
     await collectionPage.validateAboutTabPage();
   });
