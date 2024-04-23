@@ -277,4 +277,8 @@ export class DetailsPage {
 
     return 0;
   }
+
+  async checkLending(){
+    await this.lendingBar.doTestTimers();
+  }
 }

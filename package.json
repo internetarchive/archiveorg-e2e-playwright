@@ -41,6 +41,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@internetarchive/ia-book-actions": "^1.1.0-alpha1",
     "@playwright/test": "^1.41.2",
     "@types/node": "^20.11.17",
     "browserstack-local": "^1.4.8",
