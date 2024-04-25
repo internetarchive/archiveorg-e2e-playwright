@@ -32,6 +32,7 @@
     "test:music:headed": "CATEGORY=music npx playwright test tests/music --headed",
     "test:search:headed": "CATEGORY=search npx playwright test tests/search --headed",
     "test:profile:headed": "CATEGORY=profile npx playwright test tests/profile --headed",
+    "test:donation:headed": "CATEGORY=donation npx playwright test tests/donation --headed",
     "format": "prettier --write \"tests/**/*.ts\"",
     "lint": "prettier --check \"tests/**/*.ts\"",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
