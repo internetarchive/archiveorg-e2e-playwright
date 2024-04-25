@@ -24,9 +24,7 @@ test(`Test click to donate page - Wayback navbar.php with ${permanentVariant1}`,
   await constinueToDonationButton.click();
 
   await expect(page.url()).toContain('https://archive.org/donate');
-
   await page.waitForLoadState('domcontentloaded');
-
   await expect(page.locator('donation-form-controller')).toBeVisible();
 });
 
