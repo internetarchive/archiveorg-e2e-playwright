@@ -1,4 +1,4 @@
-name: Push and PRs to `main`
+name: Donation banner tests
 
 on:
   push:
