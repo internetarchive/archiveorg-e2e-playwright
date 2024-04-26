@@ -7,10 +7,12 @@ import { HomePage } from './page-objects/home-page';
 import { ProfilePage } from './page-objects/profile-page';
 import { BookPage } from './page-objects/book-page';
 import { DetailsPage } from './page-objects/details-page';
+import { LendingBar } from './page-objects/lending-bar';
 import { LoginPage } from './page-objects/login-page';
 
 type PageFixtures = {
   detailsPage: DetailsPage;
+  lendingBar: LendingBar;
   bookPage: BookPage;
   homePage: HomePage;
   musicPage: MusicPage;
@@ -34,6 +36,20 @@ export const test = base.extend<PageFixtures>({
 
     // Use the fixture value in the test.
     await use(detailsPage);
+
+    // Clean up the fixture.
+    await page.close();
+  },
+  lendingBar: async ({ page }, use) => {
+    // Set up the fixture.
+    const lendingBar = new LendingBar(page);
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(lendingBar);
 
     // Clean up the fixture.
     await page.close();
