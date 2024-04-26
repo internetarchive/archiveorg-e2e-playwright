@@ -1,7 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
 import { BookReader } from './book-reader';
-import { LendingBar } from './lending-bar';
 import { IAMusicTheater } from './music-theater';
 
 export class DetailsPage {
@@ -12,7 +11,6 @@ export class DetailsPage {
 
   readonly bookReader: BookReader;
   readonly iaMusicTheater: IAMusicTheater;
-  readonly lendingBar: LendingBar;
 
   public constructor(page: Page) {
     this.page = page;
@@ -22,7 +20,6 @@ export class DetailsPage {
 
     this.bookReader = new BookReader(page);
     this.iaMusicTheater = new IAMusicTheater(page);
-    this.lendingBar = new LendingBar(page);
   }
 
   async gotoPage(uri: string) {
@@ -79,10 +76,6 @@ export class DetailsPage {
 
   async bookreaderDisplay() {
     await expect(this.bookReader.bookReaderShell).toBeVisible();
-  }
-
-  async lendingBarDisplay() {
-    await expect(this.lendingBar.iaBookActions).toBeVisible();
   }
 
   async musicTheaterDisplayWithPlaceholder() {
