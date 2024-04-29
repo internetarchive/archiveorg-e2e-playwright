@@ -4,11 +4,11 @@ dotenv.config();
 export const config = {
   baseURL: process.env.BASE_URL ?? "https://archive.org",
   patronUser: {
-    email: process.env.B_EMAIL || '',
-    password: process.env.B_PASSWORD || ''
+    email: process.env.PATRON_EMAIL || '',
+    password: process.env.PATRON_PASSWORD || ''
   },
   privUser: {
-    email: process.env.A_EMAIL || '',
-    password: process.env.A_PASSWORD || '',
+    email: process.env.ARCHIVE_EMAIL || '',
+    password: process.env.ARCHIVE_PASSWORD || '',
   },
 }

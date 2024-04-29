@@ -19,17 +19,17 @@ test.describe('Basic Search tests', () => {
     });
 
     await test.step(`Check if the empty page placeholder is displayed`, async () => {
-      await searchPage.validateEmptyPagePlaceholder();
+      await searchPage.collectionBrowser.validateEmptyPagePlaceholder();
     });
   });
 
   test('Do simple metadata search', async () => {
     await test.step(`Select search option for metadata search`, async () => {
-      await searchPage.clickSearchInputOption(SearchOption.METADATA);
+      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.METADATA);
     });
 
     await test.step(`Search for cats`, async () => {
-      await searchPage.queryFor('cats');
+      await searchPage.collectionBrowser.queryFor('cats');
     });
 
     await test.step(`Searching and search result count should be displayed`, async () => {
@@ -39,11 +39,11 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple text contents search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.clickSearchInputOption(SearchOption.TEXT);
+      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.TEXT);
     });
 
     await test.step(`Search for dogs`, async () => {
-      await searchPage.queryFor('dogs');
+      await searchPage.collectionBrowser.queryFor('dogs');
     });
 
     await test.step(`Searching and search result count should be displayed`, async () => {
@@ -53,15 +53,15 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple TV search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.clickSearchInputOption(SearchOption.TV);
+      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.TV);
     });
 
     await test.step(`Search for iguanas`, async () => {
-      await searchPage.queryFor('iguanas');
+      await searchPage.collectionBrowser.queryFor('iguanas');
     });
 
     await test.step(`Check TV page is displayed`, async () => {
-      await searchPage.validateTVPage('iguanas');
+      await searchPage.collectionBrowser.validateTVPage('iguanas');
     });
 
     await test.step(`Go back to search page from TV search page`, async () => {
@@ -71,15 +71,15 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple radio search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.clickSearchInputOption(SearchOption.RADIO);
+      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.RADIO);
     });
 
     await test.step(`Search for iguanas`, async () => {
-      await searchPage.queryFor('rabbits');
+      await searchPage.collectionBrowser.queryFor('rabbits');
     });
 
     await test.step(`Check Radio search page is displayed`, async () => {
-      await searchPage.validateRadioPage('rabbits');
+      await searchPage.collectionBrowser.validateRadioPage('rabbits');
     });
 
     await test.step(`Go back to search page from Radio search page`, async () => {
@@ -89,15 +89,15 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple web search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.clickSearchInputOption(SearchOption.WEB);
+      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.WEB);
     });
 
     await test.step(`Search for parrots`, async () => {
-      await searchPage.queryFor('parrots');
+      await searchPage.collectionBrowser.queryFor('parrots');
     });
 
     await test.step(`Check Wayback search page is displayed`, async () => {
-      await searchPage.validateWaybackPage('parrots');
+      await searchPage.collectionBrowser.validateWaybackPage('parrots');
     });
 
     await test.step(`Go back to search page from Wayback search page`, async () => {
@@ -107,8 +107,8 @@ test.describe('Basic Search tests', () => {
 
   test('No results page displays when no results', async () => {
     await test.step(`Search for a query that we expect will return no results at all and validate the empty page placeholder is displayed`, async () => {
-      await searchPage.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
-      await searchPage.validateEmptyPagePlaceholder();
+      await searchPage.collectionBrowser.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
+      await searchPage.collectionBrowser.validateEmptyPagePlaceholder();
     });
   });
 });

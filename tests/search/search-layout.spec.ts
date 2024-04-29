@@ -57,7 +57,7 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
   });
 
   await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
-    await searchPage.validateURLParamsWithSortFilter(
+    await searchPage.collectionBrowser.validateURLParamsWithSortFilter(
       'All-time views',
       'descending',
     );
@@ -80,7 +80,7 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
       'descending',
       10,
     );
-    await searchPage.validateURLParamsWithSortFilter(
+    await searchPage.collectionBrowser.validateURLParamsWithSortFilter(
       'Date published',
       'descending',
     );
@@ -102,10 +102,10 @@ test('Sort by Date archived (ascending) in Compact view', async ({
   });
 
   await test.step('Check list column headers for sort filter', async () => {
-    await searchPage.validateCompactViewModeListLineDateHeaders(
+    await searchPage.collectionBrowser.validateCompactViewModeListLineDateHeaders(
       'Date archived',
     );
-    await searchPage.validateURLParamsWithSortFilter(
+    await searchPage.collectionBrowser.validateURLParamsWithSortFilter(
       'Date archived',
       'ascending',
     );

@@ -50,11 +50,11 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 
   await test.step(`Click "Clear all filters"`, async () => {
-    await searchPage.clickClearAllFilters();
+    await searchPage.collectionBrowser.clickClearAllFilters();
   });
 
   await test.step(`Assert "Clear all filters" is not visible`, async () => {
-    await searchPage.assertClearAllFiltersNotVisible();
+    await searchPage.collectionBrowser.assertClearAllFiltersNotVisible();
   });
 });
 
