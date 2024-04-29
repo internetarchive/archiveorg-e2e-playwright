@@ -67,8 +67,12 @@ export class IAMusicTheater {
       await expect(this.page).not.toHaveURL(urlPatternCheck);
     }
 
-    await expect(this.page.locator('#theatre-ia')).toBeVisible({ timeout: 10000 });
-    await expect(this.page.locator('#theatre-ia').locator('#jw6')).toBeVisible();
+    await expect(this.page.locator('#theatre-ia')).toBeVisible({
+      timeout: 10000,
+    });
+    await expect(
+      this.page.locator('#theatre-ia').locator('#jw6'),
+    ).toBeVisible();
     await expect(this.page.locator('#main-window')).toBeVisible();
     await expect(this.page.locator('#equalizer-window')).toBeVisible();
   }

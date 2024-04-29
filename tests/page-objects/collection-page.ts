@@ -1,5 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
+import { CollectionBrowser } from './collection-browser';
 import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
 import { SortBar } from './sort-bar';
@@ -10,6 +11,7 @@ export class CollectionPage {
   readonly pageSummary: Locator;
   readonly pageTabs: Locator;
 
+  readonly collectionBrowser: CollectionBrowser;
   readonly collectionFacets: CollectionFacets;
   readonly infiniteScroller: InfiniteScroller;
   readonly sortBar: SortBar;
@@ -22,6 +24,7 @@ export class CollectionPage {
       '#page-container > tab-manager > div.tab-manager-container > nav.tabs-row > ul',
     );
 
+    this.collectionBrowser = new CollectionBrowser(this.page);
     this.collectionFacets = new CollectionFacets(this.page);
     this.infiniteScroller = new InfiniteScroller(this.page);
     this.sortBar = new SortBar(this.page);
@@ -56,16 +59,22 @@ export class CollectionPage {
   async validateCollectionPageTabs() {
     await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
     // this could cause an error in some detailsPage that doesn't have Forum tab like ytjdradio
-    // should be tackled in a different task later on
+    // should be tackled in a different task
     expect(await this.pageTabs.locator('li').count()).toBe(3);
   }
 
   async validateAboutTabPage() {
-    await expect(this.page.getByRole('heading', { name: 'Activity' })).toBeVisible();
-    await expect(this.page.getByRole('button', { name: 'reviews.' })).toBeVisible();
+    await expect(
+      this.page.getByRole('heading', { name: 'Activity' }),
+    ).toBeVisible();
+    await expect(
+      this.page.getByRole('button', { name: 'reviews.' }),
+    ).toBeVisible();
     // ytjdradio details page doesn't have forum posts, commenting this part for now
     // await expect(this.page.getByRole('button', { name: 'forum posts.' })).toBeVisible();
-    await expect(this.page.getByRole('heading', { name: 'Collection Info' })).toBeVisible();
+    await expect(
+      this.page.getByRole('heading', { name: 'Collection Info' }),
+    ).toBeVisible();
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'ABOUT',
     );

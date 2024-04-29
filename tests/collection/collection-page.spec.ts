@@ -13,7 +13,8 @@ test(`Collections basic display - use collection page layout`, async ({
 });
 
 test(`Collections page - "More..." link to About tab appears below description`, async ({
-  page, collectionPage,
+  page,
+  collectionPage,
 }) => {
   await test.step(`Go to "ytjdradio" collection page`, async () => {
     await page.goto('/details/ytjdradio');

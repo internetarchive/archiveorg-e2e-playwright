@@ -40,20 +40,36 @@ export class DetailsPage {
       divInfoTopDetails.locator('.metadata-definition'),
     ).toBeVisible();
 
-    await expect(this.page.getByRole('heading', { name: 'Download Options' })).toBeVisible();
-    await expect(this.page.getByRole('heading', { name: 'In Collections' })).toBeVisible();
+    await expect(
+      this.page.getByRole('heading', { name: 'Download Options' }),
+    ).toBeVisible();
+    await expect(
+      this.page.getByRole('heading', { name: 'In Collections' }),
+    ).toBeVisible();
 
     // menu buttons section
-    await expect(this.page.getByRole('button', { name: 'Favorite' })).toBeVisible();
-    await expect(this.page.getByRole('button', { name: 'Share' })).toBeVisible();
+    await expect(
+      this.page.getByRole('button', { name: 'Favorite' }),
+    ).toBeVisible();
+    await expect(
+      this.page.getByRole('button', { name: 'Share' }),
+    ).toBeVisible();
     await expect(this.page.getByRole('button', { name: 'Flag' })).toBeVisible();
 
     // reviews section
-    await expect(this.page.getByRole('heading', { name: 'Reviews' })).toBeVisible();
-    await expect(this.page.getByRole('link', { name: 'plus-circle Add Review' })).toBeVisible();
+    await expect(
+      this.page.getByRole('heading', { name: 'Reviews' }),
+    ).toBeVisible();
+    await expect(
+      this.page.getByRole('link', { name: 'plus-circle Add Review' }),
+    ).toBeVisible();
 
-    await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await expect(this.page.getByRole('heading', { name: 'Similar Items' })).toBeVisible();
+    await this.page.evaluate(() =>
+      window.scrollTo(0, document.body.scrollHeight),
+    );
+    await expect(
+      this.page.getByRole('heading', { name: 'Similar Items' }),
+    ).toBeVisible();
     await expect(this.page.locator('.terms-of-service')).toBeVisible();
   }
 

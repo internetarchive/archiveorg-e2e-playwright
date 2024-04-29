@@ -29,8 +29,8 @@ test(`Select a facet for "videos" and clear facet filters`, async ({
   });
 
   await test.step(`Click "Clear all filters"`, async () => {
-    await collectionPage.searchPage.clickClearAllFilters();
-    await collectionPage.searchPage.assertClearAllFiltersNotVisible();
+    await collectionPage.collectionBrowser.clickClearAllFilters();
+    await collectionPage.collectionBrowser.assertClearAllFiltersNotVisible();
   });
 });
 
