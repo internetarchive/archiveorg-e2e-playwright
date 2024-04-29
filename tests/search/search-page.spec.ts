@@ -25,7 +25,9 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple metadata search', async () => {
     await test.step(`Select search option for metadata search`, async () => {
-      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.METADATA);
+      await searchPage.collectionBrowser.clickSearchInputOption(
+        SearchOption.METADATA,
+      );
     });
 
     await test.step(`Search for cats`, async () => {
@@ -39,7 +41,9 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple text contents search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.TEXT);
+      await searchPage.collectionBrowser.clickSearchInputOption(
+        SearchOption.TEXT,
+      );
     });
 
     await test.step(`Search for dogs`, async () => {
@@ -53,7 +57,9 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple TV search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.TV);
+      await searchPage.collectionBrowser.clickSearchInputOption(
+        SearchOption.TV,
+      );
     });
 
     await test.step(`Search for iguanas`, async () => {
@@ -71,7 +77,9 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple radio search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.RADIO);
+      await searchPage.collectionBrowser.clickSearchInputOption(
+        SearchOption.RADIO,
+      );
     });
 
     await test.step(`Search for iguanas`, async () => {
@@ -89,7 +97,9 @@ test.describe('Basic Search tests', () => {
 
   test('Do simple web search', async () => {
     await test.step(`Select search option for text search`, async () => {
-      await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.WEB);
+      await searchPage.collectionBrowser.clickSearchInputOption(
+        SearchOption.WEB,
+      );
     });
 
     await test.step(`Search for parrots`, async () => {
@@ -107,7 +117,9 @@ test.describe('Basic Search tests', () => {
 
   test('No results page displays when no results', async () => {
     await test.step(`Search for a query that we expect will return no results at all and validate the empty page placeholder is displayed`, async () => {
-      await searchPage.collectionBrowser.queryFor('catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda');
+      await searchPage.collectionBrowser.queryFor(
+        'catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda',
+      );
       await searchPage.collectionBrowser.validateEmptyPagePlaceholder();
     });
   });
