@@ -1,6 +1,5 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { SearchPage } from './search-page';
 import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
 import { SortBar } from './sort-bar';
@@ -13,7 +12,6 @@ export class CollectionPage {
 
   readonly collectionFacets: CollectionFacets;
   readonly infiniteScroller: InfiniteScroller;
-  readonly searchPage: SearchPage;
   readonly sortBar: SortBar;
 
   public constructor(page: Page) {
@@ -26,13 +24,12 @@ export class CollectionPage {
 
     this.collectionFacets = new CollectionFacets(this.page);
     this.infiniteScroller = new InfiniteScroller(this.page);
-    this.searchPage = new SearchPage(this.page);
     this.sortBar = new SortBar(this.page);
   }
 
   async visit(collection: string) {
     await this.page.goto(`/details/${collection}`);
-    await this.page.waitForLoadState('load', { timeout: 60000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
   }
 
   async clickCollectionTab(name: string) {
@@ -58,6 +55,8 @@ export class CollectionPage {
 
   async validateCollectionPageTabs() {
     await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
+    // this could cause an error in some detailsPage that doesn't have Forum tab like ytjdradio
+    // should be tackled in a different task later on
     expect(await this.pageTabs.locator('li').count()).toBe(3);
   }
 
