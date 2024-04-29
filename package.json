@@ -66,13 +66,9 @@
     ],
     "rules": {
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error"
-      ],
+      "@typescript-eslint/no-unused-vars": "error",
       "no-shadow": "off",
-      "@typescript-eslint/no-shadow": [
-        "error"
-      ],
+      "@typescript-eslint/no-shadow": "error",
       "class-methods-use-this": "off",
       "import/no-unresolved": "off",
       "import/extensions": [

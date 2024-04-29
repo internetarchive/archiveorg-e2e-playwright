@@ -54,6 +54,28 @@ run_long_tests() {
   echo 'End of long tests execution'
 }
 
+checkType () {
+  if [ $type = 'short' ]; then
+      run_short_tests
+  elif [ $type = 'long' ]; then
+      run_long_tests
+  else
+    echo "should run all"
+  fi
+}
+
+checkBrowser () {
+  if [ $browser = 'chrome' ]; then
+      npm run test:chromium
+  elif [ $browser = 'firefox' ]; then
+      npm run test:firefox
+  elif [ $browser = 'webkit' ]; then
+      npm run test:webkit
+  else
+    echo "should run all"
+  fi
+}
+
 while getopts t:b: flag
 do
   case "${flag}" in
@@ -64,20 +86,13 @@ done
 
 printf "Test type: $type - Browser: $browser\n";
 
-if [ $type = 'short' ]; then
-    run_short_tests
-elif [ $type = 'long' ]; then
-    run_long_tests
+if [ -z "$type" ] && [ -z "$browser" ]; then
+  echo "No vars for type and browser"
+elif ! [ -z "$type" ]; then
+  checkType
+elif ! [ -z "$browser" ]; then
+  checkBrowser
 else
-	echo "should run all"
+  echo "should run all"
 fi
 
-if [ $browser = 'chrome' ]; then
-    npm run test:chromium
-elif [ $browser = 'firefox' ]; then
-    npm run test:firefox
-elif [ $browser = 'webkit' ]; then
-    npm run test:webkit
-else
-	echo "should run all"
-fi

@@ -24,7 +24,7 @@ const summaryName = () => `${process.env.CATEGORY}-summary.json`;
  * Timeouts were set by `ms`
  */
 export default defineConfig({
-  workers: 3,
+  workers: 1,
   // Set timeout for each test
   timeout: 2 * 60 * 1000, 
   // Set maximum time the whole test suite can run
