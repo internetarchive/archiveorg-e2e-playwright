@@ -23,17 +23,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run tests in Chromium browser
-        run: npm run test:chrome
+      # - name: Run tests in Chromium browser
+      #   run: npm run test:chrome
 
-      - name: Run tests in Firefox browser
-        run: npm run test:firefox
+      # - name: Run tests in Firefox browser
+      #   run: npm run test:firefox
 
-      - name: Run tests in Webkit browser
-        run: npm run test:webkit
+      # - name: Run tests in Webkit browser
+      #   run: npm run test:webkit
 
-      # - name: Run Playwright tests
-      #   run: ./run-tests.sh
+      - name: Run Playwright tests
+        run: ./run-tests.sh
 
       - uses: actions/upload-artifact@v3
         if: always()
