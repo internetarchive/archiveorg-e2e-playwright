@@ -7,12 +7,10 @@ import { HomePage } from './page-objects/home-page';
 import { ProfilePage } from './page-objects/profile-page';
 import { BookPage } from './page-objects/book-page';
 import { DetailsPage } from './page-objects/details-page';
-import { LendingBar } from './page-objects/lending-bar';
 import { LoginPage } from './page-objects/login-page';
 
 type PageFixtures = {
   detailsPage: DetailsPage;
-  lendingBar: LendingBar;
   bookPage: BookPage;
   homePage: HomePage;
   musicPage: MusicPage;

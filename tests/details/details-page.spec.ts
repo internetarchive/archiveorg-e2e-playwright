@@ -40,11 +40,6 @@ test(`Load theater: bookreader`, async ({ detailsPage }) => {
     await detailsPage.gotoPage('goody');
     await detailsPage.bookreaderDisplay();
   });
-
-  await test.step('Load a book page with lending bar', async () => {
-    await detailsPage.gotoPage('coleridgesublime0000char');
-    await detailsPage.bookreaderDisplay();
-  });
 });
 
 test(`Load theater: data`, async ({ detailsPage }) => {
