@@ -11,8 +11,8 @@ export class DetailsPage {
   readonly iaCarousel: Locator;
 
   readonly bookReader: BookReader;
-  readonly iaMusicTheater: IAMusicTheater;
   readonly lendingBar: LendingBar;
+  readonly iaMusicTheater: IAMusicTheater;
 
   public constructor(page: Page) {
     this.page = page;
@@ -21,8 +21,8 @@ export class DetailsPage {
     this.iaCarousel = this.iaTheater.locator('#ia-carousel');
 
     this.bookReader = new BookReader(page);
-    this.iaMusicTheater = new IAMusicTheater(page);
     this.lendingBar = new LendingBar(page);
+    this.iaMusicTheater = new IAMusicTheater(page);
   }
 
   async gotoPage(uri: string) {
@@ -91,10 +91,6 @@ export class DetailsPage {
 
   async bookreaderDisplay() {
     await expect(this.bookReader.bookReaderShell).toBeVisible();
-  }
-
-  async lendingBarDisplay() {
-    await expect(this.lendingBar.iaBookActions).toBeVisible();
   }
 
   async musicTheaterDisplayWithPlaceholder() {
