@@ -1,6 +1,7 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
 import { BookReader } from './book-reader';
+import { LendingBar } from './lending-bar';
 import { IAMusicTheater } from './music-theater';
 
 export class DetailsPage {
@@ -10,6 +11,7 @@ export class DetailsPage {
   readonly iaCarousel: Locator;
 
   readonly bookReader: BookReader;
+  readonly lendingBar: LendingBar;
   readonly iaMusicTheater: IAMusicTheater;
 
   public constructor(page: Page) {
@@ -19,6 +21,7 @@ export class DetailsPage {
     this.iaCarousel = this.iaTheater.locator('#ia-carousel');
 
     this.bookReader = new BookReader(page);
+    this.lendingBar = new LendingBar(page);
     this.iaMusicTheater = new IAMusicTheater(page);
   }
 

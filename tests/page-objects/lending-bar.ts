@@ -11,11 +11,6 @@ export class LendingBar {
     this.iaBookActions = this.page.locator('ia-book-actions');
   }
 
-  async gotoPage(uri: string) {
-    await this.page.goto(`/details/${uri}`, { waitUntil: 'networkidle' });
-    await this.page.waitForTimeout(5000);
-  }
-
   async verifyDefaultTexts() {
     const textGroup = await this.iaBookActions.locator('text-group > .variable-texts');
     const textGroupTexts = await textGroup.textContent();
