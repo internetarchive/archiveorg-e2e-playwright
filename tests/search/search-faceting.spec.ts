@@ -3,7 +3,6 @@ import { test } from '../fixtures';
 import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
-  test.setTimeout(60000);
   await test.step('Assert facet group headers count', async () => {
     await searchPage.collectionFacets.assertSearchFacetGroupCount();
   });

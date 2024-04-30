@@ -74,7 +74,6 @@ test(`Negative facet to exclude "audio"`, async ({ collectionPage }) => {
 test(`Facets can be selected via "Select filters" modal`, async ({
   collectionPage,
 }) => {
-  test.slow();
   await test.step(`Click "More" button under Subject facet group`, async () => {
     await collectionPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.SUBJECT,
