@@ -40,20 +40,6 @@ export const test = base.extend<PageFixtures>({
     // Clean up the fixture.
     await page.close();
   },
-  lendingBar: async ({ page }, use) => {
-    // Set up the fixture.
-    const lendingBar = new LendingBar(page);
-
-    await page.route(/(analytics|fonts)/, route => {
-      route.abort();
-    });
-
-    // Use the fixture value in the test.
-    await use(lendingBar);
-
-    // Clean up the fixture.
-    await page.close();
-  },
   bookPage: async ({ page }, use) => {
     // Set up the fixture.
     const bookPage = new BookPage(page);
