@@ -2,6 +2,7 @@
 
 # End to end tests for Archive.org using [Playwright](https://playwright.dev/)
 
+
 ## (Optional) BrowserStack Local Setup
 
 - login to BrowserStack and retrieve the account username and access key, see documentation [here](https://www.browserstack.com/docs/automate/playwright/getting-started/nodejs/test-runner)
@@ -21,21 +22,27 @@
 
     `brew install jq`
 
+- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing
+
 - run all the tests in headless mode and generate 1 whole test report:
 
     `npm run test`
 
-- run all the tests in headless mode by each category and generate test report:
+- run all the tests in headless mode by each category:
 
-    - short tests category: `./run-tests.sh -t short`
+    `./run-tests.sh`
 
-    - long tests category: `./run-tests.sh -t long`
+- run all the tests in headless mode by browser:
+
+    - chrome: `./run-tests.sh -b chrome`
+
+    - firefox: `./run-tests.sh -b firefox`
+
+    - webkit: `./run-tests.sh -b webkit`
 
 - run all the tests in headed mode (this will load multiple browsers):
 
     `npm run test:headed`
-
-- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing
 
 
 ## Running individual tests by category (headless mode)

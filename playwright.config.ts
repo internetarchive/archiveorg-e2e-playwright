@@ -25,9 +25,9 @@ const summaryName = () => `${process.env.CATEGORY}-summary.json`;
  */
 export default defineConfig({
   workers: 1,
-  // Set timeout for each test
+  // Set timeout for each test (currently 2 minutes)
   timeout: 2 * 60 * 1000, 
-  // Set maximum time the whole test suite can run
+  // Set maximum time the whole test suite can run (currently 30 minutes)
   globalTimeout: 30 * 60 * 1000,
   testDir: './tests',
   reporter: [
