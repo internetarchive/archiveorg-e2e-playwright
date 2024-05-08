@@ -27,6 +27,7 @@ export class LoginPage {
       asUser.password,
     );
     await this.page.locator('input.btn.btn-primary.btn-submit').click();
+    await this.page.waitForTimeout(10000)
 
     // should go back to baseUrl
     await this.page.waitForURL('/');
