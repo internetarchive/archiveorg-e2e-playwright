@@ -24,36 +24,47 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run about tests
+        if: always()
         run: npm run test:about
 
       - name: Run av tests
+        if: always()
         run: npm run test:av
 
       - name: Run books tests
+        if: always()
         run: npm run test:books
 
       - name: Run collection tests
+        if: always()
         run: npm run test:collection
 
       - name: Run details tests
+        if: always()
         run: npm run test:details
 
       - name: Run donation tests
+        if: always()
         run: npm run test:donation
 
       - name: Run home Tests
+        if: always()
         run: npm run test:home
 
       - name: Run login tests
+        if: always()
         run: npm run test:login
 
       - name: Run music tests
+        if: always()
         run: npm run test:music
 
       - name: Run profile tests
+        if: always()
         run: npm run test:profile
 
       - name: Run search tests
+        if: always()
         run: npm run test:search
 
       - uses: actions/upload-artifact@v3
