@@ -7,6 +7,7 @@ run_all_tests() {
   npm run test:books
   npm run test:collection
   npm run test:details
+  npm run test:donation
   npm run test:home
   npm run test:login
   npm run test:music
