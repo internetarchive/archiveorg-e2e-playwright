@@ -47,7 +47,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.41.2",
+    "@playwright/test": "^1.44.0",
     "@types/node": "^20.11.17",
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.3",
