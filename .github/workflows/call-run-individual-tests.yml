@@ -18,14 +18,18 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install jq
-        run: sudo apt-get install jq -y
+      # - name: Install jq
+      #   run: sudo apt-get install jq -y
 
       - name: Install dependencies
-        run: npm ci
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: npm ci
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: npx playwright install --with-deps
 
       - name: Run about tests
         if: always()
