@@ -14,79 +14,64 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
-        with:
-          node-version: 20
+        node-version: 20
           cache: 'npm'
 
       # - name: Install jq
       #   run: sudo apt-get install jq -y
 
       - name: Install dependencies
-        with:
-          run: npm ci
+        run: npm ci
 
       - name: Install Playwright Browsers
-        with:
-          run: npx playwright install --with-deps
+        run: npx playwright install --with-deps
 
       - name: Run about tests
         if: always()
-        with:
-          run: npm run test:about
+        run: npm run test:about
 
       - name: Run av tests
         if: always()
-        with:
-          run: npm run test:av
+        run: npm run test:av
 
       - name: Run books tests
         if: always()
-        with:
-          run: npm run test:books
+        run: npm run test:books
 
       - name: Run collection tests
         if: always()
-        with:
-          run: npm run test:collection
+        run: npm run test:collection
 
       - name: Run details tests
         if: always()
-        with:
-          run: npm run test:details
+        run: npm run test:details
 
       - name: Run donation tests
         if: always()
-        with:
-          run: npm run test:donation
+        run: npm run test:donation
 
       - name: Run home Tests
         if: always()
-        with:
-          run: npm run test:home
+        run: npm run test:home
 
       - name: Run login tests
         if: always()
-        with:
-          run: npm run test:login
+        run: npm run test:login
 
       - name: Run music tests
         if: always()
-        with:
-          run: npm run test:music
+        run: npm run test:music
 
       - name: Run profile tests
         if: always()
-        with:
-          run: npm run test:profile
+        run: npm run test:profile
 
       - name: Run search tests
         if: always()
-        with:
-          run: npm run test:search
+        run: npm run test:search
 
       - uses: actions/upload-artifact@v3
         if: always()
-        with:
-          name: playwright-report
+        name: playwright-report
           path: playwright-report/
           retention-days: 1
