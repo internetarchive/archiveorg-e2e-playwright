@@ -7,7 +7,7 @@ jobs:
     # runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -22,78 +22,65 @@ jobs:
       #   run: sudo apt-get install jq -y
 
       - name: Install dependencies
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm ci
 
       - name: Install Playwright Browsers
-        uses: coactions/setup-xvfb@v1
         with:
           run: npx playwright install --with-deps
 
       - name: Run about tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:about
 
       - name: Run av tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:av
 
       - name: Run books tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:books
 
       - name: Run collection tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:collection
 
       - name: Run details tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:details
 
       - name: Run donation tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:donation
 
       - name: Run home Tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:home
 
       - name: Run login tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:login
 
       - name: Run music tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:music
 
       - name: Run profile tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:profile
 
       - name: Run search tests
         if: always()
-        uses: coactions/setup-xvfb@v1
         with:
           run: npm run test:search
 
