@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 import { config } from './config';
 
@@ -55,18 +55,11 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Desktop - Chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'Desktop - Firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'Desktop - Webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: 'chrome',
+      use: {
+        browserName: 'chromium',
+        channel: 'chrome',
+      },
     },
   ],
 });

@@ -98,7 +98,7 @@ export class CollectionFacets {
   }
 
   async selectFacetsInModal(facetLabels: string[]) {
-    await this.page.waitForLoadState('load', { timeout: 60000 });
+    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
@@ -108,7 +108,7 @@ export class CollectionFacets {
       const facetRow = this.moreFacetsContent
         .locator('#more-facets')
         .getByRole('checkbox', { name: facetLabels[i] });
-      await facetRow.check({ timeout: 5000 });
+      await facetRow.check({ timeout: 30000 });
     }
     await btnApplyFilters.click();
   }

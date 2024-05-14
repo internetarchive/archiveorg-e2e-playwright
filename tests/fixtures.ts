@@ -103,7 +103,7 @@ export const test = base.extend<PageFixtures>({
     // Set up the fixture.
     const searchPage = new SearchPage(page);
     await searchPage.visit();
-    await searchPage.queryFor('cats');
+    await searchPage.collectionBrowser.queryFor('cats');
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
@@ -191,8 +191,10 @@ export const test = base.extend<PageFixtures>({
 });
 
 test.beforeEach(async ({ request }) => {
-  const whathost = await request.get('/services/whathost.php');
-  console.log('whathost: ', await whathost.text());
+  if (process.env.WHAT_HOST === 'true') {
+    const whathost = await request.get('/services/whathost.php');
+    console.log('whathost: ', await whathost.text());
+  }
 });
 
 export { expect } from '@playwright/test';
