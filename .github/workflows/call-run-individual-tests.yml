@@ -4,11 +4,12 @@ on: workflow_call
 
 jobs:
   test:
+    runs-on: macos-latest
     # runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    # strategy:
+    #   matrix:
+    #     os: [macos-latest, ubuntu-latest]
+    # runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
