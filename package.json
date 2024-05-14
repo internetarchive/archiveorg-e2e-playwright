@@ -41,7 +41,8 @@
     "format": "prettier --write \"tests/**/*.ts\"",
     "lint": "prettier --check \"tests/**/*.ts\"",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
-    "test:debugbrowser": "DEBUG=pw:browser npx playwright test"
+    "test:debugbrowser": "DEBUG=pw:browser npx playwright test",
+    "test:browserstack": "browserstack-node-sdk playwright test --config=./playwright.browserstack.config.ts"
   },
   "keywords": [],
   "author": "",
@@ -49,7 +50,7 @@
   "devDependencies": {
     "@playwright/test": "^1.41.2",
     "@types/node": "^20.11.17",
-    "browserstack-local": "^1.4.8",
+    "browserstack-node-sdk": "^1.32.12",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",

@@ -18,8 +18,8 @@ jobs:
   #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   test:
-    name: Run tests individually
-    uses: ./.github/workflows/call-run-individual-tests.yml
+    name: Run tests in browserstack
+    uses: ./.github/workflows/call-run-browserstack.yml
 
   # test:
   #   name: Run tests

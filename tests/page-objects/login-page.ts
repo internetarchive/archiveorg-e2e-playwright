@@ -34,8 +34,6 @@ export class LoginPage {
   }
 
   async assertAccountSettingsDisplayed() {
-    await this.page.waitForTimeout(3000);
-
     await this.page.goto('/account/index.php?settings=1');
     await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 

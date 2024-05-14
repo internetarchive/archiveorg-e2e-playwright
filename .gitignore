@@ -12,3 +12,9 @@ node_modules/
 .env
 *.err
 *.log
+
+# Browserstack related
+.obs_*
+*-browserstack-sdk.*
+performance-report.json
+browserstackSetupConfig.json
