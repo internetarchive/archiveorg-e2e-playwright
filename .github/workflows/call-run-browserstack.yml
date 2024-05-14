@@ -26,8 +26,5 @@ jobs:
           project-name: e2e-playwright
 
       - name: Connect to browserstack
-        with:
-          BROWSERSTACK_USERNAME:  ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: npm run test:browserstack-node-sdk
 
