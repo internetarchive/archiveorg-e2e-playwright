@@ -42,7 +42,7 @@
     "lint": "prettier --check \"tests/**/*.ts\"",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
     "test:debugbrowser": "DEBUG=pw:browser npx playwright test",
-    "test:browserstack": "browserstack-node-sdk playwright test --config=./playwright.browserstack.config.ts"
+    "test:browserstack-node-sdk": "browserstack-node-sdk playwright test --config=./playwright.browserstack.config.ts"
   },
   "keywords": [],
   "author": "",
