@@ -32,7 +32,7 @@ export class CollectionPage {
 
   async visit(collection: string) {
     await this.page.goto(`/details/${collection}`);
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForLoadState();
   }
 
   async clickCollectionTab(name: string) {
@@ -44,20 +44,16 @@ export class CollectionPage {
   }
 
   async validatePageHeaderElements() {
-    await expect(this.page.locator('#page-header')).toBeVisible({
-      timeout: 60000,
-    });
+    await expect(this.page.locator('#page-header')).toBeVisible();
     await expect(
       this.page.locator('#top-matter > div.thumbnail-frame'),
-    ).toBeVisible({ timeout: 60000 });
-    await expect(this.pageSummary).toBeVisible({ timeout: 60000 });
-    await expect(this.page.locator('action-bar')).toBeVisible({
-      timeout: 60000,
-    });
+    ).toBeVisible();
+    await expect(this.pageSummary).toBeVisible();
+    await expect(this.page.locator('action-bar')).toBeVisible();
   }
 
   async validateCollectionPageTabs() {
-    await expect(this.pageTabs).toBeVisible({ timeout: 60000 });
+    await expect(this.pageTabs).toBeVisible();
     // this could cause an error in some detailsPage that doesn't have Forum tab like ytjdradio
     // should be tackled in a different task
     expect(await this.pageTabs.locator('li').count()).toBe(3);
@@ -90,9 +86,9 @@ export class CollectionPage {
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'FORUM',
     );
-    await expect(forumContainer).toBeVisible({ timeout: 60000 });
-    await expect(newPostButtonLocator).toBeVisible({ timeout: 60000 });
-    await expect(rssButtonLocator).toBeVisible({ timeout: 60000 });
+    await expect(forumContainer).toBeVisible();
+    await expect(newPostButtonLocator).toBeVisible();
+    await expect(rssButtonLocator).toBeVisible();
   }
 
   async validateCollectionTabPage() {
@@ -101,6 +97,6 @@ export class CollectionPage {
     );
     await expect(
       this.page.locator('#collection-browser-container'),
-    ).toBeVisible({ timeout: 60000 });
+    ).toBeVisible();
   }
 }

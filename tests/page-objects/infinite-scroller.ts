@@ -14,6 +14,7 @@ import {
 import { datesSorted, viewsSorted } from '../utils';
 
 export class InfiniteScroller {
+
   readonly page: Page;
   readonly infiniteScroller: Locator;
   readonly infiniteScrollerSectionContainer: Locator;
@@ -39,12 +40,7 @@ export class InfiniteScroller {
       this.displayStyleSelector.locator('ul > li');
     this.firstItemTile = this.infiniteScrollerSectionContainer
       .locator('article')
-      .nth(2); // page.locator('#container > article:nth-child(2)');
-  }
-
-  async awaitLoadingState() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-    await this.page.waitForTimeout(5000);
+      .nth(2);
   }
 
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
@@ -77,15 +73,13 @@ export class InfiniteScroller {
   }
 
   async hoverToFirstItem() {
-    await this.awaitLoadingState();
+    // await this.awaitLoadingState();
 
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
     await this.firstItemTile.locator('tile-hover-pane').waitFor();
-    await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible({
-      timeout: 60000,
-    });
+    await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible();
   }
 
   async assertTileHoverPaneTitleIsSameWithItemTile() {
@@ -100,7 +94,7 @@ export class InfiniteScroller {
   }
 
   async clickFirstResultAndCheckRedirectToDetailsPage() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForLoadState('load');
     expect(await this.firstItemTile.count()).toBe(1);
 
     // Get item tile link to compare with the redirect URL
@@ -111,7 +105,7 @@ export class InfiniteScroller {
     const pattern = new RegExp(`${itemLink}`);
     await this.firstItemTile.click();
 
-    await this.page.waitForLoadState('load', { timeout: 60000 });
+    await this.page.waitForLoadState('load');
     await expect(this.page).toHaveURL(pattern);
   }
 
@@ -123,7 +117,6 @@ export class InfiniteScroller {
   ) {
     // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
-      await this.awaitLoadingState();
       const tileStatsViews = await this.getTileStatsViewCountTitles(
         displayItemCount,
       );
@@ -147,7 +140,6 @@ export class InfiniteScroller {
       filter === 'Date added' ||
       filter === 'Date reviewed'
     ) {
-      await this.awaitLoadingState();
       const dateMetadataLabels = await this.getDateMetadataLabels(
         displayItemCount,
       );
@@ -172,7 +164,6 @@ export class InfiniteScroller {
     toInclude: boolean,
     displayItemCount: Number,
   ) {
-    await this.awaitLoadingState();
     const facetedResults = await this.getFacetedResultsByViewFacetGroup(
       viewFacetMetadata,
       displayItemCount,
@@ -188,7 +179,7 @@ export class InfiniteScroller {
   }
 
   async displaysFirstResult() {
-    await expect(this.firstItemTile).toBeVisible({ timeout: 60000 });
+    await expect(this.firstItemTile).toBeVisible();
   }
 
   // Getters
@@ -230,10 +221,12 @@ export class InfiniteScroller {
 
     let index = 0;
     while (index !== displayItemCount) {
-      // Load items and get tileStats views based on displayItemCount
-      // There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
-      // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
-      // We always want the last one since it will correspond to the current "sort by" field
+      /**
+       * Load items and get tileStats views based on displayItemCount
+       * There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
+       * eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
+       * We always want the last one since it will correspond to the current "sort by" field
+       */
 
       const dateSpanLabel = await allItems[index]
         .locator('#dates-line > div.metadata')

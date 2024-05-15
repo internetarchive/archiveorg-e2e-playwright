@@ -20,6 +20,7 @@ const summaryName = () => `${process.env.CATEGORY}-summary.json`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
+ * Read more about Playwright timeouts in: https://testerops.com/playwright-timeouts/
  * 
  * Timeouts were set by `ms`
  */
@@ -29,6 +30,11 @@ export default defineConfig({
   timeout: 2 * 60 * 1000, 
   // Set maximum time the whole test suite can run (currently 30 minutes)
   globalTimeout: 30 * 60 * 1000,
+  expect: {
+    // Maximum time expect() should wait for the condition to be met
+    // For example in `await expect(locator).toHaveText();`
+    timeout: 2 * 60 * 1000,
+  },
   testDir: './tests',
   reporter: [
     [
@@ -50,6 +56,8 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     // This is set in config/index.ts
     baseURL: config.baseURL,
+    // Implied and comes into picture during the navigation from one page to another
+    navigationTimeout: 1 * 60 * 1000,
   },
 
   /* Configure projects for major browsers */
