@@ -4,8 +4,8 @@ on: workflow_call
 
 jobs:
   test:
-    # runs-on: macos-latest
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    # runs-on: ubuntu-latest
     # strategy:
     #   matrix:
     #     os: [macos-latest, ubuntu-latest]
