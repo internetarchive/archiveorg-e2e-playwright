@@ -1,6 +1,4 @@
 import { type Page, Locator, expect } from '@playwright/test';
-import { type Page, Locator, expect } from '@playwright/test';
-
 export class LendingBar {
   readonly page: Page;
 
