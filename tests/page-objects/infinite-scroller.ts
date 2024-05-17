@@ -14,7 +14,6 @@ import {
 import { datesSorted, viewsSorted } from '../utils';
 
 export class InfiniteScroller {
-
   readonly page: Page;
   readonly infiniteScroller: Locator;
   readonly infiniteScrollerSectionContainer: Locator;
@@ -73,12 +72,10 @@ export class InfiniteScroller {
   }
 
   async hoverToFirstItem() {
-    // await this.awaitLoadingState();
-
+    // need to add timeout to finish loading <collection-browser-loading-tile>
+    await this.page.waitForTimeout(3000);
     expect(await this.firstItemTile.count()).toBe(1);
-
     await this.firstItemTile.hover();
-    await this.firstItemTile.locator('tile-hover-pane').waitFor();
     await expect(this.firstItemTile.locator('tile-hover-pane')).toBeVisible();
   }
 
@@ -164,6 +161,7 @@ export class InfiniteScroller {
     toInclude: boolean,
     displayItemCount: Number,
   ) {
+    await this.page.waitForTimeout(3000); // wait to load items
     const facetedResults = await this.getFacetedResultsByViewFacetGroup(
       viewFacetMetadata,
       displayItemCount,

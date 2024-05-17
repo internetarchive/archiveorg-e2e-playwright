@@ -74,51 +74,22 @@ test(`Negative facet to exclude "audio"`, async ({ collectionPage }) => {
 test(`Facets can be selected via "Select filters" modal`, async ({
   collectionPage,
 }) => {
-  await test.step(`Click "More" button under Year facet group`, async () => {
+  await test.step(`Click "More" button under Subject facet group`, async () => {
     await collectionPage.collectionFacets.clickMoreInFacetGroup(
-      FacetGroupLocatorLabel.YEAR,
+      FacetGroupLocatorLabel.SUBJECT,
     );
   });
 
-  await test.step(`Select "2020" and "2019" from inside "Year" facet group`, async () => {
+  await test.step(`Select "Comedy" and "Mystery" from inside "Subject" facet group`, async () => {
     await collectionPage.collectionFacets.selectFacetsInModal([
-      '2020',
-      '2019',
+      'Comedy',
+      'Mystery',
     ]);
-  });
-
-  await test.step(`Switch to list view mode to check the first 10 item results Published texts are ONLY 2014 or 2015`, async () => {
-    await collectionPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.LIST,
-    );
     await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-      'list-date',
-      ['2020', '2019'],
+      'tile-collection-icontitle',
+      ['Audio'],
       true,
-      10,
+      20,
     );
   });
 });
-
-// test(`Facets can be selected via "Select filters" by subject modal`, async ({
-//   collectionPage,
-// }) => {
-//   await test.step(`Click "More" button under Subject facet group`, async () => {
-//     await collectionPage.collectionFacets.clickMoreInFacetGroup(
-//       FacetGroupLocatorLabel.SUBJECT,
-//     );
-//   });
-
-//   await test.step(`Select "Comedy" and "Mystery" from inside "Subject" facet group`, async () => {
-//     await collectionPage.collectionFacets.selectFacetsInModal([
-//       'Comedy',
-//       'Mystery',
-//     ]);
-//     await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-//       'tile-collection-icontitle',
-//       ['Audio'],
-//       true,
-//       20,
-//     );
-//   });
-// });

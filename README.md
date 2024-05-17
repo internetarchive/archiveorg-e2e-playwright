@@ -18,10 +18,6 @@
 
     `npx playwright install`
 
-- install jq for json reporter summary reading:
-
-    `brew install jq`
-
 - create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing
 
 - run all the tests in headless mode and generate 1 whole test report:
