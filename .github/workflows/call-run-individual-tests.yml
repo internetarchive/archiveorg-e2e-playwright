@@ -3,9 +3,9 @@ name: Install deps and browsers, run tests, and upload artifacts
 on: workflow_call
 
 jobs:
-  setup: 
-    name: Setup test environment
-    uses: ./.github/actions/setup-env.yml
+  # setup: 
+  #   name: Setup test environment
+  #   uses: ./.github/actions/setup-env.yml
 
   test:
     runs-on: ubuntu-latest
