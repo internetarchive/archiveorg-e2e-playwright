@@ -7,11 +7,20 @@ name: Manual workflow - just for testing
 on:
   workflow_dispatch:
     # Inputs the workflow accepts.
-    inputs:
+    input_command:
       name:
-        description: 'Manual workflow trigger'
+        description: 'CLI command you want to execute in the pipeline'
 
 jobs:
-  test:
-    name: Run tests
-    uses: ./.github/workflows/call-run-tests.yml
+  setup: 
+    name: Setup test environment
+    uses: ./.github/workflows/setup-env.yml
+
+  - shell: bash
+    env:
+      ARCHIVE_EMAIL: ${{ secrets.ARCHIVE_EMAIL }}
+      ARCHIVE_PASSWORD: ${{ secrets.ARCHIVE_PASSWORD }}
+      PATRON_EMAIL: ${{ secrets.PATRON_EMAIL }}
+      PATRON_PASSWORD: ${{ secrets.PATRON_PASSWORD }}
+    run: |
+      ${{ github.event.inputs.input_command }}

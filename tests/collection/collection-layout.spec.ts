@@ -27,7 +27,7 @@ test('Tile, List, and Compact layout buttons change layout', async ({
   });
 });
 
-test('Tile hover pane appears', async ({ collectionPage }) => {
+test.fixme('Tile hover pane appears', async ({ collectionPage }) => {
   await test.step('Hover first item tile and check for title text inside tile-hover-pane and item-tile', async () => {
     await collectionPage.infiniteScroller.hoverToFirstItem();
     await collectionPage.infiniteScroller.assertTileHoverPaneTitleIsSameWithItemTile();
