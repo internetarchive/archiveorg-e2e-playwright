@@ -19,4 +19,4 @@ jobs:
 
   test:
     name: Run tests
-    uses: ./.github/workflows/call-run-tests.yml
+    uses: ./.github/workflows/call-run-short-tests.yml
