@@ -18,6 +18,10 @@ jobs:
       PATRON_PASSWORD: ${{ secrets.PATRON_PASSWORD }}
 
     steps:
+      setup: 
+        name: Setup test environment
+        uses: ./.github/workflows/setup-env.yml
+
       - name: Run about tests
         if: always()
         run: npm run test:about

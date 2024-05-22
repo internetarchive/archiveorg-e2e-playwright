@@ -7,21 +7,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install jq
-        run: sudo apt-get install jq -y
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      setup: 
+        name: Setup test environment
+        uses: ./.github/workflows/setup-env.yml
 
       # - name: Run tests in Chromium browser
       #   run: npm run test:chrome
