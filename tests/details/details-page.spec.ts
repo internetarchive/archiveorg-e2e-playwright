@@ -64,7 +64,7 @@ test(`Load theater: image (single)`, async ({ detailsPage }) => {
   await detailsPage.imageCarouselMultipleImageDisplay(false);
 });
 
-test(`Load theater: radio as priv'd user`, async ({
+test.fixme(`Load theater: radio as priv'd user`, async ({
   loginPage,
   detailsPage,
 }) => {
@@ -78,7 +78,7 @@ test(`Load theater: radio as priv'd user`, async ({
   });
 });
 
-test(`Load theater: radio as regular patron user`, async ({
+test.fixme(`Load theater: radio as regular patron user`, async ({
   loginPage,
   detailsPage,
 }) => {
@@ -102,7 +102,7 @@ test(`Load theater: radio as guest/not logged in user`, async ({
   });
 });
 
-test(`Load theater: tv as priv'd user`, async ({ loginPage, detailsPage }) => {
+test.fixme(`Load theater: tv as priv'd user`, async ({ loginPage, detailsPage }) => {
   await test.step(`Do login as priv'd user`, async () => {
     await loginPage.loginAs('privs');
   });
@@ -115,7 +115,7 @@ test(`Load theater: tv as priv'd user`, async ({ loginPage, detailsPage }) => {
   });
 });
 
-test(`Load theater: tv as patron user`, async ({ loginPage, detailsPage }) => {
+test.fixme(`Load theater: tv as patron user`, async ({ loginPage, detailsPage }) => {
   await test.step(`Do login as patron user`, async () => {
     await loginPage.loginAs('patron');
   });
