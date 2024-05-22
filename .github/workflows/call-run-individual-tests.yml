@@ -3,9 +3,9 @@ name: Install deps and browsers, run tests, and upload artifacts
 on: workflow_call
 
 jobs:
-  setup: 
-    name: Setup test environment
-    uses: ./.github/workflows/setup-env.yml
+  # setup: 
+  #   name: Setup test environment
+  #   uses: ./.github/action/setup-env.yml
 
   test:
     runs-on: macos-latest
@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Setup test environment
-        uses: ./setup-env.yml
+        uses: ./.github/actions/setup-env
 
       - name: Run about tests
         if: always()

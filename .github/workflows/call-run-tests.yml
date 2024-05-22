@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Setup test environment
-        uses: ./.github/workflows/setup-env.yml
+        uses: ./.github/actions/setup-env
 
       # - name: Run tests in Chromium browser
       #   run: npm run test:chrome

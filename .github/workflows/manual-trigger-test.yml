@@ -13,7 +13,7 @@ on:
 
 jobs:
   - name: Setup test environment
-    uses: ./setup-env.yml
+        uses: ./.github/actions/setup-env
 
   - shell: bash
     env:
