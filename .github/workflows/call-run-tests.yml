@@ -7,8 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      setup: 
-        name: Setup test environment
+      - name: Setup test environment
         uses: ./.github/workflows/setup-env.yml
 
       # - name: Run tests in Chromium browser
