@@ -17,6 +17,10 @@ jobs:
   #   secrets:
   #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+  # setup: 
+  #   name: Setup test environment
+  #   uses: ./.github/workflows/setup-env.yml
+
   test:
     name: Run tests individually
     uses: ./.github/workflows/call-run-individual-tests.yml

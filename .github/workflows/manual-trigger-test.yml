@@ -12,9 +12,8 @@ on:
         description: 'CLI command you want to execute in the pipeline'
 
 jobs:
-  setup: 
-    name: Setup test environment
-    uses: ./.github/workflows/setup-env.yml
+  - name: Setup test environment
+    uses: ./setup-env.yml
 
   - shell: bash
     env:
