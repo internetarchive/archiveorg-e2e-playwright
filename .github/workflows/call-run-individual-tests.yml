@@ -11,6 +11,12 @@ jobs:
     #     os: [macos-latest, ubuntu-latest]
     # runs-on: ${{ matrix.os }}
 
+    env:
+      ARCHIVE_EMAIL: ${{ secrets.ARCHIVE_EMAIL }}
+      ARCHIVE_PASSWORD: ${{ secrets.ARCHIVE_PASSWORD }}
+      PATRON_EMAIL: ${{ secrets.PATRON_EMAIL }}
+      PATRON_PASSWORD: ${{ secrets.PATRON_PASSWORD }}
+
     steps:
       - uses: actions/checkout@v3
 
