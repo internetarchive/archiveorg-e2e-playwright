@@ -22,6 +22,8 @@ jobs:
       PATRON_PASSWORD: ${{ secrets.PATRON_PASSWORD }}
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Setup test environment
         uses: ./.github/actions/setup-env
 

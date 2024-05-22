@@ -12,14 +12,18 @@ on:
         description: 'CLI command you want to execute in the pipeline'
 
 jobs:
-  - name: Setup test environment
+  manual: 
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup test environment
         uses: ./.github/actions/setup-env
 
-  - shell: bash
-    env:
-      ARCHIVE_EMAIL: ${{ secrets.ARCHIVE_EMAIL }}
-      ARCHIVE_PASSWORD: ${{ secrets.ARCHIVE_PASSWORD }}
-      PATRON_EMAIL: ${{ secrets.PATRON_EMAIL }}
-      PATRON_PASSWORD: ${{ secrets.PATRON_PASSWORD }}
-    run: |
-      ${{ github.event.inputs.input_command }}
+      - shell: bash
+        env:
+          ARCHIVE_EMAIL: ${{ secrets.ARCHIVE_EMAIL }}
+          ARCHIVE_PASSWORD: ${{ secrets.ARCHIVE_PASSWORD }}
+          PATRON_EMAIL: ${{ secrets.PATRON_EMAIL }}
+          PATRON_PASSWORD: ${{ secrets.PATRON_PASSWORD }}
+        run: |
+          ${{ github.event.inputs.input_command }}
