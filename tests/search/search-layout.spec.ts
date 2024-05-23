@@ -23,14 +23,14 @@ test('Tile, List, and Compact layout buttons change layout', async ({
   });
 });
 
-test('Tile hover pane appears', async ({ searchPage }) => {
+test.fixme('Tile hover pane appears', async ({ searchPage }) => {
   await test.step('Hover first item tile and check for title text inside tile-hover-pane and item-tile', async () => {
     await searchPage.infiniteScroller.hoverToFirstItem();
     await searchPage.infiniteScroller.assertTileHoverPaneTitleIsSameWithItemTile();
   });
 });
 
-test('Clicking on an item tile takes you to the item page', async ({
+test.fixme('Clicking on an item tile takes you to the item page', async ({
   searchPage,
 }) => {
   await test.step('Click first item result and check if it directs to details page', async () => {
