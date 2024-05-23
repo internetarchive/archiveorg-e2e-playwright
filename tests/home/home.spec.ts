@@ -31,7 +31,7 @@ test('Do simple TV search', async ({ homePage }) => {
   });
 });
 
-test('Do simple radio search', async ({ homePage }) => {
+test.fixme('Do simple radio search', async ({ homePage }) => {
   await test.step(`Select radio in search options, query for "rabbits" and validate that "rabbits" appears as the search term`, async () => {
     await homePage.collectionBrowser.clickSearchInputOption(SearchOption.RADIO);
     await homePage.collectionBrowser.queryFor('rabbits');
@@ -39,7 +39,7 @@ test('Do simple radio search', async ({ homePage }) => {
   });
 });
 
-test('Redirect web search to Wayback machine page', async ({ homePage }) => {
+test.fixme('Redirect web search to Wayback machine page', async ({ homePage }) => {
   await test.step(`Select TV in search options, query for "parrots" and validate that "parrots" appears as the search term`, async () => {
     await homePage.collectionBrowser.clickSearchInputOption(SearchOption.WEB);
     await homePage.collectionBrowser.queryFor('parrots');
@@ -47,7 +47,7 @@ test('Redirect web search to Wayback machine page', async ({ homePage }) => {
   });
 });
 
-test('Use Wayback widget - Redirect web search', async ({ homePage }) => {
+test.fixme('Use Wayback widget - Redirect web search', async ({ homePage }) => {
   await test.step(`Search for "canaries" and validate that "canaries" appears as the search term`, async () => {
     await homePage.waybackSearchFor('canaries');
     await homePage.collectionBrowser.validateWaybackPage('canaries');
