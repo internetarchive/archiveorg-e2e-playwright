@@ -1,0 +1,9 @@
+# This is a basic workflow that is manually triggered
+name: Manual workflow - just for testing
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    name: Run tests individually
+    uses: ./.github/workflows/call-run-individual-tests.yml
