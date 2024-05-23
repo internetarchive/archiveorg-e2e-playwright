@@ -133,8 +133,12 @@ export class DetailsPage {
   }
 
   async verifyRadioBorrowProgramAvailable() {
+    // NOTE: using more than one class in locator seems to be broken
+    // changed: this.page.locator('div.topinblock.borrow-program-btn'),
+    // to:      this.page.locator('div.borrow-program-btn'),
+    // This appears to be more reliable.
     await expect(
-      this.page.locator('div.topinblock.borrow-program-btn'),
+      this.page.locator('div.borrow-program-btn'),
     ).toBeVisible();
     await expect(this.page.locator('#radio-borrow-button')).toBeVisible();
 
@@ -145,7 +149,7 @@ export class DetailsPage {
 
   async verifyRadioBorrowProgramUnavailable() {
     await expect(
-      this.page.locator('div.topinblock.borrow-program-btn'),
+      this.page.locator('div.borrow-program-btn'),
     ).not.toBeVisible();
     await expect(this.page.locator('#radio-borrow-button')).not.toBeVisible();
 
