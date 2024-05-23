@@ -72,13 +72,9 @@ test(`Load theater: radio as priv'd user`, async ({
     await loginPage.loginAs('privs');
   });
   await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
-    console.log('gotoPage');
     await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
-    console.log('radioPlayerTheaterDisplay');
     await detailsPage.radioPlayerTheaterDisplay();
-    console.log('verifyRadioBorrowProgramAvailable');
     await detailsPage.verifyRadioBorrowProgramAvailable();
-    console.log('verifyRadioBorrowProgramAvailable done');
   });
 });
 
