@@ -38,9 +38,7 @@ test('Do simple text contents search', async ({ searchPage }) => {
 
 test('Do simple TV search', async ({ searchPage }) => {
   await test.step(`Select search option for text search and search for iguanas`, async () => {
-    await searchPage.collectionBrowser.clickSearchInputOption(
-      SearchOption.TV,
-    );
+    await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.TV);
     await searchPage.collectionBrowser.queryFor('iguanas');
   });
 
@@ -64,9 +62,7 @@ test('Do simple radio search', async ({ searchPage }) => {
 
 test('Do simple web search', async ({ searchPage }) => {
   await test.step(`Select search option for text search and search for parrots`, async () => {
-    await searchPage.collectionBrowser.clickSearchInputOption(
-      SearchOption.WEB,
-    );
+    await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.WEB);
     await searchPage.collectionBrowser.queryFor('parrots');
   });
 

@@ -60,30 +60,35 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 });
 
-test.fixme(`Select Year Published range via date picker`, async ({ searchPage }) => {
-  await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
-    await searchPage.collectionBrowser.queryFor('cats');
-    await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
-  });
+test.fixme(
+  `Select Year Published range via date picker`,
+  async ({ searchPage }) => {
+    await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
+      await searchPage.collectionBrowser.queryFor('cats');
+      await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
+    });
 
-  await test.step('New results will be fetched', async () => {
-    await searchPage.collectionFacets.displaysResultCount();
-  });
+    await test.step('New results will be fetched', async () => {
+      await searchPage.collectionFacets.displaysResultCount();
+    });
 
-  // it's easier to check dates in list view mode
-  await test.step('Switch to list view mode', async () => {
-    await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
-  });
+    // it's easier to check dates in list view mode
+    await test.step('Switch to list view mode', async () => {
+      await searchPage.infiniteScroller.clickViewMode(
+        LayoutViewModeLocator.LIST,
+      );
+    });
 
-  await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
-    await searchPage.infiniteScroller.validateIncludedFacetedResults(
-      'list-date',
-      ['2014', '2015'],
-      true,
-      10,
-    );
-  });
-});
+    await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
+      await searchPage.infiniteScroller.validateIncludedFacetedResults(
+        'list-date',
+        ['2014', '2015'],
+        true,
+        10,
+      );
+    });
+  },
+);
 
 test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group`, async () => {

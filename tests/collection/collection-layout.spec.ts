@@ -34,13 +34,14 @@ test.fixme('Tile hover pane appears', async ({ collectionPage }) => {
   });
 });
 
-test.fixme(`Clicking on an item tile takes you to the item`, async ({
-  collectionPage,
-}) => {
-  await test.step('Click first item result and check if it directs to details page', async () => {
-    await collectionPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
-  });
-});
+test.fixme(
+  `Clicking on an item tile takes you to the item`,
+  async ({ collectionPage }) => {
+    await test.step('Click first item result and check if it directs to details page', async () => {
+      await collectionPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
+    });
+  },
+);
 
 test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
   await test.step('Switch to tile view mode', async () => {

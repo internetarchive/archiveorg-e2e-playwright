@@ -39,13 +39,16 @@ test.fixme('Do simple radio search', async ({ homePage }) => {
   });
 });
 
-test.fixme('Redirect web search to Wayback machine page', async ({ homePage }) => {
-  await test.step(`Select TV in search options, query for "parrots" and validate that "parrots" appears as the search term`, async () => {
-    await homePage.collectionBrowser.clickSearchInputOption(SearchOption.WEB);
-    await homePage.collectionBrowser.queryFor('parrots');
-    await homePage.collectionBrowser.validateWaybackPage('parrots');
-  });
-});
+test.fixme(
+  'Redirect web search to Wayback machine page',
+  async ({ homePage }) => {
+    await test.step(`Select TV in search options, query for "parrots" and validate that "parrots" appears as the search term`, async () => {
+      await homePage.collectionBrowser.clickSearchInputOption(SearchOption.WEB);
+      await homePage.collectionBrowser.queryFor('parrots');
+      await homePage.collectionBrowser.validateWaybackPage('parrots');
+    });
+  },
+);
 
 test.fixme('Use Wayback widget - Redirect web search', async ({ homePage }) => {
   await test.step(`Search for "canaries" and validate that "canaries" appears as the search term`, async () => {

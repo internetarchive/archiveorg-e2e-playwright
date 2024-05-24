@@ -137,9 +137,7 @@ export class DetailsPage {
     // changed: this.page.locator('div.topinblock.borrow-program-btn'),
     // to:      this.page.locator('div.borrow-program-btn'),
     // This appears to be more reliable.
-    await expect(
-      this.page.locator('div.borrow-program-btn'),
-    ).toBeVisible();
+    await expect(this.page.locator('div.borrow-program-btn')).toBeVisible();
     await expect(this.page.locator('#radio-borrow-button')).toBeVisible();
 
     await expect(
@@ -148,9 +146,7 @@ export class DetailsPage {
   }
 
   async verifyRadioBorrowProgramUnavailable() {
-    await expect(
-      this.page.locator('div.borrow-program-btn'),
-    ).not.toBeVisible();
+    await expect(this.page.locator('div.borrow-program-btn')).not.toBeVisible();
     await expect(this.page.locator('#radio-borrow-button')).not.toBeVisible();
 
     await expect(
