@@ -6,6 +6,7 @@ test('Tile, List, and Compact layout buttons change layout', async ({
   searchPage,
 }) => {
   await test.step('Display List View', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
     await searchPage.infiniteScroller.assertLayoutViewModeChange('list');
   });
@@ -25,6 +26,7 @@ test('Tile, List, and Compact layout buttons change layout', async ({
 
 test.fixme('Tile hover pane appears', async ({ searchPage }) => {
   await test.step('Hover first item tile and check for title text inside tile-hover-pane and item-tile', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.infiniteScroller.hoverToFirstItem();
     await searchPage.infiniteScroller.assertTileHoverPaneTitleIsSameWithItemTile();
   });
@@ -34,12 +36,14 @@ test.fixme('Clicking on an item tile takes you to the item page', async ({
   searchPage,
 }) => {
   await test.step('Click first item result and check if it directs to details page', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
   });
 });
 
 test('Sort by All-time views in Tile view', async ({ searchPage }) => {
   await test.step('Switch to tile view mode', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
   });
 
@@ -66,6 +70,7 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
 
 test('Sort by Date published in List view', async ({ searchPage }) => {
   await test.step('Switch to list view mode', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
   });
 
@@ -91,6 +96,7 @@ test('Sort by Date archived (ascending) in Compact view', async ({
   searchPage,
 }) => {
   await test.step('Switch to compact view mode', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.infiniteScroller.clickViewMode(
       LayoutViewModeLocator.COMPACT,
     );
