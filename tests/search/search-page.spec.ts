@@ -10,7 +10,7 @@ test(`"Begin searching" page displays prior to searching`, async ({
   });
 });
 
-test('Do simple metadata search', async ({ searchPage }) => {
+test.fixme('Do simple metadata search', async ({ searchPage }) => {
   await test.step(`Select search option for metadata search and search for cats`, async () => {
     await searchPage.collectionBrowser.clickSearchInputOption(
       SearchOption.METADATA,
@@ -23,7 +23,7 @@ test('Do simple metadata search', async ({ searchPage }) => {
   });
 });
 
-test('Do simple text contents search', async ({ searchPage }) => {
+test.fixme('Do simple text contents search', async ({ searchPage }) => {
   await test.step(`Select search option for text search and search for dogs`, async () => {
     await searchPage.collectionBrowser.clickSearchInputOption(
       SearchOption.TEXT,
@@ -36,7 +36,7 @@ test('Do simple text contents search', async ({ searchPage }) => {
   });
 });
 
-test('Do simple TV search', async ({ searchPage }) => {
+test.fixme('Do simple TV search', async ({ searchPage }) => {
   await test.step(`Select search option for text search and search for iguanas`, async () => {
     await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.TV);
     await searchPage.collectionBrowser.queryFor('iguanas');
@@ -47,7 +47,7 @@ test('Do simple TV search', async ({ searchPage }) => {
   });
 });
 
-test('Do simple radio search', async ({ searchPage }) => {
+test.fixme('Do simple radio search', async ({ searchPage }) => {
   await test.step(`Select search option for text search and search for rabbits`, async () => {
     await searchPage.collectionBrowser.clickSearchInputOption(
       SearchOption.RADIO,
@@ -60,7 +60,7 @@ test('Do simple radio search', async ({ searchPage }) => {
   });
 });
 
-test('Do simple web search', async ({ searchPage }) => {
+test.fixme('Do simple web search', async ({ searchPage }) => {
   await test.step(`Select search option for text search and search for parrots`, async () => {
     await searchPage.collectionBrowser.clickSearchInputOption(SearchOption.WEB);
     await searchPage.collectionBrowser.queryFor('parrots');

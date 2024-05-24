@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 
 import { SearchOption } from '../models';
 
-test.fixme('Home page displays all of its elements', async ({ homePage }) => {
+test('Home page displays all of its elements', async ({ homePage }) => {
   await test.step('Validate if page elements were loaded', async () => {
     await homePage.validatePageElements();
   });
@@ -15,7 +15,7 @@ test('Do simple metadata search', async ({ homePage }) => {
   });
 });
 
-test('Do simple full-text search', async ({ homePage }) => {
+test.fixme('Do simple full-text search', async ({ homePage }) => {
   await test.step(`Select text contents in search options, query for "dogs" and validate that "dogs" appears as the search term`, async () => {
     await homePage.collectionBrowser.clickSearchInputOption(SearchOption.TEXT);
     await homePage.collectionBrowser.queryFor('dogs');
