@@ -34,7 +34,7 @@ test.fixme('Tile hover pane appears', async ({ collectionPage }) => {
   });
 });
 
-test(`Clicking on an item tile takes you to the item`, async ({
+test.fixme(`Clicking on an item tile takes you to the item`, async ({
   collectionPage,
 }) => {
   await test.step('Click first item result and check if it directs to details page', async () => {

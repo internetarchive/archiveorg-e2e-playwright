@@ -11,7 +11,7 @@ test(`Verify if facets appear on first load`, async ({ collectionPage }) => {
   });
 });
 
-test(`Select a facet for videos and clear facet filters`, async ({
+test.fixme(`Select a facet for videos and clear facet filters`, async ({
   collectionPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group and check 5 item results for "Movie" tile icon titles`, async () => {

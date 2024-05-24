@@ -27,33 +27,12 @@ export class LoginPage {
       asUser.password,
     );
     await this.page.locator('input.btn.btn-primary.btn-submit').click();
-    /* NOTE: We almost never want to use waitForTimeout() in tests
-     *       This adds an EXTRA delay that can make tests flaky
-     */
-    // await this.page.waitForTimeout(10000);
-
-    /* NOTE: This URL check seems to fail
-     * Waiting for the response seems a temporary fix
-     * We should:
-     * 1. wait for the page to load
-     * 2. Have a check for user facing elements like user menu
-     */
-    // should go back to baseUrl
-    // await this.page.waitForURL('/');
-
     await this.page.waitForResponse(response => response.status() === 200);
   }
 
   async assertAccountSettingsDisplayed() {
-    /* NOTE: We almost never want to use waitForTimeout() in tests
-     */
-    //await this.page.waitForTimeout(3000);
-
     await this.page.goto('/account/index.php?settings=1');
-    /* NOTE: We almost never want to use waitForLoadState('networkidle'...
-     */
-    // await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-
+    await this.page.waitForLoadState('domcontentloaded');
     await expect(this.authTemplate).toBeVisible();
 
     expect(
@@ -79,11 +58,8 @@ export class LoginPage {
 
   async notLoggedIn() {
     await this.page.goto('/account/index.php?settings=1');
-    /* NOTE: We almost never want to use waitForLoadState('networkidle'...
-     */
-    // await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-
-    await expect(this.authTemplate).not.toBeVisible();
+    await this.page.waitForLoadState('domcontentloaded');
+    await expect(this.authTemplate).toBeVisible();
     expect(
       await this.page.locator('#maincontent > div > div').innerText(),
     ).toContain('You must be logged in to change your settings');

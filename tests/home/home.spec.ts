@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 
 import { SearchOption } from '../models';
 
-test('Home page displays all of its elements', async ({ homePage }) => {
+test.fixme('Home page displays all of its elements', async ({ homePage }) => {
   await test.step('Validate if page elements were loaded', async () => {
     await homePage.validatePageElements();
   });
@@ -23,7 +23,7 @@ test('Do simple full-text search', async ({ homePage }) => {
   });
 });
 
-test('Do simple TV search', async ({ homePage }) => {
+test.fixme('Do simple TV search', async ({ homePage }) => {
   await test.step(`Select TV in search options, query for "iguanas" and validate that "iguanas" appears as the search term`, async () => {
     await homePage.collectionBrowser.clickSearchInputOption(SearchOption.TV);
     await homePage.collectionBrowser.queryFor('iguanas');

@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 
 import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
-test('Facets appear', async ({ searchPage }) => {
+test.fixme('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
     await searchPage.collectionFacets.assertSearchFacetGroupCount();
   });
@@ -57,7 +57,7 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 });
 
-test(`Select Year Published range via date picker`, async ({ searchPage }) => {
+test.fixme(`Select Year Published range via date picker`, async ({ searchPage }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
     await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
   });

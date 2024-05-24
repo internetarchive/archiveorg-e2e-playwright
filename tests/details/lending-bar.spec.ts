@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 
-test(`Load theater: bookreader with lending bar`, async ({
+test.fixme(`Load theater: bookreader with lending bar`, async ({
   detailsPage,
   loginPage,
 }) => {

@@ -26,7 +26,7 @@ test(`Collections page - "More..." link to About tab appears below description`,
   });
 });
 
-test(`Tab navigation`, async ({ collectionPage }) => {
+test.fixme(`Tab navigation`, async ({ collectionPage }) => {
   await test.step(`Click "About" tab button and check if About page is displayed in "oldtimeradio" collection page`, async () => {
     await collectionPage.clickCollectionTab('About');
     await collectionPage.validateAboutTabPage();

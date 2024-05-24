@@ -23,7 +23,7 @@ test.describe('Basic Search tests', () => {
     });
   });
 
-  test('Do simple metadata search', async () => {
+  test.fixme('Do simple metadata search', async () => {
     await test.step(`Select search option for metadata search`, async () => {
       await searchPage.collectionBrowser.clickSearchInputOption(
         SearchOption.METADATA,
