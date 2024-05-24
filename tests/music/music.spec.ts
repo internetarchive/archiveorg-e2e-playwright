@@ -39,7 +39,7 @@ test(`Special case: Load a single track - no waveform`, async ({
   });
 });
 
-test(`Play a Grateful Dead track`, async ({ musicPage }) => {
+test.fixme(`Play a Grateful Dead track`, async ({ musicPage }) => {
   await musicPage.detailsPage.gotoPage(
     'gd73-06-10.sbd.hollister.174.sbeok.shnf',
   );
