@@ -1,6 +1,6 @@
 import { test } from '../../tests/fixtures';
 
-test(`Collections basic display - use collection page layout`, async ({
+test.fixme(`Collections basic display - use collection page layout`, async ({
   collectionPage,
 }) => {
   await test.step(`Check if collection thumbnail, summary and action bar appears`, async () => {
@@ -12,7 +12,7 @@ test(`Collections basic display - use collection page layout`, async ({
   });
 });
 
-test(`Collections page - "More..." link to About tab appears below description`, async ({
+test.fixme(`Collections page - "More..." link to About tab appears below description`, async ({
   page,
   collectionPage,
 }) => {

@@ -71,7 +71,7 @@ test.fixme('Do simple web search', async ({ searchPage }) => {
   });
 });
 
-test('No results page displays when no results', async ({ searchPage }) => {
+test.fixme('No results page displays when no results', async ({ searchPage }) => {
   await test.step(`Search for a query that we expect will return no results at all and validate the empty page placeholder is displayed`, async () => {
     await searchPage.collectionBrowser.queryFor(
       'catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda',

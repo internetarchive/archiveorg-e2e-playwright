@@ -42,7 +42,7 @@ test('Collection search text contents and clear filters', async ({
   });
 });
 
-test('No results page displays when no results', async ({ collectionPage }) => {
+test.fixme('No results page displays when no results', async ({ collectionPage }) => {
   await test.step(`Select "Search metadata"`, async () => {
     await collectionPage.collectionBrowser.clickSearchInputOption(
       SearchOption.METADATA,

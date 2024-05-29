@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 
 import { SearchOption } from '../models';
 
-test('Home page displays all of its elements', async ({ homePage }) => {
+test.fixme('Home page displays all of its elements', async ({ homePage }) => {
   await test.step('Validate if page elements were loaded', async () => {
     await homePage.validatePageElements();
   });

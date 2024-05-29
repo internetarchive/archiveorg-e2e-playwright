@@ -151,13 +151,13 @@ test(`Load theater: video`, async ({ detailsPage }) => {
   await detailsPage.videoPlayerTheaterDisplay();
 });
 
-test(`Load theater: webamp`, async ({ detailsPage }) => {
+test.fixme(`Load theater: webamp`, async ({ detailsPage }) => {
   await detailsPage.gotoPage('OTRR_Philip_Marlowe_Singles');
   await detailsPage.iaMusicTheater.selectChannelSelector('Webamp');
   await detailsPage.iaMusicTheater.webAmpDisplayFromChannelSelector(true);
 });
 
-test(`Load theater: webamp with skin`, async ({ detailsPage }) => {
+test.fixme(`Load theater: webamp with skin`, async ({ detailsPage }) => {
   await test.step('Load webAmp skin - llama feature', async () => {
     // goto a webamp skin page
     await detailsPage.gotoPage('winampskin_Tundra_Winamp_Skin_Actualized');

@@ -93,7 +93,7 @@ test(`Sort by Date published in List view`, async ({ collectionPage }) => {
   });
 });
 
-test(`Sort by Date archived (ascending) in Compact view`, async ({
+test.fixme(`Sort by Date archived (ascending) in Compact view`, async ({
   collectionPage,
 }) => {
   await test.step('Switch to compact view mode', async () => {

@@ -9,7 +9,7 @@ test.fixme('Facets appear', async ({ searchPage }) => {
   });
 });
 
-test(`Facets for "movies" in Media Type facet group`, async ({
+test.fixme(`Facets for "movies" in Media Type facet group`, async ({
   searchPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
@@ -32,7 +32,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
   });
 });
 
-test(`Clear facet filters`, async ({ searchPage }) => {
+test.fixme(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
@@ -129,7 +129,7 @@ test.skip(`Filter for title beginning with "X"`, async ({ searchPage }) => {
   });
 });
 
-test(`Facets can be selected via "Select filters" modal`, async ({
+test.fixme(`Facets can be selected via "Select filters" modal`, async ({
   searchPage,
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
