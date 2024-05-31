@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 
 import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
-test.fixme('Facets appear', async ({ searchPage }) => {
+test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
     await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.assertSearchFacetGroupCount();

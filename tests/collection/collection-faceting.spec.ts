@@ -5,13 +5,13 @@ import {
   LayoutViewModeLocator,
 } from '../../tests/models';
 
-test.fixme(`Verify if facets appear on first load`, async ({ collectionPage }) => {
+test(`Verify if facets appear on first load`, async ({ collectionPage }) => {
   await test.step('Assert facet group headers count', async () => {
     await collectionPage.collectionFacets.assertCollectionFacetGroupCount();
   });
 });
 
-test.fixme(
+test(
   `Select a facet for videos and clear facet filters`,
   async ({ collectionPage }) => {
     await test.step(`Select "movies" from inside "Media Type" facet group and check 5 item results for "Movie" tile icon titles`, async () => {
@@ -35,7 +35,7 @@ test.fixme(
   },
 );
 
-test.fixme(`Select Year Published range via date picker`, async ({
+test(`Select Year Published range via date picker`, async ({
   collectionPage,
 }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box) and new results will be loaded`, async () => {
@@ -56,7 +56,7 @@ test.fixme(`Select Year Published range via date picker`, async ({
   });
 });
 
-test.fixme(`Negative facet to exclude audio`, async ({ collectionPage }) => {
+test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
@@ -72,7 +72,7 @@ test.fixme(`Negative facet to exclude audio`, async ({ collectionPage }) => {
   });
 });
 
-test.fixme(
+test(
   `Facets can be selected via Select filters modal`,
   async ({ collectionPage }) => {
     await test.step(`Click "More" button under Subject facet group`, async () => {
