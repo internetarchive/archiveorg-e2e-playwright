@@ -4,6 +4,7 @@ import { FacetGroupLocatorLabel, FacetType } from '../models';
 
 export class CollectionFacets {
   readonly page: Page;
+  readonly leftScroll: Locator;
   readonly collectionFacets: Locator;
   readonly resultsTotal: Locator;
   readonly modalManager: Locator;
@@ -11,6 +12,7 @@ export class CollectionFacets {
 
   public constructor(page: Page) {
     this.page = page;
+    this.leftScroll = this.page.locator('#left-column-scroll-sentinel');
     this.collectionFacets = page.locator('collection-facets');
     this.resultsTotal = page.locator('#facets-header-container #results-total');
 
@@ -19,33 +21,41 @@ export class CollectionFacets {
   }
 
   async displaysResultCount() {
-    await expect(this.resultsTotal).toBeVisible({ timeout: 60000 });
+    await expect(this.resultsTotal).toBeVisible();
   }
 
   async assertSearchFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // need networkidle to detect facets loaded
+    await this.page.waitForLoadState('networkidle');
 
     const facetGroups = this.collectionFacets.locator('facets-template');
+    await expect(this.leftScroll).toBeVisible();
     expect(await facetGroups.count()).toEqual(7);
   }
 
   async assertCollectionFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // need networkidle to detect facets loaded
+    await this.page.waitForLoadState('networkidle');
 
     const facetGroups = this.collectionFacets.locator('facets-template');
+    await expect(this.leftScroll).toBeVisible();
     expect(await facetGroups.count()).toEqual(6);
   }
 
   async assertListFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // need networkidle to detect facets loaded
+    await this.page.waitForLoadState('networkidle');
 
     const facetGroups = this.collectionFacets.locator('facets-template');
+    await expect(this.leftScroll).toBeVisible();
     expect(await facetGroups.count()).toEqual(7);
   }
 
   async assertDatePickerVisible() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // need networkidle to detect facets loaded
+    await this.page.waitForLoadState('networkidle');
 
+    await expect(this.leftScroll).toBeVisible();
     const datePicker = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,
     );
@@ -57,8 +67,10 @@ export class CollectionFacets {
     facetLabel: string,
     facetType: FacetType,
   ) {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // need networkidle to detect facets loaded
+    await this.page.waitForLoadState('networkidle');
 
+    await expect(this.leftScroll).toBeVisible();
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
       if (facetType === 'positive') {
@@ -90,16 +102,18 @@ export class CollectionFacets {
   }
 
   async clickMoreInFacetGroup(group: FacetGroupLocatorLabel) {
+    await expect(this.leftScroll).toBeVisible();
     const facetContent = await this.getFacetGroupContainer(group);
     if (facetContent) {
-      const btnMore = facetContent.locator('button');
-      await btnMore.click();
+      await facetContent.locator('button').click();
     }
   }
 
   async selectFacetsInModal(facetLabels: string[]) {
-    await this.page.waitForLoadState('load', { timeout: 60000 });
-
+    // need networkidle to detect facets loaded
+    await this.page.waitForLoadState('networkidle');
+    
+    await expect(this.leftScroll).toBeVisible();
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
     );
@@ -114,7 +128,7 @@ export class CollectionFacets {
   }
 
   async fillUpYearFilters(startDate: string, endDate: string) {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForLoadState('domcontentloaded');
 
     const facetContent = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,

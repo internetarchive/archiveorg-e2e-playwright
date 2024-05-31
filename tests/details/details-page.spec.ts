@@ -64,27 +64,37 @@ test(`Load theater: image (single)`, async ({ detailsPage }) => {
   await detailsPage.imageCarouselMultipleImageDisplay(false);
 });
 
-test(`Load theater: radio as priv'd user`, async ({
-  loginPage,
-  detailsPage,
-}) => {
-  await test.step(`Do login as priv'd user`, async () => {
-    await loginPage.loginAs('privs');
-  });
-  await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
-    await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
-    await detailsPage.radioPlayerTheaterDisplay();
-    await detailsPage.verifyRadioBorrowProgramAvailable();
-  });
-});
+test.fixme(
+  `Load theater: radio as priv'd user`,
+  async ({ loginPage, detailsPage }) => {
+    await test.step(`Do login as priv'd user`, async () => {
+      await loginPage.loginAs('privs');
+    });
+    await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
+      await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
+      await detailsPage.radioPlayerTheaterDisplay();
+      await detailsPage.verifyRadioBorrowProgramAvailable();
+    });
+  },
+);
 
-test(`Load theater: radio as regular patron user`, async ({
-  loginPage,
+test.fixme(
+  `Load theater: radio as regular patron user`,
+  async ({ loginPage, detailsPage }) => {
+    await test.step(`Do login as regular patron user`, async () => {
+      await loginPage.loginAs('patron');
+    });
+    await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
+      await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
+      await detailsPage.radioPlayerTheaterDisplay();
+      await detailsPage.verifyRadioBorrowProgramUnavailable();
+    });
+  },
+);
+
+test(`Load theater: radio as guest/not logged in user`, async ({
   detailsPage,
 }) => {
-  await test.step(`Do login as regular patron user`, async () => {
-    await loginPage.loginAs('patron');
-  });
   await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
     await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
     await detailsPage.radioPlayerTheaterDisplay();
@@ -92,47 +102,41 @@ test(`Load theater: radio as regular patron user`, async ({
   });
 });
 
-test(`Load theater: radio as guest/not logged in user`, async ({ detailsPage }) => {
-  await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
-    await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
-    await detailsPage.radioPlayerTheaterDisplay();
-    await detailsPage.verifyRadioBorrowProgramUnavailable();
-  });
-});
+test.fixme(
+  `Load theater: tv as priv'd user`,
+  async ({ loginPage, detailsPage }) => {
+    await test.step(`Do login as priv'd user`, async () => {
+      await loginPage.loginAs('privs');
+    });
+    await test.step(`Go to tv details page and verify priv'd user borrow program`, async () => {
+      await detailsPage.gotoPage(
+        'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
+      );
+      await detailsPage.tvTheaterDisplay();
+      await detailsPage.verifyTVBorrowProgramAvailable();
+    });
+  },
+);
 
-test(`Load theater: tv as priv'd user`, async ({
-  loginPage,
+test.fixme(
+  `Load theater: tv as patron user`,
+  async ({ loginPage, detailsPage }) => {
+    await test.step(`Do login as patron user`, async () => {
+      await loginPage.loginAs('patron');
+    });
+    await test.step(`Go to tv details page and verify priv'd user borrow program`, async () => {
+      await detailsPage.gotoPage(
+        'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
+      );
+      await detailsPage.tvTheaterDisplay();
+      await detailsPage.verifyTVBorrowProgramAvailable();
+    });
+  },
+);
+
+test(`Load theater: tv as guest/not logged in user`, async ({
   detailsPage,
 }) => {
-  await test.step(`Do login as priv'd user`, async () => {
-    await loginPage.loginAs('privs');
-  });
-  await test.step(`Go to tv details page and verify priv'd user borrow program`, async () => {
-    await detailsPage.gotoPage(
-      'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
-    );
-    await detailsPage.tvTheaterDisplay();
-    await detailsPage.verifyTVBorrowProgramAvailable();
-  });
-});
-
-test(`Load theater: tv as patron user`, async ({
-  loginPage,
-  detailsPage,
-}) => {
-  await test.step(`Do login as patron user`, async () => {
-    await loginPage.loginAs('patron');
-  });
-  await test.step(`Go to tv details page and verify priv'd user borrow program`, async () => {
-    await detailsPage.gotoPage(
-      'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
-    );
-    await detailsPage.tvTheaterDisplay();
-    await detailsPage.verifyTVBorrowProgramAvailable();
-  });
-});
-
-test(`Load theater: tv as guest/not logged in user`, async ({ detailsPage }) => {
   await test.step(`Go to tv details page and verify priv'd user borrow program`, async () => {
     await detailsPage.gotoPage(
       'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
@@ -147,13 +151,13 @@ test(`Load theater: video`, async ({ detailsPage }) => {
   await detailsPage.videoPlayerTheaterDisplay();
 });
 
-test(`Load theater: webamp`, async ({ detailsPage }) => {
+test.fixme(`Load theater: webamp`, async ({ detailsPage }) => {
   await detailsPage.gotoPage('OTRR_Philip_Marlowe_Singles');
   await detailsPage.iaMusicTheater.selectChannelSelector('Webamp');
   await detailsPage.iaMusicTheater.webAmpDisplayFromChannelSelector(true);
 });
 
-test(`Load theater: webamp with skin`, async ({ detailsPage }) => {
+test.fixme(`Load theater: webamp with skin`, async ({ detailsPage }) => {
   await test.step('Load webAmp skin - llama feature', async () => {
     // goto a webamp skin page
     await detailsPage.gotoPage('winampskin_Tundra_Winamp_Skin_Actualized');

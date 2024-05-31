@@ -1,11 +1,6 @@
-name: Donation banner tests
+name: Setup GH actions and install dependencies
 
-on:
-  push:
-    branches: [ main, master ]
-
-  pull_request:
-    branches: [ main, master ]
+on: workflow_call
 
 jobs:
   test:
@@ -24,6 +19,3 @@ jobs:
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-
-      - name: Run Donation Tests
-        run: npm run test:donation

@@ -7,7 +7,9 @@
     "show:report": "npx http-server ./playwright-report",
     "test": "CATEGORY=all npx playwright test",
     "test:codegen": "npx playwright codegen",
-    "test:chromium": "CATEGORY=allnpx playwright test --project=chromium",
+    "test:chrome": "CATEGORY=all-chrome npx playwright test --project='Desktop - Chromium'",
+    "test:firefox": "CATEGORY=all-firefox npx playwright test --project='Desktop - Firefox'",
+    "test:webkit": "CATEGORY=all-webkit npx playwright test --project='Desktop - Webkit'",
     "test:debug": "CATEGORY=all npx playwright test --debug",
     "test:trace": "CATEGORY=all npx playwright test --config=./playwright.config.ts --trace on",
     "test:ui": "CATEGORY=all npx playwright test --ui",
@@ -45,14 +47,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.41.2",
+    "@playwright/test": "^1.44.0",
     "@types/node": "^20.11.17",
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
+    "jq": "^1.7.2",
     "playwright": "^1.41.2",
+    "playwright-ctrf-json-reporter": "^0.0.9",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {
@@ -66,13 +70,9 @@
     ],
     "rules": {
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error"
-      ],
+      "@typescript-eslint/no-unused-vars": "error",
       "no-shadow": "off",
-      "@typescript-eslint/no-shadow": [
-        "error"
-      ],
+      "@typescript-eslint/no-shadow": "error",
       "class-methods-use-this": "off",
       "import/no-unresolved": "off",
       "import/extensions": [

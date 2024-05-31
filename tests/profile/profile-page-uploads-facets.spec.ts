@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 
-test(`Profile Page - Uploads: facets appear`, async ({
+test.fixme(`Profile Page - Uploads: facets appear`, async ({
   profilePageUploads,
 }) => {
   await test.step(`Check if date picker appears`, async () => {

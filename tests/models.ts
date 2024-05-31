@@ -62,7 +62,7 @@ export type ViewFacetMetadata =
 
 export type BookPageViewMode = '1up' | '2up' | 'thumb';
 
-export type ChannelSelector = 'Player' | 'Webamp';
+export type ChannelSelector = 'Player' | 'Webamp' | 'Youtube' | 'Spotify';
 
 export type UserType = 'privs' | 'patron' | 'no-login';
 

@@ -4,6 +4,11 @@ node_modules/
 /playwright/.cache
 /playwright/.auth
 
+# json reporter summary
+/ctrf
+/playwright-summary
+*-summary.json
+
 .env
 *.err
 *.log

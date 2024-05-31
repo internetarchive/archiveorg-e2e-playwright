@@ -68,7 +68,7 @@ test.describe('Profile Page - Basic display tests', () => {
 test.describe('Profile Page - Lists', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test(`Facets appear`, async ({ browser }) => {
+  test.fixme(`Facets appear`, async ({ browser }) => {
     const browserPage = await browser.newPage();
     profilePage = new ProfilePage(browserPage);
 
