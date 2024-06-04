@@ -34,13 +34,14 @@ test('Tile hover pane appears', async ({ collectionPage }) => {
   });
 });
 
-test(`Clicking on an item tile takes you to the item`, async ({
-  collectionPage,
-}) => {
-  await test.step('Click first item result and check if it directs to details page', async () => {
-    await collectionPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
-  });
-});
+test(
+  `Clicking on an item tile takes you to the item`,
+  async ({ collectionPage }) => {
+    await test.step('Click first item result and check if it directs to details page', async () => {
+      await collectionPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
+    });
+  },
+);
 
 test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
   await test.step('Switch to tile view mode', async () => {
@@ -60,7 +61,7 @@ test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
       'descending',
       10,
     );
-    await collectionPage.searchPage.validateURLParamsWithSortFilter(
+    await collectionPage.collectionBrowser.validateURLParamsWithSortFilter(
       'All-time views',
       'descending',
     );
@@ -85,7 +86,7 @@ test(`Sort by Date published in List view`, async ({ collectionPage }) => {
       'descending',
       10,
     );
-    await collectionPage.searchPage.validateURLParamsWithSortFilter(
+    await collectionPage.collectionBrowser.validateURLParamsWithSortFilter(
       'Date published',
       'descending',
     );
@@ -107,10 +108,10 @@ test(`Sort by Date archived (ascending) in Compact view`, async ({
   });
 
   await test.step('Check list column headers for sort filter', async () => {
-    await collectionPage.searchPage.validateCompactViewModeListLineDateHeaders(
+    await collectionPage.collectionBrowser.validateCompactViewModeListLineDateHeaders(
       'Date archived',
     );
-    await collectionPage.searchPage.validateURLParamsWithSortFilter(
+    await collectionPage.collectionBrowser.validateURLParamsWithSortFilter(
       'Date archived',
       'ascending',
     );
@@ -124,9 +125,9 @@ test.beforeEach(async ({ collectionPage }) => {
   });
 
   await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
-    await collectionPage.searchPage.clickSearchInputOption(
+    await collectionPage.collectionBrowser.clickSearchInputOption(
       SearchOption.METADATA,
     );
-    await collectionPage.searchPage.queryFor('radio');
+    await collectionPage.collectionBrowser.queryFor('radio');
   });
 });

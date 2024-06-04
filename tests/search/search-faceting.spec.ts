@@ -3,8 +3,8 @@ import { test } from '../fixtures';
 import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
-  test.setTimeout(60000);
   await test.step('Assert facet group headers count', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.assertSearchFacetGroupCount();
   });
 });
@@ -13,6 +13,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
   searchPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
       'movies',
@@ -33,6 +34,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
 
 test(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
       'data',
@@ -50,40 +52,47 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 
   await test.step(`Click "Clear all filters"`, async () => {
-    await searchPage.clickClearAllFilters();
+    await searchPage.collectionBrowser.clickClearAllFilters();
   });
 
   await test.step(`Assert "Clear all filters" is not visible`, async () => {
-    await searchPage.assertClearAllFiltersNotVisible();
+    await searchPage.collectionBrowser.assertClearAllFiltersNotVisible();
   });
 });
 
-test(`Select Year Published range via date picker`, async ({ searchPage }) => {
-  await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
-    await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
-  });
+test(
+  `Select Year Published range via date picker`,
+  async ({ searchPage }) => {
+    await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
+      await searchPage.collectionBrowser.queryFor('cats');
+      await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
+    });
 
-  await test.step('New results will be fetched', async () => {
-    await searchPage.collectionFacets.displaysResultCount();
-  });
+    await test.step('New results will be fetched', async () => {
+      await searchPage.collectionFacets.displaysResultCount();
+    });
 
-  // it's easier to check dates in list view mode
-  await test.step('Switch to list view mode', async () => {
-    await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
-  });
+    // it's easier to check dates in list view mode
+    await test.step('Switch to list view mode', async () => {
+      await searchPage.infiniteScroller.clickViewMode(
+        LayoutViewModeLocator.LIST,
+      );
+    });
 
-  await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
-    await searchPage.infiniteScroller.validateIncludedFacetedResults(
-      'list-date',
-      ['2014', '2015'],
-      true,
-      10,
-    );
-  });
-});
+    await test.step(`Check the first 10 results Published texts are ONLY 2014 or 2015`, async () => {
+      await searchPage.infiniteScroller.validateIncludedFacetedResults(
+        'list-date',
+        ['2014', '2015'],
+        true,
+        10,
+      );
+    });
+  },
+);
 
 test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
       'audio',
@@ -124,6 +133,7 @@ test(`Facets can be selected via "Select filters" modal`, async ({
   searchPage,
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
     );
