@@ -192,7 +192,7 @@ export const test = base.extend<PageFixtures>({
 
 test.beforeEach(async ({ request }) => {
   // add config to check what_host node the test is connecting at
-  // update the .env file to enable/disable it 
+  // update the .env file to enable/disable it
   if (process.env.WHAT_HOST === 'true') {
     const whathost = await request.get('/services/whathost.php');
     console.log('whathost: ', await whathost.text());

@@ -22,7 +22,9 @@ function runTest(category = 'all', headed = false, browser = 'chromium') {
   try {
     console.log(`Executing command: ${command}`);
     const output = execSync(command, { stdio: 'inherit' });
-    console.log(output.toString());
+    if (output !== null) {
+      console.log(output.toString());
+    }
   } catch (error) {
     console.log('error: ', error);
     console.error(error.stderr ? error.stderr.toString() : error.toString());
