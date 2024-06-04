@@ -24,6 +24,7 @@ function runTest(category = 'all', headed = false, browser = 'chromium') {
     const output = execSync(command, { stdio: 'inherit' });
     console.log(output.toString());
   } catch (error) {
+    console.log('error: ', error);
     console.error(error.stderr ? error.stderr.toString() : error.toString());
     process.exit(1);
   }
