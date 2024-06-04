@@ -11,29 +11,28 @@ test(`Verify if facets appear on first load`, async ({ collectionPage }) => {
   });
 });
 
-test(
-  `Select a facet for videos and clear facet filters`,
-  async ({ collectionPage }) => {
-    await test.step(`Select "movies" from inside "Media Type" facet group and check 5 item results for "Movie" tile icon titles`, async () => {
-      await collectionPage.collectionFacets.selectFacetByGroup(
-        FacetGroupLocatorLabel.MEDIATYPE,
-        'movies',
-        'positive',
-      );
-      await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-        'tile-collection-icontitle',
-        ['Movie'],
-        true,
-        5,
-      );
-    });
+test(`Select a facet for videos and clear facet filters`, async ({
+  collectionPage,
+}) => {
+  await test.step(`Select "movies" from inside "Media Type" facet group and check 5 item results for "Movie" tile icon titles`, async () => {
+    await collectionPage.collectionFacets.selectFacetByGroup(
+      FacetGroupLocatorLabel.MEDIATYPE,
+      'movies',
+      'positive',
+    );
+    await collectionPage.infiniteScroller.validateIncludedFacetedResults(
+      'tile-collection-icontitle',
+      ['Movie'],
+      true,
+      5,
+    );
+  });
 
-    await test.step(`Click "Clear all filters"`, async () => {
-      await collectionPage.collectionBrowser.clickClearAllFilters();
-      await collectionPage.collectionBrowser.assertClearAllFiltersNotVisible();
-    });
-  },
-);
+  await test.step(`Click "Clear all filters"`, async () => {
+    await collectionPage.collectionBrowser.clickClearAllFilters();
+    await collectionPage.collectionBrowser.assertClearAllFiltersNotVisible();
+  });
+});
 
 test(`Select Year Published range via date picker`, async ({
   collectionPage,
@@ -72,26 +71,25 @@ test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
   });
 });
 
-test(
-  `Facets can be selected via Select filters modal`,
-  async ({ collectionPage }) => {
-    await test.step(`Click "More" button under Subject facet group`, async () => {
-      await collectionPage.collectionFacets.clickMoreInFacetGroup(
-        FacetGroupLocatorLabel.SUBJECT,
-      );
-    });
+test(`Facets can be selected via Select filters modal`, async ({
+  collectionPage,
+}) => {
+  await test.step(`Click "More" button under Subject facet group`, async () => {
+    await collectionPage.collectionFacets.clickMoreInFacetGroup(
+      FacetGroupLocatorLabel.SUBJECT,
+    );
+  });
 
-    await test.step(`Select "Comedy" and "Mystery" from inside "Subject" facet group`, async () => {
-      await collectionPage.collectionFacets.selectFacetsInModal([
-        'Comedy',
-        'Mystery',
-      ]);
-      await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-        'tile-collection-icontitle',
-        ['Audio'],
-        true,
-        20,
-      );
-    });
-  },
-);
+  await test.step(`Select "Comedy" and "Mystery" from inside "Subject" facet group`, async () => {
+    await collectionPage.collectionFacets.selectFacetsInModal([
+      'Comedy',
+      'Mystery',
+    ]);
+    await collectionPage.infiniteScroller.validateIncludedFacetedResults(
+      'tile-collection-icontitle',
+      ['Audio'],
+      true,
+      20,
+    );
+  });
+});
