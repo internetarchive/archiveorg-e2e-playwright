@@ -5,37 +5,11 @@
   "main": "index.js",
   "scripts": {
     "show:report": "npx http-server ./playwright-report",
-    "test": "CATEGORY=all npx playwright test",
+    "test": "node executeTests.js",
     "test:codegen": "npx playwright codegen",
-    "test:chromium": "CATEGORY=allnpx playwright test --project=chromium",
     "test:debug": "CATEGORY=all npx playwright test --debug",
     "test:trace": "CATEGORY=all npx playwright test --config=./playwright.config.ts --trace on",
     "test:ui": "CATEGORY=all npx playwright test --ui",
-    "test:headed": "CATEGORY=all npx playwright test --headed",
-    "test:about": "CATEGORY=about npx playwright test tests/about",
-    "test:av": "CATEGORY=av npx playwright test tests/av",
-    "test:books": "CATEGORY=books npx playwright test tests/books",
-    "test:collection": "CATEGORY=collection npx playwright test tests/collection",
-    "test:details": "CATEGORY=details npx playwright test tests/details",
-    "test:details-lending-bar": "CATEGORY=details npx playwright test tests/details/lending-bar",
-    "test:home": "CATEGORY=home npx playwright test tests/home",
-    "test:login": "CATEGORY=login npx playwright test tests/login",
-    "test:music": "CATEGORY=music npx playwright test tests/music",
-    "test:search": "CATEGORY=search npx playwright test tests/search",
-    "test:profile": "CATEGORY=profile npx playwright test tests/profile",
-    "test:about:headed": "CATEGORY=about npx playwright test tests/about --headed",
-    "test:av:headed": "CATEGORY=av npx playwright test tests/av --headed",
-    "test:books:headed": "CATEGORY=books npx playwright test tests/books --headed",
-    "test:collection:headed": "CATEGORY=collection npx playwright test tests/collection --headed",
-    "test:details:headed": "CATEGORY=details npx playwright test tests/details --headed",
-    "test:details-lending-bar:headed": "CATEGORY=details npx playwright test tests/details/lending-bar --headed",
-    "test:home:headed": "CATEGORY=home npx playwright test tests/home --headed",
-    "test:login:headed": "CATEGORY=login npx playwright test tests/login --headed",
-    "test:music:headed": "CATEGORY=music npx playwright test tests/music --headed",
-    "test:search:headed": "CATEGORY=search npx playwright test tests/search --headed",
-    "test:profile:headed": "CATEGORY=profile npx playwright test tests/profile --headed",
-    "test:donation:headed": "CATEGORY=donation npx playwright test tests/donation --headed",
-    "test:donation": "CATEGORY=donation npx playwright test tests/donation",
     "format": "prettier --write \"tests/**/*.ts\"",
     "lint": "prettier --check \"tests/**/*.ts\"",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
@@ -45,14 +19,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.41.2",
+    "@playwright/test": "^1.44.1",
     "@types/node": "^20.11.17",
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
-    "playwright": "^1.41.2",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {
@@ -66,22 +39,14 @@
     ],
     "rules": {
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error"
-      ],
+      "@typescript-eslint/no-unused-vars": 2,
       "no-shadow": "off",
-      "@typescript-eslint/no-shadow": [
-        "error"
-      ],
+      "@typescript-eslint/no-shadow": 2,
       "class-methods-use-this": "off",
       "import/no-unresolved": "off",
       "import/extensions": [
         "off",
-        "ignorePackages",
-        {
-          "js": "never",
-          "ts": "never"
-        }
+        "ignorePackages"
       ],
       "no-unsafe-optional-chaining": "warn",
       "default-param-last": "warn"
