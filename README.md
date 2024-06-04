@@ -2,62 +2,51 @@
 
 # End to end tests for Archive.org using [Playwright](https://playwright.dev/)
 
+
 ## (Optional) BrowserStack Local Setup
 
-- login to BrowserStack and retrieve the account username and access key, see documentation [here](https://www.browserstack.com/docs/automate/playwright/getting-started/nodejs/test-runner)
+- Login to BrowserStack and retrieve the account username and access key, see documentation [here](https://www.browserstack.com/docs/automate/playwright/getting-started/nodejs/test-runner)
 
 
-## Running tests locally
+## Local Setup
 
-- install dependencies:
+- Install dependencies:
 
     `npm i`
 
-- install Playwright browser libs:
+- Install Playwright browser libs:
 
     `npx playwright install`
 
-- run all the tests in headless mode and generate 1 whole test report:
+- Create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing
 
-    `npm run test`
-
-- run all the tests in headless mode by each category and generate test report by category:
-
-    `./run-tests.sh`
-
-- run all the tests in headed mode (this will load multiple browsers):
-
-    `npm run test:headed`
-
-- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing
+    - this is required to run tests with loggedIn flows
 
 
-## Running individual tests by category (headless mode)
+## Running tests
 
-- run about tests: `npm run test:about`
-- run av tests: `npm run test:av`
-- run books tests: `npm run test:books`
-- run collection tests: `npm run test:collection`
-- run details tests: `npm run test:details`
-- run home tests: `npm run test:home`
-- run login tests: `npm run test:login`
-- run music tests: `npm run test:music`
-- run search tests: `npm run test:search`
-- run profile tests: `npm run test:profile`
+- Run all tests: `npm run test`
 
+- Run test by category (sample):
 
-## Running individual tests by category (headed mode)
+    - This will run a custom script that can take different shell arguments/parameters for the following (arguments arrangement can be jumbled or not in proper order):
+        
+        - test category (by folder structure): 
+            - `about, av, books, collection, details, donation, etc...`
+            - default value: `all`
 
-- run about tests: `npm run test:about:headed`
-- run av tests: `npm run test:av:headed`
-- run books tests: `npm run test:books:headed`
-- run collection tests: `npm run test:collection:headed`
-- run details tests: `npm run test:details:headed`
-- run home tests: `npm run test:home:headed`
-- run login tests: `npm run test:login:headed`
-- run music tests: `npm run test:music:headed`
-- run search tests: `npm run test:search:headed`
-- run profile tests: `npm run test:profile:headed`
+        - test execution mode: 
+            - `headless/headed`
+            - default value: `headless`
+
+        - browser: 
+            - `chromium, firefox, webkit`
+            - default value: `chromium`
+
+    - Sample:
+
+        - run all "books" tests in headless mode: `npm run test books`
+        - run all "about" tests in headed mode webkit browser: `npm run test about headed webkit`
 
 
 ## Running tests using VSCode Playwright plugin
@@ -81,7 +70,6 @@
 ## View tests execution result
 
 - run: `npm run show:report`
-
 
 ## Reference guide for writing tests
 
