@@ -27,26 +27,73 @@
 
 - Run all tests: `npm run test`
 
-- Run test by category (sample):
+- Run tests by category:
 
-    - This will run a custom script that can take different shell arguments/parameters for the following (arguments arrangement can be jumbled or not in proper order):
+    - This will run a custom script that can take different shell arguments/parameters for the following:
+        > Note:
+        >   - The arrangement/order for passing of arguments can be jumbled for flexibility
+        >   - The script is somewhat patterned with the current Playwright commands that uses `--` convention
+        >   - It's important to add `--` convention in CLI to separate the arguments from the `npm script` to be passed to the custom script
         
-        - test category (by folder structure): 
-            - `about, av, books, collection, details, donation, etc...`
-            - default value: `all`
+        - Test category (by folder structure):
+            - It will run all tests if you didn't specify the test category you want to test
+            - This can only execute 1 category in 1 command
+            - Refer to the folder names in `tests` directory (`tests/*`), except for `tests/page-objects`
+            - Sample parameters: `about, av, books, collection, details, donation, home, login, music, profile, search`
+            - Sample execution:
 
-        - test execution mode: 
-            - `headless/headed`
-            - default value: `headless`
+                `npm run test about`
 
-        - browser: 
-            - `chromium, firefox, webkit`
-            - default value: `chromium`
+                `npm run test books`
 
-    - Sample:
+                `npm run test donation`
 
-        - run all "books" tests in headless mode: `npm run test books`
-        - run all "about" tests in headed mode webkit browser: `npm run test about headed webkit`
+                `npm run test profile`
+
+        - Test execution mode:
+            - The tests will run in headless mode by __default__ which will execute the tests in terminal only
+            - Headed mode will spawn a browser window in the screen and execute the tests
+            - Accepted parameters: `--headed`
+            - Sample execution:
+
+                `npm run test -- about --headed`
+
+                `npm run test about -- --headed`
+
+        - Test execution - [debug mode](https://playwright.dev/docs/running-tests#debug-tests-with-the-playwright-inspector):
+            - This will spawn a browser window and Playwright Inspector window in the screen which will help on inspecting the whole test execution flow step by step
+            - Accepted parameters: `--debug`
+            - Sample execution:
+
+                `npm run test -- about --debug`
+
+                `npm run test about -- --debug`
+
+        - Test execution - [UI mode](https://playwright.dev/docs/running-tests#debug-tests-in-ui-mode):
+            - This will spawn a browser window and Playwright Inspector window in the screen which will help on inspecting the whole test execution flow step by step
+            - Accepted parameters: `--ui`
+            - Sample execution:
+
+                `npm run test -- about --ui`
+
+        - Test execution with [Trace viewer](https://playwright.dev/docs/trace-viewer) mode:
+            - Trace viewer will record the test run which will be included in the Playwright report
+            - It is disabled by default, you can enable it with the command below
+            - Accepted parameters: `trace`
+            - Sample execution:
+
+                `npm run test about trace`
+
+        - Test execution by browser:
+            - Tests will run in all browsers by default if you didn't specify the browser
+            - Accepted parameters: `chromium, firefox, webkit`
+            - Sample execution:
+
+                `npm run test about chromium`
+
+                `npm run test about chromium -- --debug`
+
+                `npm run test about chromium -- --headed`
 
 
 ## Running tests using VSCode Playwright plugin
