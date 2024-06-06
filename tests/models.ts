@@ -67,3 +67,25 @@ export type ChannelSelector = 'Player' | 'Webamp';
 export type UserType = 'privs' | 'patron' | 'no-login';
 
 export type PageType = 'radio' | 'tv';
+
+export const SearchFacetGroupHeaders = [
+  'Year Published range filter',
+  'Media Type filters',
+  'Availability filters',
+  'Year filters',
+  'Subject filters',
+  'Collection filters',
+  'Creator filters',
+  'Language filters'
+]
+
+export const CollectionFacetGroups = [
+  'Year Published range filter',
+  'Part Of',
+  'Media Type filters',
+  'Year filters',
+  'Subject filters',
+  'Collection filters',
+  'Creator filters',
+  'Language filters'
+]

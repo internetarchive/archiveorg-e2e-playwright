@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { FacetGroupLocatorLabel, FacetType } from '../models';
+import { CollectionFacetGroups, FacetGroupLocatorLabel, FacetType, SearchFacetGroupHeaders } from '../models';
 
 export class CollectionFacets {
   readonly page: Page;
@@ -22,18 +22,20 @@ export class CollectionFacets {
     await expect(this.resultsTotal).toBeVisible({ timeout: 60000 });
   }
 
-  async assertSearchFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+  async getFacetGroupByHeadingName(headerName: string) {
+    await expect(this.page.getByRole('heading', { name: headerName })).toBeVisible();
+  }
 
-    const facetGroups = this.collectionFacets.locator('facets-template');
-    expect(await facetGroups.count()).toEqual(7);
+  async assertSearchFacetGroupCount() {
+    for await (const name of SearchFacetGroupHeaders) {
+      await this.getFacetGroupByHeadingName(name);
+    }
   }
 
   async assertCollectionFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-
-    const facetGroups = this.collectionFacets.locator('facets-template');
-    expect(await facetGroups.count()).toEqual(6);
+    for await (const name of CollectionFacetGroups) {
+      await this.getFacetGroupByHeadingName(name);
+    }
   }
 
   async assertListFacetGroupCount() {
