@@ -1,6 +1,7 @@
 import { test } from '../../tests/fixtures';
 
 import {
+  FacetGroupFilterHeaderEnum,
   FacetGroupLocatorLabel,
   LayoutViewModeLocator,
 } from '../../tests/models';
@@ -15,8 +16,12 @@ test(`Select a facet for videos and clear facet filters`, async ({
   collectionPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group and check 5 item results for "Movie" tile icon titles`, async () => {
+    await collectionPage.collectionFacets.getFacetGroupByHeadingName(
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
+    );
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'movies',
       'positive',
     );
@@ -59,6 +64,7 @@ test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'audio',
       'negative',
     );
@@ -77,6 +83,7 @@ test(`Facets can be selected via Select filters modal`, async ({
   await test.step(`Click "More" button under Subject facet group`, async () => {
     await collectionPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.SUBJECT,
+      FacetGroupFilterHeaderEnum.SUBJECT,
     );
   });
 

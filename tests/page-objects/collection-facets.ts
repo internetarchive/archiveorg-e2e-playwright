@@ -1,6 +1,12 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { CollectionFacetGroups, FacetGroupLocatorLabel, FacetType, SearchFacetGroupHeaders } from '../models';
+import {
+  CollectionFacetGroupHeader,
+  FacetGroupFilterHeaderEnum,
+  FacetGroupLocatorLabel,
+  FacetType,
+  SearchFacetGroupHeader,
+} from '../models';
 
 export class CollectionFacets {
   readonly page: Page;
@@ -23,24 +29,31 @@ export class CollectionFacets {
   }
 
   async getFacetGroupByHeadingName(headerName: string) {
+    // const elem = this.page.getByRole('heading', { name: headerName });
+    // console.log('elem: ', await elem.innerText());
     await expect(this.page.getByRole('heading', { name: headerName })).toBeVisible();
+    // await expect(elem).toBeVisible();
   }
 
   async assertSearchFacetGroupCount() {
-    for await (const name of SearchFacetGroupHeaders) {
+    let count = 0;
+    for await (const name of SearchFacetGroupHeader) {
       await this.getFacetGroupByHeadingName(name);
+      count++;
     }
+    expect(count).toEqual(8);
   }
 
   async assertCollectionFacetGroupCount() {
-    for await (const name of CollectionFacetGroups) {
+    let count = 0;
+    for await (const name of CollectionFacetGroupHeader) {
       await this.getFacetGroupByHeadingName(name);
+      count++;
     }
+    expect(count).toEqual(8);
   }
 
   async assertListFacetGroupCount() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-
     const facetGroups = this.collectionFacets.locator('facets-template');
     expect(await facetGroups.count()).toEqual(7);
   }
@@ -50,49 +63,56 @@ export class CollectionFacets {
 
     const datePicker = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,
+      FacetGroupFilterHeaderEnum.YEAR,
     );
     expect(await datePicker?.innerText()).toContain('Year');
   }
 
   async selectFacetByGroup(
     group: FacetGroupLocatorLabel,
+    header: FacetGroupFilterHeaderEnum,
     facetLabel: string,
     facetType: FacetType,
   ) {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    const facetContent = await this.getFacetGroupContainer(group, header);
+    const facetContentInnerHTML = await facetContent?.innerHTML();
 
-    const facetContent = await this.getFacetGroupContainer(group);
-    if (facetContent) {
-      if (facetType === 'positive') {
-        const facetRow = facetContent.getByRole('checkbox', {
-          name: facetLabel,
-        });
-        await facetRow.check();
-        return;
-      }
+    if (facetContentInnerHTML?.includes('facets-template')) {
+      const facetRows = await facetContent
+        ?.locator('facets-template > div.facets-on-page facet-row')
+        .all();
+      if (facetRows && facetRows.length !== 0) {
+        for (let x = 0; x < facetRows.length; x++) {
+          const facetRowLocator = facetRows[x].locator(
+            'div.facet-row-container > div.facet-checkboxes',
+          );
+          const facetRowInput = facetRowLocator
+            .locator('input[type="checkbox"]')
+            .first();
+          const facetRowLabel = facetRowLocator
+            .locator('label.hide-facet-icon')
+            .first();
+          const facetRow =
+            facetType === 'positive' ? facetRowInput : facetRowLabel;
+          const facetRowId =
+            facetType === 'positive'
+              ? await facetRow.getAttribute('id')
+              : await facetRow.getAttribute('title');
 
-      if (facetType === 'negative') {
-        const facetRows = await facetContent
-          .locator('facets-template > div.facets-on-page facet-row')
-          .all();
-        if (facetRows.length !== 0) {
-          for (let x = 0; x < facetRows.length; x++) {
-            const facetRowLabel = facetRows[x].locator(
-              'div.facet-row-container > div.facet-checkboxes > label',
-            );
-            const facetRowTitle = await facetRowLabel.getAttribute('title');
-            if (facetRowTitle === `Hide mediatype: ${facetLabel}`) {
-              await facetRowLabel.click();
-              return;
-            }
+          if (facetRowId?.includes(facetLabel)) {
+            await facetRow.click();
+            return;
           }
         }
       }
     }
   }
 
-  async clickMoreInFacetGroup(group: FacetGroupLocatorLabel) {
-    const facetContent = await this.getFacetGroupContainer(group);
+  async clickMoreInFacetGroup(
+    group: FacetGroupLocatorLabel,
+    header: FacetGroupFilterHeaderEnum,
+  ) {
+    const facetContent = await this.getFacetGroupContainer(group, header);
     if (facetContent) {
       const btnMore = facetContent.locator('button');
       await btnMore.click();
@@ -116,10 +136,11 @@ export class CollectionFacets {
   }
 
   async fillUpYearFilters(startDate: string, endDate: string) {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     const facetContent = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,
+      FacetGroupFilterHeaderEnum.YEAR_PUBLISHED,
     );
     if (facetContent) {
       const datePickerContainer = facetContent.locator(
@@ -136,7 +157,11 @@ export class CollectionFacets {
 
   async getFacetGroupContainer(
     group: FacetGroupLocatorLabel,
+    header: FacetGroupFilterHeaderEnum,
   ): Promise<Locator | null> {
+    const facetHeader = this.page.getByLabel(header);
+    await this.checkFacetGroupInnerHTML(facetHeader);
+
     const facetGroups = await this.collectionFacets
       .locator('#container > section.facet-group')
       .all();
@@ -150,5 +175,14 @@ export class CollectionFacets {
       }
     }
     return null;
+  }
+
+  async checkFacetGroupInnerHTML(locator: Locator) {
+    const locInnerHtml = await locator.innerHTML();
+    if (locInnerHtml.includes('facet-tombstone-row')) {
+      await this.checkFacetGroupInnerHTML(locator); // Recursive call
+    } else {
+      return; // Exit the function when the condition is met
+    }
   }
 }
