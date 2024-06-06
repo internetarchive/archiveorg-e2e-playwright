@@ -50,6 +50,7 @@ export default defineConfig({
   },
   testDir: './tests',
   reporter: [
+    ['./tests/reporters/progress-reporter.ts'],
     [
       'html',
       {
