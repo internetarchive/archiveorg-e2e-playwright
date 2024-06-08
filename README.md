@@ -91,9 +91,22 @@
 
                 `npm run test about chromium`
 
-                `npm run test about chromium -- --debug`
+                `npm run test about firefox -- --debug`
 
-                `npm run test about chromium -- --headed`
+                `npm run test about webkit -- --headed`
+
+        - Test execution by test title:
+            - This command will grep for test title specified in `.spec.ts` test description
+            - This param is annotated as `-g`; similar to how Playwright does it
+            - Tests will run in all browsers by default if you didn't specify the browser
+            - This can be combined with other commands if needed
+            - Sample execution:
+
+                `npm run test -- -g "TV has borrow button"`
+
+                `npm run test -- -g "Canonical About page has correct title and text" chromium`
+
+                `npm run test -- -g "Canonical About page has correct title and text" --debug`
 
 
 ## Running tests using VSCode Playwright plugin

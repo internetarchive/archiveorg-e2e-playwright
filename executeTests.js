@@ -5,7 +5,7 @@ const capitalizeFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
 const buildCommand = (options) => {
   let command = `CATEGORY=${options.category} npx playwright test`;
 
-  if (options.category !== 'all') {
+  if (options.category !== 'all' && options.category !== 'grep') {
     command += ` tests/${options.category}`;
   }
 
@@ -17,7 +17,9 @@ const buildCommand = (options) => {
     command += ` --project='Desktop - ${capitalizeFirstLetter(options.browser)}'`;
   }
 
-  command += options.additionalArgs.map(arg => ` ${arg}`).join('');
+  command += options.additionalArgs.map(arg => {
+    return (arg.startsWith('-g')) ? ` ${arg} "${options.title}"` : ` ${arg}`;
+  }).join(''); 
 
   return command;
 }
@@ -36,28 +38,47 @@ const executeCommand = (command) => {
 }
 
 const parseArguments = (args) => {
-  let category = 'all';
+  let categories = [
+    'about',
+    'av',
+    'books',
+    'collection',
+    'details',
+    'donation',
+    'home',
+    'login',
+    'music',
+    'profile',
+    'search'
+  ];
   let trace = false;
   let browser = '';
+  let category = '';
+  let title = '';
   const additionalArgs = [];
 
   args.forEach(arg => {
-    if (arg.startsWith('--')) {
+    if(arg.startsWith('-g')) {
+      additionalArgs.push(arg);
+      category = 'grep';
+    } else if (arg.startsWith('--')) {
       additionalArgs.push(arg);
     } else if (arg === 'trace') {
       trace = true;
     } else if (['chromium', 'firefox', 'webkit'].includes(arg)) {
       browser = arg;
-    } else {
+    } else if (categories.includes(arg)){
       category = arg;
+    } else {
+      title = arg;
     }
   });
 
-  return { category, browser, trace, additionalArgs };
+  return { category, browser, trace, title, additionalArgs };
 }
 
-const executeTests = ({ category, browser, trace, additionalArgs }) => {
-  const options = { category, browser, trace, additionalArgs };
+const executeTests = ({ category, browser, trace, title, additionalArgs }) => {
+  const options = { category, browser, trace, title, additionalArgs };
   const command = buildCommand(options);
   executeCommand(command);
 }
