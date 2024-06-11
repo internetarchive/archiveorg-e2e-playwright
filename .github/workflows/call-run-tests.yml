@@ -12,10 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 20
-      #     cache: 'npm'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
       - name: Check npm version installed
         run: |
