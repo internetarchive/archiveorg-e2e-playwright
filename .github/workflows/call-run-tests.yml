@@ -4,15 +4,12 @@ on: workflow_call
 
 jobs:
   test:
-    runs-on: self-hosted
-    container:
-      # https://github.com/internetarchive/dyno
-      image: ghcr.io/internetarchive/dyno:main
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: 'npm'
@@ -26,7 +23,7 @@ jobs:
       - name: Run Playwright tests
         run: npm run test
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
