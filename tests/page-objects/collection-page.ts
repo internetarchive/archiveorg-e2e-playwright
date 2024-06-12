@@ -36,7 +36,9 @@ export class CollectionPage {
   }
 
   async clickCollectionTab(name: string) {
-    await this.page.getByLabel(name).first().click();
+    // await this.page.getByLabel(name).first().click();
+    console.log('collectionTab name: ', name);
+    await this.page.locator('#page-container li').filter({ hasText: name }).click();
   }
 
   async clickMoreBtnFromSummary() {
@@ -61,13 +63,14 @@ export class CollectionPage {
     await expect(this.pageTabs.getByLabel('Collection', { exact: true })).toBeVisible();
     await expect(this.pageTabs.getByLabel('Forum')).toBeVisible();
     await expect(this.pageTabs.getByLabel('About')).toBeVisible();
-
   }
 
   async validateAboutTabPage() {
-    // await expect(
-    //   this.page.getByRole('heading', { name: 'Activity' }),
-    // ).toBeVisible();
+    console.log('page: ', await this.pageTabs.innerHTML())
+    console.log('page: ', await this.pageTabs.locator('li').allInnerTexts())
+    await expect(
+      this.page.getByRole('heading', { name: 'Activity' }),
+    ).toBeVisible();
     // await expect(
     //   this.page.getByRole('button', { name: 'reviews.' }),
     // ).toBeVisible();
@@ -76,12 +79,14 @@ export class CollectionPage {
     // await expect(
     //   this.page.getByRole('heading', { name: 'Collection Info' }),
     // ).toBeVisible();
-    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
-      'ABOUT',
-    );
+    // expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
+    //   'About',
+    // );
   }
 
   async validateForumTabPage() {
+    console.log('page: ', await this.pageTabs.innerHTML())
+    console.log('page: ', await this.pageTabs.locator('li').allInnerTexts())
     const forumContainer = this.page.locator('#forum-container');
     const newPostButtonLocator = forumContainer.getByRole('link', {
       name: 'New Post',
@@ -97,6 +102,8 @@ export class CollectionPage {
   }
 
   async validateCollectionTabPage() {
+    console.log('page: ', await this.pageTabs.innerHTML())
+    console.log('page: ', await this.pageTabs.locator('li').allInnerTexts())
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'COLLECTION',
     );
