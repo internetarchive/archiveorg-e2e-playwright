@@ -36,7 +36,7 @@ export class CollectionPage {
   }
 
   async clickCollectionTab(name: string) {
-    await this.pageTabs.getByRole('link', { name }).click();
+    await this.page.getByLabel(name).first().click();
   }
 
   async clickMoreBtnFromSummary() {

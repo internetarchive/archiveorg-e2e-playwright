@@ -32,12 +32,12 @@ test(`Tab navigation`, async ({ collectionPage }) => {
     await collectionPage.validateAboutTabPage();
   });
 
-  await test.step(`Click "Forum" tab button and check if Forum page is displayed`, async () => {
+  await test.step(`Click "Forum" tab button and check if Forum page is displayed in "oldtimeradio" collection page`, async () => {
     await collectionPage.clickCollectionTab('Forum');
     await collectionPage.validateForumTabPage();
   });
 
-  await test.step(`Click "Collection" tab button and check if Collections page is displayed`, async () => {
+  await test.step(`Click "Collection" tab button and check if Collections page is displayed in "oldtimeradio" collection page`, async () => {
     await collectionPage.clickCollectionTab('Collection');
     await collectionPage.validateCollectionTabPage();
   });
