@@ -65,28 +65,34 @@ export class CollectionPage {
     await expect(this.pageTabs.getByLabel('About')).toBeVisible();
   }
 
+  async validateTabPage(tab: string) {
+    console.log('tab: ', tab)
+    await this.checkLocatorInnerHtml(this.pageTabs, 'loading-placeholder-row');
+
+    if(tab === 'About') {
+      await this.validateAboutTabPage();
+    } else if (tab === 'Collection') {
+      await this.validateCollectionTabPage();
+    } else if (tab === 'Forum') {
+      await this.validateForumTabPage();
+    }
+  }
+
   async validateAboutTabPage() {
-    console.log('page: ', await this.pageTabs.innerHTML())
-    console.log('page: ', await this.pageTabs.locator('li').allInnerTexts())
     await expect(
       this.page.getByRole('heading', { name: 'Activity' }),
     ).toBeVisible();
-    // await expect(
-    //   this.page.getByRole('button', { name: 'reviews.' }),
-    // ).toBeVisible();
     // ytjdradio details page doesn't have forum posts, commenting this part for now
     // await expect(this.page.getByRole('button', { name: 'forum posts.' })).toBeVisible();
-    // await expect(
-    //   this.page.getByRole('heading', { name: 'Collection Info' }),
-    // ).toBeVisible();
-    // expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
-    //   'About',
-    // );
+    await expect(
+      this.page.getByRole('heading', { name: 'Collection Info' }),
+    ).toBeVisible();
+    expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
+      'ABOUT',
+    );
   }
 
   async validateForumTabPage() {
-    console.log('page: ', await this.pageTabs.innerHTML())
-    console.log('page: ', await this.pageTabs.locator('li').allInnerTexts())
     const forumContainer = this.page.locator('#forum-container');
     const newPostButtonLocator = forumContainer.getByRole('link', {
       name: 'New Post',
@@ -102,13 +108,21 @@ export class CollectionPage {
   }
 
   async validateCollectionTabPage() {
-    console.log('page: ', await this.pageTabs.innerHTML())
-    console.log('page: ', await this.pageTabs.locator('li').allInnerTexts())
     expect(await this.pageTabs.locator('li.tab.active').innerText()).toContain(
       'COLLECTION',
     );
     await expect(
       this.page.locator('#collection-browser-container'),
     ).toBeVisible();
+  }
+
+  async checkLocatorInnerHtml(locator: Locator, elem: string) {
+    const innerHtmlContent = await locator.innerHTML();
+    console.log('elem: ', elem, 'innerHtmlContent: ', innerHtmlContent)
+    if (innerHtmlContent.includes(elem)) {
+      await this.checkLocatorInnerHtml(locator, elem); // Recursive call
+    } else {
+      return; // Exit the function when the condition is met
+    }
   }
 }
