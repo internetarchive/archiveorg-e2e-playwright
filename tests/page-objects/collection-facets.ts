@@ -120,7 +120,8 @@ export class CollectionFacets {
   }
 
   async selectFacetsInModal(facetLabels: string[]) {
-    await this.page.waitForLoadState('load', { timeout: 60000 });
+    // UI is loading -> ia-activity-indicator is displayed
+    await this.checkLocatorInnerHtml(this.moreFacetsContent, 'ia-activity-indicator');
 
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
@@ -136,8 +137,6 @@ export class CollectionFacets {
   }
 
   async fillUpYearFilters(startDate: string, endDate: string) {
-    // await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-
     const facetContent = await this.getFacetGroupContainer(
       FacetGroupLocatorLabel.DATE,
       FacetGroupFilterHeaderEnum.YEAR_PUBLISHED,
@@ -160,7 +159,8 @@ export class CollectionFacets {
     header: FacetGroupFilterHeaderEnum,
   ): Promise<Locator | null> {
     const facetHeader = this.page.getByLabel(header);
-    await this.checkFacetGroupInnerHTML(facetHeader);
+    // UI is loading -> facet-tombstone-row is displayed
+    await this.checkLocatorInnerHtml(facetHeader, 'facet-tombstone-row');
 
     const facetGroups = await this.collectionFacets
       .locator('#container > section.facet-group')
@@ -177,12 +177,14 @@ export class CollectionFacets {
     return null;
   }
 
-  async checkFacetGroupInnerHTML(locator: Locator) {
-    const locInnerHtml = await locator.innerHTML();
-    if (locInnerHtml.includes('facet-tombstone-row')) {
-      await this.checkFacetGroupInnerHTML(locator); // Recursive call
+  async checkLocatorInnerHtml(locator: Locator, elem: string) {
+    const innerHtmlContent = await locator.innerHTML();
+    // console.log('elem: ', elem, 'innerHtmlContent: ', innerHtmlContent)
+    if (innerHtmlContent.includes(elem)) {
+      await this.checkLocatorInnerHtml(locator, elem); // Recursive call
     } else {
       return; // Exit the function when the condition is met
     }
   }
+
 }

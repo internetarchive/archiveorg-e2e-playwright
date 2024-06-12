@@ -68,12 +68,13 @@ export class CollectionBrowser {
     await this.btnClearInput.click();
   }
 
-  async clickSearchInputOption(option: SearchOption) {
-    await expect(this.btnCollectionSearchInputGo).toBeVisible();
+  async clickSearchInputOption(option: SearchOption, type: string) {
+    const btnName = type === 'collection' ? 'Search this collection' : 'GO';
+
+    await expect(this.page.getByRole('button', { name: btnName })).toBeVisible();
     await expect(this.formInputSearchPage).toBeVisible();
 
     await this.formInputSearchPage.click({ force: true });
-    await this.page.waitForLoadState('domcontentloaded');
     await expect(
       this.btnCollectionSearchInputCollapser.getByText(option),
     ).toBeVisible();

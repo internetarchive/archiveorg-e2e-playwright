@@ -4,7 +4,7 @@ import { SearchOption } from '../models';
 test('Collection search metadata', async ({ collectionPage }) => {
   await test.step(`Select "Search metadata"`, async () => {
     await collectionPage.collectionBrowser.clickSearchInputOption(
-      SearchOption.METADATA,
+      SearchOption.METADATA, 'collection'
     );
   });
 
@@ -23,7 +23,7 @@ test('Collection search text contents and clear filters', async ({
 }) => {
   await test.step(`Select "Search text contents"`, async () => {
     await collectionPage.collectionBrowser.clickSearchInputOption(
-      SearchOption.TEXT,
+      SearchOption.TEXT, 'collection'
     );
   });
 
@@ -45,7 +45,7 @@ test('Collection search text contents and clear filters', async ({
 test('No results page displays when no results', async ({ collectionPage }) => {
   await test.step(`Select "Search metadata"`, async () => {
     await collectionPage.collectionBrowser.clickSearchInputOption(
-      SearchOption.METADATA,
+      SearchOption.METADATA, 'collection'
     );
   });
 

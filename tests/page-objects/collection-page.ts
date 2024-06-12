@@ -32,7 +32,7 @@ export class CollectionPage {
 
   async visit(collection: string) {
     await this.page.goto(`/details/${collection}`);
-    await this.page.waitForLoadState();
+    await this.page.waitForLoadState('load');
   }
 
   async clickCollectionTab(name: string) {
@@ -56,7 +56,12 @@ export class CollectionPage {
     await expect(this.pageTabs).toBeVisible();
     // this could cause an error in some detailsPage that doesn't have Forum tab like ytjdradio
     // should be tackled in a different task
-    expect(await this.pageTabs.locator('li').count()).toBe(3);
+    console.log('pagetabs: ', await this.pageTabs.innerHTML());
+    // expect(await this.pageTabs.locator('li').count()).toBe(3);
+    await expect(this.pageTabs.getByLabel('Collection', { exact: true })).toBeVisible();
+    await expect(this.pageTabs.getByLabel('Forum')).toBeVisible();
+    await expect(this.pageTabs.getByLabel('About')).toBeVisible();
+
   }
 
   async validateAboutTabPage() {

@@ -49,4 +49,10 @@ args.forEach(arg => {
   }
 });
 
-runTest(category, headed, browser);
+try {
+  runTest(category, headed, browser);
+} catch (error) {
+  console.log('error: ', error);
+  console.error(error.stderr ? error.stderr.toString() : error.toString());
+  process.exit(1);
+}
