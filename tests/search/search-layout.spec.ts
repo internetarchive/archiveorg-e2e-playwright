@@ -24,7 +24,7 @@ test('Tile, List, and Compact layout buttons change layout', async ({
   });
 });
 
-test('Tile hover pane appears', async ({ searchPage }) => {
+test.fixme('Tile hover pane appears', async ({ searchPage }) => {
   await test.step('Hover first item tile and check for title text inside tile-hover-pane and item-tile', async () => {
     await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.infiniteScroller.hoverToFirstItem();

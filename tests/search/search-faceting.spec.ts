@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 
-import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
+import { FacetGroupFilterHeaderEnum, FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
@@ -16,6 +16,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
     await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'movies',
       'positive',
     );
@@ -37,6 +38,7 @@ test(`Clear facet filters`, async ({ searchPage }) => {
     await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'data',
       'positive',
     );
@@ -90,6 +92,7 @@ test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
     await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'audio',
       'negative',
     );
@@ -131,6 +134,7 @@ test(`Facets can be selected via "Select filters" modal`, async ({
     await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
     );
   });
 
