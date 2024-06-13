@@ -60,6 +60,7 @@ test(`Select Year Published range via date picker`, async ({
   });
 });
 
+// FLAKY
 test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
     await collectionPage.collectionFacets.selectFacetByGroup(
