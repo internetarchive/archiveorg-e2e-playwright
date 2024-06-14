@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "show:report": "npx http-server ./playwright-report",
-    "test": "node executeTests.js",
+    "test": "CATEGORY=all npx playwright test",
+    "execute": "node scripts/executeTests.js",
+    "generate:command": "node scripts/generateCommand.js",
     "test:codegen": "npx playwright codegen",
     "format": "prettier --write \"tests/**/*.ts\"",
     "lint": "prettier --check \"tests/**/*.ts\"",
@@ -23,6 +25,7 @@
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
+    "minimist": "^1.2.8",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {
