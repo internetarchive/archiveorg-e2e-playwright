@@ -138,6 +138,11 @@
 - run command format: `npx playwright test <test-file-path> --debug`
 - sample: `npx playwright test tests/search/search-layout.spec.ts --debug`
 
+## Running specific test case title:
+
+- run command format: `npx playwright test -g "<test-case-title>"`
+- sample: `npx playwright test -g "TV has borrow button"`
+
 
 ## View tests execution result
 
