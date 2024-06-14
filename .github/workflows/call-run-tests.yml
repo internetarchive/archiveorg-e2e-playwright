@@ -4,10 +4,7 @@ on: workflow_call
 
 jobs:
   test:
-    runs-on: self-hosted
-    container:
-      # https://github.com/internetarchive/dyno
-      image: ghcr.io/internetarchive/dyno:main
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
