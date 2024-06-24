@@ -89,7 +89,9 @@ export class CollectionBrowser {
   }
 
   async validateTVPage(query: string) {
-    await this.page.waitForLoadState('domcontentloaded');
+    // Note: The page is redirected to TV search page
+    // await this.page.waitForLoadState('load');
+    await this.page.waitForURL(/tv/);
     expect(await this.page.title()).toContain('Internet Archive TV NEWS');
     await expect(
       this.page.getByRole('link', { name: 'TV News Archive', exact: true }),
@@ -102,13 +104,17 @@ export class CollectionBrowser {
   }
 
   async validateRadioPage(query: string) {
-    await this.page.waitForLoadState('domcontentloaded');
+    // Note: The page is redirected to old search page
+    // await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForURL(/sin=RADIO/);
     await expect(this.formInputRadioPage).toBeVisible();
     expect(await this.formInputRadioPage.inputValue()).toContain(query);
   }
 
   async validateWaybackPage(query: string) {
-    await this.page.waitForLoadState('domcontentloaded');
+    // Note: The page is redirected to Wayback Machine search page
+    // await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForURL(/web/);
     expect(await this.page.title()).toContain('Wayback Machine');
     await expect(this.formInputWaybackPage).toBeVisible();
     expect(await this.formInputWaybackPage.inputValue()).toContain(query);
