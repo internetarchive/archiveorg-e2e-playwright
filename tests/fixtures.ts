@@ -103,7 +103,6 @@ export const test = base.extend<PageFixtures>({
     // Set up the fixture.
     const searchPage = new SearchPage(page);
     await searchPage.visit();
-    await searchPage.collectionBrowser.queryFor('cats');
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
