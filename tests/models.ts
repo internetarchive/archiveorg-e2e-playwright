@@ -67,3 +67,35 @@ export type ChannelSelector = 'Player' | 'Webamp';
 export type UserType = 'privs' | 'patron' | 'no-login';
 
 export type PageType = 'radio' | 'tv';
+
+export enum FacetGroupFilterHeaderEnum {
+  YEAR_PUBLISHED = 'Year Published range filter',
+  MEDIATYPE = 'Media Type filters',
+  YEAR = 'Year filters',
+  SUBJECT = 'Subject filters',
+  COLLECTION = 'Collection filters',
+  CREATOR = 'Creator filters',
+  LANGUAGE = 'Language filters',
+  AVAILABILITY = 'Availability filters',
+  PART_OF = 'Part Of', // this only appears in collection page
+}
+
+export const CommonFacetGroupHeaders = [
+  'Year Published range filter',
+  'Media Type filters',
+  'Year filters',
+  'Subject filters',
+  'Collection filters',
+  'Creator filters',
+  'Language filters',
+];
+
+export const SearchFacetGroupHeader = [
+  ...CommonFacetGroupHeaders,
+  'Availability filters',
+];
+
+export const CollectionFacetGroupHeader = [
+  ...CommonFacetGroupHeaders,
+  'Part Of',
+];

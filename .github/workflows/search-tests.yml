@@ -1,11 +1,11 @@
-name: Donation banner tests
+name: Search page tests
 
 on:
   push:
     branches: [ main, master ]
 
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, collated-fix-me ]
 
 jobs:
   test:
@@ -25,5 +25,5 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Donation Tests
-        run: npm run test donation
+      - name: Run search tests
+        run: npm run test search

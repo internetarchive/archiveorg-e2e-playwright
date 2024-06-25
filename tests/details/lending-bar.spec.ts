@@ -1,6 +1,9 @@
 import { test } from '../fixtures';
 
-test(`Load theater: bookreader with lending bar`, async ({ detailsPage, loginPage }) => {
+test(`Load theater: bookreader with lending bar`, async ({
+  detailsPage,
+  loginPage,
+}) => {
   await test.step('loan book with basic components', async () => {
     await detailsPage.gotoPage('coleridgesublime0000char');
     await detailsPage.lendingBar.verifyDefaultTexts();

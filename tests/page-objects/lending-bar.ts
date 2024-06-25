@@ -12,11 +12,15 @@ export class LendingBar {
   }
 
   async verifyDefaultTexts() {
-    const textGroup = await this.iaBookActions.locator('text-group > .variable-texts');
+    const textGroup = await this.iaBookActions.locator(
+      'text-group > .variable-texts',
+    );
     const textGroupTexts = await textGroup.textContent();
 
     await expect(textGroup).toBeVisible();
-    await expect(textGroupTexts).toContain('Renewable every hour, pending availability.');
+    await expect(textGroupTexts).toContain(
+      'Renewable every hour, pending availability.',
+    );
   }
 
   async verifyInfoIcon() {
@@ -24,13 +28,17 @@ export class LendingBar {
     const infoIconUrl = await infoIcon.locator('a').getAttribute('href');
 
     await expect(infoIcon).toBeVisible();
-    await expect(infoIconUrl).toContain('https://help.archive.org/help/borrowing-from-the-lending-library');
+    await expect(infoIconUrl).toContain(
+      'https://help.archive.org/help/borrowing-from-the-lending-library',
+    );
   }
 
   async verifyLendingBarBasicNonLoggedIn() {
     await expect(this.iaBookActions).toBeVisible();
 
-    const actionGroup = await this.iaBookActions.locator('collapsible-action-group');
+    const actionGroup = await this.iaBookActions.locator(
+      'collapsible-action-group',
+    );
     const primaryAction = await actionGroup.locator('button.initial').first();
     const primaryActionText = await primaryAction.textContent();
 
@@ -49,7 +57,9 @@ export class LendingBar {
   }
 
   async verifyLendingBarLoggedIn() {
-    const actionGroup = await this.iaBookActions.locator('collapsible-action-group');
+    const actionGroup = await this.iaBookActions.locator(
+      'collapsible-action-group',
+    );
     const borrowButton = await actionGroup.locator('button.initial').first();
     const borrowButtonText = await borrowButton.textContent();
 
@@ -62,13 +72,15 @@ export class LendingBar {
 
       // click on this primaryAction button should send you on login page
       await borrowButton.click();
-  
+
       // wait for navigation to complete
-      await this.page.waitForLoadState('load');  
+      await this.page.waitForLoadState('load');
     } else {
       // case after user has borrowed book
       const iaBookActions = await this.page.locator('ia-book-actions');
-      const returnNowButton = await iaBookActions.locator('button.ia-button').first();
+      const returnNowButton = await iaBookActions
+        .locator('button.ia-button')
+        .first();
       const returnNowButtonText = await returnNowButton.textContent();
 
       await expect(returnNowButton).toBeVisible();
@@ -76,7 +88,7 @@ export class LendingBar {
 
       // click on this primaryAction button should send you on login page
       await returnNowButton.click();
-        
+
       // wait for navigation to complete
       await this.page.waitForLoadState('load');
     }
