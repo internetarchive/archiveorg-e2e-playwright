@@ -72,15 +72,8 @@ export class CollectionBrowser {
     const btnName = type === 'collection' ? 'Search this collection' : 'GO';
 
     await expect(this.page.getByRole('button', { name: btnName })).toBeVisible();
-    await expect(this.formInputSearchPage).toBeVisible();
-
     await this.formInputSearchPage.click({ force: true });
-    await expect(
-      this.btnCollectionSearchInputCollapser.getByText(option),
-    ).toBeVisible();
-    await this.btnCollectionSearchInputCollapser
-      .getByText(option)
-      .click({ force: true });
+    await this.page.getByLabel('Search Options').getByText(option).click();
   }
 
   async assertClearAllFiltersNotVisible() {
