@@ -3,6 +3,7 @@ node_modules/
 /playwright-report
 /playwright/.cache
 /playwright/.auth
+/playwright-summary
 
 .env
 *.err
