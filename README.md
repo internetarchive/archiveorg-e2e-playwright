@@ -2,62 +2,167 @@
 
 # End to end tests for Archive.org using [Playwright](https://playwright.dev/)
 
+
 ## (Optional) BrowserStack Local Setup
 
-- login to BrowserStack and retrieve the account username and access key, see documentation [here](https://www.browserstack.com/docs/automate/playwright/getting-started/nodejs/test-runner)
+- Login to BrowserStack and retrieve the account username and access key, see documentation [here](https://www.browserstack.com/docs/automate/playwright/getting-started/nodejs/test-runner)
 
 
-## Running tests locally
+## Local Setup
 
-- install dependencies:
+- Install dependencies:
 
-    `npm i`
+    ```bash
+    npm i
+    ```
 
-- install Playwright browser libs:
+- Install Playwright browser libs:
 
-    `npx playwright install`
+    ```bash
+    npx playwright install
+    ```
 
-- run all the tests in headless mode and generate 1 whole test report:
-
-    `npm run test`
-
-- run all the tests in headless mode by each category and generate test report by category:
-
-    `./run-tests.sh`
-
-- run all the tests in headed mode (this will load multiple browsers):
-
-    `npm run test:headed`
-
-- create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing
+- Create a `.env` file by copying the contents from `.env.sample` and add the respective values you want to use for testing. This is required to run tests with loggedIn flows
 
 
-## Running individual tests by category (headless mode)
+## Run all tests
 
-- run about tests: `npm run test:about`
-- run av tests: `npm run test:av`
-- run books tests: `npm run test:books`
-- run collection tests: `npm run test:collection`
-- run details tests: `npm run test:details`
-- run home tests: `npm run test:home`
-- run login tests: `npm run test:login`
-- run music tests: `npm run test:music`
-- run search tests: `npm run test:search`
-- run profile tests: `npm run test:profile`
+- Run command:
+
+    ```bash
+    npm run test
+    ```
 
 
-## Running individual tests by category (headed mode)
+## Running Tests with Custom Parameters
 
-- run about tests: `npm run test:about:headed`
-- run av tests: `npm run test:av:headed`
-- run books tests: `npm run test:books:headed`
-- run collection tests: `npm run test:collection:headed`
-- run details tests: `npm run test:details:headed`
-- run home tests: `npm run test:home:headed`
-- run login tests: `npm run test:login:headed`
-- run music tests: `npm run test:music:headed`
-- run search tests: `npm run test:search:headed`
-- run profile tests: `npm run test:profile:headed`
+- To run a custom script with flexible shell script arguments/parameters, follow these steps:
+
+    1. **Command Structure:**
+        - Ensure to use the `--` convention after the npm command to separate npm-specific arguments from those intended for the Node.js script
+        - Without `--`, arguments may not pass correctly to the script
+
+    2. **Flexibility in Argument Order:**
+        - You can pass script arguments in any order to suit your needs for flexibility and customization
+
+
+    ### Test Category (by Folder Structure)
+
+    - Running tests from specific categories in the `tests` directory (except `tests/page-objects`):
+    - If no category is specified, all tests will run by default.
+    - Parameter: `--test`
+    - Example usage:
+        ```bash
+        npm run test -- --test=about
+        npm run test -- --test=books
+        npm run test -- --test=donation
+        npm run test -- --test=profile
+        ```
+
+    ### Test Execution Modes
+
+    - **Headed Mode:**
+        - Executes tests with a browser window visible on screen.
+        - Parameter: `--headed`
+        - Example usage:
+            ```bash
+            npm run test -- --test=about --headed
+            npm run test -- --headed --test=about
+            ```
+
+    - **Debug Mode:**
+        - Executes tests with Playwright Inspector for step-by-step debugging.
+        - Parameter: `--debug`
+        - Example usage:
+            ```bash
+            npm run test -- --test=about --debug
+            npm run test -- --debug --test=books
+            ```
+
+    - **UI Mode:**
+        - Executes tests with Playwright Inspector for UI-based debugging.
+        - Parameter: `--ui`
+        - Example usage:
+            ```bash
+            npm run test -- --test=about --ui
+            ```
+
+    - **Trace Viewer Mode:**
+        - Records test runs for inclusion in the Playwright report.
+        - Parameter: `--trace`
+        - Example usage:
+            ```bash
+            npm run test -- --test=about --trace
+            ```
+
+    ### Test Execution by Browser
+
+    - Running tests in specific browsers:
+    - By default, tests run in all available browsers.
+    - Parameter: `--browser`
+    - Accepted parameters: `chromium`, `firefox`, `webkit`
+    - Example usage:
+        ```bash
+        npm run test -- --test=about --browser=chromium
+        npm run test -- --test=about --browser=firefox --debug
+        npm run test -- --test=about --browser=webkit --headed
+        ```
+
+    ### Test Execution by Test Title
+
+    - Running tests matching specific test case titles:
+    - Searches for test titles within `.spec.ts` files.
+    - Parameter: `--title`
+    - Example usage:
+        ```bash
+        npm run test -- --title="TV has borrow button"
+        npm run test -- --title="Canonical About page has correct title and text" --browser=chromium
+        npm run test -- --title="Canonical About page has correct title and text" --debug
+        ```
+
+    ### Use helper function to generate custom test commands
+
+    - To generate and execute custom test commands using the `generateCommand.js` script, follow these steps:
+
+    - **Setup script configuration:**
+        - Ensure you have `generateCommand.js` configured with the desired parameters (`test`, `browser`, `title`, `headed`, `trace`, `debug`, `ui`, `device`)
+    
+        - Adjust these parameters as needed for your specific testing scenarios
+
+        Example configuration:
+        ```javascript
+        const sampleArgs = {
+            test: 'books',
+            browser: 'chromium', // Options: 'chromium', 'firefox', 'webkit'; default: all browsers
+            title: '', // Specify a test case title within ""
+            headed: false, // Set to true for headed mode
+            trace: false, // Set to true to enable trace mode
+            debug: false, // Set to true to enable debug mode
+            ui: true, // Set to true to enable UI mode
+            device: '' // Options: 'mobile', 'desktop'; default: desktop
+        };
+        ```
+
+    - **Generating custom test command:**
+
+        - Run the script to generate a command string that includes the specified parameters:
+
+            ```bash
+            npm run generate-command
+            ```
+
+        - This will output a generated command that can be used to execute specific tests based on your configuration:
+
+            ```bash
+            ➜ npm run generate:command
+
+            > iaux-e2e-playwright-tests@1.0.0 generate:command
+            > node scripts/generateCommand.js
+
+            Generated command: npm run test -- --test=books --browser=chromium --ui
+            ```
+
+        - Copy the generated command and execute it in your terminal to run tests with the specified configurations
 
 
 ## Running tests using VSCode Playwright plugin
@@ -67,20 +172,45 @@
 
 ## Running specific test spec by file:
 
-- run command format: `npx playwright test <test-file-path>`
-- sample: `npx playwright test tests/search/search-layout.spec.ts`
-- headed: `npx playwright test tests/search/search-layout.spec.ts --headed`
+- Command format: `npx playwright test <test-file-path>`
 
+- Sample (headless): 
+    ```bash
+    npx playwright test tests/search/search-layout.spec.ts
+    ```
+
+- Sample (headed): 
+    ```bash
+    npx playwright test tests/search/search-layout.spec.ts --headed
+    ```
 
 ## Running specific test spec by file in debug mode:
 
-- run command format: `npx playwright test <test-file-path> --debug`
-- sample: `npx playwright test tests/search/search-layout.spec.ts --debug`
+- Command format: `npx playwright test <test-file-path> --debug`
+
+- Sample: 
+    ```bash
+    npx playwright test tests/search/search-layout.spec.ts --debug
+    ```
+
+
+## Running specific test case title:
+
+- Command format: `npx playwright test -g "<test-case-title>"`
+
+- Sample: 
+    ```bash
+    npx playwright test -g "TV has borrow button"
+    ```
 
 
 ## View tests execution result
 
-- run: `npm run show:report`
+- Run command: 
+    
+    ```bash
+    npm run show:report
+    ```
 
 
 ## Reference guide for writing tests

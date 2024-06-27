@@ -26,4 +26,4 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Donation Tests
-        run: npm run test:donation
+        run: npm run execute -- --test=donation
