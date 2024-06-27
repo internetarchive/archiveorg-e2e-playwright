@@ -1,10 +1,10 @@
 import { test } from '../fixtures';
 
-import { FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
+import { FacetGroupFilterHeaderEnum, FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
-  test.setTimeout(60000);
   await test.step('Assert facet group headers count', async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.assertSearchFacetGroupCount();
   });
 });
@@ -13,8 +13,10 @@ test(`Facets for "movies" in Media Type facet group`, async ({
   searchPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'movies',
       'positive',
     );
@@ -33,8 +35,10 @@ test(`Facets for "movies" in Media Type facet group`, async ({
 
 test(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'data',
       'positive',
     );
@@ -50,16 +54,17 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 
   await test.step(`Click "Clear all filters"`, async () => {
-    await searchPage.clickClearAllFilters();
+    await searchPage.collectionBrowser.clickClearAllFilters();
   });
 
   await test.step(`Assert "Clear all filters" is not visible`, async () => {
-    await searchPage.assertClearAllFiltersNotVisible();
+    await searchPage.collectionBrowser.assertClearAllFiltersNotVisible();
   });
 });
 
 test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
   });
 
@@ -84,8 +89,10 @@ test(`Select Year Published range via date picker`, async ({ searchPage }) => {
 
 test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.selectFacetByGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
       'audio',
       'negative',
     );
@@ -124,8 +131,10 @@ test(`Facets can be selected via "Select filters" modal`, async ({
   searchPage,
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
+    await searchPage.collectionBrowser.queryFor('cats');
     await searchPage.collectionFacets.clickMoreInFacetGroup(
       FacetGroupLocatorLabel.MEDIATYPE,
+      FacetGroupFilterHeaderEnum.MEDIATYPE,
     );
   });
 
