@@ -23,7 +23,7 @@ const generateCommand = (args) => {
     .join(' '); // Join the arguments with a space
 
   // Return the formatted command
-  return `npm run execute -- ${commandArgs}`;
+  return `npm run test -- ${commandArgs}`;
 };
 
 /**

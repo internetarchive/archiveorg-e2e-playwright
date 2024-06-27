@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "show:report": "npx http-server ./playwright-report",
-    "test": "CATEGORY=all npx playwright test",
-    "execute": "node scripts/executeTests.js",
-    "generate:command": "node scripts/generateCommand.js",
+    "test": "node scripts/executeTests.js",
+    "generate-command": "node scripts/generateCommand.js",
     "test:codegen": "npx playwright codegen",
     "format": "prettier --write \"tests/**/*.ts\"",
     "lint": "prettier --check \"tests/**/*.ts\"",
