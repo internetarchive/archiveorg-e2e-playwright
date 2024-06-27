@@ -78,9 +78,10 @@ export class CollectionFacets {
       const facetRows = await facetContent
         ?.locator('facets-template > div.facets-on-page facet-row')
         .all();
-      if (facetRows && facetRows.length !== 0) {
-        for (let x = 0; x < facetRows.length; x++) {
-          const facetRowLocator = facetRows[x].locator(
+
+      if (facetRows) {
+        for(const facet of facetRows) {
+          const facetRowLocator = facet.locator(
             'div.facet-row-container > div.facet-checkboxes',
           );
           const facetRowInput = facetRowLocator

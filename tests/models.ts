@@ -81,21 +81,21 @@ export enum FacetGroupFilterHeaderEnum {
 }
 
 export const CommonFacetGroupHeaders = [
-  'Year Published range filter',
-  'Media Type filters',
-  'Year filters',
-  'Subject filters',
-  'Collection filters',
-  'Creator filters',
-  'Language filters',
+  FacetGroupFilterHeaderEnum.YEAR_PUBLISHED,
+  FacetGroupFilterHeaderEnum.MEDIATYPE,
+  FacetGroupFilterHeaderEnum.YEAR,
+  FacetGroupFilterHeaderEnum.SUBJECT,
+  FacetGroupFilterHeaderEnum.COLLECTION,
+  FacetGroupFilterHeaderEnum.CREATOR,
+  FacetGroupFilterHeaderEnum.LANGUAGE,
 ];
 
 export const SearchFacetGroupHeader = [
   ...CommonFacetGroupHeaders,
-  'Availability filters',
+  FacetGroupFilterHeaderEnum.AVAILABILITY,
 ];
 
 export const CollectionFacetGroupHeader = [
   ...CommonFacetGroupHeaders,
-  'Part Of',
+  FacetGroupFilterHeaderEnum.PART_OF,
 ];
