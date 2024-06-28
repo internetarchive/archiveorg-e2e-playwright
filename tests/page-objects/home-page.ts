@@ -1,18 +1,19 @@
 import { type Page, Locator, expect } from '@playwright/test';
-import { SearchPage } from './search-page';
+
+import { CollectionBrowser } from './collection-browser';
 
 export class HomePage {
   readonly page: Page;
 
   readonly waybackSearch: Locator;
 
-  readonly searchPage: SearchPage;
+  readonly collectionBrowser: CollectionBrowser;
 
   public constructor(page: Page) {
     this.page = page;
     this.waybackSearch = this.page.locator('ia-wayback-search');
 
-    this.searchPage = new SearchPage(page);
+    this.collectionBrowser = new CollectionBrowser(page);
   }
 
   async validatePageElements() {
@@ -50,7 +51,6 @@ export class HomePage {
     expect((await onboardingCarousel).length).toBe(9);
 
     // Top Collections section is present and populated
-    await this.page.waitForLoadState('load', { timeout: 5000 });
     const infiniteScroller = this.page.locator('infinite-scroller');
     await expect(infiniteScroller).toBeVisible();
     expect(
