@@ -76,7 +76,7 @@ export class CollectionFacets {
 
     if (facetContentInnerHTML?.includes('facets-template')) {
       const facetRows = await facetContent
-        ?.locator('facets-template > div.facets-on-page facet-row')
+        ?.locator('facets-template div > facet-row')
         .all();
 
       if (facetRows) {
@@ -124,11 +124,11 @@ export class CollectionFacets {
     const btnApplyFilters = this.moreFacetsContent.locator(
       '#more-facets > div.footer > button.btn.btn-submit',
     );
-    for (let i = 0; i < facetLabels.length; i++) {
+    for (const facetLabel of facetLabels) {
       // wait for the promise to resolve before advancing the for loop
       const facetRow = this.moreFacetsContent
         .locator('#more-facets')
-        .getByRole('checkbox', { name: facetLabels[i] });
+        .getByRole('checkbox', { name: facetLabel });
       await facetRow.check({ timeout: 5000 });
     }
     await btnApplyFilters.click();
@@ -164,12 +164,12 @@ export class CollectionFacets {
       .locator('#container > section.facet-group')
       .all();
 
-    for (let i = 0; i < facetGroups.length; i++) {
-      const facetHeader = await facetGroups[i].getAttribute('aria-labelledby');
+    for (const facetGroup of facetGroups) {
+      const facetHeader = await facetGroup.getAttribute('aria-labelledby');
       if (facetHeader === group) {
         return group === FacetGroupLocatorLabel.DATE
-          ? facetGroups[i]
-          : facetGroups[i].locator('div.facet-group-content');
+          ? facetGroup
+          : facetGroup.locator('div.facet-group-content');
       }
     }
     return null;
