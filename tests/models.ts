@@ -5,6 +5,8 @@ export type DateMetadataLabel = {
 
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
+export type SearchInputType = 'collection' | 'search';
+
 export enum LayoutViewModeLocator {
   TILE = '#grid-button',
   LIST = '#list-detail-button',
