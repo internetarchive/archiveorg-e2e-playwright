@@ -39,15 +39,19 @@ export class LendingBar {
   }
 
   async autoRenew_userJustBrowsed() {
-    const browsedCheckbox = await this.demoControls.getByText('user_has_browsed', { exact: true });
+    const browsedCheckbox = this.demoControls.getByText('user_has_browsed', { exact: true });
     await browsedCheckbox.click();
-
+  
     // ERRRRRRRRRRRRRRRRRRRR
     await this.page.clock.install({ time: new Date('2024-02-02T08:00:00') });
+    await this.page.clock.fastForward('01:00');
 
     console.log(this.iaBookActions)
     // wait for navigation to complete
-    await this.page.waitForTimeout(10000);
+    await this.page.waitForTimeout(5000);
+    
+    await expect(this.page.locator('.backdrop')).toBeVisible();
+    await expect(this.page.getByText('This book has been returned')).toBeVisible();
   }
 
   // auto renew feature testing ends from here....
