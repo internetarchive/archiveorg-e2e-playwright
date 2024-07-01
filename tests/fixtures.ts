@@ -7,9 +7,11 @@ import { HomePage } from './page-objects/home-page';
 import { ProfilePage } from './page-objects/profile-page';
 import { BookPage } from './page-objects/book-page';
 import { DetailsPage } from './page-objects/details-page';
+import { LendingBar } from './page-objects/lending-bar';
 import { LoginPage } from './page-objects/login-page';
 
 type PageFixtures = {
+  lendingBar: LendingBar;
   detailsPage: DetailsPage;
   bookPage: BookPage;
   homePage: HomePage;
@@ -24,6 +26,20 @@ type PageFixtures = {
 };
 
 export const test = base.extend<PageFixtures>({
+  lendingBar: async ({ page }, use) => {
+    // Set up the fixture.
+    const lendingBar = new LendingBar(page);
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(lendingBar);
+
+    // Clean up the fixture.
+    await page.close();
+  },
   detailsPage: async ({ page }, use) => {
     // Set up the fixture.
     const detailsPage = new DetailsPage(page);
@@ -192,7 +208,7 @@ export const test = base.extend<PageFixtures>({
 
 test.beforeEach(async ({ request }) => {
   const whathost = await request.get('/services/whathost.php');
-  console.log('whathost: ', await whathost.text());
+  // console.log('whathost: ', await whathost.text());
 });
 
 export { expect } from '@playwright/test';

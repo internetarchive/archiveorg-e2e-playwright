@@ -29,6 +29,7 @@
     "test:collection:headed": "CATEGORY=collection npx playwright test tests/collection --headed",
     "test:details:headed": "CATEGORY=details npx playwright test tests/details --headed",
     "test:details-lending-bar:headed": "CATEGORY=details npx playwright test tests/details/lending-bar --headed",
+    "test:details-lending-bar-auto-renew:headed": "CATEGORY=details npx playwright test tests/details/lending-bar-auto-renew --headed",
     "test:home:headed": "CATEGORY=home npx playwright test tests/home --headed",
     "test:login:headed": "CATEGORY=login npx playwright test tests/login --headed",
     "test:music:headed": "CATEGORY=music npx playwright test tests/music --headed",
@@ -45,14 +46,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.41.2",
+    "@playwright/test": "^1.45.0",
     "@types/node": "^20.11.17",
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
-    "playwright": "^1.41.2",
+    "playwright": "^1.45.0",
     "prettier": "^3.0.0"
   },
   "eslintConfig": {

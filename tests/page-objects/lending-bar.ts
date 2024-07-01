@@ -1,15 +1,63 @@
 import { type Page, Locator, expect } from '@playwright/test';
+// import clock
+// import clock
+// import { createClock as rawCreateClock, install as rawInstall } from '../../packages/playwright-core/src/server/injected/clock';
+// import type { InstallConfig, ClockController, ClockMethods } from '../../packages/playwright-core/src/server/injected/clock';
 
 export class LendingBar {
   readonly page: Page;
 
   readonly iaBookActions: Locator;
+  readonly demoControls: Locator;
 
   public constructor(page: Page) {
     this.page = page;
 
     this.iaBookActions = this.page.locator('ia-book-actions');
+    this.demoControls = this.page.locator('.initial');
   }
+
+  async gotoPage(uri: string) {
+    await this.page.goto(uri, { waitUntil: 'networkidle' });
+    await this.page.waitForTimeout(5000);
+  }
+
+
+  // auto renew feature testing starts from here....
+  // auto renew feature testing starts from here....
+  // auto renew feature testing starts from here....
+  // auto renew feature testing starts from here....
+  // auto renew feature testing starts from here....
+  // auto renew feature testing starts from here....
+  // auto renew feature testing starts from here....
+  async autoRenew_verifyDefaultTexts() {
+    const textGroup = await this.iaBookActions.locator('text-group > .variable-texts');
+    const textGroupTexts = await textGroup.textContent();
+
+    await expect(textGroup).toBeVisible();
+    await expect(textGroupTexts).toContain('Renews automatically with continued use.');
+  }
+
+  async autoRenew_userJustBrowsed() {
+    const browsedCheckbox = await this.demoControls.getByText('user_has_browsed', { exact: true });
+    await browsedCheckbox.click();
+
+    // ERRRRRRRRRRRRRRRRRRRR
+    await this.page.clock.install({ time: new Date('2024-02-02T08:00:00') });
+
+    console.log(this.iaBookActions)
+    // wait for navigation to complete
+    await this.page.waitForTimeout(10000);
+  }
+
+  // auto renew feature testing ends from here....
+  // auto renew feature testing ends from here....
+  // auto renew feature testing ends from here....
+  // auto renew feature testing ends from here....
+  // auto renew feature testing ends from here....
+  // auto renew feature testing ends from here....
+  // auto renew feature testing ends from here....
+
 
   async verifyDefaultTexts() {
     const textGroup = await this.iaBookActions.locator('text-group > .variable-texts');
@@ -64,7 +112,7 @@ export class LendingBar {
       await borrowButton.click();
   
       // wait for navigation to complete
-      await this.page.waitForLoadState('load');  
+      await this.page.waitForLoadState('load');
     } else {
       // case after user has borrowed book
       const iaBookActions = await this.page.locator('ia-book-actions');
