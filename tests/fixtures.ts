@@ -9,6 +9,17 @@ import { BookPage } from './page-objects/book-page';
 import { DetailsPage } from './page-objects/details-page';
 import { LoginPage } from './page-objects/login-page';
 
+import { identifier } from '../config';
+const {
+  books,
+  collection,
+  home,
+  details,
+  profile,
+  search,
+  profileUploads
+} = identifier;
+
 type PageFixtures = {
   detailsPage: DetailsPage;
   bookPage: BookPage;
@@ -42,7 +53,7 @@ export const test = base.extend<PageFixtures>({
     // Set up the fixture.
     const bookPage = new BookPage(page);
 
-    await page.goto('/details/theworksofplato01platiala');
+    await page.goto(books.default);
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
@@ -58,7 +69,7 @@ export const test = base.extend<PageFixtures>({
     // Set up the fixture.
     const homePage = new HomePage(page);
 
-    await page.goto('/');
+    await page.goto(home.default);
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
@@ -87,7 +98,7 @@ export const test = base.extend<PageFixtures>({
   collectionPage: async ({ page }, use) => {
     // Set up the fixture.
     const collectionPage = new CollectionPage(page);
-    await collectionPage.visit('oldtimeradio');
+    await collectionPage.visit(collection.default);
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
@@ -117,7 +128,7 @@ export const test = base.extend<PageFixtures>({
   profilePage: async ({ page }, use) => {
     // Set up the fixture.
     const profilePage = new ProfilePage(page);
-    await profilePage.visit('brewster');
+    await profilePage.visit(profile.default);
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
@@ -175,7 +186,7 @@ export const test = base.extend<PageFixtures>({
   profilePageUploads: async ({ page }, use) => {
     // Set up the fixture.
     const profilePage = new ProfilePage(page);
-    await profilePage.visit('brewster/uploads');
+    await profilePage.visit(profileUploads.default);
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
