@@ -100,10 +100,17 @@ export const test = base.extend<PageFixtures>({
     // Clean up the fixture.
     await page.close();
   },
-  collectionPage: async ({ page }, use) => {
+  collectionPage: async ({ browser }, use) => {
     // Set up the fixture.
+    // Overriding URL to test review-app for now
+    const context = await browser.newContext({
+      baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
+      // baseURL: 'https://local.archive.org:8080'
+    });
+    const page = await context.newPage();
+
     const collectionPage = new CollectionPage(page);
-    await collectionPage.visit('oldtimeradio');
+    await collectionPage.visit('/details/oldtimeradio');
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();

@@ -44,6 +44,17 @@ export const SortFilterURL = {
   Creator: 'creator',
 };
 
+export enum FacetGroup {
+  DATE = 'date',
+  MEDIATYPE = 'mediatype',
+  LENDING = 'lending',
+  YEAR = 'year',
+  SUBJECT = 'subject',
+  COLLECTION = 'collection',
+  CREATOR = 'creator',
+  LANGUAGE = 'language',
+}
+
 export enum FacetGroupLocatorLabel {
   DATE = 'date-picker-label',
   MEDIATYPE = 'facet-group-header-label-mediatype',

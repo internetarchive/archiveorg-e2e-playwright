@@ -1,8 +1,9 @@
 import { test } from '../../tests/fixtures';
 
 import {
-  FacetGroupFilterHeaderEnum,
+  FacetGroup,
   FacetGroupLocatorLabel,
+  FacetGroupFilterHeaderEnum,
   LayoutViewModeLocator,
 } from '../../tests/models';
 
@@ -20,8 +21,7 @@ test(`Select a facet for videos and clear facet filters`, async ({
       FacetGroupFilterHeaderEnum.MEDIATYPE,
     );
     await collectionPage.collectionFacets.selectFacetByGroup(
-      FacetGroupLocatorLabel.MEDIATYPE,
-      FacetGroupFilterHeaderEnum.MEDIATYPE,
+      FacetGroup.MEDIATYPE,
       'movies',
       'positive',
     );
@@ -63,8 +63,7 @@ test(`Select Year Published range via date picker`, async ({
 test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group and check if there's no results with "Audio" tile icon title`, async () => {
     await collectionPage.collectionFacets.selectFacetByGroup(
-      FacetGroupLocatorLabel.MEDIATYPE,
-      FacetGroupFilterHeaderEnum.MEDIATYPE,
+      FacetGroup.MEDIATYPE,
       'audio',
       'negative',
     );

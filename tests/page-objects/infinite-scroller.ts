@@ -170,16 +170,19 @@ export class InfiniteScroller {
     displayItemCount: Number,
   ) {
     await this.awaitLoadingState();
+    // await this.page.waitForTimeout(5000);
     const facetedResults = await this.getFacetedResultsByViewFacetGroup(
       viewFacetMetadata,
       displayItemCount,
     );
+    console.log('facetedResults: ', facetedResults);
     if (facetedResults) {
       const isAllFacettedCorrectly = facetLabels.some(label => {
         return toInclude
           ? facetedResults.includes(label)
           : !facetedResults.includes(label);
       });
+      console.log('isAllFacettedCorrectly: ', isAllFacettedCorrectly)
       expect(isAllFacettedCorrectly).toBeTruthy();
     }
   }

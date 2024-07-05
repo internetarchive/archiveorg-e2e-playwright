@@ -42,6 +42,9 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     // This is set in config/index.ts
     baseURL: config.baseURL,
+    launchOptions: {
+      args: ['--ignore-certificate-errors']
+    }
   },
 
   /* Configure projects for major browsers */

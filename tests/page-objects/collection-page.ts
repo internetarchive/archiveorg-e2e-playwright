@@ -31,7 +31,7 @@ export class CollectionPage {
   }
 
   async visit(collection: string) {
-    await this.page.goto(`/details/${collection}`);
+    await this.page.goto(collection);
     await this.page.waitForLoadState('load');
   }
 

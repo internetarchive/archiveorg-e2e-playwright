@@ -2,6 +2,7 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 import {
   CollectionFacetGroupHeader,
+  FacetGroup,
   FacetGroupFilterHeaderEnum,
   FacetGroupLocatorLabel,
   FacetType,
@@ -66,42 +67,23 @@ export class CollectionFacets {
   }
 
   async selectFacetByGroup(
-    group: FacetGroupLocatorLabel,
-    header: FacetGroupFilterHeaderEnum,
+    group: FacetGroup,
     facetLabel: string,
     facetType: FacetType,
   ) {
-    const facetContent = await this.getFacetGroupContainer(group, header);
-    const facetContentInnerHTML = await facetContent?.innerHTML();
+    const facetGroup = this.page.getByTestId(`facet-group-header-label-${group}`);
+    await this.page.waitForTimeout(3000);
+    const facetRows = await facetGroup.getByTestId(`facets-for-${group}`).locator('facet-row').all();
 
-    if (facetContentInnerHTML?.includes('facets-template')) {
-      const facetRows = await facetContent
-        ?.locator('facets-template div > facet-row')
-        .all();
-
-      if (facetRows) {
-        for(const facet of facetRows) {
-          const facetRowLocator = facet.locator(
-            'div.facet-row-container > div.facet-checkboxes',
-          );
-          const facetRowInput = facetRowLocator
-            .locator('input[type="checkbox"]')
-            .first();
-          const facetRowLabel = facetRowLocator
-            .locator('label.hide-facet-icon')
-            .first();
-          const facetRow =
-            facetType === 'positive' ? facetRowInput : facetRowLabel;
-          const facetRowId =
-            facetType === 'positive'
-              ? await facetRow.getAttribute('id')
-              : await facetRow.getAttribute('title');
-
-          if (facetRowId?.includes(facetLabel)) {
-            await facetRow.click();
-            return;
-          }
-        }
+    for (const facetRow of facetRows) {
+      const facetCheckbox = facetRow.locator('div.facet-row-container > div.facet-checkboxes');
+      const rowCheck = facetType === 'positive' 
+        ? facetCheckbox.getByTestId(`${group}:${facetLabel}-show-only`)
+        : facetCheckbox.getByTestId(`${group}:${facetLabel}-negative`)
+      const rowVisible = await rowCheck.isVisible();
+      if (rowVisible) {
+        await rowCheck.click();
+        return;
       }
     }
   }
@@ -174,6 +156,16 @@ export class CollectionFacets {
     }
     return null;
   }
+
+  async getAllFacetRows(facetContent: Locator) {
+    const rows = await facetContent
+        ?.locator('facets-template div > facet-row')
+        .all();
+      
+    if (rows?.length === 0) this.getAllFacetRows(facetContent)
+    else return rows;
+  }
+
 
   async checkLocatorInnerHtml(locator: Locator, elem: string) {
     const innerHtmlContent = await locator.innerHTML();
