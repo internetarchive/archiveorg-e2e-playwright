@@ -14,25 +14,39 @@ export const config = {
 }
 
 export const identifier = {
+  accountSettings: {
+    url: '/account/index.php?settings=1',
+  },
   books: {
+    url: '/details',
     default: '/details/theworksofplato01platiala'
   },
   details: {
+    url: '/details',
     default: '/details/theworksofplato01platiala'
   },
   home: {
-   default:  '/'
+    url: '/',
+    default:  '/'
   },
   collection: {
+    url: '',
     default: 'oldtimeradio'
   },
+  login: {
+    url: '/account/login',
+    default: '',
+  },
   profile: {
+    url: '',
     default: 'brewster'
   },
   search: {
+    url: '',
     default: '/search'
   },
   profileUploads: {
+    url: '',
     default: 'brewster/uploads'
   },
 };
