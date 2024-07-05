@@ -17,16 +17,13 @@ test(`Select a facet for videos and clear facet filters`, async ({
   collectionPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group and check 5 item results for "Movie" tile icon titles`, async () => {
-    await collectionPage.collectionFacets.getFacetGroupByHeadingName(
-      FacetGroupFilterHeaderEnum.MEDIATYPE,
-    );
     await collectionPage.collectionFacets.selectFacetByGroup(
       FacetGroup.MEDIATYPE,
       'movies',
       'positive',
     );
     await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-collection-icontitle',
+      'tile-collection-icon-title',
       ['Movie'],
       true,
       5,
@@ -68,7 +65,7 @@ test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
       'negative',
     );
     await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-collection-icontitle',
+      'tile-collection-icon-title',
       ['Audio'],
       false,
       20,
@@ -92,7 +89,7 @@ test(`Facets can be selected via Select filters modal`, async ({
       'Mystery',
     ]);
     await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-collection-icontitle',
+      'tile-collection-icon-title',
       ['Audio'],
       true,
       20,

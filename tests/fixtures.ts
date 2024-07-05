@@ -103,14 +103,24 @@ export const test = base.extend<PageFixtures>({
   collectionPage: async ({ browser }, use) => {
     // Set up the fixture.
     // Overriding URL to test review-app for now
+    // let context: any;
+    const browserName = browser.browserType().name();
+    console.log('browser: ', browserName)
+    
     const context = await browser.newContext({
-      baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
+      // baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
       // baseURL: 'https://local.archive.org:8080'
+      baseURL: 'https://localhost:8000',
     });
     const page = await context.newPage();
 
     const collectionPage = new CollectionPage(page);
-    await collectionPage.visit('/details/oldtimeradio');
+    await collectionPage.page.goto('/');
+    await collectionPage.page.getByLabel('Within collection:').click();
+    await collectionPage.page.getByLabel('Within collection:').fill('oldtimeradio');
+    await collectionPage.page.getByLabel('Within collection:').press('Enter');
+    // await collectionPage.visit('/?query=cats');
+    // await collectionPage.visit('/details/oldtimeradio');
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();

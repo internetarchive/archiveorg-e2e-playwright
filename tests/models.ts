@@ -69,8 +69,8 @@ export enum FacetGroupLocatorLabel {
 export type FacetType = 'positive' | 'negative';
 
 export type ViewFacetMetadata =
-  | 'tile-collection-icontitle'
-  | 'tile-icontitle'
+  | 'tile-collection-icon-title'
+  | 'tile-icon-title'
   | 'list-date';
 
 export type BookPageViewMode = '1up' | '2up' | 'thumb';

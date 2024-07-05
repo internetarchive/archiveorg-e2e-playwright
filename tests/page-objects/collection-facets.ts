@@ -19,7 +19,7 @@ export class CollectionFacets {
   public constructor(page: Page) {
     this.page = page;
     this.collectionFacets = page.locator('collection-facets');
-    this.resultsTotal = page.locator('#facets-header-container #results-total');
+    this.resultsTotal = page.getByTestId('results-total');
 
     this.modalManager = page.locator('modal-manager');
     this.moreFacetsContent = page.locator('more-facets-content');
@@ -71,9 +71,15 @@ export class CollectionFacets {
     facetLabel: string,
     facetType: FacetType,
   ) {
+    // need this timeout for now, still finding ways to remove if possible
+    // await this.page.waitForTimeout(3000);
+    // .locator('[data-testid="createTitle"]')
     const facetGroup = this.page.getByTestId(`facet-group-header-label-${group}`);
-    await this.page.waitForTimeout(3000);
-    const facetRows = await facetGroup.getByTestId(`facets-for-${group}`).locator('facet-row').all();
+    const facetGroupContent = facetGroup.getByTestId(`facets-for-${group}`);
+    await facetGroupContent.waitFor({ state: 'visible', timeout: 10000});
+
+    const facetRows = await facetGroupContent.locator('facet-row').all();
+    console.log('facetRows: ',  facetRows.length);
 
     for (const facetRow of facetRows) {
       const facetCheckbox = facetRow.locator('div.facet-row-container > div.facet-checkboxes');
@@ -82,6 +88,7 @@ export class CollectionFacets {
         : facetCheckbox.getByTestId(`${group}:${facetLabel}-negative`)
       const rowVisible = await rowCheck.isVisible();
       if (rowVisible) {
+        console.log('rowVisible: ', rowVisible, ' rowCheck: ', rowCheck);
         await rowCheck.click();
         return;
       }

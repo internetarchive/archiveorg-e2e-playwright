@@ -23,7 +23,7 @@ const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
  * Timeouts were set by `ms`
  */
 export default defineConfig({
-  workers: 2,
+  workers: 1,
   // Timeout for each test
   timeout: 2 * 60 * 1000,  
   // Maximum time the whole test suite can run
@@ -42,9 +42,11 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     // This is set in config/index.ts
     baseURL: config.baseURL,
+    // This is added for now to test in localhost; will remove when everything is ready to merge
     launchOptions: {
       args: ['--ignore-certificate-errors']
-    }
+    },
+    ignoreHTTPSErrors: true
   },
 
   /* Configure projects for major browsers */
