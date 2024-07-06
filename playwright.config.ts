@@ -38,6 +38,9 @@ export default defineConfig({
       },
     ],
   ],
+  expect: {
+    timeout: 1 * 60 * 1000,  // set to 1min
+  },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // This is set in config/index.ts
@@ -46,7 +49,9 @@ export default defineConfig({
     launchOptions: {
       args: ['--ignore-certificate-errors']
     },
-    ignoreHTTPSErrors: true
+    ignoreHTTPSErrors: true,
+    actionTimeout: 1 * 60 * 1000,  // set to 1min
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */

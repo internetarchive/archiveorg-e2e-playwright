@@ -57,7 +57,7 @@ export class MusicPage {
     const thumbViewModeClass = 'BRmodeThumb';
     const fullScreenClass = 'fullscreenActive';
 
-    await this.iaMusicTheater.seeMoreCta.click({ timeout: 10000 });
+    await this.iaMusicTheater.seeMoreCta.click();
     await expect(this.iaMusicTheater.iauxPhotoViewer).toHaveAttribute(
       'showallphotos',
     );

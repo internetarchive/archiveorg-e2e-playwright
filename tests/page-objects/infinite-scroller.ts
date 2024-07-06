@@ -54,19 +54,19 @@ export class InfiniteScroller {
     switch (viewMode) {
       case 'tile':
         await expect(
-          this.displayStyleSelector.locator('#grid-button'),
+          this.displayStyleSelector.getByTestId('grid-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/grid/));
         return;
       case 'list':
         await expect(
-          this.displayStyleSelector.locator('#list-detail-button'),
+          this.displayStyleSelector.getByTestId('list-detail-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/list-detail/));
         return;
       case 'compact':
         await expect(
-          this.displayStyleSelector.locator('#list-compact-button'),
+          this.displayStyleSelector.getByTestId('list-compact-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/list-compact/));
         return;
@@ -173,14 +173,12 @@ export class InfiniteScroller {
       viewFacetMetadata,
       displayItemCount,
     );
-    console.log('facetedResults: ', facetedResults);
     if (facetedResults) {
       const isAllFacettedCorrectly = facetLabels.some(label => {
         return toInclude
           ? facetedResults.includes(label)
           : !facetedResults.includes(label);
       });
-      console.log('isAllFacettedCorrectly: ', isAllFacettedCorrectly)
       expect(isAllFacettedCorrectly).toBeTruthy();
     }
   }
@@ -198,7 +196,7 @@ export class InfiniteScroller {
 
     let index = 0;
     while (index !== displayItemCount) {
-      await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible', timeout: 10000 });
+      await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible' });
       const itemTileCount = await allItems[index]
         .locator('a > item-tile')
         .count();
@@ -221,9 +219,7 @@ export class InfiniteScroller {
     displayItemCount: Number,
   ): Promise<DateMetadataLabel[]> {
     const arrDateLine: DateMetadataLabel[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer
-      .locator('article')
-      .all();
+    const allItems = await this.getAllInfiniteScrollerArticleItems();
 
     let index = 0;
     while (index !== displayItemCount) {
@@ -231,7 +227,6 @@ export class InfiniteScroller {
       // There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
       // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
       // We always want the last one since it will correspond to the current "sort by" field
-
       const dateSpanLabel = await allItems[index]
         .locator('#dates-line > div.metadata')
         .last()
@@ -294,7 +289,7 @@ export class InfiniteScroller {
 
   async getAllInfiniteScrollerArticleItems() {
     const container = this.infiniteScroller.locator('section#container');
-    await container.waitFor({ state: 'visible', timeout: 10000 })
+    await container.waitFor({ state: 'visible' })
     return await container.locator('article').all();
   }
 
@@ -309,7 +304,7 @@ export class InfiniteScroller {
 
     let index = 0;
     while (index !== displayItemCount) {
-      await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible', timeout: 10000 });
+      await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible' });
 
       switch(viewFacetMetadata) {
         case 'tile-collection-icon-title':
@@ -324,8 +319,7 @@ export class InfiniteScroller {
           await this.getDateMetadataText(allItems[index], arrDates);
           break;
       
-        default:
-          console.log('something else ---- test is broken')
+        default: // something else ---- test is broken
           break;
       }
 

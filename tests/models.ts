@@ -45,7 +45,7 @@ export const SortFilterURL = {
 };
 
 export enum FacetGroup {
-  DATE = 'date',
+  DATE = 'date-picker',
   MEDIATYPE = 'mediatype',
   LENDING = 'lending',
   YEAR = 'year',
