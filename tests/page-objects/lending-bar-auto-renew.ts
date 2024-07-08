@@ -139,7 +139,7 @@ export class LendingBarAutoRenew {
     if (pageChangedElement) {
       await pageChangedElement.click();
       await this.page.clock.runFor('00:40'); // (MM:SS)
-      await this.page.clock.fastForward(70000);
+      await this.page.waitForTimeout(7000);
     }
 
     // timer has been reset and match with total loan seconds... :)
