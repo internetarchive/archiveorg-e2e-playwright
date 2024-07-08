@@ -15,6 +15,11 @@ test(`Lending-Bar with auto-renew for 5 minutes`, async ({ lendingBarAutoRenew }
     await lendingBarAutoRenew.gotoPage(demoApp);
     await lendingBarAutoRenew.autoRenew_userJustBrowsedFor5MinRenewed();
   });
+
+  await test.step('user make activity to get silent renewed', async () => {
+    await lendingBarAutoRenew.gotoPage(demoApp);
+    await lendingBarAutoRenew.autoRenew_autoRenew5MinWhenUserMakeActivity();
+  });
 });
 
 test(`Lending-Bar with auto-renew for 10 minutes`, async ({ lendingBarAutoRenew }) => {
@@ -32,7 +37,7 @@ test(`Lending-Bar with auto-renew for 10 minutes`, async ({ lendingBarAutoRenew 
 
   await test.step('user make activity to get silent renewed', async () => {
     await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_autoRenewWhenUserMakeActivity();
+    await lendingBarAutoRenew.autoRenew_autoRenew10MinWhenUserMakeActivity();
   });
 });
 
