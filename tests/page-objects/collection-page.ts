@@ -32,7 +32,6 @@ export class CollectionPage {
 
   async visit(collection: string) {
     await this.page.goto(collection);
-    await this.page.waitForLoadState('load');
   }
 
   async clickCollectionTab(name: string) {
@@ -40,7 +39,8 @@ export class CollectionPage {
   }
 
   async clickMoreBtnFromSummary() {
-    await this.pageSummary.locator('#more-btn').click();
+    await expect(this.page.locator('#page-header')).toBeVisible();
+    await this.pageSummary.getByTestId('more-link-btn').click();
   }
 
   async validatePageHeaderElements() {

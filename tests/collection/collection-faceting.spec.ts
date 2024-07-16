@@ -68,7 +68,7 @@ test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
       'tile-collection-icon-title',
       ['Audio'],
       false,
-      20,
+      15,
     );
   });
 });

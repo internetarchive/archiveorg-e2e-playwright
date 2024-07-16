@@ -50,6 +50,7 @@ export class CollectionFacets {
     selectedFacetLabel: string,
     facetType: FacetType,
   ) {
+    console.log()
     const facetGroupContent = await this.getFacetGroupContent(group);
     if (facetGroupContent) {
       const facetRows = await facetGroupContent.locator('facet-row').all();

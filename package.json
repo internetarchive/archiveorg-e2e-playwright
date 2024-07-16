@@ -11,7 +11,8 @@
     "format": "prettier --write \"tests/**/*.ts\"",
     "lint": "prettier --check \"tests/**/*.ts\"",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
-    "test:debugbrowser": "DEBUG=pw:browser npx playwright test"
+    "test:debugbrowser": "DEBUG=pw:browser npx playwright test",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
