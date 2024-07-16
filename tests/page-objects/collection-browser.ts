@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-import { SearchOption, SortOrder, SortFilter, SortFilterURL } from '../models';
+import { SearchOption, SortOrder, SortFilter, SortFilterURL, SearchInputType } from '../models';
 
 export class CollectionBrowser {
   readonly page: Page;
@@ -68,7 +68,7 @@ export class CollectionBrowser {
     await this.btnClearInput.click();
   }
 
-  async clickSearchInputOption(option: SearchOption, type: string) {
+  async clickSearchInputOption(option: SearchOption, type: SearchInputType) {
     const btnName = type === 'collection' ? 'Search this collection' : 'GO';
 
     await expect(this.page.getByRole('button', { name: btnName })).toBeVisible();
