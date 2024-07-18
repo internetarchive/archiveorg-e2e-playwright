@@ -121,8 +121,14 @@ export const test = base.extend<PageFixtures>({
     // Clean up the fixture.
     await page.close();
   },
-  searchPage: async ({ page }, use) => {
+  searchPage: async ({ browser }, use) => {
     // Set up the fixture.
+    // Overriding URL to test review-app for now
+    const context = await browser.newContext({
+      baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
+    });
+    const page = await context.newPage();
+
     const searchPage = new SearchPage(page);
     await searchPage.visit();
 
