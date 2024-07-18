@@ -3,13 +3,13 @@ import { SearchOption } from '../models';
 
 test('Collection search metadata', async ({ collectionPage }) => {
   await test.step(`Select "Search metadata"`, async () => {
-    await collectionPage.collectionBrowser.clickSearchInputOption(
+    await collectionPage.collectionSearchInput.clickSearchInputOption(
       SearchOption.METADATA, 'collection'
     );
   });
 
   await test.step(`Search for "radio" in the search input text field`, async () => {
-    await collectionPage.collectionBrowser.queryFor('radio');
+    await collectionPage.collectionSearchInput.queryFor('radio');
   });
 
   await test.step(`Results are displayed in display area - validate first item displayed`, async () => {
@@ -22,13 +22,13 @@ test('Collection search text contents and clear filters', async ({
   collectionPage,
 }) => {
   await test.step(`Select "Search text contents"`, async () => {
-    await collectionPage.collectionBrowser.clickSearchInputOption(
+    await collectionPage.collectionSearchInput.clickSearchInputOption(
       SearchOption.TEXT, 'collection'
     );
   });
 
   await test.step(`Search for "dragnet" in the search input text field`, async () => {
-    await collectionPage.collectionBrowser.queryFor('dragnet');
+    await collectionPage.collectionSearchInput.queryFor('dragnet');
   });
 
   await test.step(`Results are displayed in display area - validate first item displayed`, async () => {
@@ -37,20 +37,20 @@ test('Collection search text contents and clear filters', async ({
   });
 
   await test.step(`Click "X" button in search input and validate search input text is cleared`, async () => {
-    await collectionPage.collectionBrowser.clickClearSearchInput();
-    await collectionPage.collectionBrowser.validateClearSearchInput();
+    await collectionPage.collectionSearchInput.clickClearSearchInput();
+    await collectionPage.collectionSearchInput.validateClearSearchInput();
   });
 });
 
 test('No results page displays when no results', async ({ collectionPage }) => {
   await test.step(`Select "Search metadata"`, async () => {
-    await collectionPage.collectionBrowser.clickSearchInputOption(
+    await collectionPage.collectionSearchInput.clickSearchInputOption(
       SearchOption.METADATA, 'collection'
     );
   });
 
   await test.step(`Search for "catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda" and validate that the "No results" placeholder appears in place of the display area`, async () => {
-    await collectionPage.collectionBrowser.queryFor(
+    await collectionPage.collectionSearchInput.queryFor(
       'catsshfksahfkjhfkjsdhfkiewhkdsfahkjhfkjsda',
     );
     await collectionPage.collectionBrowser.validateEmptyPagePlaceholder();

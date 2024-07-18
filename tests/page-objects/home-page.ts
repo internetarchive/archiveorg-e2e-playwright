@@ -1,19 +1,21 @@
 import { type Page, Locator, expect } from '@playwright/test';
 
 import { CollectionBrowser } from './collection-browser';
-
+import { CollectionSearchInput } from './collection-search-input';
 export class HomePage {
   readonly page: Page;
 
   readonly waybackSearch: Locator;
 
   readonly collectionBrowser: CollectionBrowser;
+  readonly collectionSearchInput: CollectionSearchInput;
 
   public constructor(page: Page) {
     this.page = page;
     this.waybackSearch = this.page.locator('ia-wayback-search');
 
     this.collectionBrowser = new CollectionBrowser(page);
+    this.collectionSearchInput = new CollectionSearchInput(page);
   }
 
   async validatePageElements() {

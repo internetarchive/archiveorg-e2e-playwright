@@ -1,11 +1,11 @@
 import { test } from '../fixtures';
 
-import { FacetGroupFilterHeaderEnum, FacetGroupLocatorLabel, LayoutViewModeLocator } from '../models';
+import { FacetGroup, FacetGroupLocatorLabel, LayoutViewModeLocator, SearchFacetGroupHeader } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
-    await searchPage.collectionBrowser.queryFor('cats');
-    await searchPage.collectionFacets.assertSearchFacetGroupCount();
+    await searchPage.collectionSearchInput.queryFor('cats');
+    await searchPage.collectionFacets.assertFacetGroupCount(SearchFacetGroupHeader);
   });
 });
 
@@ -13,10 +13,9 @@ test(`Facets for "movies" in Media Type facet group`, async ({
   searchPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
-    await searchPage.collectionBrowser.queryFor('cats');
-    await searchPage.collectionFacets.selectFacetByGroup(
-      FacetGroupLocatorLabel.MEDIATYPE,
-      FacetGroupFilterHeaderEnum.MEDIATYPE,
+    await searchPage.collectionSearchInput.queryFor('cats');
+    await searchPage.collectionFacets.toggleFacetSelection(
+      FacetGroup.MEDIATYPE,
       'movies',
       'positive',
     );
@@ -25,7 +24,7 @@ test(`Facets for "movies" in Media Type facet group`, async ({
   await test.step(`Check the first 10 results for "Movie" results`, async () => {
     // checking the tileIcon title for now which is set in a `Title case` format
     await searchPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-icontitle',
+      'tile-icon-title',
       ['Movie'],
       true,
       10,
@@ -35,10 +34,9 @@ test(`Facets for "movies" in Media Type facet group`, async ({
 
 test(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
-    await searchPage.collectionBrowser.queryFor('cats');
-    await searchPage.collectionFacets.selectFacetByGroup(
-      FacetGroupLocatorLabel.MEDIATYPE,
-      FacetGroupFilterHeaderEnum.MEDIATYPE,
+    await searchPage.collectionSearchInput.queryFor('cats');
+    await searchPage.collectionFacets.toggleFacetSelection(
+      FacetGroup.MEDIATYPE,
       'data',
       'positive',
     );
@@ -46,7 +44,7 @@ test(`Clear facet filters`, async ({ searchPage }) => {
 
   await test.step(`Check the first 10 results for "Data" results`, async () => {
     await searchPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-icontitle',
+      'tile-icon-title',
       ['Data'],
       true,
       10,
@@ -54,17 +52,17 @@ test(`Clear facet filters`, async ({ searchPage }) => {
   });
 
   await test.step(`Click "Clear all filters"`, async () => {
-    await searchPage.collectionBrowser.clickClearAllFilters();
+    await searchPage.collectionFacets.clickClearAllFilters();
   });
 
   await test.step(`Assert "Clear all filters" is not visible`, async () => {
-    await searchPage.collectionBrowser.assertClearAllFiltersNotVisible();
+    await searchPage.collectionFacets.assertClearAllFiltersNotVisible();
   });
 });
 
 test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
-    await searchPage.collectionBrowser.queryFor('cats');
+    await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
   });
 
@@ -89,10 +87,9 @@ test(`Select Year Published range via date picker`, async ({ searchPage }) => {
 
 test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group`, async () => {
-    await searchPage.collectionBrowser.queryFor('cats');
-    await searchPage.collectionFacets.selectFacetByGroup(
-      FacetGroupLocatorLabel.MEDIATYPE,
-      FacetGroupFilterHeaderEnum.MEDIATYPE,
+    await searchPage.collectionSearchInput.queryFor('cats');
+    await searchPage.collectionFacets.toggleFacetSelection(
+      FacetGroup.MEDIATYPE,
       'audio',
       'negative',
     );
@@ -100,7 +97,7 @@ test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
 
   await test.step(`Check the first 7 results for "Audio" results`, async () => {
     await searchPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-icontitle',
+      'tile-icon-title',
       ['Audio'],
       false,
       7,
@@ -131,10 +128,9 @@ test(`Facets can be selected via "Select filters" modal`, async ({
   searchPage,
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
-    await searchPage.collectionBrowser.queryFor('cats');
+    await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.collectionFacets.clickMoreInFacetGroup(
-      FacetGroupLocatorLabel.MEDIATYPE,
-      FacetGroupFilterHeaderEnum.MEDIATYPE,
+      FacetGroup.MEDIATYPE
     );
   });
 
@@ -144,7 +140,7 @@ test(`Facets can be selected via "Select filters" modal`, async ({
 
   await test.step(`Check the first 10 results for "Audio" & "Texts" results`, async () => {
     await searchPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-icontitle',
+      'tile-icon-title',
       ['Audio', 'Text'],
       true,
       10,

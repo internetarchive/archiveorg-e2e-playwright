@@ -9,16 +9,29 @@ export class CollectionFacets {
   readonly collectionFacets: Locator;
   readonly modalManager: Locator;
   readonly moreFacetsContent: Locator;
+  readonly btnClearAllFilters: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.collectionFacets = page.locator('collection-facets');
     this.modalManager = page.locator('modal-manager');
     this.moreFacetsContent = page.locator('more-facets-content');
+    this.btnClearAllFilters = page.locator(
+      '#facets-header-container div.clear-filters-btn-row button',
+    );
   }
 
   async displaysResultCount() {
     await expect(this.page.getByTestId('results-total')).toBeVisible();
+  }
+
+  async clickClearAllFilters() {
+    await expect(this.btnClearAllFilters).toBeVisible();
+    await this.btnClearAllFilters.click();
+  }
+
+  async assertClearAllFiltersNotVisible() {
+    await expect(this.btnClearAllFilters).not.toBeVisible();
   }
 
   async assertFacetGroupCount(headerNames: string[]) {

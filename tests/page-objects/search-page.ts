@@ -2,6 +2,7 @@ import { type Page } from '@playwright/test';
 
 import { CollectionBrowser } from './collection-browser';
 import { CollectionFacets } from './collection-facets';
+import { CollectionSearchInput } from './collection-search-input';
 import { InfiniteScroller } from './infinite-scroller';
 import { SortBar } from './sort-bar';
 
@@ -10,6 +11,7 @@ export class SearchPage {
 
   readonly collectionBrowser: CollectionBrowser;
   readonly collectionFacets: CollectionFacets;
+  readonly collectionSearchInput: CollectionSearchInput;
   readonly infiniteScroller: InfiniteScroller;
   readonly sortBar: SortBar;
 
@@ -18,6 +20,7 @@ export class SearchPage {
 
     this.collectionBrowser = new CollectionBrowser(this.page);
     this.collectionFacets = new CollectionFacets(this.page);
+    this.collectionSearchInput = new CollectionSearchInput(this.page);
     this.infiniteScroller = new InfiniteScroller(this.page);
     this.sortBar = new SortBar(this.page);
   }

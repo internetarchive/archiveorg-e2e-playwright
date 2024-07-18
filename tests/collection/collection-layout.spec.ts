@@ -124,9 +124,9 @@ test.beforeEach(async ({ collectionPage }) => {
   });
 
   await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
-    await collectionPage.collectionBrowser.clickSearchInputOption(
+    await collectionPage.collectionSearchInput.clickSearchInputOption(
       SearchOption.METADATA, 'collection'
     );
-    await collectionPage.collectionBrowser.queryFor('radio');
+    await collectionPage.collectionSearchInput.queryFor('radio');
   });
 });
