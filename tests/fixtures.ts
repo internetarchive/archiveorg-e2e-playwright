@@ -103,12 +103,9 @@ export const test = base.extend<PageFixtures>({
   collectionPage: async ({ browser }, use) => {
     // Set up the fixture.
     // Overriding URL to test review-app for now
-    const browserName = browser.browserType().name();
-    console.log('browser: ', browserName)
-    
     const context = await browser.newContext({
-      // baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
-      baseURL: 'https://local.archive.org:8080'
+      baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
+      // baseURL: 'https://local.archive.org:8080'
       // baseURL: 'https://localhost:8000',
     });
     const page = await context.newPage();

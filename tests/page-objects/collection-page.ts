@@ -34,8 +34,9 @@ export class CollectionPage {
     await this.page.goto(collection);
   }
 
-  async clickCollectionTab(name: string) {
-    await this.page.locator('#page-container li').filter({ hasText: name }).click();
+  async clickCollectionTab(tabName: string) {
+    const elem = this.page.locator('div.tab-manager-container > nav > ul > li');
+    await elem.filter({ hasText: tabName }).click();
   }
 
   async clickMoreBtnFromSummary() {
