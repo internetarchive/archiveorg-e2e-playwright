@@ -45,10 +45,6 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     // This is set in config/index.ts
     baseURL: config.baseURL,
-    // This is added for now to test in localhost; will remove when everything is ready to merge
-    launchOptions: {
-      args: ['--ignore-certificate-errors']
-    },
     ignoreHTTPSErrors: true,
     actionTimeout: 1 * 60 * 1000,  // set to 1min
     screenshot: 'only-on-failure',
