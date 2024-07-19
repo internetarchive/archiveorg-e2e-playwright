@@ -24,6 +24,7 @@ export class CollectionSearchInput {
     this.btnCollectionSearchInputCollapser = page.locator(
       'collection-search-input #button-collapser',
     );
+    this.btnClearInput = page.locator('collection-search-input #clear-button');
   }
 
   async queryFor(query: string) {
