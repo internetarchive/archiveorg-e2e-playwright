@@ -1,61 +1,30 @@
 import { test } from '../fixtures';
 
-/**
- * auto-renew feature testing starts here.......
+/*
+ * TODO: later we'll run these tests againsts production URL when auto-renew is moved to live.
  */
-test(`Lending-Bar with auto-renew for 5 minutes`, async ({ lendingBarAutoRenew }) => {
-  const demoApp = 'https://internetarchive.github.io/iaux-book-actions/pr/pr-73/?timer=5';
+const DEMO_APP_BASE_URL = 'https://internetarchive.github.io/iaux-book-actions/pr/pr-74/';
 
-  await test.step('user browsed for 5min', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_userJustBrowsedFor5Min();
-  });
+// Helper function to construct demo app URL with timer
+const getDemoAppUrl = (timer: number) => `${DEMO_APP_BASE_URL}?timer=${timer}`;
 
-  await test.step('user browsed for 5min - renewed', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_userJustBrowsedFor5MinRenewed();
-  });
+// loan durations in minutes
+const loanDurations = [5, 10, 60];
 
-  await test.step('user make activity to get silent renewed', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_autoRenew5MinWhenUserMakeActivity();
-  });
+test(`Lending-Bar: auto-renew when user click "Keep Reading" button`, async ({ lendingBarAutoRenew }) => {
+  for (const loanDuration of loanDurations) {
+    await test.step(`${loanDuration} minutes loan`, async () => {
+      await lendingBarAutoRenew.gotoPage(getDemoAppUrl(loanDuration));
+      await lendingBarAutoRenew.autoRenewTest(loanDuration, 'keepReading');
+    });
+  }
 });
 
-test(`Lending-Bar with auto-renew for 10 minutes`, async ({ lendingBarAutoRenew }) => {
-  const demoApp = 'https://internetarchive.github.io/iaux-book-actions/pr/pr-73/?timer=10';
-
-  await test.step('user browsed for 10min', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_userJustBrowsedFor10Min();
-  });
-
-  await test.step('user browsed for 10min - renewed', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_userJustBrowsedFor10MinRenewed();
-  });
-
-  await test.step('user make activity to get silent renewed', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_autoRenew10MinWhenUserMakeActivity();
-  });
-});
-
-test(`Lending-Bar with auto-renew for 60 minutes`, async ({ lendingBarAutoRenew }) => {
-  const demoApp = 'https://internetarchive.github.io/iaux-book-actions/pr/pr-73/?timer=60';
-
-  await test.step('user browsed for 60min', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_userJustBrowsedFor60Min();
-  });
-
-  await test.step('user browsed for 60min - renewed', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_userJustBrowsedFor60MinRenewed();
-  });
-
-  await test.step('user make activity to get silent renewed', async () => {
-    await lendingBarAutoRenew.gotoPage(demoApp);
-    await lendingBarAutoRenew.autoRenew_autoRenew60MinWhenUserMakeActivity();
-  });
+test(`Lending-Bar: auto-renew when user flip bookreader page`, async ( { lendingBarAutoRenew } ) => {
+  for (const loanDuration of loanDurations) {
+    await test.step(`${loanDuration} minutes loan`, async () => {
+      await lendingBarAutoRenew.gotoPage(getDemoAppUrl(loanDuration));
+      await lendingBarAutoRenew.autoRenewTest(loanDuration, 'pageFlip');
+    });
+  }
 });

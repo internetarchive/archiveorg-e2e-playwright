@@ -29,7 +29,7 @@
     "test:collection:headed": "CATEGORY=collection npx playwright test tests/collection --headed",
     "test:details:headed": "CATEGORY=details npx playwright test tests/details --headed",
     "test:details-lending-bar:headed": "CATEGORY=details npx playwright test tests/details/lending-bar --headed",
-    "test:details-lending-bar-auto-renew": "CATEGORY=details npx playwright test tests/details/lending-bar-auto-renew",
+    "test:details-lending-bar-auto-renew:headed": "CATEGORY=details npx playwright test tests/details/lending-bar-auto-renew --headed",
     "test:home:headed": "CATEGORY=home npx playwright test tests/home --headed",
     "test:login:headed": "CATEGORY=login npx playwright test tests/login --headed",
     "test:music:headed": "CATEGORY=music npx playwright test tests/music --headed",

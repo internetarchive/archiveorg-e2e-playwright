@@ -206,9 +206,9 @@ export const test = base.extend<PageFixtures>({
   },
 });
 
-test.beforeEach(async ({ request }) => {
-  const whathost = await request.get('/services/whathost.php');
-  console.log('whathost: ', await whathost.text());
-});
+// test.beforeEach(async ({ request }) => {
+//   const whathost = await request.get('/services/whathost.php');
+//   console.log('whathost: ', await whathost.text());
+// });
 
 export { expect } from '@playwright/test';

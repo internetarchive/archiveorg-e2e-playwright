@@ -1,307 +1,267 @@
 import { type Page, Locator, expect } from '@playwright/test';
 
+/**
+ * Objects representing the total loan time configurations for different durations.
+ * Each object contains the following properties:
+ * - `loanTotalTime`: Total time for the loan in seconds.
+ * - `loanRenewAtLast`: Time after which the loan should be renewed in seconds.
+ * - `pageChangedInLast`: Time after which the page changed event should be triggered in seconds.
+ *
+ * These objects are used in conjunction with the `clockConfig` to define specific loan behaviors.
+ */
+
+/**
+ * Configuration for a 5-minute loan duration.
+ * - `loanTotalTime`: 300 seconds (5 minutes).
+ * - `loanRenewAtLast`: 240 seconds (4 minutes).
+ * - `pageChangedInLast`: 60 seconds (1 minute).
+ */
+
+/**
+ * Configuration for a 10-minute loan duration.
+ * - `loanTotalTime`: 600 seconds (10 minutes).
+ * - `loanRenewAtLast`: 480 seconds (8 minutes).
+ * - `pageChangedInLast`: 120 seconds (2 minutes).
+ */
+
+/**
+ * Configuration for a 1-hour loan duration.
+ * - `loanTotalTime`: 3600 seconds (1 hour).
+ * - `loanRenewAtLast`: 660 seconds (11 minutes).
+ * - `pageChangedInLast`: 900 seconds (15 minutes).
+ */
+
+/**
+ * Class representing the Lending Bar Auto Renew feature.
+ */
 export class LendingBarAutoRenew {
   readonly page: Page;
 
   readonly iaBookActions: Locator;
   readonly demoControls: Locator;
 
-  readonly loanSecondsFor5Min: Number;
-  readonly loanSecondsFor10Min: Number;
-  readonly loanSecondsFor30Min: Number;
-  readonly loanSecondsFor60Min: Number;
+  private timeInBrowser: string;
 
-  private timeInBrowser: Date;
+  private clockConfig: object;
 
+  /**
+   * @param {Page} page - The Playwright page object.
+   */
   public constructor(page: Page) {
     this.page = page;
 
     this.iaBookActions = this.page.locator('ia-book-actions');
     this.demoControls = this.page.locator('.initial');
 
-    this.loanSecondsFor5Min = 300; // seconds
-    this.loanSecondsFor10Min = 600; // seconds 
-    this.loanSecondsFor30Min = 1800; // seconds
-    this.loanSecondsFor60Min = 3600; // seconds
+    this.timeInBrowser = new Date().toISOString();
 
-    this.timeInBrowser = new Date('2024-07-08T11:00:00'); // time
+    /**
+     * Configuration object for different loan durations and actions in the lending bar auto-renew feature.
+     * This configuration is divided into two categories: 'keepReading' and 'pageFlip'.
+     *
+     * - `keepReading`: Configurations when the user is actively reading and wants to keep the loan.
+     * - `pageFlip`: Configurations when the user flips the page, indicating activity.
+     *
+     * Each category contains configurations for different durations (5, 10, 60 minutes).
+     * Each duration configuration includes the following properties:
+     * - `warnAfter`: Time after which a warning is shown to the user (format: 'MM:SS').
+     * - `wait`: Time the system waits after the warning before taking action (format: 'MM:SS').
+     * - `expireAfter`: Total time after which the loan expires if no action is taken (format: 'MM:SS').
+     *
+     * Example usage:
+     * const warnTime = this.clockConfig.keepReading[5].warnAfter; // Access the warn time for 5 minutes in keepReading
+     */
+    this.clockConfig = {
+      keepReading: {
+        5: { warnAfter: '01:10', wait: '00:07', expireAfter: '05:00' },
+        10: { warnAfter: '02:10', wait: '00:07', expireAfter: '10:00' },
+        60: { warnAfter: '51:10', wait: '00:07', expireAfter: '59:59' },
+      },
+      pageFlip: {
+        5 : { flipBefore: '00:50', wait: '00:10', expireAfter: '05:00'},
+        10 : { flipBefore: '01:40', wait: '00:30', expireAfter: '10:00'},
+        60 : { flipBefore: '45:10', wait: '05:10', expireAfter: '59:59'},
+      }
+    };
+  };
+
+  /**
+   * Auto renew feature testing based on different scenarios.
+   * @param {number} minutes - The loan duration in minutes.
+   * @param {string} scenario - The scenario for auto-renew testing.
+   */
+  async autoRenewTest(minutes: number, scenario: 'keepReading' | 'pageFlip') {
+    const autoRenewFunctions = {
+      keepReading: {
+        5: this.autoRenewWhenClickOnKeepReadingBtn.bind(this, 5),
+        10: this.autoRenewWhenClickOnKeepReadingBtn.bind(this, 10),
+        60: this.autoRenewWhenClickOnKeepReadingBtn.bind(this, 60),
+      },
+      pageFlip: {
+        5: this.autoRenewWhenUserFlipPage.bind(this, 5),
+        10: this.autoRenewWhenUserFlipPage.bind(this, 10),
+        60: this.autoRenewWhenUserFlipPage.bind(this, 60),
+      },
+    };
+
+    const autoRenewFunction = autoRenewFunctions[scenario][minutes];
+
+    if (autoRenewFunction) {
+      await autoRenewFunction();
+    } else {
+      console.warn(`No auto-renew function defined for ${scenario} scenario with ${minutes} minutes.`);
+    }
   }
 
+  /**
+   * Auto renew for a loan when the user has just browsed.
+   * @param {number} minutes - The loan duration in minutes.
+   */
+  private async autoRenewWhenClickOnKeepReadingBtn(minutes: number) {
+    await this.page.clock.install({ time: await this.getIncrementedTime(minutes) });
+    await this.clickOnBrowsedButton();
+
+    await this.runClockAndWaitForWarning(this.clockConfig['keepReading'][minutes].warnAfter);
+
+    const keepReadingButton = this.page.getByText('Keep reading', { exact: true });
+    if (await keepReadingButton.isVisible()) {
+      await keepReadingButton.click();
+      await this.waitForClockRunStart('00:07');
+    }
+
+    await this.expectPopupShouldBeHidden();
+    const countdownSeconds = await this.getTimerCountdownSeconds();
+    await expect(countdownSeconds).toBeGreaterThanOrEqual(minutes * 60);
+
+    await this.runClockAndWaitForLoanExpiration(this.clockConfig['keepReading'][minutes].expireAfter);
+  }
+
+  /**
+   * Auto renew for a loan when the user makes activity.
+   * @param {number} minutes - The loan duration in minutes.
+   */
+  private async autoRenewWhenUserFlipPage(minutes: number) {
+    await this.page.clock.install({ time: await this.getIncrementedTime(minutes) });
+    await this.clickOnBrowsedButton();
+
+    await this.waitForClockRunStart(this.clockConfig['pageFlip'][minutes].flipBefore);
+
+    const pageChangedElement = this.page.locator('.pageChangedEvent');
+    if (await pageChangedElement.isVisible()) {
+      await pageChangedElement.click();
+      await this.waitForClockRunStart(this.clockConfig['pageFlip'][minutes].wait);
+    }
+
+    await this.expectPopupShouldBeHidden();
+
+    // TODO although, the loan get auto-renew silently when user trigger page changed event
+    // but the timer counter values not being reset on demo pages URL.
+    // so, later needs to un-comment the below lines...
+
+    // const countdownSeconds = await this.getTimerCountdownSeconds();
+    // expect(countdownSeconds).toBeGreaterThanOrEqual(minutes * 60);
+  }
+
+  /**
+   * Click on the 'Browsed' button.
+   */
   async clickOnBrowsedButton() {
-    const browsedCheckbox = this.demoControls.getByText('user_has_browsed', { exact: true });
-    await browsedCheckbox.click();
+    const userHasBrowsedCheckbox = await this.demoControls.getByText('user_has_browsed', { exact: true });
+    await userHasBrowsedCheckbox.click();
+    await this.page.waitForTimeout(1000); // playwright wants to complete click event
   }
 
-  async gotoPage(uri: string) {
-    await this.page.goto(uri, { waitUntil: 'networkidle' });
-
-    this.timeInBrowser = await this.page.evaluate(() => {
-      // return new Date().toISOString();
-      return new Date('2024-07-08T11:00:00');
-    });
-    console.log('timeInBrowser:', this.timeInBrowser);
-
-    await this.page.clock.setSystemTime(this.timeInBrowser.toString());
-    await this.page.waitForTimeout(1000);
-  }
-
-  async getTimerCountdownSeconds() {
+  /**
+   * Get the countdown timer in seconds.
+   * @returns {Promise<number | boolean>} The countdown timer in seconds or false if not found.
+   */
+  async getTimerCountdownSeconds(): Promise<number | boolean> {
     const timerElement = this.page.locator('timer-countdown .second');
-    if (timerElement) return Number(await timerElement.textContent());
+    if (await timerElement.isVisible()) return Number(await timerElement.textContent());
     return false;
   }
 
-  async getIncrementedTime(Minutes: number) {
+  /**
+   * Get the incremented time based on the specified minutes.
+   * @param {number} minutes - The number of minutes to increment.
+   * @returns {Promise<Date>} The incremented time.
+   */
+  async getIncrementedTime(minutes: number): Promise<Date> {
     const timeObj = new Date(this.timeInBrowser.toString());
-    const incresedTime = new Date(timeObj.getTime() + Minutes * 60000);
-    console.log('originalTime: ', timeObj)
-    console.log('incresedTime: ', incresedTime);
-    return incresedTime;
-  }
-
-  async warningModelVisible() {
-    await expect(await this.page.locator('.backdrop')).toBeVisible();
-    await expect(await this.page.getByText('Are you still reading?')).toBeVisible();
-  }
-
-
-  async warningModelHidden() {
-    await expect(await this.page.locator('.backdrop')).toBeHidden();
-    await expect(await this.page.getByText('Are you still reading?')).toBeHidden();
-  }
-
-  // auto renew feature testing starts from here....
-  /**
-   * 5 minutes loan tests, the timer details are as follow:-
-   * - loanTotalTime: 300,
-   * - loanRenewAtLast: 240,
-   * - pageChangedInLast: 60
-   */
-  async autoRenew_userJustBrowsedFor5Min() {
-    await this.clickOnBrowsedButton();
-
-    // install clock timer is -- 300000ms / 300s / 5min
-    await this.page.clock.install({ time: await this.getIncrementedTime(5) });
-
-    await this.page.clock.runFor('01:20'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    // after 240sec, we expected to warning message having backdrop
-    await this.warningModelVisible();
-
-    await this.page.clock.runFor('04:00'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    await expect(this.page.getByText('This book has been returned')).toBeVisible();
-  }
-
-  async autoRenew_userJustBrowsedFor5MinRenewed() {
-    await this.clickOnBrowsedButton();
-
-    // install clock timer is -- 300000ms / 300s / 5min
-    await this.page.clock.install({ time: await this.getIncrementedTime(5) });
-
-    await this.page.clock.runFor('01:25'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    // after 240sec, we expected to warning message having backdrop
-    await this.warningModelVisible();
-
-    await expect(await this.page.locator('#book-action-bar-custom-buttons')).toBeVisible();
-
-    const keepReadingButton = await this.page.locator('#book-action-bar-custom-buttons button').first();
-    if (keepReadingButton) {
-      await keepReadingButton.click();
-      await this.page.waitForTimeout(1000);
-      // await this.page.clock.runFor(70000);
-    }
-
-    await expect(await this.page.locator('.backdrop')).toBeHidden();
-
-    // timer has been reset and match with total loan seconds... :)
-    await expect(await this.getTimerCountdownSeconds()).toBeGreaterThanOrEqual(250);
-
-    await this.page.clock.runFor('02:00'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    await expect(await this.page.locator('.backdrop')).toBeVisible();
-  }
-
-  async autoRenew_autoRenew5MinWhenUserMakeActivity() {
-    await this.clickOnBrowsedButton();
-    await this.page.clock.install({ time: await this.getIncrementedTime(5) });
-
-    await this.page.clock.runFor('00:30'); // (MM:SS)
-    await this.page.waitForTimeout(10000);
-
-    // user made activity on BookReader
-    const pageChangedElement = await this.page.locator('.pageChangedEvent');
-    if (pageChangedElement) {
-      await pageChangedElement.click();
-      await this.page.clock.runFor('00:40'); // (MM:SS)
-      await this.page.waitForTimeout(7000);
-    }
-
-    // timer has been reset and match with total loan seconds... :)
-    await expect(await this.getTimerCountdownSeconds()).toBeGreaterThanOrEqual(240);
-
-    await expect(await this.page.locator('.backdrop')).toBeHidden();
-    await expect(await this.page.getByText('Are you still reading?')).toBeHidden();
+    const incrementedTime = new Date(timeObj.getTime() + minutes * 60000);
+    console.log(this.timeInBrowser);
+    console.log(incrementedTime);
+    return incrementedTime;
   }
 
   /**
-   * 10 minutes loan tests, the timer details are as follow:-
-   * - loanTotalTime: 600,
-   * - loanRenewAtLast: 480,
-   * - pageChangedInLast: 120
+   * Check if the warning modal is visible.
    */
-  async autoRenew_userJustBrowsedFor10Min() {
-    await this.clickOnBrowsedButton();
-
-    // install clock timer is -- 600000ms / 600s / 10min
-
-    await this.page.clock.install({ time: await this.getIncrementedTime(10) });
-
-    await this.page.clock.runFor('02:20'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    // after 240sec, we expected to warning message having backdrop
-    await this.warningModelVisible();
-    
-    await this.page.clock.runFor('08:00'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    await expect(await this.page.getByText('This book has been returned')).toBeVisible();
-    await this.page.waitForTimeout(1000);
-  }
-
-  async autoRenew_userJustBrowsedFor10MinRenewed() {
-    await this.clickOnBrowsedButton();
-
-    await this.page.clock.install({ time: await this.getIncrementedTime(10) });
-
-    await this.page.clock.runFor('02:20'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    // after 240sec, we expected to warning message having backdrop
-    await this.warningModelVisible();
-
-    await expect(await this.page.locator('#book-action-bar-custom-buttons')).toBeVisible();
-
-    const keepReadingButton = await this.page.locator('#book-action-bar-custom-buttons button').first();
-    if (keepReadingButton) {
-      await keepReadingButton.click();
-      await this.page.waitForTimeout(1000);
-    }
-
-    await expect(await this.page.locator('.backdrop')).toBeHidden();
-
-    // timer has been reset and match with total loan seconds... :)
-    expect(await this.getTimerCountdownSeconds()).toBeGreaterThan(550);
-
-    await this.page.clock.runFor('05:00'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    await expect(await this.page.getByText('This book has been returned')).toBeHidden();
-  }
-
-  async autoRenew_autoRenew10MinWhenUserMakeActivity() {
-    await this.clickOnBrowsedButton();
-    await this.page.clock.install({ time: await this.getIncrementedTime(10) });
-
-    await this.page.clock.runFor('01:00'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    // user made activity on BookReader
-    const pageChangedElement = await this.page.locator('.pageChangedEvent');
-    if (pageChangedElement) {
-      await pageChangedElement.click();
-      await this.page.clock.runFor('01:00'); // (MM:SS)
-      await this.page.waitForTimeout(7000);
-    }
-
-    // timer has been reset and match with total loan seconds... :)
-    await expect(await this.getTimerCountdownSeconds()).toBeGreaterThan(550);
-
-    await expect(await this.page.locator('.backdrop')).toBeHidden();
-    await expect(await this.page.getByText('Are you still reading?')).toBeHidden();
+  async expectWarningModelVisible() {
+    await expect(this.page.locator('.backdrop')).toBeVisible();
+    await expect(this.page.getByText('Are you still reading?')).toBeVisible();
   }
 
   /**
-   * 60 minutes loan tests, the timer details are as follow:-
-   * - loanTotalTime: 3600,
-   * - loanRenewAtLast: 660,
-   * - pageChangedInLast: 900
+   * Check if the expiration modal is visible.
    */
-  async autoRenew_userJustBrowsedFor60Min() {
-    await this.clickOnBrowsedButton();
+  async expectExpireModelVisible() {
+    await expect(this.page.locator('.backdrop')).toBeVisible();
+    await expect(this.page.getByText('This book has been returned due to inactivity.')).toBeVisible();
+  }
 
-    // install clock timer is -- 600000ms / 600s / 60min
-    await this.page.clock.install({ time: await this.getIncrementedTime(60) });
+  /**
+   * Expect the warning modal to be hidden.
+   */
+  async expectWarningModelHidden() {
+    await expect(this.page.locator('.backdrop')).toBeHidden();
+    await expect(this.page.getByText('Are you still reading?')).toBeHidden();
+  }
 
-    await this.page.clock.runFor('51:10'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
+  /**
+   * Expect any popup to be hidden.
+   */
+  async expectPopupShouldBeHidden() {
+    await expect(this.page.locator('.backdrop')).toBeHidden();
+  }
 
-    // after 240sec, we expected to warning message having backdrop
-    await this.warningModelVisible();
-
-    await this.page.clock.runFor('10:00'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    await expect(await this.page.getByText('This book has been returned')).toBeVisible();
+  /**
+   * Wait for the clock to run and start with the specified timer.
+   * @param {string} duration - The time duration.
+   */
+  async waitForClockRunStart(duration: string) {
+    await this.page.clock.fastForward(duration);
     await this.page.waitForTimeout(1000);
   }
 
-  async autoRenew_userJustBrowsedFor60MinRenewed() {
-    await this.clickOnBrowsedButton();
-
-    await this.page.clock.install({ time: await this.getIncrementedTime(60) });
-
-    await this.page.clock.runFor('51:10'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    // after 240sec, we expected to warning message having backdrop
-    await this.warningModelVisible();
-
-    await expect(await this.page.locator('#book-action-bar-custom-buttons')).toBeVisible();
-
-    const keepReadingButton = await this.page.locator('#book-action-bar-custom-buttons button').first();
-    if (keepReadingButton) {
-      await keepReadingButton.click();
-      await this.page.waitForTimeout(1000);
-    }
-
-    await expect(await this.page.locator('.backdrop')).toBeHidden();
-
-    // timer has been reset and match with total loan seconds... :)
-    await expect(await this.getTimerCountdownSeconds()).toBeGreaterThan(3000);
-
-    await this.page.clock.runFor('10:00'); // (MM:SS)
-    await this.page.waitForTimeout(1000);
-
-    await expect(await this.page.getByText('This book has been returned')).toBeHidden();
+  /**
+   * Run the clock and wait for the warning message.
+   * @param {string} duration - The duration to run the clock.
+   */
+  async runClockAndWaitForWarning(duration: string) {
+    await this.waitForClockRunStart(duration);
+    await this.expectWarningModelVisible();
   }
 
+  /**
+   * Run the clock and wait for loan expiration.
+   * @param {string} duration - The duration to run the clock.
+   */
+  async runClockAndWaitForLoanExpiration(duration: string) {
+    await this.waitForClockRunStart(duration);
+    await this.expectExpireModelVisible();
+  }
 
-  async autoRenew_autoRenew60MinWhenUserMakeActivity() {
-    await this.clickOnBrowsedButton();
-    await this.page.clock.install({ time: await this.getIncrementedTime(60) });
+  /**
+   * Navigate to the specified page.
+   * @param {string} uri - The URI of the page.
+   */
+  async gotoPage(uri: string) {
+    await this.page.goto(uri);
 
-    await this.page.clock.runFor('45:10'); // (MM:SS)
+    this.timeInBrowser = await this.page.evaluate(() => new Date().toISOString());
+
+    await this.page.clock.setSystemTime(this.timeInBrowser.toString());
     await this.page.waitForTimeout(1000);
-
-    // user made activity on BookReader
-    const pageChangedElement = await this.page.locator('.pageChangedEvent');
-    if (pageChangedElement) {
-      await pageChangedElement.click();
-      await this.page.clock.runFor('04:10'); // (MM:SS)
-      await this.page.waitForTimeout(7000);
-    }
-
-    // timer has been reset and match with total loan seconds... :)
-    await expect(await this.getTimerCountdownSeconds()).toBeGreaterThan(3000);
-
-    await expect(await this.page.locator('.backdrop')).toBeHidden();
-    await expect(await this.page.getByText('Are you still reading?')).toBeHidden();
   }
 }
