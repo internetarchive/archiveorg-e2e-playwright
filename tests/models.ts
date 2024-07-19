@@ -5,6 +5,8 @@ export type DateMetadataLabel = {
 
 export type LayoutViewMode = 'tile' | 'list' | 'compact';
 
+export type SearchInputType = 'collection' | 'search';
+
 export enum LayoutViewModeLocator {
   TILE = '#grid-button',
   LIST = '#list-detail-button',
@@ -67,3 +69,35 @@ export type ChannelSelector = 'Player' | 'Webamp';
 export type UserType = 'privs' | 'patron' | 'no-login';
 
 export type PageType = 'radio' | 'tv';
+
+export enum FacetGroupFilterHeaderEnum {
+  YEAR_PUBLISHED = 'Year Published range filter',
+  MEDIATYPE = 'Media Type filters',
+  YEAR = 'Year filters',
+  SUBJECT = 'Subject filters',
+  COLLECTION = 'Collection filters',
+  CREATOR = 'Creator filters',
+  LANGUAGE = 'Language filters',
+  AVAILABILITY = 'Availability filters',
+  PART_OF = 'Part Of', // this only appears in collection page
+}
+
+export const CommonFacetGroupHeaders = [
+  FacetGroupFilterHeaderEnum.YEAR_PUBLISHED,
+  FacetGroupFilterHeaderEnum.MEDIATYPE,
+  FacetGroupFilterHeaderEnum.YEAR,
+  FacetGroupFilterHeaderEnum.SUBJECT,
+  FacetGroupFilterHeaderEnum.COLLECTION,
+  FacetGroupFilterHeaderEnum.CREATOR,
+  FacetGroupFilterHeaderEnum.LANGUAGE,
+];
+
+export const SearchFacetGroupHeader = [
+  ...CommonFacetGroupHeaders,
+  FacetGroupFilterHeaderEnum.AVAILABILITY,
+];
+
+export const CollectionFacetGroupHeader = [
+  ...CommonFacetGroupHeaders,
+  FacetGroupFilterHeaderEnum.PART_OF,
+];
