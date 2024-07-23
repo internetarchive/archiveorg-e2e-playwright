@@ -50,13 +50,13 @@ export default defineConfig({
       name: 'Desktop - Chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    // {
-    //   name: 'Desktop - Firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'Desktop - Webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    {
+      name: 'Desktop - Firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'Desktop - Webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
   ],
 });
