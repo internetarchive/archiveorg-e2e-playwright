@@ -126,12 +126,12 @@ export class LendingBarAutoRenew {
     const keepReadingButton = this.page.getByText('Keep reading', { exact: true });
     if (await keepReadingButton.isVisible()) {
       await keepReadingButton.click();
-      await this.waitForClockRunStart('00:07');
+      await this.setClockTimerAndWaitForStart('00:07');
     }
 
     await this.expectPopupShouldBeHidden();
     const countdownSeconds = await this.getTimerCountdownSeconds();
-    await expect(countdownSeconds).toBeGreaterThanOrEqual(minutes * 60);
+    expect(countdownSeconds).toBeGreaterThanOrEqual(minutes * 60);
 
     await this.runClockAndWaitForLoanExpiration(this.clockConfig['keepReading'][minutes].expireAfter);
   }
@@ -144,12 +144,12 @@ export class LendingBarAutoRenew {
     await this.page.clock.install({ time: await this.getIncrementedTime(minutes) });
     await this.clickOnBrowsedButton();
 
-    await this.waitForClockRunStart(this.clockConfig['pageFlip'][minutes].flipBefore);
+    await this.setClockTimerAndWaitForStart(this.clockConfig['pageFlip'][minutes].flipBefore);
 
     const pageChangedElement = this.page.locator('.pageChangedEvent');
     if (await pageChangedElement.isVisible()) {
       await pageChangedElement.click();
-      await this.waitForClockRunStart(this.clockConfig['pageFlip'][minutes].wait);
+      await this.setClockTimerAndWaitForStart(this.clockConfig['pageFlip'][minutes].wait);
     }
 
     await this.expectPopupShouldBeHidden();
@@ -166,7 +166,7 @@ export class LendingBarAutoRenew {
    * Click on the 'Browsed' button.
    */
   async clickOnBrowsedButton() {
-    const userHasBrowsedCheckbox = await this.demoControls.getByText('user_has_browsed', { exact: true });
+    const userHasBrowsedCheckbox = this.demoControls.getByText('user_has_browsed', { exact: true });
     await userHasBrowsedCheckbox.click();
     await this.page.waitForTimeout(1000); // playwright wants to complete click event
   }
@@ -226,12 +226,12 @@ export class LendingBarAutoRenew {
   }
 
   /**
-   * Wait for the clock to run and start with the specified timer.
+   * Set clock specified timer and Wait for the clock to start.
    * @param {string} duration - The time duration.
    */
-  async waitForClockRunStart(duration: string) {
+  async setClockTimerAndWaitForStart(duration: string) {
     await this.page.clock.fastForward(duration);
-    await this.page.waitForTimeout(7000);
+    await this.page.waitForTimeout(2000);
   }
 
   /**
@@ -239,7 +239,7 @@ export class LendingBarAutoRenew {
    * @param {string} duration - The duration to run the clock.
    */
   async runClockAndWaitForWarning(duration: string) {
-    await this.waitForClockRunStart(duration);
+    await this.setClockTimerAndWaitForStart(duration);
     await this.expectWarningModelVisible();
   }
 
@@ -248,7 +248,7 @@ export class LendingBarAutoRenew {
    * @param {string} duration - The duration to run the clock.
    */
   async runClockAndWaitForLoanExpiration(duration: string) {
-    await this.waitForClockRunStart(duration);
+    await this.setClockTimerAndWaitForStart(duration);
     await this.expectExpireModelVisible();
   }
 
