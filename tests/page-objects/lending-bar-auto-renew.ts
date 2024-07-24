@@ -231,7 +231,7 @@ export class LendingBarAutoRenew {
    */
   async waitForClockRunStart(duration: string) {
     await this.page.clock.fastForward(duration);
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForTimeout(7000);
   }
 
   /**
