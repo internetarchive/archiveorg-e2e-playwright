@@ -100,14 +100,8 @@ export const test = base.extend<PageFixtures>({
     // Clean up the fixture.
     await page.close();
   },
-  collectionPage: async ({ browser }, use) => {
+  collectionPage: async ({ page }, use) => {
     // Set up the fixture.
-    // Overriding URL to test review-app for now
-    const context = await browser.newContext({
-      baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
-    });
-    const page = await context.newPage();
-
     const collectionPage = new CollectionPage(page);
     await collectionPage.visit('/details/oldtimeradio');
 
@@ -121,14 +115,8 @@ export const test = base.extend<PageFixtures>({
     // Clean up the fixture.
     await page.close();
   },
-  searchPage: async ({ browser }, use) => {
+  searchPage: async ({ page }, use) => {
     // Set up the fixture.
-    // Overriding URL to test review-app for now
-    const context = await browser.newContext({
-      baseURL: 'https://www-offshoot-e2e-testing-ids.dev.archive.org',
-    });
-    const page = await context.newPage();
-
     const searchPage = new SearchPage(page);
     await searchPage.visit();
 

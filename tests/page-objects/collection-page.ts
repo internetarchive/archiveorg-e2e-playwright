@@ -44,7 +44,7 @@ export class CollectionPage {
 
   async clickMoreBtnFromSummary() {
     await expect(this.page.locator('#page-header')).toBeVisible();
-    await this.pageSummary.getByTestId('more-link-btn').click();
+    await this.pageSummary.getByTestId('collection-page-more-link-btn').click();
   }
 
   async validatePageHeaderElements() {

@@ -34,7 +34,12 @@ export class CollectionFacets {
     await expect(this.btnClearAllFilters).not.toBeVisible();
   }
 
+  async clickFacetFiltersElement() {
+    await this.page.locator('#facets-container').locator('details').click();
+  }
+
   async assertFacetGroupCount(headerNames: string[]) {
+    await this.clickFacetFiltersElement();
     let count = 0;
     for (const name of headerNames) {
       await this.expectHeaderByName(name);
@@ -53,6 +58,7 @@ export class CollectionFacets {
   }
 
   async assertDatePickerVisible() {
+    await this.clickFacetFiltersElement();
     const yearPublishedFacetGroup = this.page.getByTestId('facet-group-header-label-date-picker');
     await yearPublishedFacetGroup.waitFor({ state: 'visible' });
     await expect(yearPublishedFacetGroup).toBeVisible();
@@ -63,7 +69,7 @@ export class CollectionFacets {
     selectedFacetLabel: string,
     facetType: FacetType,
   ) {
-    console.log()
+    await this.clickFacetFiltersElement();
     const facetGroupContent = await this.getFacetGroupContent(group);
     if (facetGroupContent) {
       const facetRows = await facetGroupContent.locator('facet-row').all();
@@ -82,6 +88,7 @@ export class CollectionFacets {
   }
 
   async clickMoreInFacetGroup(group: FacetGroup) {
+    await this.clickFacetFiltersElement();
     const facetGroupContent = await this.getFacetGroupContent(group);
     if (facetGroupContent) {
       await facetGroupContent.getByTestId('more-link-btn').click();
@@ -103,6 +110,7 @@ export class CollectionFacets {
   }
 
   async fillUpYearFilters(startDate: string, endDate: string) {
+    await this.clickFacetFiltersElement();
     const facetGroupContent = await this.getFacetGroupContent(FacetGroup.DATE);
     if (facetGroupContent) {
       const datePickerContainer = facetGroupContent.locator(
@@ -124,7 +132,7 @@ export class CollectionFacets {
       return facetGroup;
     } else {
       const facetGroupContent = facetGroup.getByTestId(`facet-group-content-${group}`);
-      const facetOnGroupContent = facetGroupContent.getByTestId(`facets-on-${group}`);
+      const facetOnGroupContent = facetGroupContent.locator('facets-template').getByTestId(`facets-on-${group}`);
       await facetGroupContent.waitFor({ state: 'visible' });
       await facetOnGroupContent.waitFor({ state: 'visible' });
       return facetGroupContent;
