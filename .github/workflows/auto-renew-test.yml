@@ -26,4 +26,5 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run LendingBar AutoRenew tests
-        run: npm run test:details-lending-bar-auto-renew
+        run: npm run execute -- --test=details/lending-bar-auto-renew
+        # run: npm run test:details-lending-bar-auto-renew
