@@ -129,7 +129,7 @@ export class LendingBarAutoRenew {
       await this.setClockTimerAndWaitForStart('00:07');
     }
 
-    await this.expectPopupShouldBeHidden();
+    await this.assertPopupHidden();
     const countdownSeconds = await this.getTimerCountdownSeconds();
     expect(countdownSeconds).toBeGreaterThanOrEqual(minutes * 60);
 
@@ -152,7 +152,7 @@ export class LendingBarAutoRenew {
       await this.setClockTimerAndWaitForStart(this.clockConfig['pageFlip'][minutes].wait);
     }
 
-    await this.expectPopupShouldBeHidden();
+    await this.assertPopupHidden();
 
     // TODO although, the loan get auto-renew silently when user trigger page changed event
     // but the timer counter values not being reset on demo pages URL.
@@ -205,7 +205,7 @@ export class LendingBarAutoRenew {
   /**
    * Check if the expiration modal is visible.
    */
-  async expectExpireModelVisible() {
+  async assertExpireModelVisible() {
     await expect(this.page.locator('.backdrop')).toBeVisible();
     await expect(this.page.getByText('This book has been returned due to inactivity.')).toBeVisible();
   }
@@ -213,7 +213,7 @@ export class LendingBarAutoRenew {
   /**
    * Expect the warning modal to be hidden.
    */
-  async expectWarningModelHidden() {
+  async assertWarningModelHidden() {
     await expect(this.page.locator('.backdrop')).toBeHidden();
     await expect(this.page.getByText('Are you still reading?')).toBeHidden();
   }
@@ -221,7 +221,7 @@ export class LendingBarAutoRenew {
   /**
    * Expect any popup to be hidden.
    */
-  async expectPopupShouldBeHidden() {
+  async assertPopupHidden() {
     await expect(this.page.locator('.backdrop')).toBeHidden();
   }
 
@@ -249,7 +249,7 @@ export class LendingBarAutoRenew {
    */
   async runClockAndWaitForLoanExpiration(duration: string) {
     await this.setClockTimerAndWaitForStart(duration);
-    await this.expectExpireModelVisible();
+    await this.assertExpireModelVisible();
   }
 
   /**
