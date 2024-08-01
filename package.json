@@ -17,13 +17,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.44.1",
+    "@playwright/test": "^1.45.0",
     "@types/node": "^20.11.17",
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
+    "playwright": "^1.45.0",
     "minimist": "^1.2.8",
     "prettier": "^3.0.0"
   },

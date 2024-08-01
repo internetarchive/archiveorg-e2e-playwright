@@ -2,12 +2,10 @@ import { type Page, Locator, expect } from '@playwright/test';
 
 export class LendingBar {
   readonly page: Page;
-
   readonly iaBookActions: Locator;
 
   public constructor(page: Page) {
     this.page = page;
-
     this.iaBookActions = this.page.locator('ia-book-actions');
   }
 
@@ -64,7 +62,7 @@ export class LendingBar {
       await borrowButton.click();
   
       // wait for navigation to complete
-      await this.page.waitForLoadState('load');  
+      await this.page.waitForLoadState('load');
     } else {
       // case after user has borrowed book
       const iaBookActions = await this.page.locator('ia-book-actions');

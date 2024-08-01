@@ -7,9 +7,11 @@ import { HomePage } from './page-objects/home-page';
 import { ProfilePage } from './page-objects/profile-page';
 import { BookPage } from './page-objects/book-page';
 import { DetailsPage } from './page-objects/details-page';
+import { LendingBarAutoRenew } from './page-objects/lending-bar-auto-renew';
 import { LoginPage } from './page-objects/login-page';
 
 type PageFixtures = {
+  lendingBarAutoRenew: LendingBarAutoRenew;
   detailsPage: DetailsPage;
   bookPage: BookPage;
   homePage: HomePage;
@@ -24,6 +26,20 @@ type PageFixtures = {
 };
 
 export const test = base.extend<PageFixtures>({
+  lendingBarAutoRenew: async ({ page }, use) => {
+    // Set up the fixture.
+    const lendingBarAutoRenew = new LendingBarAutoRenew(page);
+
+    await page.route(/(analytics|fonts)/, route => {
+      route.abort();
+    });
+
+    // Use the fixture value in the test.
+    await use(lendingBarAutoRenew);
+
+    // Clean up the fixture.
+    await page.close();
+  },
   detailsPage: async ({ page }, use) => {
     // Set up the fixture.
     const detailsPage = new DetailsPage(page);
