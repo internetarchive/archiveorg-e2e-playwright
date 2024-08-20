@@ -54,6 +54,7 @@ export class HomePage {
 
     // Top Collections section is present and populated
     const infiniteScroller = this.page.locator('infinite-scroller');
+    await infiniteScroller.waitFor({ state: 'visible' });
     await expect(infiniteScroller).toBeVisible();
     expect(
       (await infiniteScroller.locator('#container > .cell-container').all())
