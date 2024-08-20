@@ -166,7 +166,6 @@ export class InfiniteScroller {
       viewFacetMetadata,
       displayItemCount,
     );
-    console.log('facetedResults: ', facetedResults);
     if (facetedResults) {
       const isAllFacettedCorrectly = facetLabels.some(label => {
         return toInclude
