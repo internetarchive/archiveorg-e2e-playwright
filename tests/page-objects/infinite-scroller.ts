@@ -190,7 +190,7 @@ export class InfiniteScroller {
     let index = 0;
     while (index !== displayItemCount) {
       await allItems[index].innerHTML();
-      // await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible' });
+
       const itemTileCount = await allItems[index]
         .locator('a > item-tile')
         .count();
@@ -303,7 +303,6 @@ export class InfiniteScroller {
     let index = 0;
     while (index !== displayItemCount) {
       await allItems[index].innerHTML();
-      await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible' });
 
       switch(viewFacetMetadata) {
         case 'tile-collection-icon-title':
