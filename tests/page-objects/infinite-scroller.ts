@@ -166,6 +166,7 @@ export class InfiniteScroller {
       viewFacetMetadata,
       displayItemCount,
     );
+    console.log('facetedResults: ', facetedResults);
     if (facetedResults) {
       const isAllFacettedCorrectly = facetLabels.some(label => {
         return toInclude
@@ -243,11 +244,13 @@ export class InfiniteScroller {
   }
 
   async getItemTileIconTitle(item: Locator, arrItem: string[]) {
+    await item.innerHTML();
     const tileIconTitle = await this.getTileIconTitleAttr(item);
     if (tileIconTitle) arrItem.push(tileIconTitle);
   }
 
   async getCollectionItemTileTitle(item: Locator, arrItem: string[]) {
+    await item.innerHTML();
     const collectionTileCount = await item.locator('a > collection-tile').count();
     const itemTileCount = await item.locator('a > item-tile').count();
     if (collectionTileCount === 1 && itemTileCount === 0) {
@@ -259,6 +262,7 @@ export class InfiniteScroller {
   }
 
   async getDateMetadataText(item: Locator, arrItem: DateMetadataLabel[]) {
+    await item.innerHTML();
     const dateSpanLabel = await item
       .locator('#dates-line > div.metadata')
       .last()
@@ -277,6 +281,7 @@ export class InfiniteScroller {
   }
 
   async getTileIconTitleAttr(item: Locator) {
+    await item.innerHTML();
     // Get mediatype-icon title attr from tile-stats row element
     return await item.locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon').getAttribute('title');
   }
@@ -299,7 +304,7 @@ export class InfiniteScroller {
     let index = 0;
     while (index !== displayItemCount) {
       await allItems[index].innerHTML();
-      // await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible' });
+      await allItems[index].locator('tile-dispatcher').waitFor({ state: 'visible' });
 
       switch(viewFacetMetadata) {
         case 'tile-collection-icon-title':
