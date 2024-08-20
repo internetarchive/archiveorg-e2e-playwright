@@ -138,7 +138,6 @@ export class InfiniteScroller {
       filter === 'Date added' ||
       filter === 'Date reviewed'
     ) {
-      await this.awaitLoadingState();
       const dateMetadataLabels = await this.getDateMetadataLabels(
         displayItemCount,
       );
