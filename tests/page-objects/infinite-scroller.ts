@@ -42,10 +42,6 @@ export class InfiniteScroller {
       .first();
   }
 
-  async awaitLoadingState() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-  }
-
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
     await this.displayStyleSelectorOptions.locator(viewModeLocator).click();
   }
@@ -76,7 +72,6 @@ export class InfiniteScroller {
   }
 
   async hoverToFirstItem() {
-    await this.awaitLoadingState();
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
@@ -120,7 +115,6 @@ export class InfiniteScroller {
   ) {
     // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
-      await this.awaitLoadingState();
       const tileStatsViews = await this.getTileStatsViewCountTitles(
         displayItemCount,
       );
