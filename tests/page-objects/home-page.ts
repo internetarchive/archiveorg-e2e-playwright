@@ -56,6 +56,7 @@ export class HomePage {
     const infiniteScroller = this.page.locator('infinite-scroller');
     await infiniteScroller.waitFor({ state: 'visible' });
     await expect(infiniteScroller).toBeVisible();
+    await infiniteScroller.locator('#container').innerHTML();
     await infiniteScroller.locator('#container').waitFor({ state: 'visible' });
     expect(
       (await infiniteScroller.locator('#container > .cell-container').all())
