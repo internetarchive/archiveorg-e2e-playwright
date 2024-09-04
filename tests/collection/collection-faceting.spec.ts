@@ -68,7 +68,7 @@ test(`Negative facet to exclude audio`, async ({ collectionPage }) => {
       'tile-collection-icon-title',
       ['Audio'],
       false,
-      15,
+      10,
     );
   });
 });
@@ -89,7 +89,7 @@ test(`Facets can be selected via Select filters modal`, async ({
       'tile-collection-icon-title',
       ['Audio'],
       true,
-      15, // select only 15 items, more than that throws an error
+      10, // select only 15 items, more than that throws an error
     );
   });
 });

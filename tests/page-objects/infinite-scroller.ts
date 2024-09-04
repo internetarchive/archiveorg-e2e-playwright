@@ -12,6 +12,7 @@ import {
 } from '../models';
 
 import { datesSorted, viewsSorted } from '../utils';
+import { CollectionSearchInput } from './collection-search-input';
 
 export class InfiniteScroller {
   readonly page: Page;
@@ -22,6 +23,7 @@ export class InfiniteScroller {
   readonly firstItemTile: Locator;
 
   readonly sortBar: SortBar;
+  readonly collectionSearchInput: CollectionSearchInput;
 
   public constructor(page: Page) {
     this.page = page;
@@ -30,6 +32,7 @@ export class InfiniteScroller {
     this.infiniteScrollerSectionContainer =
       this.infiniteScroller.locator('#container');
 
+    this.collectionSearchInput = new CollectionSearchInput(page);
     this.sortBar = new SortBar(page);
     const sortBarSection = this.sortBar.sortFilterBar;
     this.displayStyleSelector = sortBarSection.locator(
@@ -92,7 +95,8 @@ export class InfiniteScroller {
   }
 
   async clickFirstResultAndCheckRedirectToDetailsPage() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    
     expect(await this.firstItemTile.count()).toBe(1);
 
     // Get item tile link to compare with the redirect URL
@@ -189,8 +193,6 @@ export class InfiniteScroller {
 
     let index = 0;
     while (index !== displayItemCount) {
-      await allItems[index].innerHTML();
-
       const itemTileCount = await allItems[index]
         .locator('a > item-tile')
         .count();
@@ -243,13 +245,11 @@ export class InfiniteScroller {
   }
 
   async getItemTileIconTitle(item: Locator, arrItem: string[]) {
-    await item.innerHTML();
     const tileIconTitle = await this.getTileIconTitleAttr(item);
     if (tileIconTitle) arrItem.push(tileIconTitle);
   }
 
   async getCollectionItemTileTitle(item: Locator, arrItem: string[]) {
-    await item.innerHTML();
     const collectionTileCount = await item.locator('a > collection-tile').count();
     const itemTileCount = await item.locator('a > item-tile').count();
     if (collectionTileCount === 1 && itemTileCount === 0) {
@@ -261,7 +261,6 @@ export class InfiniteScroller {
   }
 
   async getDateMetadataText(item: Locator, arrItem: DateMetadataLabel[]) {
-    await item.innerHTML();
     const dateSpanLabel = await item
       .locator('#dates-line > div.metadata')
       .last()
@@ -280,14 +279,13 @@ export class InfiniteScroller {
   }
 
   async getTileIconTitleAttr(item: Locator) {
-    await item.innerHTML();
     // Get mediatype-icon title attr from tile-stats row element
     return await item.locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon').getAttribute('title');
   }
 
   async getAllInfiniteScrollerArticleItems() {
     const container = this.infiniteScroller.locator('section#container');
-    await container.waitFor({ state: 'visible' })
+    await container.waitFor({ state: 'visible' });
     return await container.locator('article').all();
   }
 
@@ -300,9 +298,10 @@ export class InfiniteScroller {
     const arrDates: DateMetadataLabel[] = [];
     const allItems = await this.getAllInfiniteScrollerArticleItems();
 
+
     let index = 0;
     while (index !== displayItemCount) {
-      await allItems[index].innerHTML();
+      await this.checkIfPageStillLoading();
 
       switch(viewFacetMetadata) {
         case 'tile-collection-icon-title':
@@ -327,7 +326,19 @@ export class InfiniteScroller {
     arrIdentifiers = arrDates.length !== 0 
       ? arrDates.map(label => label.date)
       : arrTitles;
+    
     return arrIdentifiers;
+  }
+
+  async checkIfPageStillLoading() {
+    await this.collectionSearchInput.btnCollectionSearchInputGo.waitFor({ state: 'visible' });
+    const btnSearchInputAttrClass = await this.collectionSearchInput.btnCollectionSearchInputGo.getAttribute('class'); 
+    if (btnSearchInputAttrClass === 'loading') {
+      await this.page.waitForLoadState('domcontentloaded', { timeout: 50000 });
+      await this.checkIfPageStillLoading(); // Recursive call
+    } else {
+      return;
+    }
   }
 
 }

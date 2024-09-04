@@ -116,6 +116,7 @@ export class DetailsPage {
   }
 
   async imageCarouselMultipleImageDisplay(multiple: boolean) {
+    await this.page.locator('#theatre-ia-wrap').waitFor();
     await expect(this.iaTheater.locator('#ia-carousel')).toBeVisible();
 
     const innerCarousel = this.iaTheater.locator('#ia-carousel > div');

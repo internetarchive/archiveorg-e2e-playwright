@@ -26,10 +26,20 @@ export class LoginPage {
       'input.form-element.input-password[type=password]',
       asUser.password,
     );
-    await this.page.locator('input.btn.btn-primary.btn-submit').click();
+    await this.page.locator('input.btn.btn-primary.btn-submit').click({ noWaitAfter: true });
 
     // should go back to baseUrl
-    await this.page.waitForURL('/');
+    await this.page.waitForResponse(res => res.status() === 200);
+    const navigationPromise = this.page.waitForURL('/', { waitUntil: 'domcontentloaded' }).then(() => true);
+    const topNavPromise = this.page.locator('ia-topnav').isVisible().then(() => true);
+
+    const isLoggedIn = await Promise.all([
+      navigationPromise,
+      topNavPromise,
+    ]);
+    console.log('isLoggedIn: ', typeof(isLoggedIn))
+
+    expect(isLoggedIn).toEqual([true, true]);
   }
 
   async assertAccountSettingsDisplayed() {
