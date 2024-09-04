@@ -125,7 +125,7 @@ export class CollectionFacets {
     }
   }
 
-  private async getFacetGroupContent(group: FacetGroup): Promise<Locator | null> {
+  async getFacetGroupContent(group: FacetGroup): Promise<Locator | null> {
     const facetGroup = this.page.getByTestId(`facet-group-header-label-${group}`);
     if (group === FacetGroup.DATE) {
       await facetGroup.waitFor({ state: 'visible' });

@@ -5,7 +5,7 @@ import { CollectionFacets } from './collection-facets';
 import { InfiniteScroller } from './infinite-scroller';
 import { SortBar } from './sort-bar';
 
-import { FacetGroupLocatorLabel } from '../models';
+import { FacetGroup } from '../models';
 
 export class ProfilePage {
   readonly page: Page;
@@ -34,7 +34,8 @@ export class ProfilePage {
 
   async visit(userid: string) {
     await this.page.goto(`/details/@${userid}`);
-    await this.page.waitForLoadState('load', { timeout: 60000 });
+    await this.page.waitForURL(`/details/@${userid}`);
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async clickProfileTab(name: string) {
@@ -77,13 +78,11 @@ export class ProfilePage {
   }
 
   async validateDatePickerIsVisible() {
-    const facetContainer = await this.collectionFacets.getFacetGroupContainer(
-      FacetGroupLocatorLabel.DATE,
+    const facetContainer = await this.collectionFacets.getFacetGroupContent(
+      FacetGroup.DATE,
     );
 
-    await facetContainer
-      .locator('histogram-date-range #container')
-      .waitFor({ state: 'visible', timeout: 60000 });
+    expect(await facetContainer?.isVisible()).toBe(true);
   }
 
   async validateClickedTabAppeared(tabName: string) {

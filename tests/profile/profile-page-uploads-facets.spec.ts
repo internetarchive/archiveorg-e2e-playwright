@@ -1,4 +1,5 @@
 import { test } from '../fixtures';
+import { SearchFacetGroupHeader } from '../models';
 
 test(`Profile Page - Uploads: facets appear`, async ({
   profilePageUploads,
@@ -8,6 +9,6 @@ test(`Profile Page - Uploads: facets appear`, async ({
   });
 
   await test.step(`Check if facet groups appear`, async () => {
-    await profilePageUploads.collectionFacets.assertCollectionFacetGroupCount();
+    await profilePageUploads.collectionFacets.assertFacetGroupCount(SearchFacetGroupHeader);
   });
 });
