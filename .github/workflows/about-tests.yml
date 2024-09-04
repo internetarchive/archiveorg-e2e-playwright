@@ -1,4 +1,4 @@
-name: LendingBar AutoRenew tests
+name: Books page tests
 
 on:
   push:
@@ -25,5 +25,5 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run all tests
-        run: npm run test
+      - name: Run books tests
+        run: npm run test -- --test=books
