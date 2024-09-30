@@ -1,15 +1,14 @@
 TIMEFORMAT='It took %0R seconds.' 
 time {
-<<<<<<< HEAD
-  npm run test
-=======
-  npm run test:books
-  # npm run test:collection
-  # npm run test:details
-  # npm run test:home
-  # npm run test:login
-  # npm run test:music
-  # npm run test:search
-  # npm run test:profile
->>>>>>> 2901f20 (add dockerfile)
+  npm run test -- --test=about
+  npm run test -- --test=av
+  npm run test -- --test=books
+  npm run test -- --test=collection
+  npm run test -- --test=details
+  npm run test -- --test=donation
+  npm run test -- --test=home
+  npm run test -- --test=login
+  npm run test -- --test=music
+  npm run test -- --test=profile
+  npm run test -- --test=search
 }

@@ -1,11 +1,11 @@
 import { test } from '../fixtures';
 
-import { FacetGroup, FacetGroupLocatorLabel, LayoutViewModeLocator, SearchFacetGroupHeader } from '../models';
+import { FacetGroup, LayoutViewModeLocator, SearchFacetGroupHeaderNames } from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
-    await searchPage.collectionFacets.assertFacetGroupCount(SearchFacetGroupHeader);
+    await searchPage.collectionFacets.assertFacetGroupCount('search', SearchFacetGroupHeaderNames);
   });
 });
 

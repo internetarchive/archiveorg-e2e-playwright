@@ -1,14 +1,14 @@
 import { test } from '../../tests/fixtures';
 
 import {
-  CollectionFacetGroupHeader,
+  CollectionFacetGroupHeaderNames,
   FacetGroup,
   LayoutViewModeLocator,
 } from '../../tests/models';
 
 test(`Verify if facets appear on first load`, async ({ collectionPage }) => {
   await test.step('Assert facet group headers count', async () => {
-    await collectionPage.collectionFacets.assertFacetGroupCount(CollectionFacetGroupHeader);
+    await collectionPage.collectionFacets.assertFacetGroupCount('collection', CollectionFacetGroupHeaderNames);
   });
 });
 
@@ -22,10 +22,7 @@ test(`Select a facet for videos and clear facet filters`, async ({
       'positive',
     );
     await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-      'tile-collection-icon-title',
-      ['Movie'],
-      true,
-      5,
+      'tile-collection-icon-title', ['Movie'], true, 5,
     );
   });
 
@@ -49,10 +46,7 @@ test(`Select Year Published range via date picker`, async ({
       LayoutViewModeLocator.LIST,
     );
     await collectionPage.infiniteScroller.validateIncludedFacetedResults(
-      'list-date',
-      ['1954', '1955'],
-      true,
-      10,
+      'list-date', ['1954', '1955'], true, 10,
     );
   });
 });

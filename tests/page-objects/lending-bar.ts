@@ -14,7 +14,7 @@ export class LendingBar {
     const textGroupTexts = await textGroup.textContent();
 
     await expect(textGroup).toBeVisible();
-    await expect(textGroupTexts).toContain('Renewable every hour, pending availability.');
+    await expect(textGroupTexts).toContain('Renews automatically with continued use.');
   }
 
   async verifyInfoIcon() {

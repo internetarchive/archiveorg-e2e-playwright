@@ -95,7 +95,8 @@ export class InfiniteScroller {
   }
 
   async clickFirstResultAndCheckRedirectToDetailsPage() {
-    // await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.firstItemTile.waitFor({ state: 'attached' });
+    await this.firstItemTile.waitFor({ state: 'visible' });
     
     expect(await this.firstItemTile.count()).toBe(1);
 
@@ -193,6 +194,8 @@ export class InfiniteScroller {
 
     let index = 0;
     while (index !== displayItemCount) {
+      await this.checkIfPageStillLoading();
+      
       const itemTileCount = await allItems[index]
         .locator('a > item-tile')
         .count();
@@ -250,6 +253,7 @@ export class InfiniteScroller {
   }
 
   async getCollectionItemTileTitle(item: Locator, arrItem: string[]) {
+    await item.locator('#container').waitFor({ state: 'visible' });
     const collectionTileCount = await item.locator('a > collection-tile').count();
     const itemTileCount = await item.locator('a > item-tile').count();
     if (collectionTileCount === 1 && itemTileCount === 0) {
@@ -261,6 +265,7 @@ export class InfiniteScroller {
   }
 
   async getDateMetadataText(item: Locator, arrItem: DateMetadataLabel[]) {
+    await item.locator('#container').waitFor({ state: 'visible' });
     const dateSpanLabel = await item
       .locator('#dates-line > div.metadata')
       .last()
@@ -279,6 +284,7 @@ export class InfiniteScroller {
   }
 
   async getTileIconTitleAttr(item: Locator) {
+    await item.locator('#container').waitFor({ state: 'visible' });
     // Get mediatype-icon title attr from tile-stats row element
     return await item.locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon').getAttribute('title');
   }
@@ -297,7 +303,6 @@ export class InfiniteScroller {
     const arrTitles: string[] = [];
     const arrDates: DateMetadataLabel[] = [];
     const allItems = await this.getAllInfiniteScrollerArticleItems();
-
 
     let index = 0;
     while (index !== displayItemCount) {
@@ -326,15 +331,14 @@ export class InfiniteScroller {
     arrIdentifiers = arrDates.length !== 0 
       ? arrDates.map(label => label.date)
       : arrTitles;
-    
+
     return arrIdentifiers;
   }
 
   async checkIfPageStillLoading() {
-    await this.collectionSearchInput.btnCollectionSearchInputGo.waitFor({ state: 'visible' });
-    const btnSearchInputAttrClass = await this.collectionSearchInput.btnCollectionSearchInputGo.getAttribute('class'); 
-    if (btnSearchInputAttrClass === 'loading') {
-      await this.page.waitForLoadState('domcontentloaded', { timeout: 50000 });
+    const resultsText = await (this.page.getByTestId('results-total').locator('#big-results-count').innerText());
+    const btnIndicatorText = await this.page.locator('#go-button').getAttribute('class');
+    if (resultsText.includes('Searching') && btnIndicatorText === 'loading') {
       await this.checkIfPageStillLoading(); // Recursive call
     } else {
       return;

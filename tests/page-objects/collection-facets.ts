@@ -38,23 +38,23 @@ export class CollectionFacets {
     await this.page.locator('#facets-container').locator('details').click();
   }
 
-  async assertFacetGroupCount(headerNames: string[]) {
+  async assertFacetGroupCount(type: string, headerNames: string[]) {
     await this.clickFacetFiltersElement();
     let count = 0;
     for (const name of headerNames) {
       await this.expectHeaderByName(name);
       count++;
     }
-    expect(count).toEqual(8);
+
+    if (type === 'collection') {
+      expect(count).toEqual(8);
+    } else { // type === 'search'
+      expect(count).toEqual(7); 
+    }
   }
 
   private async expectHeaderByName(headerName: string) {
     await expect(this.page.getByRole('heading', { name: headerName })).toBeVisible();
-  }
-
-  async assertListFacetGroupCount() {
-    const facetGroups = this.collectionFacets.locator('facets-template');
-    expect(await facetGroups.count()).toEqual(7);
   }
 
   async assertDatePickerVisible() {

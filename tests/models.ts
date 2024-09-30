@@ -103,12 +103,12 @@ export const CommonFacetGroupHeaders = [
   FacetGroupFilterHeaderEnum.LANGUAGE,
 ];
 
-export const SearchFacetGroupHeader = [
+export const SearchFacetGroupHeaderNames = [
   ...CommonFacetGroupHeaders,
-  FacetGroupFilterHeaderEnum.AVAILABILITY,
+  // FacetGroupFilterHeaderEnum.AVAILABILITY,
 ];
 
-export const CollectionFacetGroupHeader = [
+export const CollectionFacetGroupHeaderNames = [
   ...CommonFacetGroupHeaders,
   FacetGroupFilterHeaderEnum.PART_OF,
 ];
