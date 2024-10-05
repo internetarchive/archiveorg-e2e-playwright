@@ -26,7 +26,7 @@ export class DetailsPage {
   }
 
   async gotoPage(uri: string) {
-    await this.page.goto(`/details/${uri}`, { waitUntil: 'networkidle' });
+    await this.page.goto(`/details/${uri}`);
     await this.page.waitForTimeout(5000);
   }
 

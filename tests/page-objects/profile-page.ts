@@ -33,8 +33,8 @@ export class ProfilePage {
   }
 
   async visit(userid: string) {
-    await this.page.goto(`/details/@${userid}`);
-    await this.page.waitForURL(`/details/@${userid}`);
+    await this.page.goto(`/details/@${userid}?ab_config=EagerFacets:On`);
+    await this.page.waitForURL(`/details/@${userid}?ab_config=EagerFacets:On`);
     await this.page.waitForLoadState('domcontentloaded');
   }
 

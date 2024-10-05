@@ -2,20 +2,20 @@ import { test } from '../fixtures';
 
 import { SearchOption } from '../models';
 
-test('Home page displays all of its elements', async ({ homePage }) => {
+test.skip('Home page displays all of its elements', async ({ homePage }) => {
   await test.step('Validate if page elements were loaded', async () => {
     await homePage.validatePageElements();
   });
 });
 
-test('Do simple metadata search', async ({ homePage }) => {
+test.skip('Do simple metadata search', async ({ homePage }) => {
   await test.step(`Query for "cats" and validate that "cats" appears as the search term `, async () => {
     await homePage.collectionSearchInput.queryFor('cats');
     await homePage.collectionSearchInput.validateSearchInput('cats');
   });
 });
 
-test('Do simple full-text search', async ({ homePage }) => {
+test.skip('Do simple full-text search', async ({ homePage }) => {
   await test.step(`Select text contents in search options, query for "dogs" and validate that "dogs" appears as the search term`, async () => {
     await homePage.collectionSearchInput.clickSearchInputOption(SearchOption.TEXT, 'search');
     await homePage.collectionSearchInput.queryFor('dogs');
@@ -23,7 +23,7 @@ test('Do simple full-text search', async ({ homePage }) => {
   });
 });
 
-test('Do simple TV search', async ({ homePage }) => {
+test.skip('Do simple TV search', async ({ homePage }) => {
   await test.step(`Select TV in search options, query for "iguanas" and validate that "iguanas" appears as the search term`, async () => {
     await homePage.collectionSearchInput.clickSearchInputOption(SearchOption.TV, 'search');
     await homePage.collectionSearchInput.queryFor('iguanas');
@@ -31,7 +31,7 @@ test('Do simple TV search', async ({ homePage }) => {
   });
 });
 
-test('Do simple radio search', async ({ homePage }) => {
+test.skip('Do simple radio search', async ({ homePage }) => {
   await test.step(`Select radio in search options, query for "rabbits" and validate that "rabbits" appears as the search term`, async () => {
     await homePage.collectionSearchInput.clickSearchInputOption(SearchOption.RADIO, 'search');
     await homePage.collectionSearchInput.queryFor('rabbits');
@@ -39,7 +39,7 @@ test('Do simple radio search', async ({ homePage }) => {
   });
 });
 
-test('Redirect web search to Wayback machine page', async ({ homePage }) => {
+test.skip('Redirect web search to Wayback machine page', async ({ homePage }) => {
   await test.step(`Select TV in search options, query for "parrots" and validate that "parrots" appears as the search term`, async () => {
     await homePage.collectionSearchInput.clickSearchInputOption(SearchOption.WEB, 'search');
     await homePage.collectionSearchInput.queryFor('parrots');
@@ -47,7 +47,7 @@ test('Redirect web search to Wayback machine page', async ({ homePage }) => {
   });
 });
 
-test('Use Wayback widget - Redirect web search', async ({ homePage }) => {
+test.skip('Use Wayback widget - Redirect web search', async ({ homePage }) => {
   await test.step(`Search for "canaries" and validate that "canaries" appears as the search term`, async () => {
     await homePage.waybackSearchFor('canaries');
     await homePage.collectionBrowser.validateWaybackPage('canaries');

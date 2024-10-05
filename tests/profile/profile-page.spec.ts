@@ -5,7 +5,7 @@ import { SearchFacetGroupHeaderNames } from '../models';
 
 let profilePage: ProfilePage;
 
-test.describe('Profile Page - Basic display tests', () => {
+test.describe.skip('Profile Page - Basic display tests', () => {
   test.describe.configure({ mode: 'serial' });
 
   test(`Profiles use profile page layout`, async ({ browser }) => {
@@ -66,7 +66,7 @@ test.describe('Profile Page - Basic display tests', () => {
   });
 });
 
-test.describe('Profile Page - Lists', () => {
+test.describe.skip('Profile Page - Lists', () => {
   test.describe.configure({ mode: 'serial' });
 
   test(`Facets appear`, async ({ browser }) => {

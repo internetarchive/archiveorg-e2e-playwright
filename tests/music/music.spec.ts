@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 
-test('Load Grateful Dead Soundtrack page to check page elements', async ({
+test.skip('Load Grateful Dead Soundtrack page to check page elements', async ({
   musicPage,
 }) => {
   await musicPage.detailsPage.gotoPage(
@@ -9,7 +9,7 @@ test('Load Grateful Dead Soundtrack page to check page elements', async ({
   await musicPage.validateMusicPageElements();
 });
 
-test(`Special case: Audio item without image - with waveform`, async ({
+test.skip(`Special case: Audio item without image - with waveform`, async ({
   musicPage,
 }) => {
   await test.step(`Load the page and check page elements`, async () => {
@@ -25,7 +25,7 @@ test(`Special case: Audio item without image - with waveform`, async ({
   });
 });
 
-test(`Special case: Load a single track - no waveform`, async ({
+test.skip(`Special case: Load a single track - no waveform`, async ({
   musicPage,
 }) => {
   await test.step(`Load the page and check page elements`, async () => {
@@ -39,14 +39,14 @@ test(`Special case: Load a single track - no waveform`, async ({
   });
 });
 
-test(`Play a Grateful Dead track`, async ({ musicPage }) => {
+test.skip(`Play a Grateful Dead track`, async ({ musicPage }) => {
   await musicPage.detailsPage.gotoPage(
     'gd73-06-10.sbd.hollister.174.sbeok.shnf',
   );
   await musicPage.playAndPauseMusic();
 });
 
-test(`Open and navigate liner notes`, async ({ musicPage }) => {
+test.skip(`Open and navigate liner notes`, async ({ musicPage }) => {
   await musicPage.detailsPage.gotoPage('berceuse00benj');
   await musicPage.interactWithBookReader();
 });

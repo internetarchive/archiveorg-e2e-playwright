@@ -34,7 +34,7 @@ export class CollectionPage {
   }
 
   async visit(collection: string) {
-    await this.page.goto(collection);
+    await this.page.goto(`${collection}?ab_config=EagerFacets:On`);
   }
 
   async clickCollectionTab(tabName: string) {

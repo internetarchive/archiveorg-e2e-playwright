@@ -10,3 +10,9 @@ node_modules/
 *.log
 
 bin
+
+# Browserstack local
+.obs*
+browserstackSetupConfig.json
+playwright-browserstack-sdk.config*
+performance-report.json

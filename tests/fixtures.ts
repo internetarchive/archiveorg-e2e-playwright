@@ -10,6 +10,9 @@ import { DetailsPage } from './page-objects/details-page';
 import { LendingBarAutoRenew } from './page-objects/lending-bar-auto-renew';
 import { LoginPage } from './page-objects/login-page';
 
+import { pageIdentifiers } from './identifiers';
+const { details, home } = pageIdentifiers;
+
 type PageFixtures = {
   lendingBarAutoRenew: LendingBarAutoRenew;
   detailsPage: DetailsPage;
@@ -58,7 +61,7 @@ export const test = base.extend<PageFixtures>({
     // Set up the fixture.
     const bookPage = new BookPage(page);
 
-    await page.goto('/details/theworksofplato01platiala');
+    await page.goto(details.item.plato);
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();
@@ -74,7 +77,7 @@ export const test = base.extend<PageFixtures>({
     // Set up the fixture.
     const homePage = new HomePage(page);
 
-    await page.goto('/');
+    await page.goto(home.url);
 
     await page.route(/(analytics|fonts)/, route => {
       route.abort();

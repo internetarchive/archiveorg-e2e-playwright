@@ -6,6 +6,9 @@ import { CollectionSearchInput } from './collection-search-input';
 import { InfiniteScroller } from './infinite-scroller';
 import { SortBar } from './sort-bar';
 
+import { pageIdentifiers } from '../identifiers';
+const { search } = pageIdentifiers;
+
 export class SearchPage {
   readonly page: Page;
 
@@ -26,7 +29,7 @@ export class SearchPage {
   }
 
   async visit() {
-    await this.page.goto('/search');
+    await this.page.goto(search.url);
   }
 
   async goBackToSearchPage() {

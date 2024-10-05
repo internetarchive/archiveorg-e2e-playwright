@@ -18,9 +18,7 @@ export class CollectionBrowser {
     this.emptyPlaceholder = page.locator('empty-placeholder');
     this.emptyPlaceholderTitleText = this.emptyPlaceholder.locator('h2.title');
 
-    this.formInputRadioPage = page.locator(
-      '#searchform > div > div:nth-child(1) > input.js-search-bar',
-    );
+    this.formInputRadioPage = page.locator('input#text-input');
     this.formInputTVPage = page.locator(
       '#searchform > div > div:nth-child(1) > input.js-search-bar',
     );
