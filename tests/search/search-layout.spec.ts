@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 
 import { LayoutViewModeLocator } from '../models';
 
-test.skip('Tile, List, and Compact layout buttons change layout', async ({
+test('Tile, List, and Compact layout buttons change layout', async ({
   searchPage,
 }) => {
   await test.step('Display List View', async () => {
@@ -32,7 +32,7 @@ test.fixme('Tile hover pane appears', async ({ searchPage }) => {
   });
 });
 
-test.skip('Clicking on an item tile takes you to the item page', async ({
+test('Clicking on an item tile takes you to the item page', async ({
   searchPage,
 }) => {
   await test.step('Click first item result and check if it directs to details page', async () => {
@@ -41,7 +41,7 @@ test.skip('Clicking on an item tile takes you to the item page', async ({
   });
 });
 
-test.skip('Sort by All-time views in Tile view', async ({ searchPage }) => {
+test('Sort by All-time views in Tile view', async ({ searchPage }) => {
   await test.step('Switch to tile view mode', async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
@@ -68,7 +68,7 @@ test.skip('Sort by All-time views in Tile view', async ({ searchPage }) => {
   });
 });
 
-test.skip('Sort by Date published in List view', async ({ searchPage }) => {
+test('Sort by Date published in List view', async ({ searchPage }) => {
   await test.step('Switch to list view mode', async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
@@ -92,7 +92,7 @@ test.skip('Sort by Date published in List view', async ({ searchPage }) => {
   });
 });
 
-test.skip('Sort by Date archived (ascending) in Compact view', async ({
+test('Sort by Date archived (ascending) in Compact view', async ({
   searchPage,
 }) => {
   await test.step('Switch to compact view mode', async () => {

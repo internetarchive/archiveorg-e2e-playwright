@@ -2,14 +2,14 @@ import { test } from '../fixtures';
 
 import { FacetGroup, LayoutViewModeLocator, SearchFacetGroupHeaderNames } from '../models';
 
-test.skip('Facets appear', async ({ searchPage }) => {
+test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.collectionFacets.assertFacetGroupCount('search', SearchFacetGroupHeaderNames);
   });
 });
 
-test.skip(`Facets for "movies" in Media Type facet group`, async ({
+test(`Facets for "movies" in Media Type facet group`, async ({
   searchPage,
 }) => {
   await test.step(`Select "movies" from inside "Media Type" facet group`, async () => {
@@ -32,7 +32,7 @@ test.skip(`Facets for "movies" in Media Type facet group`, async ({
   });
 });
 
-test.skip(`Clear facet filters`, async ({ searchPage }) => {
+test(`Clear facet filters`, async ({ searchPage }) => {
   await test.step(`Select "data" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.collectionFacets.toggleFacetSelection(
@@ -60,7 +60,7 @@ test.skip(`Clear facet filters`, async ({ searchPage }) => {
   });
 });
 
-test.skip(`Select Year Published range via date picker`, async ({ searchPage }) => {
+test(`Select Year Published range via date picker`, async ({ searchPage }) => {
   await test.step(`Enter 2014 in start date text field (leftmost text box)`, async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.collectionFacets.fillUpYearFilters('2014', '2015');
@@ -85,7 +85,7 @@ test.skip(`Select Year Published range via date picker`, async ({ searchPage }) 
   });
 });
 
-test.skip(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
+test(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   await test.step(`Select "eye" icon near "audio" from inside "Media Type" facet group`, async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.collectionFacets.toggleFacetSelection(
@@ -105,13 +105,14 @@ test.skip(`Negative facet to exclude "audio"`, async ({ searchPage }) => {
   });
 });
 
-test.skip(`Filter for title beginning with "X"`, async ({ searchPage }) => {
+test.fixme(`Filter for title beginning with "X"`, async ({ searchPage }) => {
   test.info().annotations.push({
     type: 'Test',
     description: 'This test is still incomplete',
   });
 
   await test.step(`Select "Title" from the sort bar`, async () => {
+    await searchPage.collectionSearchInput.queryFor('cats');
     await searchPage.sortBar.applySortFilter('Title');
   });
 
@@ -124,7 +125,7 @@ test.skip(`Filter for title beginning with "X"`, async ({ searchPage }) => {
   });
 });
 
-test.skip(`Facets can be selected via "Select filters" modal`, async ({
+test(`Facets can be selected via "Select filters" modal`, async ({
   searchPage,
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {

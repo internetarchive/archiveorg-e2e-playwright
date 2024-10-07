@@ -20,7 +20,7 @@ export const pageIdentifiers = {
     item: {
       oldtimeradio: `${DETAILS_URL}/oldtimeradio`,
       plato: `${DETAILS_URL}/theworksofplato01platiala`,
-
+      billie_holiday: `78_when-a-woman-loves-a-man_billie-holiday-and-her-orchestra-billie-holiday-buck-clayt_gbia0031202`,
       whitehouse: `${DETAILS_URL}/CSPAN_20160425_022500_2011_White_House_Correspondents_Dinner`
     }
   },
