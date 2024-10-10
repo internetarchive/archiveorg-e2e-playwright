@@ -1,0 +1,32 @@
+name: Run browserstack tests
+
+on:
+  push:
+    branches: [ main, master ]
+
+  pull_request:
+    branches: [ main, master, collated-fix-me ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: 'BrowserStack Env Setup'
+        uses: 'browserstack/github-actions/setup-env@master'
+        with:
+          username:  ${{ secrets.BROWSERSTACK_USERNAME }}
+          access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+
+      - name: Connect to browserstack
+        run: npm run test:browserstack-node-sdk
