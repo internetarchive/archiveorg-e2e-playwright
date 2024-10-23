@@ -44,6 +44,17 @@ export const SortFilterURL = {
   Creator: 'creator',
 };
 
+export enum FacetGroup {
+  DATE = 'date-picker',
+  MEDIATYPE = 'mediatype',
+  LENDING = 'lending',
+  YEAR = 'year',
+  SUBJECT = 'subject',
+  COLLECTION = 'collection',
+  CREATOR = 'creator',
+  LANGUAGE = 'language',
+}
+
 export enum FacetGroupLocatorLabel {
   DATE = 'date-picker-label',
   MEDIATYPE = 'facet-group-header-label-mediatype',
@@ -58,8 +69,8 @@ export enum FacetGroupLocatorLabel {
 export type FacetType = 'positive' | 'negative';
 
 export type ViewFacetMetadata =
-  | 'tile-collection-icontitle'
-  | 'tile-icontitle'
+  | 'tile-collection-icon-title'
+  | 'tile-icon-title'
   | 'list-date';
 
 export type BookPageViewMode = '1up' | '2up' | 'thumb';
@@ -92,12 +103,12 @@ export const CommonFacetGroupHeaders = [
   FacetGroupFilterHeaderEnum.LANGUAGE,
 ];
 
-export const SearchFacetGroupHeader = [
+export const SearchFacetGroupHeaderNames = [
   ...CommonFacetGroupHeaders,
-  FacetGroupFilterHeaderEnum.AVAILABILITY,
+  // FacetGroupFilterHeaderEnum.AVAILABILITY,
 ];
 
-export const CollectionFacetGroupHeader = [
+export const CollectionFacetGroupHeaderNames = [
   ...CommonFacetGroupHeaders,
   FacetGroupFilterHeaderEnum.PART_OF,
 ];
