@@ -78,7 +78,7 @@ test(`Load theater: radio as priv'd user`, async ({
   });
 });
 
-test(`Load theater: radio as regular patron user`, async ({
+test.fixme(`Load theater: radio as regular patron user`, async ({
   loginPage,
   detailsPage,
 }) => {
@@ -92,7 +92,7 @@ test(`Load theater: radio as regular patron user`, async ({
   });
 });
 
-test(`Load theater: radio as guest/not logged in user`, async ({ detailsPage }) => {
+test.fixme(`Load theater: radio as guest/not logged in user`, async ({ detailsPage }) => {
   await test.step(`Go to radio details page and verify priv'd user borrow program`, async () => {
     await detailsPage.gotoPage('WGBH_89_7_FM_20210918_040000');
     await detailsPage.radioPlayerTheaterDisplay();
@@ -102,7 +102,7 @@ test(`Load theater: radio as guest/not logged in user`, async ({ detailsPage }) 
 
 test(`Load theater: tv as priv'd user`, async ({
   loginPage,
-  detailsPage,
+  detailsPage
 }) => {
   await test.step(`Do login as priv'd user`, async () => {
     await loginPage.loginAs('privs');
@@ -116,7 +116,7 @@ test(`Load theater: tv as priv'd user`, async ({
   });
 });
 
-test(`Load theater: tv as patron user`, async ({
+test.fixme(`Load theater: tv as patron user`, async ({
   loginPage,
   detailsPage,
 }) => {

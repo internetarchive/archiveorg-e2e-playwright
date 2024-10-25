@@ -189,8 +189,7 @@ export class LendingBarAutoRenew {
   async getIncrementedTime(minutes: number): Promise<Date> {
     const timeObj = new Date(this.timeInBrowser.toString());
     const incrementedTime = new Date(timeObj.getTime() + minutes * 60000);
-    console.log(this.timeInBrowser);
-    console.log(incrementedTime);
+    // console.log('timeInBrowser: ', this.timeInBrowser, ' incremented: ' ,incrementedTime);
     return incrementedTime;
   }
 

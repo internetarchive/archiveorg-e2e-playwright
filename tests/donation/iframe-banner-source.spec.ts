@@ -12,16 +12,16 @@ test(`Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
 
   await expect(page.locator('ia-topnav')).toBeVisible();
 
-  const constinueToDonationButton = page.locator('button#continue-button:has-text("Continue")');
-  await expect(constinueToDonationButton).toBeVisible();
+  const continueToDonationButton = page.locator('button#continue-button:has-text("Continue")');
+  await expect(continueToDonationButton).toBeVisible();
 });
 
 test(`Test click to donate page - Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
   await page.goto(`/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`);
 
-  const constinueToDonationButton = page.locator('button#continue-button:has-text("Continue")');
-  await expect(constinueToDonationButton).toBeVisible();
-  await constinueToDonationButton.click();
+  const continueToDonationButton = page.locator('button#continue-button:has-text("Continue")');
+  await expect(continueToDonationButton).toBeVisible();
+  await continueToDonationButton.click();
 
   await expect(page.url()).toContain('https://archive.org/donate');
   await page.waitForLoadState('domcontentloaded');
