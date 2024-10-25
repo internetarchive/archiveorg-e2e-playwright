@@ -1,4 +1,4 @@
-name: Donation banner tests
+name: Collection page tests
 
 on:
   push:
@@ -25,5 +25,5 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Donation Tests
-        run: npx browserstack-node-sdk playwright test tests/donation
+      - name: Run collection tests
+        run: npx browserstack-node-sdk playwright test tests/collection

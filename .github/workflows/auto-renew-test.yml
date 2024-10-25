@@ -5,8 +5,7 @@ on:
     branches: [ main, master ]
 
   pull_request:
-    branches: [ main, master, collated-fix-me ]
-
+    branches: [ main, master ]
 jobs:
   test:
     runs-on: ubuntu-latest
