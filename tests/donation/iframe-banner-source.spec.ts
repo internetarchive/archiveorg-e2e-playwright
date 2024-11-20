@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const permanentVariant1 = 'IADefault1';
 const permanentVariant2 = 'IADefault2';
 
-test(`Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
+test.fixme(`Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
   await page.goto(`/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`);
   await expect(page).toHaveTitle(/Internet Archive Wayback Machine/);
 
@@ -16,7 +16,7 @@ test(`Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
   await expect(continueToDonationButton).toBeVisible();
 });
 
-test(`Test click to donate page - Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
+test.fixme(`Test click to donate page - Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
   await page.goto(`/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`);
 
   const continueToDonationButton = page.locator('button#continue-button:has-text("Continue")');

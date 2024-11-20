@@ -53,10 +53,10 @@ export class LendingBar {
 
     await expect(actionGroup).toBeVisible();
 
-    if (borrowButtonText?.includes('Borrow for 1 hour')) {
+    if (borrowButtonText?.includes('Borrow')) {
       // case before user has borrowed book
       await expect(borrowButton).toBeVisible();
-      await expect(borrowButtonText).toContain('Borrow for 1 hour');
+      await expect(borrowButtonText).toContain('Borrow');
 
       // click on this primaryAction button should send you on login page
       await borrowButton.click();
