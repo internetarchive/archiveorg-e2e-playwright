@@ -23,7 +23,7 @@ const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
  * Timeouts were set by `ms`
  */
 export default defineConfig({
-  workers: 1,
+  workers: 5,
   // Timeout for each test
   timeout: 2 * 60 * 1000,  
   // Maximum time the whole test suite can run

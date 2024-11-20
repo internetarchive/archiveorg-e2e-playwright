@@ -32,6 +32,11 @@ export const identifier = {
     url: '/details',
     default: '/details/theworksofplato01platiala',
   },
+  lending: {
+    chromium: 'hitrun0000haro',
+    firefox: 'cornellstudiesin26unse',
+    webkit: 'annualreport0000meth_x3r2'
+  },
   details: {
     url: '/details',
     default: 'goody',
@@ -46,7 +51,6 @@ export const identifier = {
     image_single: 'mma_albert_einstein_270714',
     radio_borrow: 'WGBH_89_7_FM_20210918_040000',
     tv_borrow: 'CSPAN3_20170413_154200_Discussion_Focuses_on_Sesame_Street_and_Autism',
-    book_lending: 'hitrun0000haro',
     theater_video: '0872_Angels_Flight_05_32_34_00',
     webamp: 'OTRR_Philip_Marlowe_Singles',
     webamp_with_skin: 'winampskin_Tundra_Winamp_Skin_Actualized',
