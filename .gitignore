@@ -17,3 +17,5 @@ browserstackSetupConfig.json
 playwright-browserstack-sdk.config*
 performance-report.json
 log/
+
+.DS_Store
