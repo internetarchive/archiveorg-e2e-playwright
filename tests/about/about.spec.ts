@@ -2,6 +2,17 @@ import { test, expect } from '@playwright/test';
 
 import { identifier } from '../../config';
 
+test.beforeEach(async ({ request, context }) => {
+  if(process.env.IS_REVIEW_APP === 'true') {
+    await context.addCookies([{
+      name: 'beta-access',
+      value: process.env.BETA_ACCESS_TOKEN || '',
+      path: '/',
+      domain: '.archive.org'
+    }]);
+  }
+});
+
 test('Canonical About page has correct title and text', async ({ page }) => {
   await page.goto(identifier.about.url);
   await expect(page).toHaveTitle(/About IA/);

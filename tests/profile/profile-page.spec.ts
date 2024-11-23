@@ -5,6 +5,17 @@ import { SearchFacetGroupHeaderNames } from '../models';
 
 let profilePage: ProfilePage;
 
+test.beforeEach(async ({ request, context }) => {
+  if(process.env.IS_REVIEW_APP === 'true') {
+    await context.addCookies([{
+      name: 'beta-access',
+      value: process.env.BETA_ACCESS_TOKEN || '',
+      path: '/',
+      domain: '.archive.org'
+    }]);
+  }
+});
+
 test.describe('Profile Page - Basic display tests', () => {
   test.describe.configure({ mode: 'serial' });
 

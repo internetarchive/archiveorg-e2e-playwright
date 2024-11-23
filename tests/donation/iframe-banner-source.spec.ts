@@ -3,6 +3,17 @@ import { test, expect } from '@playwright/test';
 const permanentVariant1 = 'IADefault1';
 const permanentVariant2 = 'IADefault2';
 
+test.beforeEach(async ({ request, context }) => {
+  if(process.env.IS_REVIEW_APP === 'true') {
+    await context.addCookies([{
+      name: 'beta-access',
+      value: process.env.BETA_ACCESS_TOKEN || '',
+      path: '/',
+      domain: '.archive.org'
+    }]);
+  }
+});
+
 test.fixme(`Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
   await page.goto(`/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`);
   await expect(page).toHaveTitle(/Internet Archive Wayback Machine/);

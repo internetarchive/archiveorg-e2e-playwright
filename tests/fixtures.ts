@@ -205,7 +205,16 @@ export const test = base.extend<PageFixtures>({
   },
 });
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ request, context }) => {
+  if(process.env.IS_REVIEW_APP === 'true') {
+    await context.addCookies([{
+      name: 'beta-access',
+      value: process.env.BETA_ACCESS_TOKEN || '',
+      path: '/',
+      domain: '.archive.org'
+    }]);
+  }
+
   // add config to check what_host node the test is connecting at
   // update the .env file to enable/disable it
   if (process.env.WHAT_HOST === 'true') {
