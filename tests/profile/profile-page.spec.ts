@@ -1,8 +1,15 @@
 import { test } from '@playwright/test';
 
 import { ProfilePage } from '../page-objects/profile-page';
+import { SearchFacetGroupHeaderNames } from '../models';
+
+import { testBeforeEachConfig } from '../../config';
 
 let profilePage: ProfilePage;
+
+test.beforeEach(async ({ context }) => {
+  await testBeforeEachConfig(context);
+});
 
 test.describe('Profile Page - Basic display tests', () => {
   test.describe.configure({ mode: 'serial' });
@@ -81,7 +88,10 @@ test.describe('Profile Page - Lists', () => {
     });
 
     await test.step(`7 facet groups appear`, async () => {
-      await profilePage.collectionFacets.assertListFacetGroupCount();
+      await profilePage.collectionFacets.assertFacetGroupCount(
+        'search',
+        SearchFacetGroupHeaderNames,
+      );
     });
 
     await test.step(`Date picker appears`, async () => {

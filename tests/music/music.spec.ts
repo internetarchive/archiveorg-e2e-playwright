@@ -1,11 +1,11 @@
 import { test } from '../fixtures';
 
+import { identifier } from '../../config';
+
 test('Load Grateful Dead Soundtrack page to check page elements', async ({
   musicPage,
 }) => {
-  await musicPage.detailsPage.gotoPage(
-    'gd73-06-10.sbd.hollister.174.sbeok.shnf',
-  );
+  await musicPage.detailsPage.gotoPage(identifier.details.music_theater_grateful_dead);
   await musicPage.validateMusicPageElements();
 });
 
@@ -14,7 +14,7 @@ test(`Special case: Audio item without image - with waveform`, async ({
 }) => {
   await test.step(`Load the page and check page elements`, async () => {
     await musicPage.detailsPage.gotoPage(
-      'gd77-05-08.sbd.hicks.4982.sbeok.shnf',
+      identifier.details.music_theater_no_image_with_waveform,
     );
     await musicPage.validateMusicPageElements();
   });
@@ -29,7 +29,9 @@ test(`Special case: Load a single track - no waveform`, async ({
   musicPage,
 }) => {
   await test.step(`Load the page and check page elements`, async () => {
-    await musicPage.detailsPage.gotoPage('berceuse00benj');
+    await musicPage.detailsPage.gotoPage(
+      identifier.details.music_theater_single_track_no_waveform,
+    );
     await musicPage.validateMusicPageElements();
   });
 
@@ -40,13 +42,13 @@ test(`Special case: Load a single track - no waveform`, async ({
 });
 
 test(`Play a Grateful Dead track`, async ({ musicPage }) => {
-  await musicPage.detailsPage.gotoPage(
-    'gd73-06-10.sbd.hollister.174.sbeok.shnf',
-  );
+  await musicPage.detailsPage.gotoPage(identifier.details.music_theater_grateful_dead);
   await musicPage.playAndPauseMusic();
 });
 
 test(`Open and navigate liner notes`, async ({ musicPage }) => {
-  await musicPage.detailsPage.gotoPage('berceuse00benj');
+  await musicPage.detailsPage.gotoPage(
+    identifier.details.music_theater_single_track_no_waveform,
+  );
   await musicPage.interactWithBookReader();
 });

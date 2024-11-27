@@ -60,7 +60,9 @@ export class CollectionPage {
     await expect(this.pageTabs).toBeVisible();
     // this could cause an error in some detailsPage that doesn't have Forum tab like ytjdradio
     // should be tackled in a different task
-    await expect(this.pageTabs.getByLabel('Collection', { exact: true })).toBeVisible();
+    await expect(
+      this.pageTabs.getByLabel('Collection', { exact: true }),
+    ).toBeVisible();
     await expect(this.pageTabs.getByLabel('Forum')).toBeVisible();
     await expect(this.pageTabs.getByLabel('About')).toBeVisible();
   }
@@ -68,7 +70,7 @@ export class CollectionPage {
   async validateTabPage(tab: string) {
     await this.checkLocatorInnerHtml(this.pageTabs, 'loading-placeholder-row');
 
-    if(tab === 'About') {
+    if (tab === 'About') {
       await this.validateAboutTabPage();
     } else if (tab === 'Collection') {
       await this.validateCollectionTabPage();
@@ -82,7 +84,6 @@ export class CollectionPage {
       this.page.getByRole('heading', { name: 'Activity' }),
     ).toBeVisible();
     // ytjdradio details page doesn't have forum posts, commenting this part for now
-    // await expect(this.page.getByRole('button', { name: 'forum posts.' })).toBeVisible();
     await expect(
       this.page.getByRole('heading', { name: 'Collection Info' }),
     ).toBeVisible();

@@ -12,6 +12,7 @@ import {
 } from '../models';
 
 import { datesSorted, viewsSorted } from '../utils';
+import { CollectionSearchInput } from './collection-search-input';
 
 export class InfiniteScroller {
   readonly page: Page;
@@ -22,6 +23,7 @@ export class InfiniteScroller {
   readonly firstItemTile: Locator;
 
   readonly sortBar: SortBar;
+  readonly collectionSearchInput: CollectionSearchInput;
 
   public constructor(page: Page) {
     this.page = page;
@@ -30,6 +32,7 @@ export class InfiniteScroller {
     this.infiniteScrollerSectionContainer =
       this.infiniteScroller.locator('#container');
 
+    this.collectionSearchInput = new CollectionSearchInput(page);
     this.sortBar = new SortBar(page);
     const sortBarSection = this.sortBar.sortFilterBar;
     this.displayStyleSelector = sortBarSection.locator(
@@ -42,10 +45,6 @@ export class InfiniteScroller {
       .first();
   }
 
-  async awaitLoadingState() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
-  }
-
   async clickViewMode(viewModeLocator: LayoutViewModeLocator) {
     await this.displayStyleSelectorOptions.locator(viewModeLocator).click();
   }
@@ -54,19 +53,19 @@ export class InfiniteScroller {
     switch (viewMode) {
       case 'tile':
         await expect(
-          this.displayStyleSelector.locator('#grid-button'),
+          this.displayStyleSelector.getByTestId('grid-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/grid/));
         return;
       case 'list':
         await expect(
-          this.displayStyleSelector.locator('#list-detail-button'),
+          this.displayStyleSelector.getByTestId('list-detail-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/list-detail/));
         return;
       case 'compact':
         await expect(
-          this.displayStyleSelector.locator('#list-compact-button'),
+          this.displayStyleSelector.getByTestId('list-compact-button'),
         ).toHaveClass('active');
         expect(await expect(this.infiniteScroller).toHaveClass(/list-compact/));
         return;
@@ -76,7 +75,6 @@ export class InfiniteScroller {
   }
 
   async hoverToFirstItem() {
-    await this.awaitLoadingState();
     expect(await this.firstItemTile.count()).toBe(1);
 
     await this.firstItemTile.hover();
@@ -97,7 +95,9 @@ export class InfiniteScroller {
   }
 
   async clickFirstResultAndCheckRedirectToDetailsPage() {
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.firstItemTile.waitFor({ state: 'attached' });
+    await this.firstItemTile.waitFor({ state: 'visible' });
+
     expect(await this.firstItemTile.count()).toBe(1);
 
     // Get item tile link to compare with the redirect URL
@@ -120,7 +120,6 @@ export class InfiniteScroller {
   ) {
     // This test is only applicable in tile view mode for "views" filters
     if (filter === 'Weekly views' || filter === 'All-time views') {
-      await this.awaitLoadingState();
       const tileStatsViews = await this.getTileStatsViewCountTitles(
         displayItemCount,
       );
@@ -144,7 +143,6 @@ export class InfiniteScroller {
       filter === 'Date added' ||
       filter === 'Date reviewed'
     ) {
-      await this.awaitLoadingState();
       const dateMetadataLabels = await this.getDateMetadataLabels(
         displayItemCount,
       );
@@ -169,7 +167,6 @@ export class InfiniteScroller {
     toInclude: boolean,
     displayItemCount: Number,
   ) {
-    await this.awaitLoadingState();
     const facetedResults = await this.getFacetedResultsByViewFacetGroup(
       viewFacetMetadata,
       displayItemCount,
@@ -193,12 +190,12 @@ export class InfiniteScroller {
     displayItemCount: Number,
   ): Promise<string[]> {
     const arrTileStatsTitle: string[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer
-      .locator('article')
-      .all();
+    const allItems = await this.getAllInfiniteScrollerArticleItems();
 
     let index = 0;
     while (index !== displayItemCount) {
+      await this.checkIfPageStillLoading();
+
       const itemTileCount = await allItems[index]
         .locator('a > item-tile')
         .count();
@@ -221,9 +218,7 @@ export class InfiniteScroller {
     displayItemCount: Number,
   ): Promise<DateMetadataLabel[]> {
     const arrDateLine: DateMetadataLabel[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer
-      .locator('article')
-      .all();
+    const allItems = await this.getAllInfiniteScrollerArticleItems();
 
     let index = 0;
     while (index !== displayItemCount) {
@@ -231,7 +226,6 @@ export class InfiniteScroller {
       // There can be 2 date metadata in a row if filter is either Date archived, Date reviewed, or Date added
       // eg. Published: Nov 15, 2023 - Archived: Jan 19, 2024
       // We always want the last one since it will correspond to the current "sort by" field
-
       const dateSpanLabel = await allItems[index]
         .locator('#dates-line > div.metadata')
         .last()
@@ -250,88 +244,112 @@ export class InfiniteScroller {
 
       index++;
     }
-
     return arrDateLine;
   }
 
-  async getTileIconTitle(displayItemCount: Number): Promise<string[]> {
-    const arrTileIconTitle: string[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer
-      .locator('article')
-      .all();
-
-    let index = 0;
-    while (index !== displayItemCount) {
-      // Load items based on displayItemCount
-      // Get mediatype-icon title from tile-stats row
-      const tileIcon = allItems[index].locator(
-        '#stats-row > li:nth-child(1) > mediatype-icon > #icon',
-      );
-
-      const tileIconTitle = await tileIcon.getAttribute('title');
-      if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
-
-      index++;
-    }
-
-    return arrTileIconTitle;
+  async getItemTileIconTitle(item: Locator, arrItem: string[]) {
+    const tileIconTitle = await this.getTileIconTitleAttr(item);
+    if (tileIconTitle) arrItem.push(tileIconTitle);
   }
 
-  async getTileCollectionIconTitle(
-    displayItemCount: Number,
-  ): Promise<string[]> {
-    const arrTileIconTitle: string[] = [];
-    const allItems = await this.infiniteScrollerSectionContainer
-      .locator('article')
-      .all();
-
-    let index = 0;
-    while (index !== displayItemCount) {
-      const collectionTileCount = await allItems[index]
-        .locator('a > collection-tile')
-        .count();
-      const itemTileCount = await allItems[index]
-        .locator('a > item-tile')
-        .count();
-
-      if (collectionTileCount === 1 && itemTileCount === 0) {
-        arrTileIconTitle.push('collection');
-      } else if (collectionTileCount === 0 && itemTileCount === 1) {
-        // Load items based on displayItemCount
-        // Get mediatype-icon title from tile-stats row
-        const tileIcon = allItems[index].locator(
-          '#stats-row > li:nth-child(1) > mediatype-icon > #icon',
-        );
-
-        const tileIconTitle = await tileIcon.getAttribute('title');
-        if (tileIconTitle) arrTileIconTitle.push(tileIconTitle);
-      }
-
-      index++;
+  async getCollectionItemTileTitle(item: Locator, arrItem: string[]) {
+    await item.locator('#container').waitFor({ state: 'visible' });
+    const collectionTileCount = await item
+      .locator('a > collection-tile')
+      .count();
+    const itemTileCount = await item.locator('a > item-tile').count();
+    if (collectionTileCount === 1 && itemTileCount === 0) {
+      arrItem.push('collection');
+    } else if (collectionTileCount === 0 && itemTileCount === 1) {
+      const tileIconTitle = await this.getTileIconTitleAttr(item);
+      if (tileIconTitle) arrItem.push(tileIconTitle);
     }
+  }
 
-    return arrTileIconTitle;
+  async getDateMetadataText(item: Locator, arrItem: DateMetadataLabel[]) {
+    await item.locator('#container').waitFor({ state: 'visible' });
+    const dateSpanLabel = await item
+      .locator('#dates-line > div.metadata')
+      .last()
+      .innerText();
+
+    if (dateSpanLabel) {
+      // Need to split date filter and date format value: Published: 2150 or Published: Nov 15, 2023
+      // Ideal format: { filter: 'Published', date: '2150' }
+      const strSplitColonSpace = dateSpanLabel.split(': ');
+      const objDateLine = {
+        filter: strSplitColonSpace[0],
+        date: strSplitColonSpace[1],
+      };
+      arrItem.push(objDateLine);
+    }
+  }
+
+  async getTileIconTitleAttr(item: Locator) {
+    await item.locator('#container').waitFor({ state: 'visible' });
+    // Get mediatype-icon title attr from tile-stats row element
+    return await item
+      .locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon')
+      .getAttribute('title');
+  }
+
+  async getAllInfiniteScrollerArticleItems() {
+    const container = this.infiniteScroller.locator('section#container');
+    await container.waitFor({ state: 'visible' });
+    return await container.locator('article').all();
   }
 
   async getFacetedResultsByViewFacetGroup(
     viewFacetMetadata: ViewFacetMetadata,
     displayItemCount: Number,
   ): Promise<string[] | null> {
-    switch (viewFacetMetadata) {
-      case 'tile-collection-icontitle':
-        return await this.getTileCollectionIconTitle(displayItemCount);
+    let arrIdentifiers: string[];
+    const arrTitles: string[] = [];
+    const arrDates: DateMetadataLabel[] = [];
+    const allItems = await this.getAllInfiniteScrollerArticleItems();
 
-      case 'tile-icontitle':
-        return await this.getTileIconTitle(displayItemCount);
+    let index = 0;
+    while (index !== displayItemCount) {
+      await this.checkIfPageStillLoading();
 
-      case 'list-date':
-        const dateLabels = await this.getDateMetadataLabels(displayItemCount);
-        if (dateLabels) return dateLabels.map(label => label.date);
+      switch (viewFacetMetadata) {
+        case 'tile-collection-icon-title':
+          await this.getCollectionItemTileTitle(allItems[index], arrTitles);
+          break;
 
-        return null;
+        case 'tile-icon-title':
+          await this.getItemTileIconTitle(allItems[index], arrTitles);
+          break;
 
-      default:
-        return null;
+        case 'list-date':
+          await this.getDateMetadataText(allItems[index], arrDates);
+          break;
+
+        default: // something else ---- test is broken
+          break;
+      }
+
+      index++;
+    }
+
+    arrIdentifiers =
+      arrDates.length !== 0 ? arrDates.map(label => label.date) : arrTitles;
+
+    return arrIdentifiers;
+  }
+
+  async checkIfPageStillLoading() {
+    const resultsText = await this.page
+      .getByTestId('results-total')
+      .locator('#big-results-count')
+      .innerText();
+    const btnIndicatorText = await this.page
+      .locator('#go-button')
+      .getAttribute('class');
+    if (resultsText.includes('Searching') && btnIndicatorText === 'loading') {
+      await this.checkIfPageStillLoading(); // Recursive call
+    } else {
+      return;
     }
   }
 }

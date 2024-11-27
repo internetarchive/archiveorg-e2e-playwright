@@ -1,8 +1,9 @@
 import { type Page, Locator, expect } from '@playwright/test';
 
-import { config } from '../../config';
+import { config, identifier } from '../../config';
 import { UserType } from '../models';
 
+const { accountSettings, login } = identifier;
 export class LoginPage {
   readonly authTemplate: Locator;
 
@@ -17,7 +18,7 @@ export class LoginPage {
   async loginAs(user: UserType) {
     const asUser = user === 'privs' ? config.privUser : config.patronUser;
 
-    await this.page.goto('/account/login');
+    await this.page.goto(login.url);
     await this.page.fill(
       'input.form-element.input-email[type=email]',
       asUser.email,
@@ -35,7 +36,7 @@ export class LoginPage {
   async assertAccountSettingsDisplayed() {
     await this.page.waitForTimeout(3000);
 
-    await this.page.goto('/account/index.php?settings=1');
+    await this.page.goto(accountSettings.url);
     await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     await expect(this.authTemplate).toBeVisible();
@@ -62,7 +63,7 @@ export class LoginPage {
   }
 
   async notLoggedIn() {
-    await this.page.goto('/account/index.php?settings=1');
+    await this.page.goto(accountSettings.url);
     await this.page.waitForLoadState('networkidle', { timeout: 60000 });
 
     await expect(this.authTemplate).not.toBeVisible();

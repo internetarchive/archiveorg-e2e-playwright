@@ -1,8 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import {
-  FacetGroup,
-  FacetType,
-} from '../models';
+import { FacetGroup, FacetType } from '../models';
 
 export class CollectionFacets {
   readonly page: Page;
@@ -41,19 +38,25 @@ export class CollectionFacets {
       count++;
     }
 
+    // Collection facet group = 8
+    // Search facet group = 7 
     if (type === 'collection') {
       expect(count).toEqual(8);
-    } else { // type === 'search'
-      expect(count).toEqual(7); 
+    } else {
+      expect(count).toEqual(7);
     }
   }
 
   private async expectHeaderByName(headerName: string) {
-    await expect(this.page.getByRole('heading', { name: headerName })).toBeVisible();
+    await expect(
+      this.page.getByRole('heading', { name: headerName }),
+    ).toBeVisible();
   }
 
   async assertDatePickerVisible() {
-    const yearPublishedFacetGroup = this.page.getByTestId('facet-group-header-label-date-picker');
+    const yearPublishedFacetGroup = this.page.getByTestId(
+      'facet-group-header-label-date-picker',
+    );
     await yearPublishedFacetGroup.waitFor({ state: 'visible' });
     await expect(yearPublishedFacetGroup).toBeVisible();
   }
@@ -67,10 +70,17 @@ export class CollectionFacets {
     if (facetGroupContent) {
       const facetRows = await facetGroupContent.locator('facet-row').all();
       for (const facetRow of facetRows) {
-        const facetCheckbox = facetRow.locator('div.facet-row-container > div.facet-checkboxes');
-        const facetRowCheckbox = facetType === 'positive' 
-          ? facetCheckbox.getByTestId(`${group}:${selectedFacetLabel}-show-only`)
-          : facetCheckbox.getByTestId(`${group}:${selectedFacetLabel}-negative`)
+        const facetCheckbox = facetRow.locator(
+          'div.facet-row-container > div.facet-checkboxes',
+        );
+        const facetRowCheckbox =
+          facetType === 'positive'
+            ? facetCheckbox.getByTestId(
+                `${group}:${selectedFacetLabel}-show-only`,
+              )
+            : facetCheckbox.getByTestId(
+                `${group}:${selectedFacetLabel}-negative`,
+              );
         const rowVisible = await facetRowCheckbox.isVisible();
         if (rowVisible) {
           await facetRowCheckbox.click();
@@ -117,13 +127,19 @@ export class CollectionFacets {
   }
 
   async getFacetGroupContent(group: FacetGroup): Promise<Locator | null> {
-    const facetGroup = this.page.getByTestId(`facet-group-header-label-${group}`);
+    const facetGroup = this.page.getByTestId(
+      `facet-group-header-label-${group}`,
+    );
     if (group === FacetGroup.DATE) {
       await facetGroup.waitFor({ state: 'visible' });
       return facetGroup;
     } else {
-      const facetGroupContent = facetGroup.getByTestId(`facet-group-content-${group}`);
-      const facetOnGroupContent = facetGroupContent.locator('facets-template').getByTestId(`facets-on-${group}`);
+      const facetGroupContent = facetGroup.getByTestId(
+        `facet-group-content-${group}`,
+      );
+      const facetOnGroupContent = facetGroupContent
+        .locator('facets-template')
+        .getByTestId(`facets-on-${group}`);
       await facetGroupContent.waitFor({ state: 'visible' });
       await facetOnGroupContent.waitFor({ state: 'visible' });
       return facetGroupContent;

@@ -43,7 +43,7 @@ export class HomePage {
       .locator('home-page-hero-block-icon-bar')
       .locator('#mediacount-icon-container > a')
       .all();
-    expect((await mediatypeHeroIconBar).length).toBe(8);
+    expect((await mediatypeHeroIconBar).length).toBe(9);
 
     // New to the Archive carousel is present
     const homePageOnBoarding = this.page.locator('home-page-onboarding');

@@ -1,4 +1,4 @@
-name: Profile page tests
+name: Login page tests
 
 on:
   push:
@@ -25,5 +25,5 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run profile tests
-        run: npx playwright test tests/profile
+      - name: Run login tests
+        run: npx playwright test tests/login

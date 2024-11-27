@@ -54,16 +54,13 @@ test('Sort by All-time views in Tile view', async ({ searchPage }) => {
 
   await test.step('Check the first 10 results if sort filters were applied', async () => {
     await searchPage.infiniteScroller.validateSortingResults(
-      'All-time views',
-      'descending',
-      10,
+      'All-time views', 'descending', 10,
     );
   });
 
   await test.step('Check if URL changed with correct sort filter and sort order param', async () => {
     await searchPage.collectionBrowser.validateURLParamsWithSortFilter(
-      'All-time views',
-      'descending',
+      'All-time views', 'descending',
     );
   });
 });
@@ -81,13 +78,10 @@ test('Sort by Date published in List view', async ({ searchPage }) => {
 
   await test.step('Check the first 10 results if sort filters were applied', async () => {
     await searchPage.infiniteScroller.validateSortingResults(
-      'Date published',
-      'descending',
-      10,
+      'Date published', 'descending', 10,
     );
     await searchPage.collectionBrowser.validateURLParamsWithSortFilter(
-      'Date published',
-      'descending',
+      'Date published', 'descending',
     );
   });
 });
@@ -112,8 +106,7 @@ test('Sort by Date archived (ascending) in Compact view', async ({
       'Date archived',
     );
     await searchPage.collectionBrowser.validateURLParamsWithSortFilter(
-      'Date archived',
-      'ascending',
+      'Date archived', 'ascending',
     );
   });
 });

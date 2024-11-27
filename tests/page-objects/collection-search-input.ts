@@ -43,7 +43,9 @@ export class CollectionSearchInput {
   async clickSearchInputOption(option: SearchOption, type: string) {
     const btnName = type === 'collection' ? 'Search this collection' : 'GO';
 
-    await expect(this.collectionSearchInput.getByRole('button', { name: btnName })).toBeVisible();
+    await expect(
+      this.collectionSearchInput.getByRole('button', { name: btnName }),
+    ).toBeVisible();
     await this.formInputSearchPage.click({ force: true });
     await this.page.getByLabel('Search Options').getByText(option).click();
   }
@@ -52,5 +54,4 @@ export class CollectionSearchInput {
     await expect(this.btnClearInput).not.toBeVisible();
     expect(await this.formInputSearchPage.inputValue()).toBe('');
   }
-
 }

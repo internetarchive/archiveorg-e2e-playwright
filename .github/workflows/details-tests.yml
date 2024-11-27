@@ -26,4 +26,4 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run books tests
-        run: npx browserstack-node-sdk playwright test tests/details
+        run: npx playwright test tests/details

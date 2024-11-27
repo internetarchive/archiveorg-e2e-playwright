@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 
-test.fixme('Account settings - Login as a patron', async ({ patronLoginPage }) => {
+test('Account settings - Login as a patron', async ({ patronLoginPage }) => {
   await test.step('Check account settings page after logging in, and verify Account Settings page displayed', async () => {
     await patronLoginPage.assertAccountSettingsDisplayed();
   });

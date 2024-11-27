@@ -219,6 +219,7 @@ export class DetailsPage {
 
   async searchRadioTranscriptAndVerifySearchEntryPositions(str: string) {
     const expandableSearchBar = this.page.locator('expandable-search-bar');
+    await expandableSearchBar.waitFor({ state: 'visible' });
     await expect(expandableSearchBar.locator('#search-input')).toBeVisible();
     await expandableSearchBar.locator('#search-input').fill(str);
     await expandableSearchBar.locator('#search-input').press('Enter');

@@ -1,8 +1,14 @@
 import { test } from '../fixtures';
 
-test(`Load theater: bookreader with lending bar`, async ({ detailsPage, loginPage }) => {
+import { identifier } from '../../config';
+
+test(`Load theater: bookreader with lending bar`, async ({
+  detailsPage,
+  loginPage,
+  browserName,
+}) => {
   await test.step('loan book with basic components', async () => {
-    await detailsPage.gotoPage('coleridgesublime0000char');
+    await detailsPage.gotoPage(identifier.lending[browserName]);
     await detailsPage.lendingBar.verifyDefaultTexts();
     await detailsPage.lendingBar.verifyInfoIcon();
     await detailsPage.lendingBar.verifyLendingBarBasicNonLoggedIn();
@@ -11,7 +17,7 @@ test(`Load theater: bookreader with lending bar`, async ({ detailsPage, loginPag
   await test.step('loan book with logged-in patron', async () => {
     await loginPage.loginAs('patron');
 
-    await detailsPage.gotoPage('coleridgesublime0000char');
+    await detailsPage.gotoPage(identifier.lending[browserName]);
     await detailsPage.lendingBar.verifyLendingBarLoggedIn();
   });
 });
