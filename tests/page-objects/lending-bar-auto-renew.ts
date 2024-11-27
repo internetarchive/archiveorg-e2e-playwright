@@ -78,12 +78,12 @@ export class LendingBarAutoRenew {
         60: { warnAfter: '51:10', wait: '00:07', expireAfter: '59:59' },
       },
       pageFlip: {
-        5 : { flipBefore: '00:50', wait: '00:10', expireAfter: '05:00'},
-        10 : { flipBefore: '01:40', wait: '00:30', expireAfter: '10:00'},
-        60 : { flipBefore: '45:10', wait: '05:10', expireAfter: '59:59'},
-      }
+        5: { flipBefore: '00:50', wait: '00:10', expireAfter: '05:00' },
+        10: { flipBefore: '01:40', wait: '00:30', expireAfter: '10:00' },
+        60: { flipBefore: '45:10', wait: '05:10', expireAfter: '59:59' },
+      },
     };
-  };
+  }
 
   /**
    * Auto renew feature testing based on different scenarios.
@@ -109,7 +109,9 @@ export class LendingBarAutoRenew {
     if (autoRenewFunction) {
       await autoRenewFunction();
     } else {
-      console.warn(`No auto-renew function defined for ${scenario} scenario with ${minutes} minutes.`);
+      console.warn(
+        `No auto-renew function defined for ${scenario} scenario with ${minutes} minutes.`,
+      );
     }
   }
 
@@ -118,12 +120,18 @@ export class LendingBarAutoRenew {
    * @param {number} minutes - The loan duration in minutes.
    */
   private async autoRenewWhenClickOnKeepReadingBtn(minutes: number) {
-    await this.page.clock.install({ time: await this.getIncrementedTime(minutes) });
+    await this.page.clock.install({
+      time: await this.getIncrementedTime(minutes),
+    });
     await this.clickOnBrowsedButton();
 
-    await this.runClockAndWaitForWarning(this.clockConfig['keepReading'][minutes].warnAfter);
+    await this.runClockAndWaitForWarning(
+      this.clockConfig['keepReading'][minutes].warnAfter,
+    );
 
-    const keepReadingButton = this.page.getByText('Keep reading', { exact: true });
+    const keepReadingButton = this.page.getByText('Keep reading', {
+      exact: true,
+    });
     if (await keepReadingButton.isVisible()) {
       await keepReadingButton.click();
       await this.setClockTimerAndWaitForStart('00:07');
@@ -133,7 +141,9 @@ export class LendingBarAutoRenew {
     const countdownSeconds = await this.getTimerCountdownSeconds();
     expect(countdownSeconds).toBeGreaterThanOrEqual(minutes * 60);
 
-    await this.runClockAndWaitForLoanExpiration(this.clockConfig['keepReading'][minutes].expireAfter);
+    await this.runClockAndWaitForLoanExpiration(
+      this.clockConfig['keepReading'][minutes].expireAfter,
+    );
   }
 
   /**
@@ -141,15 +151,21 @@ export class LendingBarAutoRenew {
    * @param {number} minutes - The loan duration in minutes.
    */
   private async autoRenewWhenUserFlipPage(minutes: number) {
-    await this.page.clock.install({ time: await this.getIncrementedTime(minutes) });
+    await this.page.clock.install({
+      time: await this.getIncrementedTime(minutes),
+    });
     await this.clickOnBrowsedButton();
 
-    await this.setClockTimerAndWaitForStart(this.clockConfig['pageFlip'][minutes].flipBefore);
+    await this.setClockTimerAndWaitForStart(
+      this.clockConfig['pageFlip'][minutes].flipBefore,
+    );
 
     const pageChangedElement = this.page.locator('.pageChangedEvent');
     if (await pageChangedElement.isVisible()) {
       await pageChangedElement.click();
-      await this.setClockTimerAndWaitForStart(this.clockConfig['pageFlip'][minutes].wait);
+      await this.setClockTimerAndWaitForStart(
+        this.clockConfig['pageFlip'][minutes].wait,
+      );
     }
 
     await this.assertPopupHidden();
@@ -166,7 +182,10 @@ export class LendingBarAutoRenew {
    * Click on the 'Browsed' button.
    */
   async clickOnBrowsedButton() {
-    const userHasBrowsedCheckbox = this.demoControls.getByText('user_has_browsed', { exact: true });
+    const userHasBrowsedCheckbox = this.demoControls.getByText(
+      'user_has_browsed',
+      { exact: true },
+    );
     await userHasBrowsedCheckbox.click();
     await this.page.waitForTimeout(1000); // playwright wants to complete click event
   }
@@ -177,7 +196,8 @@ export class LendingBarAutoRenew {
    */
   async getTimerCountdownSeconds(): Promise<number | boolean> {
     const timerElement = this.page.locator('timer-countdown .second');
-    if (await timerElement.isVisible()) return Number(await timerElement.textContent());
+    if (await timerElement.isVisible())
+      return Number(await timerElement.textContent());
     return false;
   }
 
@@ -206,7 +226,9 @@ export class LendingBarAutoRenew {
    */
   async assertExpireModelVisible() {
     await expect(this.page.locator('.backdrop')).toBeVisible();
-    await expect(this.page.getByText('This book has been returned due to inactivity.')).toBeVisible();
+    await expect(
+      this.page.getByText('This book has been returned due to inactivity.'),
+    ).toBeVisible();
   }
 
   /**
@@ -258,7 +280,9 @@ export class LendingBarAutoRenew {
   async gotoPage(uri: string) {
     await this.page.goto(uri);
 
-    this.timeInBrowser = await this.page.evaluate(() => new Date().toISOString());
+    this.timeInBrowser = await this.page.evaluate(() =>
+      new Date().toISOString(),
+    );
 
     await this.page.clock.setSystemTime(this.timeInBrowser.toString());
     await this.page.waitForTimeout(1000);

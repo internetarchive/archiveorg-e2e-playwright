@@ -28,16 +28,13 @@ test(`Collections page - "More..." link to About tab appears below description`,
 test(`Tab navigation`, async ({ collectionPage }) => {
   await test.step(`Click "About" tab button and check if About page is displayed in "oldtimeradio" collection page`, async () => {
     await collectionPage.clickCollectionTab('About');
-    // await collectionPage.validateTabPage('About');
   });
 
   await test.step(`Click "Forum" tab button and check if Forum page is displayed in "oldtimeradio" collection page`, async () => {
     await collectionPage.clickCollectionTab('Forum');
-    // await collectionPage.validateTabPage('Forum');
   });
 
   await test.step(`Click "Collection" tab button and check if Collections page is displayed in "oldtimeradio" collection page`, async () => {
     await collectionPage.clickCollectionTab('Collection');
-    // await collectionPage.validateTabPage('Collection');
   });
 });

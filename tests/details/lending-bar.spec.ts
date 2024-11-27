@@ -2,7 +2,11 @@ import { test } from '../fixtures';
 
 import { identifier } from '../../config';
 
-test(`Load theater: bookreader with lending bar`, async ({ detailsPage, loginPage, browserName }) => {
+test(`Load theater: bookreader with lending bar`, async ({
+  detailsPage,
+  loginPage,
+  browserName,
+}) => {
   await test.step('loan book with basic components', async () => {
     await detailsPage.gotoPage(identifier.lending[browserName]);
     await detailsPage.lendingBar.verifyDefaultTexts();

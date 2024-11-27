@@ -254,7 +254,9 @@ export class InfiniteScroller {
 
   async getCollectionItemTileTitle(item: Locator, arrItem: string[]) {
     await item.locator('#container').waitFor({ state: 'visible' });
-    const collectionTileCount = await item.locator('a > collection-tile').count();
+    const collectionTileCount = await item
+      .locator('a > collection-tile')
+      .count();
     const itemTileCount = await item.locator('a > item-tile').count();
     if (collectionTileCount === 1 && itemTileCount === 0) {
       arrItem.push('collection');
@@ -286,7 +288,9 @@ export class InfiniteScroller {
   async getTileIconTitleAttr(item: Locator) {
     await item.locator('#container').waitFor({ state: 'visible' });
     // Get mediatype-icon title attr from tile-stats row element
-    return await item.locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon').getAttribute('title');
+    return await item
+      .locator('#stats-row > li:nth-child(1) > mediatype-icon > #icon')
+      .getAttribute('title');
   }
 
   async getAllInfiniteScrollerArticleItems() {
@@ -308,7 +312,7 @@ export class InfiniteScroller {
     while (index !== displayItemCount) {
       await this.checkIfPageStillLoading();
 
-      switch(viewFacetMetadata) {
+      switch (viewFacetMetadata) {
         case 'tile-collection-icon-title':
           await this.getCollectionItemTileTitle(allItems[index], arrTitles);
           break;
@@ -328,21 +332,24 @@ export class InfiniteScroller {
       index++;
     }
 
-    arrIdentifiers = arrDates.length !== 0 
-      ? arrDates.map(label => label.date)
-      : arrTitles;
+    arrIdentifiers =
+      arrDates.length !== 0 ? arrDates.map(label => label.date) : arrTitles;
 
     return arrIdentifiers;
   }
 
   async checkIfPageStillLoading() {
-    const resultsText = await (this.page.getByTestId('results-total').locator('#big-results-count').innerText());
-    const btnIndicatorText = await this.page.locator('#go-button').getAttribute('class');
+    const resultsText = await this.page
+      .getByTestId('results-total')
+      .locator('#big-results-count')
+      .innerText();
+    const btnIndicatorText = await this.page
+      .locator('#go-button')
+      .getAttribute('class');
     if (resultsText.includes('Searching') && btnIndicatorText === 'loading') {
       await this.checkIfPageStillLoading(); // Recursive call
     } else {
       return;
     }
   }
-
 }

@@ -9,6 +9,8 @@ test(`Profile Page - Uploads: facets appear`, async ({
   });
 
   await test.step(`Check if facet groups appear`, async () => {
-    await profilePageUploads.collectionFacets.assertFacetGroupCount('search', SearchFacetGroupHeaderNames);
+    await profilePageUploads.collectionFacets.assertFacetGroupCount(
+      'search', SearchFacetGroupHeaderNames,
+    );
   });
 });

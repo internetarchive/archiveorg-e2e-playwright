@@ -10,6 +10,8 @@ import { DetailsPage } from './page-objects/details-page';
 import { LendingBarAutoRenew } from './page-objects/lending-bar-auto-renew';
 import { LoginPage } from './page-objects/login-page';
 
+import { testBeforeEachConfig } from '../config';
+
 type PageFixtures = {
   lendingBarAutoRenew: LendingBarAutoRenew;
   detailsPage: DetailsPage;
@@ -206,13 +208,8 @@ export const test = base.extend<PageFixtures>({
 });
 
 test.beforeEach(async ({ request, context }) => {
-  if(process.env.IS_REVIEW_APP === 'true') {
-    await context.addCookies([{
-      name: 'beta-access',
-      value: process.env.BETA_ACCESS_TOKEN || '',
-      path: '/',
-      domain: '.archive.org'
-    }]);
+  if (process.env.IS_REVIEW_APP === 'true') {
+    await testBeforeEachConfig(context);
   }
 
   // add config to check what_host node the test is connecting at

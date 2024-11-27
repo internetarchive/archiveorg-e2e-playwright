@@ -77,9 +77,11 @@ export class ProfilePage {
   }
 
   async validateDatePickerIsVisible() {
-    const facetContainer = await this.collectionFacets.getFacetGroupContent(FacetGroup.DATE);
+    const facetContainer = await this.collectionFacets.getFacetGroupContent(
+      FacetGroup.DATE,
+    );
 
-    if(facetContainer) {
+    if (facetContainer) {
       await facetContainer
         .locator('histogram-date-range #container')
         .waitFor({ state: 'visible', timeout: 60000 });

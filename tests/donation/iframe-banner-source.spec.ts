@@ -1,21 +1,17 @@
 import { test, expect } from '@playwright/test';
+import { testBeforeEachConfig } from '../../config';
 
 const permanentVariant1 = 'IADefault1';
 const permanentVariant2 = 'IADefault2';
 
-test.beforeEach(async ({ request, context }) => {
-  if(process.env.IS_REVIEW_APP === 'true') {
-    await context.addCookies([{
-      name: 'beta-access',
-      value: process.env.BETA_ACCESS_TOKEN || '',
-      path: '/',
-      domain: '.archive.org'
-    }]);
-  }
+test.beforeEach(async ({ context }) => {
+  await testBeforeEachConfig(context);
 });
 
 test.fixme(`Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
-  await page.goto(`/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`);
+  await page.goto(
+    `/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`,
+  );
   await expect(page).toHaveTitle(/Internet Archive Wayback Machine/);
 
   await expect(page.locator('header#donate_banner')).toBeVisible();
@@ -23,19 +19,27 @@ test.fixme(`Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
 
   await expect(page.locator('ia-topnav')).toBeVisible();
 
-  const continueToDonationButton = page.locator('button#continue-button:has-text("Continue")');
+  const continueToDonationButton = page.locator(
+    'button#continue-button:has-text("Continue")',
+  );
   await expect(continueToDonationButton).toBeVisible();
 });
 
-test.fixme(`Test click to donate page - Wayback navbar.php with ${permanentVariant1}`, async ({ page }) => {
-  await page.goto(`/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`);
+test.fixme(
+  `Test click to donate page - Wayback navbar.php with ${permanentVariant1}`,
+  async ({ page }) => {
+    await page.goto(
+      `/web/navbar.php?platform=wb&transpiled=1&reCache=1&variant=${permanentVariant1}`,
+    );
 
-  const continueToDonationButton = page.locator('button#continue-button:has-text("Continue")');
-  await expect(continueToDonationButton).toBeVisible();
-  await continueToDonationButton.click();
+    const continueToDonationButton = page.locator(
+      'button#continue-button:has-text("Continue")',
+    );
+    await expect(continueToDonationButton).toBeVisible();
+    await continueToDonationButton.click();
 
-  await expect(page.url()).toContain('https://archive.org/donate');
-  await page.waitForLoadState('domcontentloaded');
-  await expect(page.locator('donation-form-controller')).toBeVisible();
-});
-
+    await expect(page.url()).toContain('https://archive.org/donate');
+    await page.waitForLoadState('domcontentloaded');
+    await expect(page.locator('donation-form-controller')).toBeVisible();
+  },
+);

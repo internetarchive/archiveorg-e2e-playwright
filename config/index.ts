@@ -1,3 +1,4 @@
+import { BrowserContext } from '@playwright/test';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -18,11 +19,11 @@ export const identifier = {
     url: '/about',
     jobs: '/about/jobs.php',
     terms: '/about/terms.php',
-    news: '/about/news-stories'
+    news: '/about/news-stories',
   },
   av: {
     url: '',
-    default: '/details/CSPAN_20160425_022500_2011_White_House_Correspondents_Dinner'
+    default: '/details/CSPAN_20160425_022500_2011_White_House_Correspondents_Dinner',
   },
   accountSettings: {
     url: '/account/index.php?settings=1',
@@ -35,7 +36,7 @@ export const identifier = {
   lending: {
     chromium: 'hitrun0000haro',
     firefox: 'cornellstudiesin26unse',
-    webkit: 'annualreport0000meth_x3r2'
+    webkit: 'annualreport0000meth_x3r2',
   },
   details: {
     url: '/details',
@@ -54,6 +55,9 @@ export const identifier = {
     theater_video: '0872_Angels_Flight_05_32_34_00',
     webamp: 'OTRR_Philip_Marlowe_Singles',
     webamp_with_skin: 'winampskin_Tundra_Winamp_Skin_Actualized',
+    music_theater_grateful_dead: 'gd73-06-10.sbd.hollister.174.sbeok.shnf',
+    music_theater_no_image_with_waveform: 'gd77-05-08.sbd.hicks.4982.sbeok.shn',
+    music_theater_single_track_no_waveform: 'berceuse00benj',
   },
   home: {
     url: '/',
@@ -80,3 +84,14 @@ export const identifier = {
     default: '/search',
   },
 };
+
+export const testBeforeEachConfig = async (context: BrowserContext) => {
+  if(process.env.IS_REVIEW_APP === 'true') {
+    await context.addCookies([{
+      name: 'beta-access',
+      value: process.env.BETA_ACCESS_TOKEN || '',
+      path: '/',
+      domain: '.archive.org'
+    }]);
+  }
+}

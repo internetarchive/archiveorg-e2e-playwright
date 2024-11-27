@@ -1,11 +1,19 @@
 import { test } from '../fixtures';
 
-import { FacetGroup, FacetGroupFilterHeaderEnum, FacetGroupLocatorLabel, LayoutViewModeLocator, SearchFacetGroupHeaderNames } from '../models';
+import {
+  FacetGroup,
+  FacetGroupFilterHeaderEnum,
+  FacetGroupLocatorLabel,
+  LayoutViewModeLocator,
+  SearchFacetGroupHeaderNames,
+} from '../models';
 
 test('Facets appear', async ({ searchPage }) => {
   await test.step('Assert facet group headers count', async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
-    await searchPage.collectionFacets.assertFacetGroupCount('search', SearchFacetGroupHeaderNames);
+    await searchPage.collectionFacets.assertFacetGroupCount(
+      'search', SearchFacetGroupHeaderNames,
+    );
   });
 });
 
@@ -111,7 +119,9 @@ test(`Facets can be selected via "Select filters" modal`, async ({
 }) => {
   await test.step(`Click "More" button under Media type facet group`, async () => {
     await searchPage.collectionSearchInput.queryFor('cats');
-    await searchPage.collectionFacets.clickMoreInFacetGroup(FacetGroup.MEDIATYPE);
+    await searchPage.collectionFacets.clickMoreInFacetGroup(
+      FacetGroup.MEDIATYPE,
+    );
   });
 
   await test.step(`Select "audio" and "texts" from inside "Media Type" facet group`, async () => {

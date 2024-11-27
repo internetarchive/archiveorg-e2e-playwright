@@ -3,17 +3,12 @@ import { test } from '@playwright/test';
 import { ProfilePage } from '../page-objects/profile-page';
 import { SearchFacetGroupHeaderNames } from '../models';
 
+import { testBeforeEachConfig } from '../../config';
+
 let profilePage: ProfilePage;
 
-test.beforeEach(async ({ request, context }) => {
-  if(process.env.IS_REVIEW_APP === 'true') {
-    await context.addCookies([{
-      name: 'beta-access',
-      value: process.env.BETA_ACCESS_TOKEN || '',
-      path: '/',
-      domain: '.archive.org'
-    }]);
-  }
+test.beforeEach(async ({ context }) => {
+  await testBeforeEachConfig(context);
 });
 
 test.describe('Profile Page - Basic display tests', () => {
@@ -93,7 +88,10 @@ test.describe('Profile Page - Lists', () => {
     });
 
     await test.step(`7 facet groups appear`, async () => {
-      await profilePage.collectionFacets.assertFacetGroupCount('search', SearchFacetGroupHeaderNames);
+      await profilePage.collectionFacets.assertFacetGroupCount(
+        'search',
+        SearchFacetGroupHeaderNames,
+      );
     });
 
     await test.step(`Date picker appears`, async () => {

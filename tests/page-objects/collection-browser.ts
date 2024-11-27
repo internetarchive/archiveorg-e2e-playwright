@@ -3,7 +3,6 @@ import { type Page, type Locator, expect } from '@playwright/test';
 import { SortOrder, SortFilter, SortFilterURL } from '../models';
 
 export class CollectionBrowser {
-
   readonly page: Page;
   readonly emptyPlaceholder: Locator;
   readonly emptyPlaceholderTitleText: Locator;
@@ -80,5 +79,4 @@ export class CollectionBrowser {
     const urlPatternCheck = new RegExp(`sort=${sortFilterURL}`);
     await expect(this.page).toHaveURL(urlPatternCheck);
   }
-
 }

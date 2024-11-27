@@ -6,23 +6,17 @@ test('Tile, List, and Compact layout buttons change layout', async ({
   collectionPage,
 }) => {
   await test.step('Display List View', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.LIST,
-    );
+    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
     await collectionPage.infiniteScroller.assertLayoutViewModeChange('list');
   });
 
   await test.step('Display List Compact View', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.COMPACT,
-    );
+    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.COMPACT);
     await collectionPage.infiniteScroller.assertLayoutViewModeChange('compact');
   });
 
   await test.step('Display Tile View', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.TILE,
-    );
+    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
     await collectionPage.infiniteScroller.assertLayoutViewModeChange('tile');
   });
 });
@@ -34,9 +28,7 @@ test.fixme('Tile hover pane appears', async ({ collectionPage }) => {
   });
 });
 
-test(`Clicking on an item tile takes you to the item`, async ({
-  collectionPage,
-}) => {
+test(`Clicking on an item tile takes you to the item`, async ({ collectionPage }) => {
   await test.step('Click first item result and check if it directs to details page', async () => {
     await collectionPage.infiniteScroller.clickFirstResultAndCheckRedirectToDetailsPage();
   });
@@ -44,9 +36,7 @@ test(`Clicking on an item tile takes you to the item`, async ({
 
 test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
   await test.step('Switch to tile view mode', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.TILE,
-    );
+    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.TILE);
   });
 
   await test.step('Sort by All-time views - descending order', async () => {
@@ -56,22 +46,17 @@ test(`Sort by All-time views in Tile view`, async ({ collectionPage }) => {
 
   await test.step('Check the first 10 results if sort filters were applied', async () => {
     await collectionPage.infiniteScroller.validateSortingResults(
-      'All-time views',
-      'descending',
-      10,
+      'All-time views', 'descending', 10,
     );
     await collectionPage.collectionBrowser.validateURLParamsWithSortFilter(
-      'All-time views',
-      'descending',
+      'All-time views', 'descending',
     );
   });
 });
 
 test(`Sort by Date published in List view`, async ({ collectionPage }) => {
   await test.step('Switch to list view mode', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.LIST,
-    );
+    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.LIST);
   });
 
   await test.step('Sort by Date published - descending order', async () => {
@@ -81,24 +66,17 @@ test(`Sort by Date published in List view`, async ({ collectionPage }) => {
 
   await test.step('Check the first 10 results if sort filters were applied', async () => {
     await collectionPage.infiniteScroller.validateSortingResults(
-      'Date published',
-      'descending',
-      10,
+      'Date published', 'descending', 10,
     );
     await collectionPage.collectionBrowser.validateURLParamsWithSortFilter(
-      'Date published',
-      'descending',
+      'Date published', 'descending',
     );
   });
 });
 
-test(`Sort by Date archived (ascending) in Compact view`, async ({
-  collectionPage,
-}) => {
+test(`Sort by Date archived (ascending) in Compact view`, async ({ collectionPage }) => {
   await test.step('Switch to compact view mode', async () => {
-    await collectionPage.infiniteScroller.clickViewMode(
-      LayoutViewModeLocator.COMPACT,
-    );
+    await collectionPage.infiniteScroller.clickViewMode(LayoutViewModeLocator.COMPACT);
   });
 
   await test.step('Sort by Date archived - ascending order', async () => {
@@ -111,8 +89,7 @@ test(`Sort by Date archived (ascending) in Compact view`, async ({
       'Date archived',
     );
     await collectionPage.collectionBrowser.validateURLParamsWithSortFilter(
-      'Date archived',
-      'ascending',
+      'Date archived', 'ascending',
     );
   });
 });
@@ -125,7 +102,7 @@ test.beforeEach(async ({ collectionPage }) => {
 
   await test.step(`Select "Search metadata" and do a metadata search for "radio"`, async () => {
     await collectionPage.collectionSearchInput.clickSearchInputOption(
-      SearchOption.METADATA, 'collection'
+      SearchOption.METADATA, 'collection',
     );
     await collectionPage.collectionSearchInput.queryFor('radio');
   });
