@@ -29,4 +29,4 @@ jobs:
           access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 
       - name: Connect to browserstack
-        run: npm run test:browserstack-node-sdk
+        run: ./run-tests.sh
