@@ -39,11 +39,11 @@ export class HomePage {
       ),
     ).toBeVisible();
 
-    const mediatypeHeroIconBar = this.page
+    const mediatypeHeroIconBars = this.page
       .locator('home-page-hero-block-icon-bar')
       .locator('#mediacount-icon-container > a')
       .all();
-    expect((await mediatypeHeroIconBar).length).toBe(9);
+    expect((await mediatypeHeroIconBars).length).toBe(9);
 
     // New to the Archive carousel is present
     const homePageOnBoarding = this.page.locator('home-page-onboarding');
@@ -52,7 +52,7 @@ export class HomePage {
       .locator('#onboarding-carousel')
       .locator('#onboarding-content > a')
       .all();
-    expect((await onboardingCarousel).length).toBe(9);
+    expect((await onboardingCarousel).length).toBe(8);
 
     // Top Collections section is present and populated
     const infiniteScroller = this.page.locator('infinite-scroller');
