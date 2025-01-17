@@ -34,10 +34,8 @@ export class LoginPage {
   }
 
   async assertAccountSettingsDisplayed() {
-    await this.page.waitForTimeout(3000);
-
     await this.page.goto(accountSettings.url);
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForURL(/settings=1/);
 
     await expect(this.authTemplate).toBeVisible();
 
@@ -50,7 +48,7 @@ export class LoginPage {
     ).toBe('Account settings');
 
     expect(await this.authTemplate.locator('form > p').innerText()).toBe(
-      'Please verify your password to access account settings.',
+      'To access your account settings, as an extra security measure, please enter your password.',
     );
 
     expect(
@@ -64,7 +62,7 @@ export class LoginPage {
 
   async notLoggedIn() {
     await this.page.goto(accountSettings.url);
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    await this.page.waitForURL(/settings=1/);
 
     await expect(this.authTemplate).not.toBeVisible();
     expect(
