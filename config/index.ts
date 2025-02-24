@@ -92,6 +92,13 @@ export const identifier = {
     url: '',
     default: '/search',
   },
+  static: {
+    url: '',
+    bookserver: '/bookserver',
+    petabox: '/web/petabox',
+    scanning: '/scanning',
+    sflan: '/web/sflan',
+  }
 };
 
 export const testBeforeEachConfig = async (context: BrowserContext) => {
