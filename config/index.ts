@@ -37,6 +37,11 @@ export const identifier = {
     url: '/details',
     default: '/details/theworksofplato01platiala',
   },
+  legal: {
+    url: '/legal/',
+    affidavit: '/legal/affidavit',
+    faq: '/legal/faq'
+  },
   lending: {
     chromium: 'hitrun0000haro',
     firefox: 'cornellstudiesin26unse',
