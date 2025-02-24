@@ -17,9 +17,13 @@ export const config = {
 export const identifier = {
   about: {
     url: '/about',
-    jobs: '/about/jobs.php',
-    terms: '/about/terms.php',
+    bios: '/about/bios',
+    contact: '/about/contact',
+    credits: '/about/credits',
+    jobs: '/about/jobs',
     news: '/about/news-stories',
+    terms: '/about/terms',
+    volunteer: '/about/volunteer-positions',
   },
   av: {
     url: '',
