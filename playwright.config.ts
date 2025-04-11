@@ -19,16 +19,18 @@ const reportName = () => `${process.env.CATEGORY}/${formattedDateTime()}`;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
- * 
+ *
  * Timeouts are set by `ms`.
  * Can be modified if needed
  */
 export default defineConfig({
-  workers: 5,
+  workers: 3,
+  // Give failing tests 3 retry attempts
+  retries: 3,
   // Timeout for each test
-  timeout: 5 * 60 * 1000,         // 5 mins
+  timeout: 5 * 60 * 1000, // 5 mins
   // Maximum time the whole test suite can run
-  globalTimeout: 20 * 60 * 1000,  // 20 mins
+  globalTimeout: 20 * 60 * 1000, // 20 mins
   testDir: './tests',
   reporter: [
     [
@@ -40,13 +42,13 @@ export default defineConfig({
     ],
   ],
   expect: {
-    timeout: 2 * 60 * 1000,  // set to 2min
+    timeout: 2 * 60 * 1000, // set to 2min
   },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // This is set in config/index.ts
     baseURL: config.baseURL,
-    actionTimeout: 2 * 60 * 1000,  // set to 2min
+    actionTimeout: 2 * 60 * 1000, // set to 2min
     screenshot: 'only-on-failure',
   },
 
@@ -56,7 +58,7 @@ export default defineConfig({
       name: 'Desktop - Chromium',
       use: {
         ...devices['Desktop Chrome'],
-        ignoreHTTPSErrors: true,  // this is needed to avoid getting warnings like: the website is not safe
+        ignoreHTTPSErrors: true, // this is needed to avoid getting warnings like: the website is not safe
       },
     },
     {

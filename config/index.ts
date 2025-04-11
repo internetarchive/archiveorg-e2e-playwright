@@ -17,9 +17,13 @@ export const config = {
 export const identifier = {
   about: {
     url: '/about',
-    jobs: '/about/jobs.php',
-    terms: '/about/terms.php',
+    bios: '/about/bios',
+    contact: '/about/contact',
+    credits: '/about/credits',
+    jobs: '/about/jobs',
     news: '/about/news-stories',
+    terms: '/about/terms',
+    volunteer: '/about/volunteer-positions',
   },
   av: {
     url: '',
@@ -32,6 +36,11 @@ export const identifier = {
   books: {
     url: '/details',
     default: '/details/theworksofplato01platiala',
+  },
+  legal: {
+    url: '/legal/',
+    affidavit: '/legal/affidavit',
+    faq: '/legal/faq'
   },
   lending: {
     chromium: 'hitrun0000haro',
@@ -83,6 +92,13 @@ export const identifier = {
     url: '',
     default: '/search',
   },
+  static: {
+    url: '',
+    bookserver: '/bookserver',
+    petabox: '/web/petabox',
+    scanning: '/scanning',
+    sflan: '/web/sflan',
+  }
 };
 
 export const testBeforeEachConfig = async (context: BrowserContext) => {
