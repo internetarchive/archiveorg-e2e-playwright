@@ -1,7 +1,8 @@
 ![Build Status](https://github.com/internetarchive/archiveorg-e2e-tests/actions/workflows/main.yml/badge.svg)
 
-# End to end tests for Archive.org using [Playwright](https://playwright.dev/)
+# (DEPRECATED) End to end tests for Archive.org using [Playwright](https://playwright.dev/)
 
+## **NOTE: You probably want https://github.com/ia-ux/playwright-tests and not this repo.**
 
 ## (Optional) BrowserStack Local Setup
 
